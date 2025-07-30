@@ -1,0 +1,96 @@
+
+---
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  annotations:
+    launcher.sas.com/jobContainerName: admin-content-loader
+  labels:
+    launcher.sas.com/job-type: admin-content-loader
+    sas.com/template-intent: sas-launcher
+  name: sas-admin-content-loader
+template:
+  metadata:
+    annotations:
+      sas.com/certificate-file-format: pem
+      sas.com/kustomize-base: base
+    labels:
+      launcher.sas.com/job-type: admin-content-loader
+  spec:
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - stateless
+          weight: 100
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: NotIn
+              values:
+              - cas
+              - compute
+              - stateful
+          weight: 50
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.azure.com/mode
+              operator: NotIn
+              values:
+              - system
+      podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+    automountServiceAccountToken: false
+    containers:
+    - env: []
+      envFrom:
+      - configMapRef:
+          name: sas-go-config
+      - configMapRef:
+          name: sas-go-config
+      - configMapRef:
+          name: sas-shared-config
+      - configMapRef:
+          name: sas-java-config
+      - configMapRef:
+          name: sas-admin-content-loader-parameters
+      - secretRef:
+          name: sas-consul-client
+      image: sas-admin-content-loader
+      name: sas-admin-content-loader
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          add: []
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      volumeMounts: []
+    imagePullSecrets: []
+    initContainers: []
+    restartPolicy: Never
+    securityContext:
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: sas-admin-content-loader
+    tolerations:
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: stateless
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: stateful
+    volumes: []

@@ -1,0 +1,113 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-base-deployment-sas-search-truststores-only-transformer
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0
+    value:
+      name: sas-certframe
+      image: sas-certframe
+      env:
+      - name: KUBE_POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: SAS_CERTFRAME_TOKEN_DIR
+        value: /certframe-token
+      - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+        value: /customer-provided-ca-certificates
+      envFrom:
+      - configMapRef:
+          name: sas-certframe-ingress-certificate-config
+      - configMapRef:
+          name: sas-certframe-truststore-config
+      volumeMounts:
+      - name: certframe-token
+        mountPath: /certframe-token
+      - name: security
+        mountPath: /security
+      - name: customer-provided-ca-certificates
+        mountPath: /customer-provided-ca-certificates
+      resources:
+        requests:
+          memory: "50Mi"
+          cpu: "50m"
+        limits:
+          memory: "500Mi"
+          cpu: "500m"
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: certframe-token
+      secret:
+        secretName: sas-certframe-token
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: security
+      emptyDir: {}
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: customer-provided-ca-certificates
+      configMap:
+        name: sas-customer-provided-ca-certificates
+  - op: add
+    path: /spec/template/spec/containers/0/volumeMounts/-
+    value:
+      name: security
+      mountPath: /security
+  - op: add
+    path: /spec/template/spec/containers/0/volumeMounts/-
+    value:
+      name: security
+      mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
+      subPath: cacerts
+  - op: add
+    path: /spec/template/spec/containers/0/volumeMounts/-
+    value:
+      name: security
+      mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
+      subPath: private
+  - op: add
+    path: /spec/template/spec/containers/0/envFrom/-
+    value:
+      configMapRef:
+        name: sas-certframe-truststore-config
+  - op: add
+    path: /spec/template/metadata/annotations/sas.com~1tls-mode
+    value: truststores-only
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: truststores-only
+target:
+  kind: Deployment
+  name: sas-search
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-golang-db-migrator-deployment-sas-search-truststores-only-transformer
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/2/env/-
+    value:
+      name: SSL_CERT_FILE
+      value: /security/trustedcerts.pem
+  - op: add
+    path: /spec/template/spec/initContainers/2/volumeMounts/-
+    value:
+      name: security
+      mountPath: /security
+target:
+  kind: Deployment
+  name: sas-search

@@ -1,0 +1,3 @@
+# Copyright 2024, SAS Institute Inc., Cary, NC, USA. All Rights Reserved.
+resources:
+  - business-orchestration-worker-deployment.yaml

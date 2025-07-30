@@ -1,0 +1,46 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-SASEnvironmentManager
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-environment-manager-app
+    sas.com/admin: namespace
+  name: sas-environment-manager-app
+spec:
+  host: $(INGRESS_HOST)
+  path: /SASEnvironmentManager
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-environment-manager-app
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-SASEnvironmentManager
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-environment-manager-app
+    sas.com/admin: namespace
+  name: sas-environment-manager-app-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /SASEnvironmentManager
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-environment-manager-app
+  wildcardPolicy: Subdomain
+

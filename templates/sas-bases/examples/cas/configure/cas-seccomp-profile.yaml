@@ -1,0 +1,30 @@
+# This block of code is for overriding the default secure computing
+# profile (seccomp) of "RuntimeDefault" for CAS.
+# Setting "/spec/seccompProfile" to "unconfined" will cause
+# sas-cas-operator to replace any existing seccomp profile
+# configurations with an "Unconfined" seccomp profile for CAS.
+#
+# Any other values for "/spec/seccompProfile" will set the profile
+# type to "Localhost" and require that the "/spec/seccompProfile"
+# value is a path to a pre-configured localhostProfile file
+# on the Kubernetes node.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-seccomp-annotation-override
+patch: |-
+  - op: add
+    path: /spec/seccompProfile
+    value: {{ SECCOMP-PROFILE }}
+
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  # Uncomment this to apply to all CAS servers:
+  name: .*
+  # Uncomment this to apply to one particular named CAS server:
+  #name: {{ NAME-OF-SERVER }}
+  # Uncomment this to apply to the default CAS server:
+  #labelSelector: "sas.com/cas-server-default"
+  version: v1alpha1

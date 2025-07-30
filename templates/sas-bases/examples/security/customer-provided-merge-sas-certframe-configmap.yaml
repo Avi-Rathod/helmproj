@@ -1,0 +1,42 @@
+## Example ConfigMapGenerator to generate the ConfigMap to contain sas-certframe configuration settings
+##
+## In the following code, the variables that require user-specified values are indicated by a capitalized and
+## hyphenated name set off by curly braces and a space at each end. You should replace this token with the
+## actual value.
+## Replace the curly braces, interior spaces, and the variable name.
+## For instance,
+## "{{ CERTIFICATE-GENERATOR }}" should be replaced by the desired certificate generator.  Valid values are either cert-manager or openssl.
+## "{{ CERTIFICATE-DURATION }}" should be replaced by the desired certificate time to expiry specified in days and enclosed in quotes. Alternatively, you can specify the value in hours by providing an integer value followed by a trailing "h" (without quotes).
+## "{{ SAS-CERTIFICATE-ADDITIONAL-SAN-DNS }}" should be replaced by the list of additional SAN DNS entries specific to your ingress architecture that you want added to certificates issued by the sas-viya-issuer.  For example, the aliases of an external load balancer. Entries in the list should be separated by a space.
+## "{{ SAS-CERTIFICATE-ADDITIONAL-SAN-IP }}" should be replaced by the list of additional SAN IP addresses specific to your ingress architecture that you want added to certificates issued by the sas-viya-issuer. For example, the IP address of an external load balancer. Entries in the list should be separated by a space.
+## "{{ EXCLUDE-MOZILLA-CERTS }}" should be replaced by a Boolean value, designating whether you want to include Mozilla trusted CA certificates in your truststores. Valid values are "true" and "false".
+##
+## Each of the lines listed after the "literals:" line is optional.
+## You should only include lines that have the settings you want to override.  Delete lines that contain settings that you want to leave set to their default values.
+## The default values are
+## - certificate generator: openssl
+## - certificate duration: 2 Years
+## - Additional SAN DNS and SAN IP values are not typically necessary.  They are only necessary if you add front-end network components in front of the cluster ingress.
+## - Mozilla trusted CA certificates are typically added to truststores. EXCLUDE_MOZILLA_CERTS is defaulted to false.
+##
+##
+## The following example provides overrides for all default values:
+##
+## - SAS_CERTIFICATE_GENERATOR=cert-manager
+## - SAS_CERTIFICATE_DURATION="1095" # 3 years
+## - SAS_CERTIFICATE_ADDITIONAL_SAN_DNS=myhostalias.mydomain.com myhostalias myotheralias
+## - SAS_CERTIFICATE_ADDITIONAL_SAN_IP=10.20.30.40 10.20.30.41
+## - EXCLUDE_MOZILLA_CERTS="true"
+##
+---
+apiVersion: builtin
+kind: ConfigMapGenerator
+metadata:
+  name: sas-certframe-user-config
+behavior: merge
+literals:
+- SAS_CERTIFICATE_GENERATOR={{ CERTIFICATE-GENERATOR }}
+- SAS_CERTIFICATE_DURATION={{ CERTIFICATE-DURATION }}
+- SAS_CERTIFICATE_ADDITIONAL_SAN_DNS={{ ADDITIONAL-SAN-DNS-ENTRIES }}
+- SAS_CERTIFICATE_ADDITIONAL_SAN_IP={{ ADDITIONAL-SAN-IP-ENTRIES }}
+- EXCLUDE_MOZILLA_CERTS={{ EXCLUDE-MOZILLA-CERTS }}

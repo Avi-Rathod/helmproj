@@ -1,0 +1,364 @@
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: sas-consul-server
+    sas.com/admin: namespace
+    sas.com/registry-sync: default
+  name: sas-consul-server
+spec:
+  ports:
+  - name: server
+    port: 8300
+    targetPort: server
+  - name: serflan-tcp
+    port: 8301
+    protocol: TCP
+    targetPort: serflan-tcp
+  - name: serflan-udp
+    port: 8301
+    protocol: UDP
+    targetPort: serflan-udp
+  - name: http
+    port: 8500
+    targetPort: http
+  selector:
+    app.kubernetes.io/name: sas-consul-server
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: sas-consul-server-internal
+    sas.com/admin: namespace
+  name: sas-consul-server-internal
+spec:
+  clusterIP: None
+  ports:
+  - name: server-internal
+    port: 8300
+    targetPort: server
+  - name: serflan-tcp-internal
+    port: 8301
+    protocol: TCP
+    targetPort: serflan-tcp
+  - name: serflan-udp-internal
+    port: 8301
+    protocol: UDP
+    targetPort: serflan-udp
+  - name: http-internal
+    port: 8500
+    targetPort: http
+  publishNotReadyAddresses: true
+  selector:
+    app.kubernetes.io/name: sas-consul-server
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/kustomize-base: base
+    sidecar.istio.io/proxyCPU: 15m
+    sidecar.istio.io/proxyMemory: 115Mi
+  labels:
+    app.kubernetes.io/name: sas-consul-server
+    sas.com/admin: namespace
+    workload.sas.com/class: stateful
+  name: sas-consul-server
+spec:
+  podManagementPolicy: Parallel
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-consul-server
+  serviceName: sas-consul-server-internal
+  template:
+    metadata:
+      annotations:
+        sas.com/certificate-file-format: pem
+        sas.com/kustomize-base: base
+        sidecar.istio.io/inject: "false"
+        sidecar.istio.io/proxyCPU: 15m
+        sidecar.istio.io/proxyMemory: 115Mi
+        traffic.sidecar.istio.io/excludeInboundPorts: "8301"
+      labels:
+        app: sas-consul-server
+        app.kubernetes.io/name: sas-consul-server
+        workload.sas.com/class: stateful
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateful
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - compute
+                - cas
+                - stateless
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution: []
+          requiredDuringSchedulingIgnoredDuringExecution: []
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - sas-consul-server
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution: []
+      automountServiceAccountToken: false
+      containers:
+      - env:
+        - name: CONSUL_BOOTSTRAP_EXPECT
+          value: "3"
+        - name: CONSUL_CLIENT_ADDRESS
+          value: 0.0.0.0
+        - name: CONSUL_DATACENTER_NAME
+          value: viya
+        envFrom:
+        - configMapRef:
+            name: sas-shared-config
+        - secretRef:
+            name: sas-consul-client
+        - secretRef:
+            name: sas-consul-management
+        - configMapRef:
+            name: ingress-input
+        image: sas-consul-server
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - if [ -n "${SAS_CERTIFICATE_FILE}" ]; then export CONSUL_HTTP_SSL=true;
+                fi; /opt/sas/viya/home/bin/consul snapshot save -stale -token-file=/opt/sas/viya/config/etc/SASSecurityCertificateFramework/tokens/consul/default/management.token
+                -http-addr=https://localhost:8500  /consul/data/raft/snapshots/backup.snap;
+                /opt/sas/viya/home/bin/consul leave  && sleep 5
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - /opt/sas/viya/home/bin/consul-liveness-probe.sh
+          initialDelaySeconds: 45
+          periodSeconds: 30
+          timeoutSeconds: 60
+        name: sas-consul-server
+        ports:
+        - containerPort: 8300
+          name: server
+          protocol: TCP
+        - containerPort: 8301
+          name: serflan-tcp
+          protocol: TCP
+        - containerPort: 8301
+          name: serflan-udp
+          protocol: UDP
+        - containerPort: 8500
+          name: http
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - /opt/sas/viya/home/bin/consul-readiness-probe.sh
+          initialDelaySeconds: 45
+          periodSeconds: 30
+          timeoutSeconds: 60
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 150Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add: []
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        startupProbe:
+          exec:
+            command:
+            - sh
+            - /opt/sas/viya/home/bin/consul-startup-probe.sh
+          initialDelaySeconds: 45
+          periodSeconds: 30
+          timeoutSeconds: 60
+        volumeMounts:
+        - mountPath: /opt/sas/viya/config/etc/consul.d
+          name: tmp-volume
+          subPath: consul.d
+        - mountPath: /opt/sas/viya/config/etc/consul.d/default
+          name: sitedefault-vol
+        - mountPath: /consul/data
+          name: sas-viya-consul-data-volume
+        - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/tokens/consul/default
+          name: tmp-volume
+          subPath: consul-tokens
+        - mountPath: /opt/sas/viya/config/tmp/sas-consul
+          name: tmp-volume
+          subPath: sas-consul
+        - mountPath: /tmp
+          name: tmp-volume
+          subPath: tmp
+      imagePullSecrets: []
+      initContainers:
+      - env:
+        - name: SAS_KEYS_SECRET_NAME
+          value: sas-consul-client
+        - name: SAS_KEYS_KEY_NAMES
+          value: CONSUL_HTTP_TOKEN
+        - name: SAS_SECURITY_ARTIFACTS_DIR
+          value: /security
+        - name: SAS_CERTFRAME_TOKEN_DIR
+          value: /certframe-token
+        image: sas-certframe
+        name: sas-certframe-client-token-generator
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /security
+          name: security
+        - mountPath: /certframe-token
+          name: certframe-token
+      - env:
+        - name: SAS_KEYS_SECRET_NAME
+          value: sas-consul-management
+        - name: SAS_KEYS_KEY_NAMES
+          value: CONSUL_MANAGEMENT_TOKEN CONSUL_TOKENS_ENCRYPTION
+        - name: SAS_KEYS_KEY_TYPES
+          value: uuid base64
+        - name: SAS_SECURITY_ARTIFACTS_DIR
+          value: /security
+        - name: SAS_CERTFRAME_TOKEN_DIR
+          value: /certframe-token
+        image: sas-certframe
+        name: sas-certframe-management-token-generator
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /security
+          name: security
+        - mountPath: /certframe-token
+          name: certframe-token
+      securityContext:
+        fsGroup: 1001
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      terminationGracePeriodSeconds: 600
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - name: sitedefault-vol
+        projected:
+          sources:
+          - configMap:
+              items:
+              - key: SITEDEFAULT_CONF
+                mode: 438
+                path: sitedefault.yml
+              name: sas-consul-config
+          - secret:
+              items:
+              - key: SITEDEFAULT_CONF
+                mode: 438
+                path: sitedefault-secret.yml
+              - key: SASDEFAULT_CONF
+                mode: 438
+                path: sasdefault-secret.yml
+              name: sas-consul-config
+      - emptyDir: {}
+        name: tmp-volume
+      - emptyDir: {}
+        name: security
+      - name: certframe-token
+        secret:
+          secretName: sas-certframe-token
+  volumeClaimTemplates:
+  - metadata:
+      name: sas-viya-consul-data-volume
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  annotations:
+    sas.com/ha-class: decentralized
+    sas.com/kustomize-base: decentralized
+  name: sas-consul-server
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-consul-server

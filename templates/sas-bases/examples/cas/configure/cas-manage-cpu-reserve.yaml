@@ -1,0 +1,27 @@
+# This block of code is for altering the CPU reserve allotment for CAS auto-resourcing.
+# By default 1 Core is left available for other pods and daemonsets.  If your environment
+#  has a large number of daemonsets, consider using this example transformer to increase
+#  the cpu reserved for those pods.
+# For CPUs, the NUMBER-OF-CORES is either a whole number, representing that
+# number of cores, or a number followed by m, indicating that number of milli-cores.
+# For example, 8 specifes to allocate 8 cores, and 500m specifies to allocate
+# 500 milli-cores or .5 cores.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-manage-cpu-reserve
+patch: |-
+  - op: add
+    path: /spec/cpuReserve
+    value: {{ NUMBER-OF-CORES }}
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  # Uncomment this to apply to all CAS servers:
+  name: .*
+  # Uncomment this to apply to one particular named CAS server:
+  #name: {{ NAME-OF-SERVER }}
+  # Uncomment this to apply to the default CAS server:
+  #labelSelector: "sas.com/cas-server-default"
+  version: v1alpha1

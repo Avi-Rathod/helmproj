@@ -1,0 +1,46 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-reportAlerts
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-report-alerts
+    sas.com/admin: namespace
+  name: sas-report-alerts
+spec:
+  host: $(INGRESS_HOST)
+  path: /reportAlerts
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-report-alerts
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-reportAlerts
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-report-alerts
+    sas.com/admin: namespace
+  name: sas-report-alerts-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /reportAlerts
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-report-alerts
+  wildcardPolicy: Subdomain
+

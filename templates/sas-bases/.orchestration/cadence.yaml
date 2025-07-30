@@ -1,0 +1,11 @@
+apiVersion: orchestration.sas.com/v1
+kind: Cadence
+metadata:
+  creationTimestamp: null
+  name: cadence
+spec:
+  displayName: Long-Term Support 2024.09
+  name: lts
+  release: "20241224.1735022792025"
+  version: "2024.09"
+

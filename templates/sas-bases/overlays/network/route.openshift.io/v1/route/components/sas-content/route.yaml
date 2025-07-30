@@ -1,0 +1,138 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-activities
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-activities
+    sas.com/admin: namespace
+  name: sas-activities
+spec:
+  host: $(INGRESS_HOST)
+  path: /activities
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-activities
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-activities
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-activities
+    sas.com/admin: namespace
+  name: sas-activities-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /activities
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-activities
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-drive
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-drive
+    sas.com/admin: namespace
+  name: sas-drive
+spec:
+  host: $(INGRESS_HOST)
+  path: /drive
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-drive
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-drive
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-drive
+    sas.com/admin: namespace
+  name: sas-drive-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /drive
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-drive
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-thumbnails
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-thumbnails
+    sas.com/admin: namespace
+  name: sas-thumbnails
+spec:
+  host: $(INGRESS_HOST)
+  path: /thumbnails
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-thumbnails
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-thumbnails
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-thumbnails
+    sas.com/admin: namespace
+  name: sas-thumbnails-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /thumbnails
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-thumbnails
+  wildcardPolicy: Subdomain
+

@@ -1,0 +1,20 @@
+# Replace all instances of the variable {{ REPLICAS-COUNT }}, including the braces,
+# with the number of PostgreSQL replicas you would like to have.
+#
+# Note: this is the total count of PostgreSQL nodes you will have, not just the nodes
+# acting as "replicas" in a high-availability configuration. For example, using the
+# value 3 will result in 3 total PostgreSQL nodes.
+
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: crunchy-replicas-transformer
+patch: |-
+  - op: replace
+    path: /spec/instances/0/replicas
+    value: {{ REPLICAS-COUNT }}
+target:
+  group: postgres-operator.crunchydata.com
+  kind: PostgresCluster
+  name: .*
+  version: v1beta1

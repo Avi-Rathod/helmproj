@@ -1,0 +1,52 @@
+## Example SecretGenerator to generate the secret to be used by CAS and Connect
+##
+## In the following code, the locations that require user specified values are indicated by a capitalized and
+## hyphenated name set off by curly braces and a space at each end. You should replace this token with the
+## actual value.
+## Replace the curly braces, interior spaces, and the variable name.
+## For instance, "{{ CAS_CERTIFICATE_FILE_NAME }}"
+## should be replaced by the path to a .pem file containing your CAS certificate.
+## If you use the suggested example, the correct, final syntax would be:
+## - tls.crt=site-config/security/cas.crt
+## - tls.key=site-config/security/cas.key
+##
+##
+## For instance, "{{ CONNECT_CERTIFICATE_FILE_NAME }}"
+## should be replaced by the path to a .pem file containing your CAS certificate.
+## If you use the suggested example, the correct, final syntax would be:
+## - tls.crt=site-config/security/connect.crt
+## - tls.key=site-config/security/connect.key
+##
+##  Special Note:  the names of the kubernetes secrets which will contain the certificates and keys can be
+##  renamed.  However, the names provided below "sas-cas-certificate" and "sas-connect-certificate" are referenced in other kustomization
+##  files.  If you change the names below, you will need to change all the other references: sas-certframe init-container env section
+## for CASDeployments, the deployment named sas-connect-spawner, and the PodTemplate named sas-connect-pod-template.
+##  Use the sas-bases/overlays/network/ingress/security/transformers/customer-provided-certificates-transformers.yaml as guidance.
+---
+apiVersion: builtin
+kind: SecretGenerator
+metadata:
+  name: sas-cas-certificate
+#this file defines the certificate and key that will be used in establishing TLS connections to CAS
+#the files below must exist in the same directory as kustomization.yaml and must be there when you run kustomize build and must be readable by the
+#userid that is running the kustomize command.
+#the key will be copied into the secret generator
+#the files can be deleted subsequent to running kustomize
+files:
+  - tls.crt={{ CAS_CERTIFICATE_FILE_NAME }} # For example: site-config/security/cas.crt
+  - tls.key={{ CAS_KEY_FILE_NAME }} # For example: site-config/security/cas.key
+type: "kubernetes.io/tls"
+---
+apiVersion: builtin
+kind: SecretGenerator
+metadata:
+  name: sas-connect-certificate
+#this defines the certificate and key that will be used in establishing TLS connections to Connect
+#the files below must exist in the same directory as kustomization.yaml and must be there when you run kustomize build and must be readable by the
+#userid that is running the kustomize command.
+#the key will be copied into the secret generator
+#the files can be deleted subsequent to running kustomize
+files:
+  - tls.crt={{ CONNECT_CERTIFICATE_FILE_NAME }} # For example: site-config/security/connect.crt
+  - tls.key={{ CONNECT_KEY_FILE_NAME }} # For example: site-config/security/connect.key
+type: "kubernetes.io/tls"

@@ -1,0 +1,855 @@
+
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-362d348cc8751d99
+patch: |-
+  - op: add
+    path: /spec/selector/matchExpressions
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-12f09246018800d0
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0/ports
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-1e38fa6044c7bbb9
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0/envFrom
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-9b3c7695f6879945
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0/env
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-7e4286633df12616
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0/resizePolicy
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-3c77f37a45422fbf
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0/volumeDevices
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-95b0f9be532e3900
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0/securityContext/capabilities/add
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-a13b503459e22462
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/1/command
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c994c060bbf9cc00
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/1/args
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-36bbdf826a2eb791
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/1/ports
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-90961077dddb0dc5
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/1/resizePolicy
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-d2f6d34f4c66f772
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/1/volumeDevices
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-1f05d8cca3da2543
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/1/securityContext/capabilities/add
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-e0e997fd0b70fcdd
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/command
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-9254f79247110c0d
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/args
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-587e051dd3c356e4
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/resizePolicy
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-cb1ca8e52e08db19
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/volumeDevices
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-766959b81d5f4903
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/livenessProbe/httpGet/httpHeaders
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-8df3983582d1ed52
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/readinessProbe/httpGet/httpHeaders
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-de378b5dad8ba777
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/startupProbe/httpGet/httpHeaders
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-42613fed4724f6b6
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/securityContext/capabilities/add
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-f871789e843e6deb
+patch: |-
+  - op: add
+    path: /spec/template/spec/ephemeralContainers
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2213f7da1c8d45ee
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/supplementalGroups
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-30f41839f43de939
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/sysctls
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-48d217b5a91dfceb
+patch: |-
+  - op: add
+    path: /spec/template/spec/imagePullSecrets
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-8e9154941b06a92e
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchFields
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-41bb86dec86aec3f
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/preference/matchFields
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-094e6c052b3ae350
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/1/preference/matchFields
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-0608bea627999826
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/podAntiAffinity/requiredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-1473155d1259f7b2
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/podAntiAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/podAffinityTerm/namespaces
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-90c4a10f00307468
+patch: |-
+  - op: add
+    path: /spec/template/spec/hostAliases
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-298cea5633f8c9b6
+patch: |-
+  - op: add
+    path: /spec/template/spec/readinessGates
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-b585e6be4bd67270
+patch: |-
+  - op: add
+    path: /spec/template/spec/topologySpreadConstraints
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-647637dfb431cb28
+patch: |-
+  - op: add
+    path: /spec/template/spec/schedulingGates
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-dd4103b3c5e8c529
+patch: |-
+  - op: add
+    path: /spec/template/spec/resourceClaims
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-connect
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-f71a6307a2e5cdb1
+patch: |-
+  - op: add
+    path: /template/spec/initContainers/0/command
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-120bf8fab7ca00d9
+patch: |-
+  - op: add
+    path: /template/spec/initContainers/0/args
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-40a438cd4e99976a
+patch: |-
+  - op: add
+    path: /template/spec/initContainers/0/ports
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-d7392986b6bbfd6c
+patch: |-
+  - op: add
+    path: /template/spec/initContainers/0/resizePolicy
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-38408e24dce6b54d
+patch: |-
+  - op: add
+    path: /template/spec/initContainers/0/volumeDevices
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-1286fd8522bf8f0e
+patch: |-
+  - op: add
+    path: /template/spec/initContainers/0/securityContext/capabilities/add
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2ef4db67c0d0e9b7
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/command
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c514b1c5ef33ecab
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/args
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-41ef03a7afc0c4e0
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/ports
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-e7151d82a181d60e
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/resizePolicy
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-5bae3849c6e73613
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/volumeDevices
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2dbac022f5e55b20
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/securityContext/capabilities/add
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2b3512fa4e4ffcb9
+patch: |-
+  - op: add
+    path: /template/spec/ephemeralContainers
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2ebe981812ff0794
+patch: |-
+  - op: add
+    path: /template/spec/securityContext/supplementalGroups
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-3a5e9758dfb0de67
+patch: |-
+  - op: add
+    path: /template/spec/securityContext/sysctls
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2f0a1cf6d4fb0405
+patch: |-
+  - op: add
+    path: /template/spec/imagePullSecrets
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-4cc43fc78afaa814
+patch: |-
+  - op: add
+    path: /template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchFields
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-380622be30aa203d
+patch: |-
+  - op: add
+    path: /template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/preference/matchFields
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2d359f6b52b35342
+patch: |-
+  - op: add
+    path: /template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/1/preference/matchFields
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2868728baba85df0
+patch: |-
+  - op: add
+    path: /template/spec/affinity/podAffinity/requiredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-7f59b4b2c25bd7d6
+patch: |-
+  - op: add
+    path: /template/spec/affinity/podAffinity/preferredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-dcc90e61f5226c60
+patch: |-
+  - op: add
+    path: /template/spec/affinity/podAntiAffinity/requiredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-258c70e581d46566
+patch: |-
+  - op: add
+    path: /template/spec/affinity/podAntiAffinity/preferredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-1262499a5d69067e
+patch: |-
+  - op: add
+    path: /template/spec/hostAliases
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-17b648dbbca16dd8
+patch: |-
+  - op: add
+    path: /template/spec/readinessGates
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-5e4aca13b060ae52
+patch: |-
+  - op: add
+    path: /template/spec/topologySpreadConstraints
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-8e9999dff25041fe
+patch: |-
+  - op: add
+    path: /template/spec/schedulingGates
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-309e7f3c203456d3
+patch: |-
+  - op: add
+    path: /template/spec/resourceClaims
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-connect-pod-template
+  version: v1

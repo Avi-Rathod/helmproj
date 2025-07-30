@@ -1,0 +1,9 @@
+varReference:
+- path: data/SAS_CERTIFICATE_INGRESS_SAN_DNS
+  kind: ConfigMap
+nameReference:
+- kind: Secret
+  version: v1
+  fieldSpecs:
+  - path: data/SAS_INGRESS_CERTIFICATE_SECRET_NAME
+    kind: ConfigMap

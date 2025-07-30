@@ -1,0 +1,20 @@
+# This block of code is for disabling the sas-backup-agent sidecar.
+# The container will be created but it won't run.  For example, this can be used in
+# scenarios where SASLogon isn't present.
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: disable-backup-agent
+patch: |-
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/1/command
+    value:  ["sh", "-c", "trap : TERM INT; sleep infinity & wait"]
+  - op: remove
+    path: /spec/controllerTemplate/spec/containers/1/lifecycle/preStop
+  - op: remove
+    path: /spec/controllerTemplate/spec/containers/1/args
+target:
+  annotationSelector: sas.com/component-name=sas-cas-operator
+  group: viya.sas.com
+  kind: CASDeployment
+  version: v1alpha1

@@ -1,0 +1,124 @@
+# Transformers for deployment operator in cluster-wide mode.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-sas-deployment-operator-deployment-clusterwide-namespace
+patch: |-
+  - op: replace
+    path: /spec/template/spec/containers/0/env/1
+    value:
+      name: WATCH_NAMESPACE
+      value: ""
+target:
+  annotationSelector: sas.com/component-name=sas-deployment-operator
+  kind: Deployment
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-sas-deployment-operator-clusterrole-clusterwide-rules
+patch: |-
+  - op: add
+    path: /rules/-
+    value:
+      apiGroups:
+        - ""
+      resources:
+        - secrets
+        - serviceaccounts
+      verbs:
+        - list
+        - get
+        - delete
+        - watch
+        - create
+        - update
+  - op: add
+    path: /rules/-
+    value:
+      apiGroups:
+        - ""
+      resources:
+        - configmaps
+      verbs:
+        - create
+        - get
+        - update
+        - list
+        - delete
+  - op: add
+    path: /rules/-
+    value:
+      apiGroups:
+        - ""
+      resources:
+        - services
+      verbs:
+        - get
+        - list
+        - watch
+        - create
+  - op: add
+    path: /rules/-
+    value:
+      apiGroups:
+        - batch
+      resources:
+        - cronjobs
+        - jobs
+      verbs:
+        - create
+        - get
+        - list
+        - patch
+        - update
+        - watch
+        - delete
+  - op: add
+    path: /rules/-
+    value:
+      apiGroups:
+        - orchestration.sas.com
+      resources:
+        - sasdeployments
+      verbs:
+        - get
+        - list
+        - watch
+        - update
+  - op: add
+    path: /rules/-
+    value:
+      apiGroups:
+        - rbac.authorization.k8s.io
+      resources:
+        - roles
+        - rolebindings
+      verbs:
+        - create
+        - get
+        - list
+        - watch
+        - update
+        - patch
+        - delete
+        - bind
+        - escalate
+  - op: add
+    path: /rules/-
+    value:
+      apiGroups:
+        - coordination.k8s.io
+      resources:
+        - leases
+      verbs:
+        - create
+        - delete
+        - get
+        - list
+        - update
+        - watch
+target:
+  annotationSelector: sas.com/component-name=sas-deployment-operator
+  kind: ClusterRole

@@ -1,0 +1,184 @@
+apiVersion: orchestration.sas.com/v3beta4
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-k8s-common
+    sas.com/component-version: 2.89.1-20240916.1726514392006
+  creationTimestamp: null
+  name: deploy-execute
+spec:
+  args:
+  - name: namespace
+  - name: manifest
+  - name: timeout
+  source: |-
+    package main
+
+    import (
+        "regexp"
+        "strconv"
+        "encoding/json"
+        "fmt"
+
+        lifecycle "sas/orchestration/lifecycle"
+    )
+
+    func main() {
+        manifest := lifecycle.Arg("manifest")
+        namespace := lifecycle.Arg("namespace")
+        timeout := lifecycle.Arg("timeout")
+
+        minorVersion := getApiMinorVersion()
+        retries := 3
+        retryWait := 6
+
+        clusterWide(manifest, timeout, namespace)
+        clusterLocal(manifest, minorVersion, timeout, namespace, retries, retryWait)
+        clusterAdmin(manifest, minorVersion, timeout, namespace, retries, retryWait)
+        istio(manifest, timeout, namespace, retries, retryWait)
+    }
+
+    // The default prune list in kubernetes 1.18.8 can be found at
+    // https://github.com/kubernetes/kubernetes/blob/9f2892aab98fe339f3bd70e3c470144299398ace/staging/src/k8s.io/kubectl/pkg/cmd/apply/prune.go#L172
+    // In order to facilitate adding new entries to the prune list without
+    // adding new `kubectl apply` executions, those default entries are
+    // explicitly listed here.
+    // In addition, as versions introduce new GVKs and retire older GVKs, we
+    // have to adjust the list to ensure it is doing only those we expect it to.
+    func getCommonAllowList(minorVersion uint) []string {
+        allowList := []string{
+            "core/v1/ConfigMap",
+            "core/v1/Endpoints",
+            "core/v1/Namespace",
+            "core/v1/PersistentVolumeClaim",
+            "core/v1/PersistentVolume",
+            "core/v1/Pod",
+            "core/v1/ReplicationController",
+            "core/v1/Secret",
+            "core/v1/Service",
+            "batch/v1/Job",
+            "apps/v1/DaemonSet",
+            "apps/v1/Deployment",
+            "apps/v1/ReplicaSet",
+            "apps/v1/StatefulSet",
+        }
+
+        // Introductions
+        if minorVersion >= 21 {
+            allowList = append(allowList, "batch/v1/CronJob")
+        }
+        if minorVersion >= 22 {
+            // This came out in 1.19, but this file's previous logic introduced
+            // it in 1.22. Retaining that behavior for backward compatibility.
+            allowList = append(allowList, "networking.k8s.io/v1/Ingress")
+        }
+
+        // Retirements
+        if minorVersion < 22 {
+            allowList = append(allowList, "extensions/v1beta1/Ingress")
+        }
+        if minorVersion < 25 {
+            allowList = append(allowList, "batch/v1beta1/CronJob")
+        }
+
+        return allowList
+    }
+
+    func getApiMinorVersion() uint {
+        _, serverVersion, err := lifecycle.KubernetesClientAndServerVersion()
+        if err != nil {
+            panic(err)
+        }
+        return serverVersion.Minor()
+    }
+
+    func hasGroupVersion(gv string) bool {
+        versionList, err := lifecycle.Kubectl("api-versions")
+        if err != nil {
+            panic(err)
+        }
+        re := regexp.MustCompile(`\b` + gv + `\b`)
+        return re.MatchString(versionList)
+    }
+
+    func clusterWide(manifest string, timeout string, namespace string) {
+        cmdArgs := []string{
+            "apply",
+            "--timeout", timeout,
+            "--namespace", namespace,
+            "--selector", "sas.com/admin=cluster-wide",
+        }
+        cmdArgs = append(cmdArgs, "-f", manifest)
+
+        _, err := lifecycle.Kubectl(cmdArgs...)
+        if err != nil {
+            panic(err)
+        }
+    }
+
+    func clusterLocal(manifest string, minorVersion uint, timeout string, namespace string, retries int, retryWait int) {
+        allowList := getCommonAllowList(minorVersion)
+        cmdArgs := []string{
+            "apply",
+            "--timeout", timeout,
+            "--namespace", namespace,
+            "--selector", "sas.com/admin=cluster-local",
+        }
+        cmdArgs = append(cmdArgs, "--prune")
+        for _, item := range allowList {
+            cmdArgs = append(cmdArgs, "--prune-allowlist", item)
+        }
+        cmdArgs = append(cmdArgs, "-f", manifest)
+
+        _, err := lifecycle.KubectlWithRetry(retries, retryWait, cmdArgs...)
+        if err != nil {
+            panic(err)
+        }
+    }
+
+    func clusterAdmin(manifest string, minorVersion uint, timeout string, namespace string, retries int, retryWait int) {
+        allowList := getCommonAllowList(minorVersion)
+        allowList = append(allowList, "autoscaling/v2/HorizontalPodAutoscaler")
+        cmdArgs := []string{
+            "apply",
+            "--timeout", timeout,
+            "--namespace", namespace,
+            "--selector", "sas.com/admin=namespace",
+        }
+        cmdArgs = append(cmdArgs, "--prune")
+        for _, item := range allowList {
+            cmdArgs = append(cmdArgs, "--prune-allowlist", item)
+        }
+        cmdArgs = append(cmdArgs, "-f", manifest)
+
+        _, err := lifecycle.KubectlWithRetry(retries, retryWait, cmdArgs...)
+        if err != nil {
+            panic(err)
+        }
+    }
+
+    func istio(manifest string, timeout string, namespace string, retries int, retryWait int) {
+        if !hasGroupVersion("networking.istio.io/v1alpha3") {
+            return
+        }
+        allowList := []string{
+            "networking.istio.io/v1alpha3/DestinationRule",
+            "networking.istio.io/v1alpha3/VirtualService",
+        }
+        cmdArgs := []string{
+            "apply",
+            "--timeout", timeout,
+            "--namespace", namespace,
+            "--selector", "sas.com/admin=namespace",
+        }
+        cmdArgs = append(cmdArgs, "--prune")
+        for _, item := range allowList {
+            cmdArgs = append(cmdArgs, "--prune-allowlist", item)
+        }
+        cmdArgs = append(cmdArgs, "-f", manifest)
+
+        _, err := lifecycle.KubectlWithRetry(retries, retryWait, cmdArgs...)
+        if err != nil {
+            panic(err)
+        }
+    }

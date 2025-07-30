@@ -1,0 +1,41 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-report-alerts
+spec:
+  host: sas-report-alerts
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /reportAlerts/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-report-alerts
+    sas.com/admin: namespace
+  name: sas-report-alerts
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /reportAlerts
+    - uri:
+        prefix: /reportAlerts/
+    route:
+    - destination:
+        host: sas-report-alerts
+    timeout: 300s
+

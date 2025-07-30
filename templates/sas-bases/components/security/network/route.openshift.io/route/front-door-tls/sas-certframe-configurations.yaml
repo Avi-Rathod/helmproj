@@ -1,0 +1,8 @@
+nameReference:
+- kind: Secret
+  version: v1
+  fieldSpecs:
+  - path: metadata/annotations/cert-utils-operator.redhat-cop.io\/certs-from-secret
+    kind: Route
+  - path: metadata/annotations/cert-utils-operator.redhat-cop.io\/destinationCA-from-secret
+    kind: Route

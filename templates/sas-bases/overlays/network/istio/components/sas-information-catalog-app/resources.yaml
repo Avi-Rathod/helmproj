@@ -1,0 +1,41 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-information-catalog-app
+spec:
+  host: sas-information-catalog-app
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /SASInformationCatalog/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-information-catalog-app
+    sas.com/admin: namespace
+  name: sas-information-catalog-app
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /SASInformationCatalog
+    - uri:
+        prefix: /SASInformationCatalog/
+    route:
+    - destination:
+        host: sas-information-catalog-app
+    timeout: 300s
+

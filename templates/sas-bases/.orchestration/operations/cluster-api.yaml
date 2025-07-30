@@ -1,0 +1,42 @@
+apiVersion: orchestration.sas.com/v3beta1
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-k8s-common
+    sas.com/component-version: 2.89.1-20240916.1726514392006
+  creationTimestamp: null
+  name: cluster-api
+spec:
+  args:
+  - name: clusterApiManifest
+  - name: clusterApiNamespace
+  - name: timeout
+  source: |-
+    package main
+    import (
+      "fmt"
+      "sas/orchestration/lifecycle"
+    )
+    func main() {
+      manifest := lifecycle.Arg("clusterApiManifest")
+      namespace := lifecycle.Arg("clusterApiNamespace")
+      timeout := lifecycle.Arg("timeout")
+      if namespace != "" {
+        err := lifecycle.StartLeading(namespace)
+        if err != nil {
+          fmt.Printf("%v\n", err)
+          return
+        }
+        defer lifecycle.StopLeading(namespace)
+      }
+      err := lifecycle.Run("cluster-api-assess", "--clusterApiManifest", manifest, "--clusterApiNamespace", namespace, "--timeout", timeout)
+      if err != nil {
+        fmt.Printf("%v\n", err)
+        return
+      }
+      err = lifecycle.Run("cluster-api-deploy", "--clusterApiManifest", manifest, "--clusterApiNamespace", namespace, "--timeout", timeout)
+      if err != nil {
+        fmt.Printf("%v\n", err)
+        return
+      }
+    }

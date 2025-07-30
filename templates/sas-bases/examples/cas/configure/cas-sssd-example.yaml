@@ -1,0 +1,37 @@
+###############################################################################
+# Kustomize patch to add external SSSD secret in CAS deployment.
+# See README.md for more information.
+###############################################################################
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-sssd-example
+patch: |-
+  - op: add
+    path: /spec/controllerTemplate/spec/volumes/-
+    value:
+      name: sssd-config
+      secret:
+        secretName: sas-sssd-config
+        defaultMode: 420
+        items:
+        - key: SSSD_CONF
+          mode: 384
+          path: sssd.conf
+
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/3/volumeMounts/-
+    value:
+      name: sssd-config
+      mountPath: /sssd
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  # Uncomment this to apply to all CAS servers:
+  name: .*
+  # Uncomment this to apply to one particular named CAS server:
+  #name: {{ NAME-OF-SERVER }}
+  # Uncomment this to apply to the default CAS server:
+  #labelSelector: "sas.com/cas-server-default"
+  version: v1alpha1

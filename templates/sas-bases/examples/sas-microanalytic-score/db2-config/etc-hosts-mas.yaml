@@ -1,0 +1,18 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+target:
+  group: apps
+  kind: Deployment
+  name: sas-microanalytic-score
+  version: v1
+metadata:
+  name: etc-hosts-mas
+patch: |-
+  - op: add
+    path: /spec/template/spec/hostAliases
+    value:
+      - ip: {{ DB2_DATABASE_IP }}         #for example, "192.0.2.0"
+        hostnames:
+          - {{ DB2_DATABASE_HOSTNAME }}   #for example, "MyDBHost"
+---

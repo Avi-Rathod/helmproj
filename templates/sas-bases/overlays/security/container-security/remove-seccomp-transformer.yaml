@@ -1,0 +1,186 @@
+# Delete seccomp profile from all Deployments
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: remove-seccomp-profile-from-deployments
+patch: |-
+  - op: replace
+    path: /spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+    value: {}
+  - op: remove
+    path: /spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+  - op: replace
+    path: /spec/template/spec/securityContext/seccompProfile
+    value: {}
+  - op: remove
+    path: /spec/template/spec/securityContext/seccompProfile
+target:
+  kind: Deployment
+
+# Delete seccomp profile from all StatefulSets
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: remove-seccomp-profile-from-statefulsets
+patch: |-
+  - op: replace
+    path: /spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+    value: {}
+  - op: remove
+    path: /spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+  - op: replace
+    path: /spec/template/spec/securityContext/seccompProfile
+    value: {}
+  - op: remove
+    path: /spec/template/spec/securityContext/seccompProfile
+target:
+  kind: StatefulSet
+
+# Delete seccomp profile from all CronJob
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: remove-seccomp-profile-from-cronjobs
+patch: |-
+  - op: replace
+    path: /spec/jobTemplate/spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+    value: {}
+  - op: remove
+    path: /spec/jobTemplate/spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+  - op: replace
+    path: /spec/jobTemplate/spec/template/spec/securityContext/seccompProfile
+    value: {}
+  - op: remove
+    path: /spec/jobTemplate/spec/template/spec/securityContext/seccompProfile
+target:
+  kind: CronJob
+
+# Delete seccomp profile from all Jobs
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: remove-seccomp-profile-from-jobs
+patch: |-
+  - op: replace
+    path: /spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+    value: {}
+  - op: remove
+    path: /spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+  - op: replace
+    path: /spec/template/spec/securityContext/seccompProfile
+    value: {}
+  - op: remove
+    path: /spec/template/spec/securityContext/seccompProfile
+target:
+  kind: Job
+
+# Delete seccomp profile from all PodTemplates
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: remove-seccomp-profile-from-podTemplates
+patch: |-
+  - op: replace
+    path: /template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+    value: {}
+  - op: remove
+    path: /template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+  - op: replace
+    path: /template/spec/securityContext/seccompProfile
+    value: {}
+  - op: remove
+    path: /template/spec/securityContext/seccompProfile
+target:
+  kind: PodTemplate
+
+# Delete seccomp profile from ESPConfig
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: remove-seccomp-profile-from-espconfig
+patch: |-
+  - op: replace
+    path: /spec/projectTemplate/deployment/spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+    value: {}
+  - op: remove
+    path: /spec/projectTemplate/deployment/spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+  - op: replace
+    path: /spec/projectTemplate/deployment/spec/template/spec/securityContext/seccompProfile
+    value: {}
+  - op: remove
+    path: /spec/projectTemplate/deployment/spec/template/spec/securityContext/seccompProfile
+target:
+  kind: ESPConfig
+
+# Disable seccomp profile in all CasDeployments
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: disable-seccomp-profile-in-casdeployments
+patch: |-
+   - op: replace
+     path: /spec/disableSeccomp
+     value:
+       true
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  name: .*
+  version: v1alpha1
+
+# Disable seccomp profile in all OpenDistroClusters
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: disable-seccomp-profile-in-opendistroclusters
+patch: |-
+   - op: replace
+     path: /spec/disableSeccomp
+     value:
+       true
+target:
+  group: opendistro.sas.com
+  kind: OpenDistroCluster
+
+# Delete seccomp profile from all Pgclusters
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: remove-seccomp-profile-from-postgres-cluster
+patch: |-
+  - op: replace
+    path: /spec/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+    value: {}
+  - op: remove
+    path: /spec/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+target:
+  kind: PostgresCluster
+
+# Delete seccomp profile from all DaemonSets
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: remove-seccomp-profile-from-daemonsets
+patch: |-
+  - op: replace
+    path: /spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+    value: {}
+  - op: remove
+    path: /spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+  - op: replace
+    path: /spec/template/spec/securityContext/seccompProfile
+    value: {}
+  - op: remove
+    path: /spec/template/spec/securityContext/seccompProfile
+target:
+  kind: DaemonSet

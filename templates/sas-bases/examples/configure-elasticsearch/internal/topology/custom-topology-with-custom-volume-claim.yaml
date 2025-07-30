@@ -1,0 +1,34 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-opendistro-custom-topology-with-custom-volume-claim
+# update the patch value to define cluster nodes 
+patch: |-
+  - op: replace
+    path: /spec/nodes
+    value:
+      - name: custom-master
+        replicas: 3
+        roles:
+          - master
+        heapsize: 2G
+        volume:
+          resources:
+            requests:
+              storage: {{STORAGE-CAPACITY}}
+          storageClassName: {{STORAGE-CLASS}}
+      - name: custom-data
+        replicas: 3
+        roles:
+          - data
+        heapsize: 8G
+        volume:
+          resources:
+            requests:
+              storage: {{STORAGE-CAPACITY}}
+          storageClassName: {{STORAGE-CLASS}}
+
+target:
+  kind: OpenDistroCluster
+  name: sas-opendistro

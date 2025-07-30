@@ -1,0 +1,26 @@
+# Enable suspended inrcremental backup job
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-scheduled-backup-incr-disable-postgres
+patch: |-
+  - op: replace
+    path: /data/INCLUDE_POSTGRES
+    value: "False"
+target:
+  kind: ConfigMap
+  name: sas-backup-job-parameters
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-scheduled-backup-incr-job-enable
+patch: |-
+  - op: replace
+    path: /spec/suspend
+    value: false
+target:
+  kind: CronJob
+  name: sas-scheduled-backup-incr-job
+  version: v1

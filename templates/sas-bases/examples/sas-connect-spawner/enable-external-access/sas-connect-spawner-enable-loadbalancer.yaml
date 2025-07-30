@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sas-connect-spawner-loadbalancer
+spec:
+  ports:
+  - name: service
+    port: 17551
+    protocol: TCP
+    targetPort: service
+  selector:
+    app.kubernetes.io/name: sas-connect-spawner
+    sas.com/deployment: sas-viya
+  type: LoadBalancer
+#
+# Uncomment the following line if you are deploying into a Microsoft Azure AKS instance.
+#
+# externalTrafficPolicy: Local
+#
+# Lock down access to the SAS/CONNECT spawner to prevent
+# public access.  This is optional as the cluster may already
+# be locked down with firewall rules but is recommended.
+#
+# Uncomment the following lines and replace with allowed
+# ip address ranges
+#
+#  loadBalancerSourceRanges:
+#    - 192.168.0.0/16

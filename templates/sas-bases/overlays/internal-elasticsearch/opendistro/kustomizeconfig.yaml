@@ -1,0 +1,23 @@
+images:
+  - kind: OpenDistroCluster
+    path: spec/image
+
+nameReference:
+  - kind: Secret
+    fieldSpecs:
+      - path: spec/template/spec/volumes/secret/secretName
+        kind: OpenDistroCluster
+      - path: spec/template/spec/initContainers/envFrom/secretRef/name
+        kind: OpenDistroCluster
+      - path: spec/template/spec/containers/envFrom/secretRef/name
+        kind: OpenDistroCluster
+      - path: spec/template/spec/imagePullSecrets/name
+        kind: OpenDistroCluster
+  - kind: ConfigMap
+    fieldSpecs:
+      - path: spec/template/spec/volumes/configMap/name
+        kind: OpenDistroCluster
+      - path: spec/template/spec/initContainers/envFrom/configMapRef/name
+        kind: OpenDistroCluster
+      - path: spec/template/spec/containers/envFrom/configMapRef/name
+        kind: OpenDistroCluster

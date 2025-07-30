@@ -1,0 +1,12 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-internal-elasticsearch-ha-transformer
+patch: |-
+  - op: replace
+    path: /spec/nodes/0/replicas
+    value: 3
+target:
+  kind: OpenDistroCluster
+  name: sas-opendistro

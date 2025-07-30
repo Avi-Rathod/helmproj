@@ -1,0 +1,21 @@
+#   # NOTE:
+#   # {{ SECRET-NAME }} should be a standard Kubernetes secret that provides secure access to the file storage account.
+#   # {{ SHARE-NAME }} should be the name of an Azure file share.
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: migration-job-azure-volume-patch
+patch: |-
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: migration
+      azureFile:
+        secretName: {{ SECRET-NAME }}
+        shareName: {{ SHARE-NAME }}
+        readOnly: false
+target:
+  apiVersion: v1
+  group: batch
+  kind: Job
+  labelSelector: app.kubernetes.io/name=sas-migration-job

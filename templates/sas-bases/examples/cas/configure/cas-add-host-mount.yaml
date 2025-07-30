@@ -1,0 +1,30 @@
+# This block of code is for mounting non-NFS persistentVolumeClaims and Data
+# Connectors for the CAS server. If you intend to use a non-NFS mounts.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-add-host-mount
+patch: |-
+    - op: add
+      path: /spec/controllerTemplate/spec/volumes/-
+      value:
+        name: {{ MOUNT-NAME }}
+        hostPath:
+          path: {{ HOST-PATH-TO-BE-MOUNTED }}
+    - op: add
+      path: /spec/controllerTemplate/spec/containers/0/volumeMounts/-
+      value:
+        name: {{ MOUNT-NAME }}
+        mountPath: {{ CONTAINER-MOUNT-PATH }}
+        readOnly: true
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  # Uncomment this to apply to all CAS servers:
+  name: .*
+  # Uncomment this to apply to one particular named CAS server:
+  #name: {{ NAME-OF-SERVER }}
+  # Uncomment this to apply to the default CAS server:
+  #labelSelector: "sas.com/cas-server-default"
+  version: v1alpha1

@@ -1,0 +1,46 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-localization
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-localization
+    sas.com/admin: namespace
+  name: sas-localization
+spec:
+  host: $(INGRESS_HOST)
+  path: /localization
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-localization
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-localization
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-localization
+    sas.com/admin: namespace
+  name: sas-localization-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /localization
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-localization
+  wildcardPolicy: Subdomain
+

@@ -1,0 +1,5 @@
+resources:
+- cds-postgres-dataserver.yaml
+
+configurations:
+- kustomizeconfig.yaml

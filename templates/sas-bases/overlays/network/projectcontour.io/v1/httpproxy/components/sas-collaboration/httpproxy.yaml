@@ -1,0 +1,136 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-comments
+    sas.com/admin: namespace
+  name: sas-comments
+spec:
+  routes:
+  - conditions:
+    - prefix: /comments
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /comments/
+    services:
+    - name: sas-comments
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /comments/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-comments
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-mail
+    sas.com/admin: namespace
+  name: sas-mail
+spec:
+  routes:
+  - conditions:
+    - prefix: /mail
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /mail/
+    services:
+    - name: sas-mail
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /mail/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-mail
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-notifications
+    sas.com/admin: namespace
+  name: sas-notifications
+spec:
+  routes:
+  - conditions:
+    - prefix: /notifications
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /notifications/
+    services:
+    - name: sas-notifications
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /notifications/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-notifications
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-templates
+    sas.com/admin: namespace
+  name: sas-templates
+spec:
+  routes:
+  - conditions:
+    - prefix: /templates
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /templates/
+    services:
+    - name: sas-templates
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /templates/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-templates
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

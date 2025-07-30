@@ -1,0 +1,37 @@
+# This is an example transformer to customize PostgreSQL configurations to change the Postgres logging.
+# Only a few sample parameters are listed in this example to change the Postgres logging to make it look like under Crunchy4.
+# Replace the following variable:
+# - {{ CLUSTER-NAME }} is the name of the PostgresCluster. Valid values are:
+#    - sas-crunchy-platform-postgres for platform Postgres cluster
+#    - sas-crunchy-cds-postgres for CDS Postgres cluster
+#    - .* for both clusters. In this case, use a unique name like 'both-clusters' for the transformer metadata name
+#    - If different settings are needed for each cluster, then separate transformers must be created:
+#        one for Platform Postgres, and the other for CDS Postgres.
+#
+# To replace a variable, replace the curly braces, interior spaces, and the variable name with an actual value.
+#
+# See the PostgreSQL Server Configuration documentation at https://www.postgresql.org/docs/12/config-setting.html for the complete list of PostgreSQL configuration parameters.
+# See $deploy/sas-bases/examples/crunchydata/tuning/README.md for how to include this transformer to the base kustomization file.
+
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: {{ CLUSTER-NAME }}-crunchy-tuning-log-transformer
+patch: |-
+  - op: replace
+    path: /spec/patroni/dynamicConfiguration/postgresql/parameters/log_filename
+    value: 'postgresql_%Y%m%d_%H%M%S.log'
+  - op: replace
+    path: /spec/patroni/dynamicConfiguration/postgresql/parameters/log_line_prefix
+    value: '%m '
+  - op: replace
+    path: /spec/patroni/dynamicConfiguration/postgresql/parameters/log_directory
+    value: 'pg_log'
+  - op: replace
+    path: /spec/patroni/dynamicConfiguration/postgresql/parameters/log_statement
+    value: 'none'
+target:
+  group: postgres-operator.crunchydata.com
+  kind: PostgresCluster
+  version: v1beta1
+  name: {{ CLUSTER-NAME }}

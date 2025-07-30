@@ -1,0 +1,105 @@
+
+---
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/kustomize-base: base
+  labels:
+    sas.com/admin: namespace
+  name: sas-process-exporter-template
+template:
+  metadata:
+    annotations:
+      sas.com/certificate-file-format: pem
+      sas.com/kustomize-base: base
+    labels: {}
+  spec:
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - compute
+          weight: 100
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: NotIn
+              values:
+              - cas
+              - stateless
+              - stateful
+          weight: 50
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.azure.com/mode
+              operator: NotIn
+              values:
+              - system
+      podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+    automountServiceAccountToken: false
+    containers:
+    - env: []
+      envFrom:
+      - secretRef:
+          name: sas-workload-orchestrator-passphrase
+      image: sas-process-exporter
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /internal/ready
+          port: http-procexp
+          scheme: HTTP
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: sas-process-exporter
+      ports:
+      - containerPort: 9256
+        name: http-procexp
+        protocol: TCP
+      - containerPort: 9258
+        name: http-procctrl
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 2
+          memory: 4Gi
+        requests:
+          cpu: 100m
+          memory: 250Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          add: []
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      volumeMounts: []
+    imagePullSecrets: []
+    initContainers: []
+    restartPolicy: Never
+    securityContext:
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    tolerations:
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: compute
+    volumes: []

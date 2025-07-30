@@ -1,0 +1,337 @@
+
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-b2b7d3b5c2b632b1
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/initContainers
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-6e9a258d897effc2
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/command
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-f90482738bd575da
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/args
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-f0de214f58a1539f
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/ports
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c824beb20ca105c4
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/envFrom
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-64928e8014ff395d
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/resizePolicy
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-fe0b2ef6e7b78c16
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/volumeDevices
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-e964f416bff69e1b
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/securityContext/capabilities/add
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-3f33f7ad7475a90c
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/ephemeralContainers
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-eaf32640ac01f3cb
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/securityContext/supplementalGroups
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-46d24ccfffd8ad7e
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/securityContext/sysctls
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-bae3c2cda120853c
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/imagePullSecrets
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-210a3937c0753a9b
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchFields
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-56902511aa86c990
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/preference/matchFields
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-994cab09f4f41db1
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/1/preference/matchFields
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-819deccad7878cb7
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/affinity/podAffinity/requiredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-5dedb59ea51e6135
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/affinity/podAffinity/preferredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-4163629a1191e213
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/affinity/podAntiAffinity/requiredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-587cb0206acc2c21
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/affinity/podAntiAffinity/preferredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-6a0d916031275089
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/hostAliases
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-ab7a5dbc2af6262b
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/readinessGates
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-1e127aa49f5f8739
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/topologySpreadConstraints
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2c254f48ef90eb11
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/schedulingGates
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-a6d95ed54f849d9e
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/resourceClaims
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-pyconfig
+  version: v1

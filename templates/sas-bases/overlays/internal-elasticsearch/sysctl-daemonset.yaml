@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+    sas.com/component-name: sas-opendistro-operator
+  labels: 
+    app.kubernetes.io/name: sas-opendistro-sysctl
+    sas.com/admin: namespace
+  name: sas-opendistro-sysctl
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-opendistro-sysctl
+  template:
+    metadata:
+      annotations:
+        sas.com/kustomize-base: base
+        sas.com/component-name: sas-opendistro-operator
+      labels:
+        app.kubernetes.io/name: sas-opendistro-sysctl
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                  - stateful
+          preferredDuringSchedulingIgnoredDuringExecution: []
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution: []
+          preferredDuringSchedulingIgnoredDuringExecution: []
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution: []
+          preferredDuringSchedulingIgnoredDuringExecution: []
+      containers:
+      - name: sas-opendistro-sysctl
+        image: sas-opendistro-sysctl
+        env: 
+          - name: SLEEP
+            value: infinity
+        volumeMounts: []
+        resources:
+          limits:
+            cpu: 50m
+            memory: 50Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        securityContext:
+          allowPrivilegeEscalation: true
+          privileged: true
+          readOnlyRootFilesystem: true
+          capabilities:
+            add: []
+            drop:
+            - ALL
+      initContainers: []
+      imagePullSecrets: []
+      priorityClassName: system-node-critical
+      securityContext:
+        runAsNonRoot: false
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: sas-opendistro
+      terminationGracePeriodSeconds: 30
+      tolerations:
+        - effect: NoSchedule
+          key: workload.sas.com/class
+          operator: Equal
+          value: stateful
+      volumes: []
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 100%
+    type: RollingUpdate

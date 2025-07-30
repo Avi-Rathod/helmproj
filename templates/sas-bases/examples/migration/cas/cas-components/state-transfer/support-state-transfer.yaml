@@ -1,0 +1,44 @@
+# PatchTransformer to enable support for state transfer
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-mig-support-state-transfer
+patch: |-
+  - op: add
+    path: /spec/supportStateTransfer
+    value: true
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/env/-
+    value:
+      name: K8S_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  name: .*
+  version: v1alpha1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-mig-state-transfer-mount
+patch: |-
+  - op: add
+    path: /spec/controllerTemplate/spec/volumes/-
+    value:
+      name: cas-$(CAS_INSTANCE)-transfer-volume
+      persistentVolumeClaim:
+        claimName: cas-$(CAS_INSTANCE)-transfer
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/volumeMounts/-
+    value:
+      name: cas-$(CAS_INSTANCE)-transfer-volume
+      mountPath: /cas/transferdir
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  name: .*
+  version: v1alpha1

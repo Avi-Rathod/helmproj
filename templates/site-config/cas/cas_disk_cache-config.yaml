@@ -1,0 +1,34 @@
+# # this defines the volume and volumemount for CAS DISK CACHE location
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-cache-hostpath
+patch: |-
+  - op: add
+    path: /spec/controllerTemplate/spec/volumes/-
+    value:
+      name: cas-cache-nvme0
+      hostPath: # # hostPath, is the path on the host, outside the pod
+        path: /var/cas_disk_cache
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/volumeMounts/-
+    value:
+      name: cas-cache-nvme0
+      mountPath: /cas/cache-nvme0 # # mountPath is the path inside the pod that CAS will reference
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/env/-
+    value:
+      name: CASENV_CAS_DISK_CACHE
+      value: "/cas/cache-nvme0" # # This has to match the value that is inside the pod
+target:
+  version: v1alpha1
+  group: viya.sas.com
+  kind: CASDeployment
+  # # Target filtering: chose/uncomment one of these option:
+  # #    To target only the default CAS server (cas-shared-default) :
+  labelSelector: "sas.com/cas-server-default"
+  # #    To target only a single CAS server (e.g. MyCAS) other than default:
+  # name: {{MyCAS}}
+  # #    To target all CAS Servers
+  # name: .*

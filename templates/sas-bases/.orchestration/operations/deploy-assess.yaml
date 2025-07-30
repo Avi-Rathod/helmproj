@@ -1,0 +1,89 @@
+apiVersion: orchestration.sas.com/v2beta10
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-k8s-common
+    sas.com/component-version: 2.89.1-20240916.1726514392006
+  creationTimestamp: null
+  name: deploy-assess
+spec:
+  args:
+  - name: namespace
+  - name: manifest
+  - name: timeout
+  - name: serviceAccountName
+  steps:
+  - always: true
+    args:
+    - assess
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    - --manifest
+    - $manifest
+    - --serviceAccountName
+    - $serviceAccountName
+    cmd: run
+  - always: true
+    args:
+    - $operation
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    - --manifest
+    - $manifest
+    - --serviceAccountName
+    - $serviceAccountName
+    cmd: run
+    withOperations:
+      labelSelector: participate.lifecycle.sas.com/deploy-assess=true
+  - always: true
+    args:
+    - deploy-assess-commonfiles
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    - --manifest
+    - $manifest
+    - --serviceAccountName
+    - $serviceAccountName
+    cmd: run_when_exists
+  - always: true
+    args:
+    - deploy-assess-consul
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    - --manifest
+    - $manifest
+    - --serviceAccountName
+    - $serviceAccountName
+    cmd: run_when_exists
+  - always: true
+    args:
+    - deploy-assess-elasticsearch
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    - --manifest
+    - $manifest
+    - --serviceAccountName
+    - $serviceAccountName
+    cmd: run_when_exists
+  - always: true
+    args:
+    - deploy-assess-rabbitmq
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    - --manifest
+    - $manifest
+    - --serviceAccountName
+    - $serviceAccountName
+    cmd: run_when_exists

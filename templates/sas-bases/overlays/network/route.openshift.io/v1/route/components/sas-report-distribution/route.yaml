@@ -1,0 +1,46 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-reportDistribution
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-report-distribution
+    sas.com/admin: namespace
+  name: sas-report-distribution
+spec:
+  host: $(INGRESS_HOST)
+  path: /reportDistribution
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-report-distribution
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-reportDistribution
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-report-distribution
+    sas.com/admin: namespace
+  name: sas-report-distribution-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /reportDistribution
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-report-distribution
+  wildcardPolicy: Subdomain
+

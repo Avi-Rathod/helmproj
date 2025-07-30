@@ -1,0 +1,41 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-data-studio-app
+spec:
+  host: sas-data-studio-app
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /SASDataStudio/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-studio-app
+    sas.com/admin: namespace
+  name: sas-data-studio-app
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /SASDataStudio
+    - uri:
+        prefix: /SASDataStudio/
+    route:
+    - destination:
+        host: sas-data-studio-app
+    timeout: 300s
+

@@ -1,0 +1,339 @@
+
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-9530ead2b119c019
+patch: |-
+  - op: add
+    path: /template/spec/volumes
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-60c3a1baf88e9b0e
+patch: |-
+  - op: add
+    path: /template/spec/initContainers
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-27bd75db7b232483
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/command
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-678c180a3930f8b7
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/args
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-42300752c2b29744
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/ports
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-6d5934e8c48a7d69
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/env
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-a90b7be7b5ec860e
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/resizePolicy
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c64d34b65e4f52bc
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/volumeMounts
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c1f29f089f44d03f
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/volumeDevices
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-4e26bb18358c4284
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/securityContext/capabilities/add
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-da2ad28405b85431
+patch: |-
+  - op: add
+    path: /template/spec/ephemeralContainers
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-8e4168782b4a17a8
+patch: |-
+  - op: add
+    path: /template/spec/securityContext/supplementalGroups
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-b71fc7278f990273
+patch: |-
+  - op: add
+    path: /template/spec/securityContext/sysctls
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-3db445a6dce608fd
+patch: |-
+  - op: add
+    path: /template/spec/imagePullSecrets
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-ac471027a345b828
+patch: |-
+  - op: add
+    path: /template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchFields
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-98588e04c9442ad5
+patch: |-
+  - op: add
+    path: /template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/preference/matchFields
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-0efc0e387e527172
+patch: |-
+  - op: add
+    path: /template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/1/preference/matchFields
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-9dfa350c917b2c54
+patch: |-
+  - op: add
+    path: /template/spec/affinity/podAffinity/requiredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-7d865b9353d52eb6
+patch: |-
+  - op: add
+    path: /template/spec/affinity/podAffinity/preferredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-dd0a120d08143ec4
+patch: |-
+  - op: add
+    path: /template/spec/affinity/podAntiAffinity/requiredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-5226c6fa705a9b46
+patch: |-
+  - op: add
+    path: /template/spec/affinity/podAntiAffinity/preferredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-69da10ecc0a2783e
+patch: |-
+  - op: add
+    path: /template/spec/hostAliases
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-eb64413016897afc
+patch: |-
+  - op: add
+    path: /template/spec/readinessGates
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-e970951a73695982
+patch: |-
+  - op: add
+    path: /template/spec/topologySpreadConstraints
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-e61161325589b3be
+patch: |-
+  - op: add
+    path: /template/spec/schedulingGates
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-4821d99bc0b4b5ff
+patch: |-
+  - op: add
+    path: /template/spec/resourceClaims
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-admin-content-loader
+  version: v1

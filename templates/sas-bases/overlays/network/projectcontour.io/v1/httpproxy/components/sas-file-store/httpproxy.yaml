@@ -1,0 +1,68 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-folders
+    sas.com/admin: namespace
+  name: sas-folders
+spec:
+  routes:
+  - conditions:
+    - prefix: /folders
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /folders/
+    services:
+    - name: sas-folders
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /folders/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-folders
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-types
+    sas.com/admin: namespace
+  name: sas-types
+spec:
+  routes:
+  - conditions:
+    - prefix: /types
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /types/
+    services:
+    - name: sas-types
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /types/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-types
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

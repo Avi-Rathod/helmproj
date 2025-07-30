@@ -1,0 +1,34 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-svi-indexer
+    sas.com/admin: namespace
+  name: sas-svi-indexer
+spec:
+  routes:
+  - conditions:
+    - prefix: /svi-indexer
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /svi-indexer/
+    services:
+    - name: sas-svi-indexer
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /svi-indexer/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-svi-indexer
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

@@ -1,0 +1,55 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-certframe-remove-ingress-certificate-config-transformer
+patch: |-
+  - op: replace
+    path: /data/SAS_INGRESS_CERTIFICATE_SECRET_NAME
+    value: ""
+target:
+  kind: ConfigMap
+  name: sas-certframe-ingress-certificate-config
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-certframe-istio-gateway-tls-transformer
+patch: |-
+  kind: Gateway
+  metadata:
+    name: public-gateway
+  spec:
+    servers:
+    - hosts:
+      - $(INGRESS_HOST)
+      port:
+        name: https
+        number: 443
+        protocol: HTTPS
+      tls:
+        credentialName: THIS-SHOULD-BE-PATCHED-WITH-CUSTOMER-PROVIDED-ISTIO-GATWAY-CERTIFICATE-SDS-YAML
+        mode: SIMPLE
+target:
+  Kind: Gateway
+  name: public-gateway
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-certframe-istio-serviceentry-tls-transformer
+patch: |-
+  kind: ServiceEntry
+  metadata:
+    name: public-serviceentry
+  spec:
+    hosts:
+    - $(INGRESS_HOST)
+    ports:
+    - name: https
+      number: 443
+      protocol: HTTPS
+    resolution: DNS
+target:
+  Kind: ServiceEntry
+  name: public-serviceentry

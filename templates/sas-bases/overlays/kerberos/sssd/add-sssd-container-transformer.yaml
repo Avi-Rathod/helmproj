@@ -1,0 +1,76 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: spre-sssd-sidecar
+patch: |-
+  - op: add
+    path: /template/spec/containers/-
+    value:
+      env:
+      - name: SAS_K8S_DEPLOYMENT_NAME
+        value: "sas-sssd-server"
+      image: sas-sssd-server
+      name: sssd
+      lifecycle:
+        preStop:
+          exec:
+            command: ["bash", "-c", "if pgrep -x 'consul-template' > /dev/null; then kill -SIGKILL $(ps -Af | grep '/opt/sas/viya/home/bin/consul-template'  | grep -v grep | awk '{print $2}'); fi", "if pgrep -x 'sssd' > /dev/null; then kill -SIGKILL $(ps -Af | grep '/sbin/sssd'  | grep -v grep | awk '{print $2}'); fi"]
+      securityContext:
+        runAsGroup: 0
+        runAsUser: 0
+        runAsNonRoot: false
+      resources:
+        requests:
+          memory: 512Mi
+          cpu: 100m
+        limits:
+          memory: 512Mi
+          cpu: 100m
+      envFrom:
+      - configMapRef:
+          name: sas-shared-config
+      - configMapRef:
+          name: sas-java-config
+      - secretRef:
+          name: sas-consul-client
+      - configMapRef:
+          name: sas-tls-config
+      volumeMounts:
+       - mountPath: /var/lib/sss
+         name: sss
+       - mountPath: /security
+         name: security
+    volumes:
+    - emptyDir: {}
+      name: sss
+  - op: add
+    path: /metadata/annotations/sas.com~1pod-uses-sssd
+    value: "true"
+target:
+  kind: PodTemplate
+  annotationSelector: sas.com/sas-sssd-config=true
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: spre-container-sssd-mounts
+patch: |-
+  - op: add
+    path: /template/spec/volumes/-
+    value:
+      name: sss
+      emptyDir: {}
+  - op: add
+    path: /template/spec/containers/0/volumeMounts/-
+    value:
+      name: sss
+      mountPath: /var/lib/sss
+  - op: add
+    path: /template/spec/containers/0/env/-
+    value:
+      name: SAS_POD_USES_SSSD
+      value: "true"
+target:
+  kind: PodTemplate
+  annotationSelector: sas.com/sas-sssd-config=true
+---

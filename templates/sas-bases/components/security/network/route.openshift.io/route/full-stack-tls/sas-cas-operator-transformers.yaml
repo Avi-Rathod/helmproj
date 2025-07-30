@@ -1,0 +1,22 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-casdeployment-route-full-stack-tls-transformer
+patch: |-
+  - op: replace
+    path: /spec/routeTemplate/spec/tls
+    value:
+      termination: reencrypt
+      insecureEdgeTerminationPolicy: Redirect
+  - op: add
+    path: /spec/routeTemplate/metadata/annotations/sas.com~1tls-mode
+    value: full-stack
+  - op: add
+    path: /spec/routeTemplate/metadata/annotations/cert-utils-operator.redhat-cop.io~1certs-from-secret
+    value: sas-ingress-certificate
+  - op: add
+    path: /spec/routeTemplate/metadata/annotations/cert-utils-operator.redhat-cop.io~1destinationCA-from-secret
+    value: sas-viya-ca-certificate-secret
+target:
+  kind: CASDeployment

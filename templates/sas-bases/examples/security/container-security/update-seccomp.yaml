@@ -1,0 +1,178 @@
+## Example PatchTransformer to update the seccomp annotation value.
+##
+## In the following code, the locations that require user specified values are indicated by a capitalized and
+## hyphenated name set off by curly braces and a space at each end. You should replace this token with the
+## actual value.
+## Replace the curly braces, interior spaces, and the variable name.
+##
+## For instance, "{{ SECCOMP_PROFILE }}"
+## should be replaced by the desired seccompProfile spec as defined in either of these two examples:
+## https://kubernetes.io/docs/tutorials/security/seccomp/#create-pod-that-uses-the-container-runtime-default-seccomp-profile
+## https://kubernetes.io/docs/tutorials/security/seccomp/#create-pod-with-seccomp-profile-that-only-allows-necessary-syscalls
+##
+## If you use the first example, the correct, final syntax would be:
+## value:
+##   type: RuntimeDefault
+
+# Update seccomp profile in all Deployments
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: update-seccomp-profile-in-deployments
+patch: |-
+  - op: replace
+    path: /spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+    value: {}
+  - op: remove
+    path: /spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+  - op: replace
+    path: /spec/template/spec/securityContext/seccompProfile
+    value:
+      type: {{ SECCOMP_PROFILE }}
+target:
+  kind: Deployment
+
+# Update seccomp profile in all StatefulSets
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: update-seccomp-profile-in-statefulsets
+patch: |-
+  - op: replace
+    path: /spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+    value: {}
+  - op: remove
+    path: /spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+  - op: replace
+    path: /spec/template/spec/securityContext/seccompProfile
+    value:
+      type: {{ SECCOMP_PROFILE }}
+target:
+  kind: StatefulSet
+
+# Update seccomp profile in ESPConfig
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: update-seccomp-profile-in-espconfig
+patch: |-
+  - op: replace
+    path: /spec/projectTemplate/deployment/spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+    value: {}
+  - op: remove
+    path: /spec/projectTemplate/deployment/spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+  - op: replace
+    path: /spec/projectTemplate/deployment/spec/template/spec/securityContext/seccompProfile
+    value:
+      type: {{ SECCOMP_PROFILE }}
+target:
+  kind: ESPConfig
+
+# Update seccomp profile in all CronJobs
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: update-seccomp-profile-in-cronjobs
+patch: |-
+  - op: replace
+    path: /spec/jobTemplate/spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+    value: {}
+  - op: remove
+    path: /spec/jobTemplate/spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+  - op: replace
+    path: /spec/jobTemplate/spec/template/spec/securityContext/seccompProfile
+    value:
+      type: {{ SECCOMP_PROFILE }}
+target:
+  kind: CronJob
+
+# Update seccomp profile in all Jobs
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: update-seccomp-profile-in-jobs
+patch: |-
+  - op: replace
+    path: /spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+    value: {}
+  - op: remove
+    path: /spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+  - op: replace
+    path: /spec/template/spec/securityContext/seccompProfile
+    value:
+      type: {{ SECCOMP_PROFILE }}
+target:
+  kind: Job
+
+# Update seccomp profile in all PodTemplates
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: update-seccomp-profile-in-podTemplates
+patch: |-
+  - op: replace
+    path: /template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+    value: {}
+  - op: remove
+    path: /template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+  - op: replace
+    path: /template/spec/securityContext/seccompProfile
+    value:
+      type: {{ SECCOMP_PROFILE }}
+target:
+  kind: PodTemplate
+
+# Update seccomp profile in all CasDeployments
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: update-seccomp-profile-in-casdeployments
+patch: |-
+  - op: add
+    path: /spec/seccompProfile
+    value: {{ SECCOMP_PROFILE }}
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  name: .*
+  version: v1alpha1
+
+# Update seccomp profile in all DaemonSets
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: update-seccomp-profile-in-daemonsets
+patch: |-
+  - op: replace
+    path: /spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+    value: {}
+  - op: remove
+    path: /spec/template/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+  - op: replace
+    path: /spec/template/spec/securityContext/seccompProfile
+    value:
+      type: {{ SECCOMP_PROFILE }}
+target:
+  kind: DaemonSet
+
+
+# Update seccomp profile in all crunchy pods
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: update-seccomp-profile-to-postgres-cluster
+patch: |-
+  - op: replace
+    path: /spec/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
+    value: {{ SECCOMP_PROFILE }}
+target:
+  kind: PostgresCluster

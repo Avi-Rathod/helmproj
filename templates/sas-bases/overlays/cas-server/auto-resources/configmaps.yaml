@@ -1,0 +1,7 @@
+---
+apiVersion: builtin
+kind: ConfigMapGenerator
+metadata:
+  name: cluster-role-input
+literals:
+- extract=namespace

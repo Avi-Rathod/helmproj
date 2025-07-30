@@ -1,0 +1,20 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: crunchy-upgrade-cds-postgres-transformer
+patch: |-
+  - op: add
+    path: /spec/dataSource
+    value:
+      volumes:
+        pgDataVolume:
+          pvcName: sas-crunchy-data-cdspostgres
+          directory: "sas-crunchy-data-cdspostgres"
+        pgBackRestVolume:
+          pvcName: sas-crunchy-data-cdspostgres-pgbr-repo
+          directory: "sas-crunchy-data-cdspostgres-backrest-shared-repo"
+target:
+  group: postgres-operator.crunchydata.com
+  kind: PostgresCluster
+  name: sas-crunchy-cds-postgres
+  version: v1beta1

@@ -1,0 +1,68 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-report-operations
+    sas.com/admin: namespace
+  name: sas-report-operations
+spec:
+  routes:
+  - conditions:
+    - prefix: /reportOperations
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /reportOperations/
+    services:
+    - name: sas-report-operations
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /reportOperations/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-report-operations
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-visual-analytics
+    sas.com/admin: namespace
+  name: sas-visual-analytics
+spec:
+  routes:
+  - conditions:
+    - prefix: /visualAnalytics
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /visualAnalytics/
+    services:
+    - name: sas-visual-analytics
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /visualAnalytics/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-visual-analytics
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

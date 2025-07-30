@@ -1,0 +1,126 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/rewrite-target: /documents/$2
+    nginx.ingress.kubernetes.io/session-cookie-name: sas-ingress-nginx
+    nginx.ingress.kubernetes.io/session-cookie-path: /documents/
+    nginx.ingress.kubernetes.io/session-cookie-samesite: Lax
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-documents
+    sas.com/admin: namespace
+  name: sas-documents
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: $(INGRESS_HOST)
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-documents
+            port:
+              number: 80
+        path: /documents(/|$)(.*)
+        pathType: Prefix
+  - host: '*.$(INGRESS_HOST)'
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-documents
+            port:
+              number: 80
+        path: /documents(/|$)(.*)
+        pathType: Prefix
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/rewrite-target: /termsManagement/$2
+    nginx.ingress.kubernetes.io/session-cookie-name: sas-ingress-nginx
+    nginx.ingress.kubernetes.io/session-cookie-path: /termsManagement/
+    nginx.ingress.kubernetes.io/session-cookie-samesite: Lax
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-terms-management
+    sas.com/admin: namespace
+  name: sas-terms-management
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: $(INGRESS_HOST)
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-terms-management
+            port:
+              number: 80
+        path: /termsManagement(/|$)(.*)
+        pathType: Prefix
+  - host: '*.$(INGRESS_HOST)'
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-terms-management
+            port:
+              number: 80
+        path: /termsManagement(/|$)(.*)
+        pathType: Prefix
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/rewrite-target: /topicManagement/$2
+    nginx.ingress.kubernetes.io/session-cookie-name: sas-ingress-nginx
+    nginx.ingress.kubernetes.io/session-cookie-path: /topicManagement/
+    nginx.ingress.kubernetes.io/session-cookie-samesite: Lax
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-topic-management
+    sas.com/admin: namespace
+  name: sas-topic-management
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: $(INGRESS_HOST)
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-topic-management
+            port:
+              number: 80
+        path: /topicManagement(/|$)(.*)
+        pathType: Prefix
+  - host: '*.$(INGRESS_HOST)'
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-topic-management
+            port:
+              number: 80
+        path: /topicManagement(/|$)(.*)
+        pathType: Prefix
+

@@ -1,0 +1,68 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-report-images
+    sas.com/admin: namespace
+  name: sas-report-images
+spec:
+  routes:
+  - conditions:
+    - prefix: /reportImages
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /reportImages/
+    services:
+    - name: sas-report-images
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /reportImages/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-report-images
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-report-renderer
+    sas.com/admin: namespace
+  name: sas-report-renderer
+spec:
+  routes:
+  - conditions:
+    - prefix: /reportRenderer
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /reportRenderer/
+    services:
+    - name: sas-report-renderer
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /reportRenderer/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-report-renderer
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

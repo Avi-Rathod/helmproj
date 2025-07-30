@@ -1,0 +1,72 @@
+config.yml: |
+      ---
+      _meta:
+        type: "config"
+        config_version: 2
+      config:
+        dynamic:
+          do_not_fail_on_forbidden: true
+          http:
+            anonymous_auth_enabled: false
+            xff:
+              enabled: false
+              internalProxies: .*
+          authc:
+            basic_internal_auth_domain:
+              authentication_backend:
+                type: intern
+              description: Authenticate via HTTP Basic against internal users database
+              http_authenticator:
+                challenge: false
+                type: basic
+              http_enabled: true
+              order: 0
+              transport_enabled: true
+            jwt_auth_domain:
+              authentication_backend:
+                type: noop
+              description: Authenticate via Json Web Token
+              http_authenticator:
+                challenge: false
+                config:
+                  jwt_header: Authorization
+                  jwt_url_parameter: "null"
+                  openid_connect_url: {{openid-url}}
+                  openid_connect_idp.enable_ssl: true
+                  openid_connect_idp.verify_hostnames: false
+                  openid_connect_idp.pemtrustedcas_filepath: {{ingress-cert-path}}
+                  roles_key: authorities
+                  subject_key: user_name
+                type: openid
+              http_enabled: true
+              order: 1
+              transport_enabled: true
+            jwt_app_auth_domain:
+              authentication_backend:
+                type: noop
+              description: Authenticate via Json Web Token
+              http_authenticator:
+                challenge: false
+                config:
+                  jwt_header: Authorization
+                  jwt_url_parameter: "null"
+                  openid_connect_url: {{openid-url}}
+                  openid_connect_idp.enable_ssl: true
+                  openid_connect_idp.verify_hostnames: false
+                  openid_connect_idp.pemtrustedcas_filepath: {{ingress-cert-path}}
+                  roles_key: authorities
+                  subject_key: client_id
+                type: openid
+              http_enabled: true
+              order: 2
+              transport_enabled: true
+            basic_internal_auth_domain_2:
+              authentication_backend:
+                type: intern
+              description: Authenticate via HTTP Basic against internal users database
+              http_authenticator:
+                challenge: true
+                type: basic
+              http_enabled: true
+              order: 3
+              transport_enabled: true

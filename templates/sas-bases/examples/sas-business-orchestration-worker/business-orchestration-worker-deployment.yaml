@@ -1,0 +1,792 @@
+########################################################################
+# **********INSTRUCTIONS**********
+#
+# Fill out the template by finding placeholders enclosed in '{{  }}' characters.
+# Recommended practices for each placeholder:
+#
+# {{ PREFIX }}/{{ SUFFIX }}: Try to keep these the same and consistent throughout. This will make your deployed resources
+# unique and easily identifiable. You can use any alphanumeric, twenty characters or less, but we recommend using your
+# user-id or something meaningful to the purpose of the deployment.
+#
+# {{ NAMESPACE }}: This must be the namespace to which you are deploying
+#
+# {{ ROUTE_HOST }}: This is used for the Openshift ingress.  If on Openshift do not specify other ingresses.
+#
+# {{ INGRESS_TYPE }}/{{ HOST }}: These placeholders are used along with {{ PREFIX }} for creating your deployment's ingresses.
+#
+# {{ VALUE_NEEDED }}: Miscellaneous placeholder used for setting up environment variables, pull secrets, and volume mounts for your containers.
+# Context and environment variable names will help you fill these out. 
+#
+# {{ SECURITY }}: blocks tagged with this should be uncommented in order to enable Front Door TLS. Further instructions are located around each occurance of the tag
+#
+# {{ SFM_JAR_IMAGE }}: Provides the url to the docker image that contains the SFM jars required by the ODE processor.
+#
+########################################################################
+
+########################################################################
+# section - config map
+########################################################################
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sas-business-orchestration-worker-{{ SUFFIX }}
+  namespace: {{ NAMESPACE }}
+data:
+  project.yaml: |-
+    id: helloWorld
+    version: v1
+    workloads:
+      - configurations: 
+          http: 
+            enabled: true
+            ## uncomment tls block if enabling tls
+            # tls: 
+            #   enabled: true
+            #   caFile: /var/run/security/ca_file
+            #   certFile: /var/run/security/cert_file
+            #   keyFile: /var/run/security/key_file
+        flows:
+          - inputs:
+              - httpServer:
+                  path: /helloWorld
+                  allowedVerbs:
+                    - GET
+            processors:
+              - map:
+                  mapping: |
+                    root = "{\"hello\":\"world\"}"
+            outputs:
+              - response: {}
+  ########################################################################
+  # data required by ODE processor
+  # uncomment this section and provide a valid application.yaml file
+  ########################################################################
+  # application.yaml: |-
+  #   server:
+  #     port: 8081
+  #   ode:
+  #     enabled: true
+  #     transaction-definition-directory: /tmpdir
+  #     use-i-segments: true
+  #     default-smh-msg-version: 06.01.00
+  #     addendum-url: /tmpdir/06.01.00-addendum.xml
+  #     custom-segments:
+  #       - multiorg: CREDIT
+  #         segments:
+  #           - prefix: _t_
+  #             name: I00
+  #       - multiorg: DEBIT
+  #         segments:
+  #           - prefix: _t_
+  #             name: I00
+  #   parsers:
+  #     swiftparser:
+  #       enabled: false
+  #     iso8583parser:
+  #       enabled: false
+  ########################################################################
+  # data required by ODE processor
+  # uncomment this section and provide a valid addendum XML file
+  ########################################################################
+  # 06.01.00-addendum.xml: |-
+  #   <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+  #   <!DOCTYPE api-addendum>
+  #   <api-addendum
+  #           xmlns="http://fraud.finance.sas.com/ode">
+  #     <version>06.01.00</version>
+  #     <created>2022-09-19T10:25:16</created>
+  #     <tenant multiOrg="CREDIT">
+  #       <segment name="I00" id="14000000" buildId="50107">
+  #         <label>MaybeOkra</label>
+  #         <field name="i00_seg_id_version" offset="0" format="$CHAR8." locked="true">
+  #           <label>I00 Segment Identifier/Version</label>
+  #           <initialValue>14000000</initialValue>
+  #         </field>
+  #         <field name="i00_variable_data_length" offset="8" format="Z8." locked="true">
+  #           <label>Length Of The Ixx_variable_data Field</label>
+  #           <initialValue>8</initialValue>
+  #         </field>
+  #         <field name="i00_build_num" offset="16" format="Z8." locked="true">
+  #           <label>I00 Build Number</label>
+  #           <initialValue>50107</initialValue>
+  #         </field>
+  #         <field name="i00_execution_build_num" offset="24" format="Z8.">
+  #           <label>I00 Execution Build Number</label>
+  #         </field>
+  #         <field name="i00_num_00000_008" offset="32" format="RB8.0" buildId="50107">
+  #           <alias>_i_inum</alias>
+  #           <description>Variable in maybeOkra</description>
+  #         </field>
+  #       </segment>
+  #     </tenant>
+  #     <tenant multiOrg="DEBIT">
+  #       <segment name="I00" id="14000000" buildId="50108">
+  #         <label>MaybeOkra</label>
+  #         <field name="i00_seg_id_version" offset="0" format="$CHAR8." locked="true">
+  #           <label>I00 Segment Identifier/Version</label>
+  #           <initialValue>14000000</initialValue>
+  #         </field>
+  #         <field name="i00_variable_data_length" offset="8" format="Z8." locked="true">
+  #           <label>Length Of The Ixx_variable_data Field</label>
+  #           <initialValue>8</initialValue>
+  #         </field>
+  #         <field name="i00_build_num" offset="16" format="Z8." locked="true">
+  #           <label>I00 Build Number</label>
+  #           <initialValue>50108</initialValue>
+  #         </field>
+  #         <field name="i00_execution_build_num" offset="24" format="Z8.">
+  #           <label>I00 Execution Build Number</label>
+  #         </field>
+  #         <field name="i00_num_00000_008" offset="32" format="RB8.0" buildId="50108">
+  #           <alias>_i_inum</alias>
+  #           <description>Variable in maybeOkra</description>
+  #         </field>
+  #       </segment>
+  #     </tenant>
+  #   </api-addendum>
+  ########################################################################
+  # data required by ODE processor
+  # uncomment this section and provide a valid transaction definition file
+  ########################################################################
+  # transaction_definition_040308.xml: |-
+  #   <?xml version="1.0" encoding="UTF-8"?>
+  #   <!-- TODO: Get real definitions for those other versions. -->
+  #   <TxnDefinition version="04.03.08" alias="04.03.07,04.03.06,04.04.02,04.04.03,04.02.10,06.01.00">
+  #     <field name="smh_tran_type">
+  #       <value value="TRX">
+  #         <requires>SMH,RRR,RQO,RUA,ROB,RDK,RUR</requires>
+  #       </value>
+  #       <value value="CMD">
+  #         <requires>SMH,SCC</requires>
+  #       </value>
+  #       <value value="MON">
+  #         <requires>SMH</requires>
+  #       </value>
+  #       <value value="DMA">
+  #         <requires>SMH</requires>
+  #       </value>
+  #     </field>
+  #     <field name="smh_cust_type">
+  #       <value value="B">
+  #         <requires>XQO</requires>
+  #       </value>
+  #       <value value="I">
+  #         <requires>XQO</requires>
+  #       </value>
+  #       <value value="N">
+  #         <requires></requires>
+  #       </value>
+  #     </field>
+  #     <field name="smh_acct_type">
+  #       <value value="CC">
+  #         <requires>AQO,AQC</requires>
+  #       </value>
+  #       <value value="CS">
+  #         <requires>AQO,AQD</requires>
+  #       </value>
+  #       <value value="SL">
+  #         <requires>AQO,AQS</requires>
+  #       </value>
+  #       <value value="LC">
+  #         <requires>AQO,AQL</requires>
+  #       </value>
+  #       <value value="BR">
+  #         <requires>AQO,AQB,AQR</requires>
+  #       </value>
+  #       <value value="MA">
+  #         <requires>AQM</requires>
+  #       </value>
+  #       <value value="NA">
+  #         <requires></requires>
+  #       </value>
+  #     </field>
+  #     <field name="smh_authenticate_mtd">
+  #       <value value="CP">
+  #         <requires>UCM,UCC</requires>
+  #       </value>
+  #       <value value="CD">
+  #         <requires>UCM</requires>
+  #       </value>
+  #       <value value="NC">
+  #         <requires>UNM</requires>
+  #       </value>
+  #       <value value="BT">
+  #         <requires>UBT</requires>
+  #       </value>
+  #       <value value="UK">
+  #         <requires></requires>
+  #       </value>
+  #       <value value="NA">
+  #         <requires></requires>
+  #       </value>
+  #     </field>
+  #     <field name="smh_channel_type">
+  #       <value value="C">
+  #         <requires>HQO,HCT</requires>
+  #       </value>
+  #       <value value="D">
+  #         <requires>HQO,HCT,HOB,HDF</requires>
+  #       </value>
+  #       <value value="E">
+  #         <requires>HQO,HCT,HOB</requires>
+  #       </value>
+  #       <value value="O">
+  #         <requires>HQO,HOB</requires>
+  #       </value>
+  #       <value value="W">
+  #         <requires>HQO,HOB,HDF</requires>
+  #       </value>
+  #       <value value="P">
+  #         <requires>HQO,HPB</requires>
+  #       </value>
+  #       <value value="H">
+  #         <requires>HQO,HBB</requires>
+  #       </value>
+  #       <value value="M">
+  #         <requires>HQO,HCP</requires>
+  #       </value>
+  #       <value value="B">
+  #         <requires>HQO,HBP</requires>
+  #       </value>
+  #       <value value="R">
+  #         <requires>HQO,HOT</requires>
+  #       </value>
+  #       <value value="F">
+  #         <requires>HFC</requires>
+  #       </value>
+  #       <value value="T">
+  #         <requires>HQM</requires>
+  #       </value>
+  #       <value value="S">
+  #         <requires>HDF,HQM</requires>
+  #       </value>
+  #       <value value="U">
+  #         <requires>HQO</requires>
+  #       </value>
+  #       <value value="N">
+  #         <requires></requires>
+  #       </value>
+  #     </field>
+  #     <field name="smh_activity_type">
+  #       <value value="CA">
+  #         <requires>TCA</requires>
+  #       </value>
+  #       <value value="CP">
+  #         <requires>TCP</requires>
+  #       </value>
+  #       <value value="FM">
+  #         <requires>TCM</requires>
+  #       </value>
+  #       <value value="SH">
+  #         <requires>TSH,TPP</requires>
+  #       </value>
+  #       <value value="BF">
+  #         <requires>TBT,TPP</requires>
+  #       </value>
+  #       <value value="CK">
+  #         <requires>TCK,TPP</requires>
+  #       </value>
+  #       <value value="DP">
+  #         <requires>TDP,TPP</requires>
+  #       </value>
+  #       <value value="CW">
+  #         <requires>TCW,TPP</requires>
+  #       </value>
+  #       <value value="AB">
+  #         <requires>TAQ,TAB</requires>
+  #       </value>
+  #       <value value="AE">
+  #         <requires>TAQ,TAE,TPP</requires>
+  #       </value>
+  #       <value value="NM">
+  #         <requires>TNG</requires>
+  #       </value>
+  #       <value value="MI">
+  #         <requires>TMI</requires>
+  #       </value>
+  #       <value value="MB">
+  #         <requires>TMB</requires>
+  #       </value>
+  #       <value value="MR">
+  #         <requires>TMR</requires>
+  #       </value>
+  #       <value value="MC">
+  #         <requires>TMC</requires>
+  #       </value>
+  #       <value value="MD">
+  #         <requires>TMD</requires>
+  #       </value>
+  #       <value value="MS">
+  #         <requires>TMS</requires>
+  #       </value>
+  #       <value value="ML">
+  #         <requires>TML</requires>
+  #       </value>
+  #       <value value="MO">
+  #         <requires>TMO</requires>
+  #       </value>
+  #       <value value="MP">
+  #         <requires>TMP</requires>
+  #       </value>
+  #       <value value="ME">
+  #         <requires>TME</requires>
+  #       </value>
+  #       <value value="M2">
+  #         <requires>TMI,TMR,TMC</requires>
+  #       </value>
+  #       <value value="M3">
+  #         <requires>TMI,TMC</requires>
+  #       </value>
+  #       <value value="ST">
+  #         <requires>TST,TSR</requires>
+  #       </value>
+  #       <value value="MM">
+  #         <requires>TMM</requires>
+  #       </value>
+  #       <value value="MT">
+  #         <requires>TMT</requires>
+  #       </value>
+  #       <value value="UK">
+  #         <requires></requires>
+  #       </value>
+  #     </field>
+  #     <!-- those 3 have the same list of values and required segments. -->
+  #     <field name="smh_activity_detail1,smh_activity_detail2,smh_activity_detail3">
+  #       <value value="NAP">
+  #         <requires></requires>
+  #       </value>
+  #       <value value="DNA">
+  #         <requires>DNA</requires>
+  #       </value>
+  #       <value value="DNP">
+  #         <requires>DNP</requires>
+  #       </value>
+  #       <value value="DNC">
+  #         <requires>DNC</requires>
+  #       </value>
+  #       <value value="DNU">
+  #         <requires>DNU</requires>
+  #       </value>
+  #       <value value="DNR">
+  #         <requires>DNR</requires>
+  #       </value>
+  #       <value value="DNS">
+  #         <requires>DNS</requires>
+  #       </value>
+  #       <value value="DNO">
+  #         <requires>DNO</requires>
+  #       </value>
+  #       <value value="DNX">
+  #         <requires>DNX</requires>
+  #       </value>
+  #       <value value="DCB">
+  #         <requires>DCB</requires>
+  #       </value>
+  #       <value value="DCC">
+  #         <requires>DCC</requires>
+  #       </value>
+  #       <value value="DCQ">
+  #         <requires>DCQ</requires>
+  #       </value>
+  #       <value value="DBA">
+  #         <requires>DBA</requires>
+  #       </value>
+  #       <value value="DMX">
+  #         <requires>DMX</requires>
+  #       </value>
+  #       <value value="DEE">
+  #         <requires>DEE</requires>
+  #       </value>
+  #       <value value="DPD">
+  #         <requires>DPD</requires>
+  #       </value>
+  #       <value value="DPP">
+  #         <requires>DPP</requires>
+  #       </value>
+  #       <value value="DUA">
+  #         <requires>DUA</requires>
+  #       </value>
+  #       <value value="DUS">
+  #         <requires>DUS</requires>
+  #       </value>
+  #       <value value="DCH">
+  #         <requires>DCH</requires>
+  #       </value>
+  #     </field>
+  #   </TxnDefinition>
+---
+########################################################################
+# section - image pull secrets
+########################################################################
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sas-image-pull-secrets
+  namespace: {{ NAMESPACE }}
+data:
+  .dockerconfigjson: {{ IMAGE_PULL_SECRET }}
+type: kubernetes.io/dockerconfigjson
+---
+########################################################################
+# section - tls
+########################################################################
+## uncomment this section and provide valid certificates if using tls for worker
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: sas-business-orchestration-worker-example-security
+#   namespace: viya
+# data:
+#   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
+#   ca_file: |+
+#     { certificate authority file }
+#   cert_file: |+
+#     { certificate file}
+#   key_file: |+
+#     { key file }
+---
+########################################################################
+# section - service
+########################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: sas-business-orchestration-worker-{{ SUFFIX }}
+  namespace: {{ NAMESPACE }}
+  labels:
+    app.kubernetes.io/name: sas-business-orchestration-worker-{{ SUFFIX }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 4195
+  selector:
+    app.kubernetes.io/name: sas-business-orchestration-worker-{{ SUFFIX }}
+---
+########################################################################
+# section - deployment
+########################################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sas-business-orchestration-worker-{{ SUFFIX }}
+  namespace: {{ NAMESPACE }}
+  labels:
+    app.kubernetes.io/name: sas-business-orchestration-worker-{{ SUFFIX }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-business-orchestration-worker-{{ SUFFIX }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sas-business-orchestration-worker-{{ SUFFIX }}
+    spec:
+      imagePullSecrets:
+        - name: sas-image-pull-secrets
+      ## uncomment the initContainer if using ODE processor which requires client provided SFM jar files.
+      # initContainers:
+      #   - name: fetch-ode-jars
+      #     image: {{ SFM_JAR_IMAGE }}
+      #     command: ["sh", "-c"]
+      #     args: ["cp -R /sfmlibs/* /tmp/data"]
+      #     imagePullPolicy: Always
+      #     volumeMounts:
+      #       - name: sfmlibs
+      #         mountPath: "/tmp/data"
+      containers:
+        - name: sas-business-orchestration-worker
+          image: sas-business-orchestration-worker
+          imagePullPolicy: "Always"
+          ports:
+            - name: http
+              containerPort: 4195
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - name: sas-business-orchestration-worker-{{ SUFFIX }}
+              mountPath: /tmp
+            - name: work
+              mountPath: /worker/work
+          # {{ SECURITY }}  uncomment if using TLS from worker
+          #   - name: sas-business-orchestration-worker-{{ SUFFIX }}-security
+          #     readOnly: true
+          #     mountPath: /var/run/security
+          resources:
+            requests:
+              cpu: 2
+              memory: 2Gi
+            limits:
+              cpu: 2
+              memory: 2Gi
+          env:
+            - name: SAS_LOG_LEVEL
+              value: INFO
+            - name: SAS_LOG_LOCALE
+              value: en
+            - name: WORKLOAD_ENABLED_BY_INDEX
+              value: "0"
+            - name: WORK_DIR
+              value: /worker/work
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /internal/live
+              port: http
+              # change scheme to HTTPS for full-tls deployments 
+              scheme: HTTP
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 5
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /internal/ready
+              port: http
+              # change scheme to HTTPS for full-tls deployments 
+              scheme: HTTP
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 5
+          startupProbe:
+            failureThreshold: 180
+            httpGet:
+              path: /internal/live
+              port: http
+              # change scheme to HTTPS for full-tls deployments 
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+      ## uncomment the sidecar if not using detectionBehavior, ISO8583, or ODE processors which require Java.
+        # - name: sas-business-orchestration-worker-sb
+        #   image: sas-business-orchestration-worker
+        #   imagePullPolicy: "Always"
+        #   ports:
+        #     - name: http
+        #       containerPort: 8081
+        #       protocol: TCP
+        #   volumeMounts:
+        #     - name: shared-volume
+        #       mountPath: /shared-volume
+        #     - name: sas-business-orchestration-worker-{{ SUFFIX }}
+        #       mountPath: /tmpdir
+        #     - name: sfmlibs
+        #       mountPath: /sfmlibs
+        #   # {{ SECURITY }}  uncomment if using TLS from worker
+        #   #   - name: security
+        #   #     readOnly: true
+        #   #     mountPath: /var/run/security
+        #   resources:
+        #     requests:
+        #       cpu: 1
+        #       memory: 1Gi
+        #     limits:
+        #       cpu: 1
+        #       memory: 1Gi
+        #   env:
+        #     - name: SAS_LOG_LEVEL
+        #       value: INFO
+        #     - name: SAS_LOG_LOCALE
+        #       value: en
+        #     - name: MODE
+        #       value: JAVA
+        #     - name: SPRING_CONFIG_LOCATION
+        #       value: file:/tmpdir/application.yaml
+        #     - name: JAVA_TOOL_OPTIONS
+        #       value: "-Dtransaction.fieldLocksEnabled=false"
+        #     - name: LOADER_PATH
+        #       value: /sfmlibs/61
+      ## {{ SECURITY }} 
+      volumes:
+        - name: work
+          emptyDir:
+            medium: Memory
+        - name: sas-business-orchestration-worker-{{ SUFFIX }}
+          configMap:
+            name: sas-business-orchestration-worker-{{ SUFFIX }}
+        ## uncomment if using tls of worker
+        # - name: sas-business-orchestration-worker-{{ SUFFIX }}-security
+        #   secret:
+        #     secretName: sas-business-orchestration-worker-{{ SUFFIX }}-security
+        - name: shared-volume
+          emptyDir: 
+            medium: Memory
+        # add volumes below and volumeMounts above as needed for kafka, redis and/or other external services technologies used by the orchestration project
+        ## uncomment if using ODE processor
+        # - name: sfmlibs
+        #   emptyDir: 
+        #     medium: Memory
+---
+# ########################################################################
+# # section - horizontal pod autoscaler
+# ########################################################################
+# apiVersion: autoscaling/v2
+# kind: HorizontalPodAutoscaler
+# metadata:
+#   name: sas-business-orchestration-worker-{{ SUFFIX }}
+# spec:
+#   scaleTargetRef:
+#     apiVersion: apps/v1
+#     kind: Deployment
+#     name: sas-business-orchestration-worker-{{ SUFFIX }}
+#   minReplicas: 1
+#   maxReplicas: 5
+#   metrics:
+#   - type: Resource
+#     resource:
+#       name: cpu
+#       target:
+#         type: Utilization
+#         averageUtilization: 70
+---
+# ########################################################################
+# # section - openshift route   Note: comment out other ingress objects
+# ########################################################################
+# apiVersion: route.openshift.io/v1
+# kind: Route
+# metadata:
+#   namespace: {{ NAMESPACE }}
+#   annotations:
+#     haproxy.router.openshift.io/rewrite-target: /
+#   labels:
+#     app.kubernetes.io/name: sas-business-orchestration-worker-{{ SUFFIX }}
+#     sas.com/admin: namespace
+#   name: sas-business-orchestration-worker-{{ SUFFIX }}
+# spec:
+#   host: "{{ PREFIX }}.{{ ROUTE_HOST }}"
+#   path: /sas-business-orchestration-worker
+#   port:
+#     targetPort: http
+#   to:
+#     kind: Service
+#     name: sas-business-orchestration-worker-{{ SUFFIX }}
+#   wildcardPolicy: None
+---
+########################################################################
+# section- ingress
+########################################################################
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sas-business-orchestration-worker-{{ SUFFIX }}
+  namespace: {{ NAMESPACE }}
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    ## {{ SECURITY }} Note that these 3 annotations enable two-way front door TLS. Without them, the ingress only has one-way TLS enabled
+    # nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
+    # nginx.ingress.kubernetes.io/auth-tls-secret: {{ NAMESPACE }}/business-orchestration-worker-ingress-tls-ca-config-{{ SUFFIX }}   # Used to enable TLS
+    # nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    # used to enable mTLS
+  labels:
+    app.kubernetes.io/name: sas-business-orchestration-worker-{{ SUFFIX }}
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "{{ PREFIX }}.{{ INGRESS_TYPE }}.{{ HOST }}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sas-business-orchestration-worker-{{ SUFFIX }}
+                port:
+                  number: 4195
+---
+########################################################################
+# section - ingress tls
+########################################################################
+# {{ SECURITY }} Uncomment this and comment the above sas-detection ingress to enable Front Door TLS
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: sas-business-orchestration-worker-{{ SUFFIX }}
+#   namespace: {{ NAMESPACE }}
+#   annotations:
+#     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+
+#     # backend-protocol is HTTP because this is only front-door TLS, we would use HTTPS for full-tls
+#     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+
+#     # {{ SECURITY }} Note that these 3 annotations enable two-way front door TLS. Without them, the ingress only has one-way TLS enabled
+#     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
+#     nginx.ingress.kubernetes.io/auth-tls-secret: {{ NAMESPACE }}/business-orchestration-worker-ingress-tls-ca-config-{{ SUFFIX }}   # Used to enable TLS
+#     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    # used to enable mTLS
+
+#     nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
+#     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+#     nginx.ingress.kubernetes.io/use-regex: "true"
+#   labels:
+#     app.kubernetes.io/name: sas-business-orchestration-worker-{{ SUFFIX }}
+# spec:
+#   ingressClassName: nginx
+#   tls:
+#     - hosts:
+#         - {{ PREFIX }}.{{ INGRESS-TYPE }}.{{ HOST }}
+#       secretName: business-orchestration-worker-ingress-tls-config-{{ SUFFIX }}
+#   rules:
+#     - host: {{ PREFIX }}.{{ INGRESS-TYPE }}.{{ HOST }}
+#       http:
+#         paths:
+#           - path: "/sas-business-orchestration-worker(/|$)(.*)"
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: sas-business-orchestration-worker-{{ SUFFIX }}
+#                 port:
+#                   number: 8777
+---
+# {{ SECURITY }} OPTIONAL: uncomment these secrets and add base64 encoded certificate and private key to each
+# if you are managing these manually
+########################################################################
+# section - ingress tls secret for tls certs and keys
+########################################################################
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: business-orchestration-worker-ingress-tls-config-{{ SUFFIX }}
+#   namespace: {{ NAMESPACE }}
+# data:
+#   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
+#   tls.crt: |+
+#     {{ VALUE_NEEDED }}
+#   tls.key: |+
+#     {{ VALUE_NEEDED }}
+---
+########################################################################
+# section - secret for a ca cert and key to make a request to sign a client cert for two-way tls
+########################################################################
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: business-orchestration-worker-ingress-tls-ca-config-{{ SUFFIX }}
+#   namespace: {{ NAMESPACE }}
+# data:
+#   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
+#   ca.crt: |+
+#     {{ VALUE_NEEDED }}
+#   ca.key: |+
+#     {{ VALUE_NEEDED }}
+---
+##############################################################################################################################
+# section - create separate cert and key for external service such as redis, kafka, rabbitmq, etc.  Note: duplicate as needed.
+##############################################################################################################################
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: business-orchestration-worker-{{ EXTERNAL_SERVICE }}-tls-config-{{ SUFFIX }}
+#   namespace: {{ NAMESPACE }}
+# data:
+#   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
+#   ca.crt: |+
+#     {{ VALUE_NEEDED }}
+#   ca.key: |+
+#     {{ VALUE_NEEDED }}

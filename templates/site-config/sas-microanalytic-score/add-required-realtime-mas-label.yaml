@@ -1,0 +1,49 @@
+# Patch to update the sas-microanalytic-score configuration to use required scheduling
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: mas-set-tolerations
+patch: |-
+  - op: remove
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution
+    value:
+      - preference:
+          matchExpressions:
+          - key: workload.sas.com/class
+            operator: In
+            values:
+            - stateless
+          matchFields: []
+        weight: 100
+      - preference:
+          matchExpressions:
+          - key: workload.sas.com/class
+            operator: NotIn
+            values:
+            - compute
+            - cas
+            - stateful
+            - connect
+          matchFields: []
+        weight: 50
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchExpressions/-
+    value:
+      key: workload/mas
+      operator: In
+      values:
+      - realtime
+  - op: replace
+    path: /spec/template/spec/tolerations
+    value:
+      - effect: NoSchedule
+        key: workload/class
+        operator: Equal
+        value: realtime
+
+target:
+  group: apps
+  kind: Deployment
+  name: sas-microanalytic-score
+  version: v1

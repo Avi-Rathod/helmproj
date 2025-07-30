@@ -1,0 +1,127 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-model-publish-kaniko-transformer
+patch: |-
+  - op: add
+    path: /spec/template/spec/serviceAccountName
+    value: sas-model-publish
+  - op: add
+    path: /spec/template/spec/containers/0/volumeMounts/-
+    value:
+      name: kaniko
+      mountPath: /models/kaniko
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: kaniko
+      persistentVolumeClaim:
+        claimName: sas-model-publish-kaniko
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: SAS_MASPY_BASE_IMAGE
+      valueFrom:
+        configMapKeyRef:
+          key: SAS_COMPONENT_RELPATH_sas-maspy-base
+          name: sas-components
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: SAS_MASPY_BASE_IMAGE_TAG
+      valueFrom:
+        configMapKeyRef:
+          key: SAS_COMPONENT_TAG_sas-maspy-base
+          name: sas-components
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: SAS_PYTHON3_BASE_IMAGE
+      valueFrom:
+        configMapKeyRef:
+          key: SAS_COMPONENT_RELPATH_sas-score-python3-base
+          name: sas-components
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: SAS_PYTHON3_BASE_IMAGE_TAG
+      valueFrom:
+        configMapKeyRef:
+          key: SAS_COMPONENT_TAG_sas-score-python3-base
+          name: sas-components
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: SAS_R4_BASE_IMAGE
+      valueFrom:
+        configMapKeyRef:
+          key: SAS_COMPONENT_RELPATH_sas-score-r4-base
+          name: sas-components
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: SAS_R4_BASE_IMAGE_TAG
+      valueFrom:
+        configMapKeyRef:
+          key: SAS_COMPONENT_TAG_sas-score-r4-base
+          name: sas-components
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: SAS_CONTAINER_RUNTIME_IMAGE
+      valueFrom:
+        configMapKeyRef:
+          key: SAS_COMPONENT_RELPATH_sas-decisions-runtime-base
+          name: sas-components
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: SAS_CONTAINER_RUNTIME_IMAGE_TAG
+      valueFrom:
+        configMapKeyRef:
+          key: SAS_COMPONENT_TAG_sas-decisions-runtime-base
+          name: sas-components
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: SAS_CONTAINER_RUNTIME_COMPONENTS_IMAGE
+      valueFrom:
+        configMapKeyRef:
+          key: SAS_COMPONENT_RELPATH_sas-decisions-runtime-components
+          name: sas-components
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: SAS_CONTAINER_RUNTIME_COMPONENTS_IMAGE_TAG
+      valueFrom:
+        configMapKeyRef:
+          key: SAS_COMPONENT_TAG_sas-decisions-runtime-components
+          name: sas-components
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: SAS_CONTAINER_RUNTIME_MICROSOFT_IMAGE
+      value: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: SAS_CONTAINER_RUNTIME_MICROSOFT_IMAGE_TAG
+      value: latest
+target:
+  name: sas-model-publish
+  group: apps
+  kind: Deployment
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: enable-automountServiceAccountToken
+patch: |-
+  - op: replace
+    path: /spec/template/spec/automountServiceAccountToken
+    value: true
+target:
+  group: apps
+  kind: Deployment
+  version: v1

@@ -1,0 +1,31 @@
+# This is an example transformer to override any of Patroni's default parameters.
+# NOTE:
+#   It is not recommended to change Patroni parameters unless you are very familiar with Patroni tuning.
+#
+# The variables (only one sample Patroni parameter is listed in this example):
+# - {{ CLUSTER-NAME }} is the name of the PostgresCluster. Valid values are:
+#    - sas-crunchy-platform-postgres for platform Postgres cluster
+#    - sas-crunchy-cds-postgres for CDS Postgres cluster
+#    - .* for both clusters. In this case, use a unique name like 'both-clusters' for the transformer metadata name
+#    - If different settings are needed for each cluster, then separate transformers must be created:
+#        one for Platform Postgres, and the other for CDS Postgres.
+# - {{ RETRY-TIMEOUT-VALUE }} is the timeout for DCS and PostgreSQL operation retries (in seconds). Default value: 10
+#
+# To replace a variable, replace the curly braces, interior spaces, and the variable name with an actual value.
+#
+# See https://access.crunchydata.com/documentation/patroni/latest/pdf/patroni.pdf for more details on Patroni parameters.
+# See $deploy/sas-bases/examples/crunchydata/tuning/README.md for how to include this transformer to the base kustomization file.
+
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: {{ CLUSTER-NAME }}-crunchy-tuning-patroni-transformer
+patch: |-
+  - op: replace
+    path: /spec/patroni/dynamicConfiguration/retry_timeout
+    value: {{ RETRY-TIMEOUT-VALUE }}
+target:
+  group: postgres-operator.crunchydata.com
+  kind: PostgresCluster
+  version: v1beta1
+  name: {{ CLUSTER-NAME }}

@@ -1,0 +1,11 @@
+configMapGenerator:
+- name: sas-data-agent-server-colocated-config
+  behavior: merge
+  envs:
+  - site-config/sas-data-agent-server-colocated/sas-data-agent-server-colocated-config.properties
+
+secretGenerator:
+- name: sas-data-agent-server-colocated-secrets
+  behavior: merge
+  envs:
+  - site-config/sas-data-agent-server-colocated/sas-data-agent-server-colocated-secret.properties

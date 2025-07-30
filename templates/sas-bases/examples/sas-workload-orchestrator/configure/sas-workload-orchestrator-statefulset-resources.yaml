@@ -1,0 +1,28 @@
+###############################################################################
+# Kustomize patch configuration to set the default and max for Memory requests
+# and limits along with CPU requests and CPU limits in the
+# sas-workload-orchestrator StatefulSet manager pods.
+#
+# See README.md for more information.
+###############################################################################
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-workload-orchestrator-manager-requests-limits
+patch: |-
+  - op: replace
+    path: /spec/template/spec/containers/0/resources/requests/memory
+    value: {{ MEM-REQUIRED }}
+  - op: replace
+    path: /spec/template/spec/containers/0/resources/limits/memory
+    value: {{ MEM-REQUIRED }}
+  - op: replace
+    path: /spec/template/spec/containers/0/resources/requests/cpu
+    value: {{ CPU-REQUIRED }}
+  - op: replace
+    path: /spec/template/spec/containers/0/resources/limits/cpu
+    value: {{ CPU-REQUIRED }}
+target:
+  kind: StatefulSet
+  name: sas-workload-orchestrator

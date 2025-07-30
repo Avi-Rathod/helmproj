@@ -1,0 +1,50 @@
+apiVersion: orchestration.sas.com/v2beta11
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-k8s-common
+    sas.com/component-version: 2.89.1-20240916.1726514392006
+  creationTimestamp: null
+  name: deploy-post-cas-execute
+spec:
+  args:
+  - name: namespace
+    required: true
+  - name: timeout
+    required: true
+  steps:
+  - args:
+    - rollout
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    - status
+    - deployment
+    - sas-cas-operator
+    cmd: kubectl
+  - args:
+    - delete
+    - --namespace
+    - $namespace
+    - --wait
+    - --timeout
+    - $timeout
+    - --ignore-not-found
+    - pods
+    - --selector
+    - app.kubernetes.io/managed-by=sas-cas-operator,sas.com/cas-auto-restart=true
+    cmd: kubectl
+  - args:
+    - deploy-post-cas-transfer
+    - --namespace
+    - $namespace
+    - --casname
+    - $resource.Name
+    cmd: run
+    withClusterResources:
+      currentConfiguration:
+        jsonPath: '{.spec.supportStateTransfer}'
+        value: '"true"'
+      namespace: $namespace
+      resource: CASDeployment

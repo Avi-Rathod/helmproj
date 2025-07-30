@@ -1,0 +1,14 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: model-repository-transformer
+patch: |-
+  # Add serviceAcountName
+  - op: add
+    path: /spec/template/spec/serviceAccountName
+    value: sas-model-repository
+target:
+  group: apps
+  kind: Deployment
+  name: sas-model-repository
+  version: v1

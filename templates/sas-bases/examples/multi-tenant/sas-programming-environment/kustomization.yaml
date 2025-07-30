@@ -1,0 +1,7 @@
+resources:
+- ../../../sas-bases/overlays/multi-tenant/sas-programming-environment
+
+nameSuffix: -{{ SAS-TENANT-ID }}
+
+transformers:
+- podtemplates-add-volume-subpath.yaml

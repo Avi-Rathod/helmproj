@@ -1,0 +1,24 @@
+###############################################################################
+# Kustomize patch configuration to change the process limit per user for
+# sas-launcher.
+#
+# NOTE: If SAS Workload Orchestrator is enabled, these values will be ignored
+# See README.md for more information.
+###############################################################################
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-launcher-processes-per-user-limitation
+patch: |-
+  - op: replace
+    path: /spec/template/spec/containers/0/env/1
+    value:
+      name: SAS_LAUNCHER_USER_PROCESS_LIMIT
+      value: "50"
+      # value: "25"
+      # value: "50"
+target:
+  version: v1
+  group: apps
+  kind: Deployment
+  name: sas-launcher

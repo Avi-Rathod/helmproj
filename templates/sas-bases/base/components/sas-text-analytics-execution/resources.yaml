@@ -1,0 +1,230 @@
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+    sas.com/registry-providers: jobExecution-provider, jobExecution-provider-text-execution,
+      jobExecution-provider-text, jobExecution-provider-text-category, jobExecution-provider-text-concept,
+      jobExecution-provider-text-parse, jobExecution-provider-text-sentiment, jobExecution-provider-text-topic,
+      jobExecution-provider-text-test-sandbox-concept, jobExecution-provider-text-build-component-table,
+      jobExecution-provider-text-sandbox-concept-scoring, jobExecution-provider-concept-sample-text-scoring,
+      jobExecution-provider-text-category-scoring
+    sas.com/registry-sync: default
+    sas.com/registry-tags: proxy
+  labels:
+    app.kubernetes.io/name: sas-text-analytics-execution
+    sas.com/admin: namespace
+    sas.com/registry-sync: default
+  name: sas-text-analytics-execution
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/name: sas-text-analytics-execution
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/kustomize-base: golang
+    sas.com/pod-uses-liveness-probe: http
+    sas.com/pod-uses-readiness-probe: http
+    sas.com/pod-uses-startup-probe: http
+    sidecar.istio.io/proxyCPU: 15m
+    sidecar.istio.io/proxyMemory: 115Mi
+  labels:
+    app.kubernetes.io/name: sas-text-analytics-execution
+    sas.com/admin: namespace
+    sas.com/deployment-base: golang
+    workload.sas.com/class: stateless
+  name: sas-text-analytics-execution
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-text-analytics-execution
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /internal/metrics
+        prometheus.io/port: "8080"
+        prometheus.io/scheme: http
+        prometheus.io/scrape: "true"
+        sas.com/certificate-file-format: pem
+        sas.com/kustomize-base: golang
+        sas.com/pod-uses-liveness-probe: http
+        sas.com/pod-uses-readiness-probe: http
+        sas.com/pod-uses-startup-probe: http
+        sidecar.istio.io/proxyCPU: 15m
+        sidecar.istio.io/proxyMemory: 115Mi
+      labels:
+        app: sas-text-analytics-execution
+        app.kubernetes.io/name: sas-text-analytics-execution
+        workload.sas.com/class: stateless
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateless
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - compute
+                - cas
+                - stateful
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - sas-text-analytics-execution
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution: []
+      automountServiceAccountToken: false
+      containers:
+      - env:
+        - name: SAS_K8S_DEPLOYMENT_NAME
+          value: sas-text-analytics-execution
+        envFrom:
+        - configMapRef:
+            name: sas-go-config
+        - configMapRef:
+            name: sas-shared-config
+        - secretRef:
+            name: sas-consul-client
+        image: sas-text-analytics-execution
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - sh
+              - -c
+              - sleep 5
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /internal/live
+            port: http
+            scheme: HTTP
+          periodSeconds: 20
+          timeoutSeconds: 5
+        name: sas-text-analytics-execution
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /internal/ready
+            port: http
+            scheme: HTTP
+          periodSeconds: 20
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 500m
+            memory: 2Gi
+          requests:
+            cpu: 50m
+            memory: 1Gi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add: []
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        startupProbe:
+          failureThreshold: 180
+          httpGet:
+            path: /internal/live
+            port: http
+            scheme: HTTP
+          periodSeconds: 10
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+      imagePullSecrets: []
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - emptyDir: {}
+        name: tmp
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  annotations:
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: base
+  name: sas-text-analytics-execution
+spec:
+  minAvailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-text-analytics-execution
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  annotations:
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: golang
+  name: sas-text-analytics-execution
+spec:
+  maxReplicas: 1
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sas-text-analytics-execution

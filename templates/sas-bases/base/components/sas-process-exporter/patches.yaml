@@ -1,0 +1,339 @@
+
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-0b17b54880147010
+patch: |-
+  - op: add
+    path: /template/spec/volumes
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-e85fe00e5e795909
+patch: |-
+  - op: add
+    path: /template/spec/initContainers
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-5618051b27be0aea
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/command
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-cc226b84bbc7f64e
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/args
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-393a12640c699020
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/env
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-db8e9f7f02193a09
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/resizePolicy
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-cb35e1cd7f6ad8af
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/volumeMounts
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-409f4d7ac00a9bd6
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/volumeDevices
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-0ae13fd162282b40
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/livenessProbe/httpGet/httpHeaders
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-3e2af25f1c60a0f7
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/securityContext/capabilities/add
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-22be116ebd3fbb48
+patch: |-
+  - op: add
+    path: /template/spec/ephemeralContainers
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-896880ce96060c3b
+patch: |-
+  - op: add
+    path: /template/spec/securityContext/supplementalGroups
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-ee95f2fb7ca3561a
+patch: |-
+  - op: add
+    path: /template/spec/securityContext/sysctls
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c0a6ba1827725ab4
+patch: |-
+  - op: add
+    path: /template/spec/imagePullSecrets
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-cf5cba5d344a1dbb
+patch: |-
+  - op: add
+    path: /template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchFields
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-8e66984906d1320c
+patch: |-
+  - op: add
+    path: /template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/preference/matchFields
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-a564d892c08ddc5d
+patch: |-
+  - op: add
+    path: /template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/1/preference/matchFields
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-0eea83b305c1a387
+patch: |-
+  - op: add
+    path: /template/spec/affinity/podAffinity/requiredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c5519d7d7b0ee3f1
+patch: |-
+  - op: add
+    path: /template/spec/affinity/podAffinity/preferredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-92e274e264cf8337
+patch: |-
+  - op: add
+    path: /template/spec/affinity/podAntiAffinity/requiredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-b1f9d20ceaf9cf41
+patch: |-
+  - op: add
+    path: /template/spec/affinity/podAntiAffinity/preferredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-0ebb652575f389f9
+patch: |-
+  - op: add
+    path: /template/spec/hostAliases
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-e39dbb1b4cd568ef
+patch: |-
+  - op: add
+    path: /template/spec/readinessGates
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-5951c5f4bf714bed
+patch: |-
+  - op: add
+    path: /template/spec/topologySpreadConstraints
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-a73c5e1ea6828c79
+patch: |-
+  - op: add
+    path: /template/spec/schedulingGates
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-87f83c9e1e27c296
+patch: |-
+  - op: add
+    path: /template/spec/resourceClaims
+    value: []
+target:
+  kind: PodTemplate
+  name: sas-process-exporter-template
+  version: v1

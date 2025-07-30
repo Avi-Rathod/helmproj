@@ -1,0 +1,13 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-postgres-cloud-sql-proxy-transformer
+patch: |-
+  - op: replace
+    path: /spec/ssl
+    value: false
+target:
+  group: webinfdsvr.sas.com
+  kind: DataServer
+  version: v1beta1
+  name: .*

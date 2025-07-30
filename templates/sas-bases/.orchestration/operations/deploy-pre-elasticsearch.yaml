@@ -1,0 +1,28 @@
+apiVersion: orchestration.sas.com/v2beta4
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-opendistro-operator
+    sas.com/component-version: 7.37.5-20241010.1728552675911
+  creationTimestamp: null
+  name: deploy-pre-elasticsearch
+spec:
+  args:
+  - name: namespace
+  - name: timeout
+  - name: serviceAccountName
+  steps:
+  - args:
+    - deploy-pre-elasticsearch-execute
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    - --serviceAccountName
+    - $serviceAccountName
+    cmd: run
+    when: |-
+      (eq
+        "true"
+        (.Annotation "sas.com/sas-opendistro-operator-update" (.ClusterResource ((((((.NewClusterResourcesIterationSpec).WithNamespace $namespace).WithGroup "").WithVersion "v1").WithResource "configmap").WithName "sas-deploy-lifecycle-operation-variables")))
+      )

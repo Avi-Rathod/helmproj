@@ -1,0 +1,3 @@
+SAS includes various third-party code and components in its SAS® Viya® software.
+
+See https://support.sas.com/en/documentation/thirdpartynotices.html for details.

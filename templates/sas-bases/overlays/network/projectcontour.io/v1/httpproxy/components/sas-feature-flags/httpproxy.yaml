@@ -1,0 +1,34 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-feature-flags
+    sas.com/admin: namespace
+  name: sas-feature-flags
+spec:
+  routes:
+  - conditions:
+    - prefix: /featureFlags
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /featureFlags/
+    services:
+    - name: sas-feature-flags
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /featureFlags/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-feature-flags
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

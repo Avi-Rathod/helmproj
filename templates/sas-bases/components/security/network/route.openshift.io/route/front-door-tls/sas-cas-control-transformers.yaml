@@ -1,0 +1,220 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-cas-access-management-route-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: replace
+    path: /spec/tls
+    value:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+  - op: add
+    path: /metadata/annotations/cert-utils-operator.redhat-cop.io~1certs-from-secret
+    value: sas-ingress-certificate
+target:
+  kind: Route
+  group: route.openshift.io
+  version: v1
+  name: sas-cas-access-management
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-cas-access-management-multitenant-route-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: replace
+    path: /spec/tls
+    value:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+  - op: add
+    path: /metadata/annotations/cert-utils-operator.redhat-cop.io~1certs-from-secret
+    value: sas-ingress-certificate
+target:
+  kind: Route
+  group: route.openshift.io
+  version: v1
+  name: sas-cas-access-management-multitenant
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-cas-formats-route-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: replace
+    path: /spec/tls
+    value:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+  - op: add
+    path: /metadata/annotations/cert-utils-operator.redhat-cop.io~1certs-from-secret
+    value: sas-ingress-certificate
+target:
+  kind: Route
+  group: route.openshift.io
+  version: v1
+  name: sas-cas-formats
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-cas-formats-multitenant-route-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: replace
+    path: /spec/tls
+    value:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+  - op: add
+    path: /metadata/annotations/cert-utils-operator.redhat-cop.io~1certs-from-secret
+    value: sas-ingress-certificate
+target:
+  kind: Route
+  group: route.openshift.io
+  version: v1
+  name: sas-cas-formats-multitenant
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-cas-management-route-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: replace
+    path: /spec/tls
+    value:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+  - op: add
+    path: /metadata/annotations/cert-utils-operator.redhat-cop.io~1certs-from-secret
+    value: sas-ingress-certificate
+target:
+  kind: Route
+  group: route.openshift.io
+  version: v1
+  name: sas-cas-management
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-cas-management-multitenant-route-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: replace
+    path: /spec/tls
+    value:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+  - op: add
+    path: /metadata/annotations/cert-utils-operator.redhat-cop.io~1certs-from-secret
+    value: sas-ingress-certificate
+target:
+  kind: Route
+  group: route.openshift.io
+  version: v1
+  name: sas-cas-management-multitenant
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-cas-proxy-route-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: replace
+    path: /spec/tls
+    value:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+  - op: add
+    path: /metadata/annotations/cert-utils-operator.redhat-cop.io~1certs-from-secret
+    value: sas-ingress-certificate
+target:
+  kind: Route
+  group: route.openshift.io
+  version: v1
+  name: sas-cas-proxy
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-cas-proxy-multitenant-route-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: replace
+    path: /spec/tls
+    value:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+  - op: add
+    path: /metadata/annotations/cert-utils-operator.redhat-cop.io~1certs-from-secret
+    value: sas-ingress-certificate
+target:
+  kind: Route
+  group: route.openshift.io
+  version: v1
+  name: sas-cas-proxy-multitenant
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-cas-row-sets-route-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: replace
+    path: /spec/tls
+    value:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+  - op: add
+    path: /metadata/annotations/cert-utils-operator.redhat-cop.io~1certs-from-secret
+    value: sas-ingress-certificate
+target:
+  kind: Route
+  group: route.openshift.io
+  version: v1
+  name: sas-cas-row-sets
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-cas-row-sets-multitenant-route-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: replace
+    path: /spec/tls
+    value:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+  - op: add
+    path: /metadata/annotations/cert-utils-operator.redhat-cop.io~1certs-from-secret
+    value: sas-ingress-certificate
+target:
+  kind: Route
+  group: route.openshift.io
+  version: v1
+  name: sas-cas-row-sets-multitenant

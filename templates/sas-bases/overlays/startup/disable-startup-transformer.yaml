@@ -1,0 +1,69 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: remove-start-sequencer-label-deployments
+patch: |-
+  - op: remove
+    path: "/spec/template/metadata/labels/sas.com~1start-sequencer"
+target:
+  kind: Deployment
+  group: apps
+  labelSelector: sas.com/uses-start-sequencer=true
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: disable-start-sequencer-deployments
+patch: |-
+  kind: Deployment
+  metadata: 
+    name: add-environment-variable-to-initContainer
+  spec:
+    template:
+      spec:
+        initContainers:
+        - name: sas-start-sequencer
+          env:
+          - name: SKIP_INIT_BLOCK
+            value: "true"
+target:
+  kind: Deployment
+  group: apps
+  labelSelector: sas.com/uses-start-sequencer=true
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: remove-start-sequencer-label-statefulsets
+patch: |-
+  - op: remove
+    path: "/spec/template/metadata/labels/sas.com~1start-sequencer"
+target:
+  kind: StatefulSet
+  group: apps
+  labelSelector: sas.com/uses-start-sequencer=true
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: disable-start-sequencer-statefulsets
+patch: |-
+  kind: Deployment
+  metadata: 
+    name: add-environment-variable-to-initContainer
+  spec:
+    template:
+      spec:
+        initContainers:
+        - name: sas-start-sequencer
+          env:
+          - name: SKIP_INIT_BLOCK
+            value: "true"
+target:
+  kind: StatfulSet
+  group: apps
+  labelSelector: sas.com/uses-start-sequencer=true
+  version: v1

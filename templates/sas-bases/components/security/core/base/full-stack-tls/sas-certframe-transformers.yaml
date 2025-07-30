@@ -1,0 +1,41 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-certframe-ingress-configmap-secret-name-transformer
+patch: |-
+  kind: ConfigMap
+  metadata:
+    name: sas-certframe-ingress-certificate-config
+  data:
+    SAS_INGRESS_CERTIFICATE_SECRET_NAME: sas-ingress-certificate
+target:
+  kind: ConfigMap
+  name: sas-certframe-ingress-certificate-config
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-certframe-shared-configmap-base-service-url-tls-transformer
+patch: |-
+  - op: replace
+    path: /data/SAS_URL_SERVICE_SCHEME
+    value: https
+  - op: replace
+    path: /data/SAS_URL_SERVICE_TEMPLATE
+    value: https://@k8s.service.name@
+target:
+  kind: ConfigMap
+  name: sas-shared-config
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-certframe-java-config-transformer
+patch: |-
+  - op: replace
+    path: /data/JAVA_GLOBAL_OPTION_TRUSTSTORE
+    value: -Djavax.net.ssl.trustStore=/security/trustedcerts.jks
+target:
+  kind: ConfigMap
+  name: sas-java-config

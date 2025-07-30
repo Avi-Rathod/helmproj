@@ -1,0 +1,23 @@
+# This block of code is for specifying the CPU resources for sas-arke pods.
+# The default required value is 50m and the default limit is 500m.
+# When modifying the CPU resource request for sas-arke pods the
+# HorizontalPodAutoscaler averageUtilization may need to be adjusted.
+# See arke-modify-hpa-replicas.yaml for an example.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: arke-modify-cpu
+patch: |-
+  - op: replace
+    path: /spec/template/spec/containers/0/resources/requests/cpu
+    value:
+      {{ CPU-REQUIRED }}
+  - op: replace
+    path: /spec/template/spec/containers/0/resources/limits/cpu
+    value:
+      {{ CPU-LIMIT }}
+target:
+  kind: Deployment
+  name: sas-arke
+  version: v1

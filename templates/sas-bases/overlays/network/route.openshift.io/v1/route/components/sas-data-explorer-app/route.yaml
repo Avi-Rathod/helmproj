@@ -1,0 +1,46 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-SASDataExplorer
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-explorer-app
+    sas.com/admin: namespace
+  name: sas-data-explorer-app
+spec:
+  host: $(INGRESS_HOST)
+  path: /SASDataExplorer
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-data-explorer-app
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-SASDataExplorer
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-explorer-app
+    sas.com/admin: namespace
+  name: sas-data-explorer-app-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /SASDataExplorer
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-data-explorer-app
+  wildcardPolicy: Subdomain
+

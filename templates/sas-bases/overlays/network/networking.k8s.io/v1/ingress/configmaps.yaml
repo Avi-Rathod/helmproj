@@ -1,0 +1,9 @@
+apiVersion: builtin
+kind: ConfigMapGenerator
+metadata:
+  name: ingress-input
+literals:
+- INGRESS_HOST=
+- INGRESS_APIVERSION=networking.k8s.io/v1
+- INGRESS_KIND=Ingress
+- INGRESS_IMPLEMENTATION=nginx.ingress.kubernetes.io

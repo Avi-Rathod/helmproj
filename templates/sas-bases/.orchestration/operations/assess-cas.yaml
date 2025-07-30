@@ -1,0 +1,83 @@
+apiVersion: orchestration.sas.com/v2beta12
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-k8s-common
+    sas.com/component-version: 2.89.1-20240916.1726514392006
+  creationTimestamp: null
+  labels:
+    participate.lifecycle.sas.com/assess: "true"
+  name: assess-cas
+spec:
+  args:
+  - name: namespace
+  - name: manifest
+  steps:
+  - args:
+    - cas.sas.com/operator_manifest_version
+    - (.Annotation "sas.com/component-version" $resource)
+    cmd: set_variable
+    withManifestResources:
+      group: apps
+      kind: Deployment
+      manifest: $manifest
+      name: sas-cas-operator
+      version: v1
+  - args:
+    - cas.sas.com/operator_cluster_version
+    - (.Annotation "sas.com/component-version" $resource)
+    cmd: set_variable
+    withClusterResources:
+      group: apps
+      name: sas-cas-operator
+      namespace: $namespace
+      resource: deployment
+      version: v1
+  - args:
+    - cas.sas.com/update
+    - "true"
+    cmd: set_variable
+    when: |-
+      (and
+        (.VariableExists "cas.sas.com/operator_manifest_version" )
+        (.VariableExists "cas.sas.com/operator_cluster_version" )
+        (ne
+          (.GetVariable "cas.sas.com/operator_manifest_version")
+          (.GetVariable "cas.sas.com/operator_cluster_version")
+        )
+      )
+  - args:
+    - cas.sas.com/server_manifest_version
+    - (.Coalesce (index ($resource | .ToObject).data "SAS_COMPONENT_VERSION_sas-cas-server") "")
+    cmd: set_variable
+    withManifestResources:
+      kind: ConfigMap
+      labelSelector: orchestration.sas.com/lifecycle=components
+      manifest: $manifest
+  - args:
+    - cas.sas.com/server_cluster_version
+    - (.Coalesce (index ($resource | .ToObject).data "SAS_COMPONENT_VERSION_sas-cas-server") "")
+    cmd: set_variable
+    withClusterResources:
+      labelSelector: orchestration.sas.com/lifecycle=components
+      namespace: $namespace
+      resource: configmap
+  - args:
+    - cas.sas.com/update
+    - "true"
+    cmd: set_variable
+    when: |-
+      (and
+        (and
+          (.VariableExists "cas.sas.com/server_manifest_version")
+          (ne (.GetVariable "cas.sas.com/server_manifest_version") "")
+        )
+        (and
+          (.VariableExists "cas.sas.com/server_cluster_version" )
+          (ne (.GetVariable "cas.sas.com/server_cluster_version") "")
+        )
+        (ne
+          (.GetVariable "cas.sas.com/server_manifest_version")
+          (.GetVariable "cas.sas.com/server_cluster_version")
+        )
+      )

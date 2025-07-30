@@ -1,0 +1,22 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-opendistro-single-node-topology
+# update the patch value to define the single cluster node 
+patch: |-
+  - op: replace
+    path: /spec/nodes
+    value:
+      - name: single-node
+        replicas: 1
+        roles:
+          - master
+          - data
+        heapsize: 1G
+
+  # note that additional op replace blocks can be used to alter image, env, jvm, security and other paths      
+
+target:
+  kind: OpenDistroCluster
+  name: sas-opendistro

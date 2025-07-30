@@ -1,0 +1,33 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: add-subpath-container-vm
+patch: |-
+  - op: replace
+    path: /template/spec/containers/0/volumeMounts/4
+    value:
+      mountPath: /opt/sas/viya/config/var
+      name: viya
+      subPath: {{ SAS-TENANT-ID }}
+target:
+  version: v1
+  kind: PodTemplate
+  annotationSelector: sas.com/kustomize-base=sas-programming-environment
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: add-subpath-initcontainer-vm
+patch: |-
+  - op: replace
+    path: /template/spec/initContainers/0/volumeMounts/2
+    value:
+      mountPath: /opt/sas/viya/config/var
+      name: viya
+      subPath: {{ SAS-TENANT-ID }}
+target:
+  version: v1
+  kind: PodTemplate
+  annotationSelector: sas.com/kustomize-base=sas-programming-environment
+---

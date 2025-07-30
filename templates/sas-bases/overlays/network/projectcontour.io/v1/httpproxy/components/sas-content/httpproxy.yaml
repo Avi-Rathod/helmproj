@@ -1,0 +1,102 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-activities
+    sas.com/admin: namespace
+  name: sas-activities
+spec:
+  routes:
+  - conditions:
+    - prefix: /activities
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /activities/
+    services:
+    - name: sas-activities
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /activities/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-activities
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-drive
+    sas.com/admin: namespace
+  name: sas-drive
+spec:
+  routes:
+  - conditions:
+    - prefix: /drive
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /drive/
+    services:
+    - name: sas-drive
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /drive/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-drive
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-thumbnails
+    sas.com/admin: namespace
+  name: sas-thumbnails
+spec:
+  routes:
+  - conditions:
+    - prefix: /thumbnails
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /thumbnails/
+    services:
+    - name: sas-thumbnails
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /thumbnails/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-thumbnails
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

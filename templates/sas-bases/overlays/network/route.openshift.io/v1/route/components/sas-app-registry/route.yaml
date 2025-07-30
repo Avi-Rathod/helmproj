@@ -1,0 +1,46 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-appRegistry
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-app-registry
+    sas.com/admin: namespace
+  name: sas-app-registry
+spec:
+  host: $(INGRESS_HOST)
+  path: /appRegistry
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-app-registry
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-appRegistry
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-app-registry
+    sas.com/admin: namespace
+  name: sas-app-registry-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /appRegistry
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-app-registry
+  wildcardPolicy: Subdomain
+

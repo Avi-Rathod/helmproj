@@ -1,0 +1,93 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: add-azure-blob-to-files
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: AZURE_STORAGE_ACCOUNT_KEY
+      valueFrom:
+        secretKeyRef:
+          key: account_key
+          name: azure-storage-secrets
+  - op: add
+    path: /spec/template/spec/containers/0/envFrom/-
+    value:
+      configMapRef:
+        name: sas-files-blob-config
+target:
+  group: apps
+  name: sas-files
+  kind: Deployment
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: backup-azure-blob-secret
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: AZURE_STORAGE_ACCOUNT_KEY
+      valueFrom:
+        secretKeyRef:
+          key: account_key
+          name: azure-storage-secrets
+  - op: add
+    path: /spec/template/spec/containers/0/envFrom/-
+    value:
+      configMapRef:
+        name: sas-files-blob-config
+target:
+  group: batch
+  kind: Job
+  annotationSelector: sas.com/component-name in (sas-backup-job)
+
+
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: schedule-backup-azure-blob-secret
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/env/-
+    value:
+      name: AZURE_STORAGE_ACCOUNT_KEY
+      valueFrom:
+        secretKeyRef:
+          key: account_key
+          name: azure-storage-secrets
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/envFrom/-
+    value:
+      configMapRef:
+        name: sas-files-blob-config
+target:
+  group: batch
+  kind: CronJob
+  annotationSelector: sas.com/component-name in (sas-backup-job)
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: restore-azure-blob-secret
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/env/-
+    value:
+      name: AZURE_STORAGE_ACCOUNT_KEY
+      valueFrom:
+        secretKeyRef:
+          key: account_key
+          name: azure-storage-secrets
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/envFrom/-
+    value:
+      configMapRef:
+        name: sas-files-blob-config
+target:
+  group: batch
+  kind: CronJob
+  annotationSelector: sas.com/component-name in (sas-restore-job)

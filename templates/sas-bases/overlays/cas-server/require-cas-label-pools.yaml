@@ -1,0 +1,39 @@
+# PatchTransformer to set a required nodeAffinity for multiple node pools.
+# This can be used in scenarios where you are creating
+#  two separate nodepools, one labeled and tainted "cascontroller" to
+#  be used by the controller, and one labeled and tainted "casworker" to be
+#  used by the workers.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: require-cas-label-pools
+patch: |-
+  - op: add
+    path: /spec/controllerTemplateAdditions/spec/affinity
+    value:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - cascontroller
+
+  - op: add
+    path: /spec/workerTemplateAdditions/spec/affinity
+    value:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - casworker
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  name: .*
+  version: v1alpha1

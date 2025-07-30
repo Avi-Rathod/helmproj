@@ -1,0 +1,104 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-crossdomainproxy-httpproxy-full-stack-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: full-stack
+  - op: add
+    path: /spec/routes/0/services/0/protocol
+    value: tls
+  - op: replace
+    path: /spec/routes/0/services/0/port
+    value: 443
+  - op: add
+    path: /spec/routes/1/services/0/protocol
+    value: tls
+  - op: replace
+    path: /spec/routes/1/services/0/port
+    value: 443
+target:
+  kind: HTTPProxy
+  group: projectcontour.io
+  version: v1
+  name: sas-crossdomainproxy
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-geo-enrichment-httpproxy-full-stack-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: full-stack
+  - op: add
+    path: /spec/routes/0/services/0/protocol
+    value: tls
+  - op: replace
+    path: /spec/routes/0/services/0/port
+    value: 443
+  - op: add
+    path: /spec/routes/1/services/0/protocol
+    value: tls
+  - op: replace
+    path: /spec/routes/1/services/0/port
+    value: 443
+target:
+  kind: HTTPProxy
+  group: projectcontour.io
+  version: v1
+  name: sas-geo-enrichment
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-maps-httpproxy-full-stack-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: full-stack
+  - op: add
+    path: /spec/routes/0/services/0/protocol
+    value: tls
+  - op: replace
+    path: /spec/routes/0/services/0/port
+    value: 443
+  - op: add
+    path: /spec/routes/1/services/0/protocol
+    value: tls
+  - op: replace
+    path: /spec/routes/1/services/0/port
+    value: 443
+target:
+  kind: HTTPProxy
+  group: projectcontour.io
+  version: v1
+  name: sas-maps
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-web-data-access-httpproxy-full-stack-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: full-stack
+  - op: add
+    path: /spec/routes/0/services/0/protocol
+    value: tls
+  - op: replace
+    path: /spec/routes/0/services/0/port
+    value: 443
+  - op: add
+    path: /spec/routes/1/services/0/protocol
+    value: tls
+  - op: replace
+    path: /spec/routes/1/services/0/port
+    value: 443
+target:
+  kind: HTTPProxy
+  group: projectcontour.io
+  version: v1
+  name: sas-web-data-access

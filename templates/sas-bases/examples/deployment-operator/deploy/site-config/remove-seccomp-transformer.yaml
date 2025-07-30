@@ -1,0 +1,27 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-deployment-operator-seccomp-remover
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: RECONCILE_TRANSFORMER
+      value: default/seccomp-remove
+target:
+  kind: Deployment
+  name: sas-deployment-operator
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: remove-seccomp-profile-from-deployment
+patch: |-
+  - op: replace
+    path: /spec/template/spec/securityContext/seccompProfile
+    value: {}
+  - op: remove
+    path: /spec/template/spec/securityContext/seccompProfile
+target:
+  kind: Deployment

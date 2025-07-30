@@ -1,0 +1,588 @@
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app.kubernetes.io/name: sas-crunchy5-postgres-operator
+  name: sas-start-all-crunchy
+rules:
+- apiGroups:
+  - postgres-operator.crunchydata.com
+  resources:
+  - postgresclusters
+  verbs:
+  - get
+  - list
+  - patch
+  - watch
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app.kubernetes.io/name: sas-crunchy5-postgres-operator
+  name: sas-stop-all-crunchy
+rules:
+- apiGroups:
+  - postgres-operator.crunchydata.com
+  resources:
+  - postgresclusters
+  verbs:
+  - get
+  - list
+  - patch
+  - watch
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/name: sas-crunchy5-postgres-operator
+  name: sas-start-all-crunchy
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sas-start-all-crunchy
+subjects:
+- kind: ServiceAccount
+  name: sas-start-all
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/name: sas-crunchy5-postgres-operator
+  name: sas-stop-all-crunchy
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sas-stop-all-crunchy
+subjects:
+- kind: ServiceAccount
+  name: sas-stop-all
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    sas.com/admin: none
+    webinfdsvr.sas.com/upgrade-crunchy-step-1: sas-crunchy-data-cdspostgres
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+spec:
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateful
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - cas
+                - compute
+                - stateless
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+      containers:
+      - command:
+        - sh
+        - -cex
+        - |
+          target='/backrestrepo/sas-crunchy-data-cdspostgres-backrest-shared-repo'
+          chmod -R g+rwx "${target}" && chown -R :0 "${target}"
+        image: sas-crunchy5-postgres-operator
+        name: pgbr-data-fix
+        resources:
+          limits:
+            cpu: "1"
+            memory: 500Mi
+          requests:
+            cpu: 10m
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /backrestrepo
+          name: backrestrepo
+      restartPolicy: Never
+      securityContext:
+        fsGroup: 2000
+        runAsGroup: 2000
+        runAsNonRoot: true
+        runAsUser: 2000
+        seccompProfile:
+          type: RuntimeDefault
+        supplementalGroups:
+        - 0
+      serviceAccount: pgo-default
+      serviceAccountName: pgo-default
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - name: backrestrepo
+        persistentVolumeClaim:
+          claimName: sas-crunchy-data-cdspostgres-pgbr-repo
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    sas.com/admin: none
+    webinfdsvr.sas.com/upgrade-crunchy-step-2: sas-crunchy-data-cdspostgres
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+spec:
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateful
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - cas
+                - compute
+                - stateless
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+      containers:
+      - command:
+        - sh
+        - -cex
+        - |
+          target='/pgdata/sas-crunchy-data-cdspostgres'
+          chmod -R g+rwx "${target}" && chown -R :0 "${target}"
+        image: sas-crunchy5-postgres-operator
+        name: postgres-data-fix
+        resources:
+          limits:
+            cpu: "1"
+            memory: 500Mi
+          requests:
+            cpu: 10m
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /pgdata
+          name: pgdata
+      restartPolicy: Never
+      securityContext:
+        fsGroup: 1001
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+        supplementalGroups:
+        - 0
+      serviceAccount: pgo-pg
+      serviceAccountName: pgo-pg
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - name: pgdata
+        persistentVolumeClaim:
+          claimName: sas-crunchy-data-cdspostgres
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    sas.com/admin: none
+    webinfdsvr.sas.com/upgrade-crunchy-step-3: sas-crunchy-data-cdspostgres
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+spec:
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateful
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - cas
+                - compute
+                - stateless
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+      containers:
+      - command:
+        - sh
+        - -cex
+        - |
+          target='/pgdata/sas-crunchy-data-cdspostgres'
+          tmp=$(mktemp -d -p "${target%/*}"); GLOBIGNORE='.:..'
+          chmod 0700 "${tmp}"; mv "${target}"/* "${tmp}"
+          rmdir "${target}"; mv "${tmp}" "${target}"
+        image: sas-crunchy5-postgres-operator
+        name: postgres-data-fix
+        resources:
+          limits:
+            cpu: "1"
+            memory: 500Mi
+          requests:
+            cpu: 10m
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+        volumeMounts:
+        - mountPath: /pgdata
+          name: postgres-data
+      restartPolicy: Never
+      securityContext:
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: sas-crunchy-data-cdspostgres
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    sas.com/admin: none
+    webinfdsvr.sas.com/upgrade-crunchy-step-1: sas-crunchy-data-postgres
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+spec:
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateful
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - cas
+                - compute
+                - stateless
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+      containers:
+      - command:
+        - sh
+        - -cex
+        - |
+          target='/backrestrepo/sas-crunchy-data-postgres-backrest-shared-repo'
+          chmod -R g+rwx "${target}" && chown -R :0 "${target}"
+        image: sas-crunchy5-postgres-operator
+        name: pgbr-data-fix
+        resources:
+          limits:
+            cpu: "1"
+            memory: 500Mi
+          requests:
+            cpu: 10m
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /backrestrepo
+          name: backrestrepo
+      restartPolicy: Never
+      securityContext:
+        fsGroup: 2000
+        runAsGroup: 2000
+        runAsNonRoot: true
+        runAsUser: 2000
+        seccompProfile:
+          type: RuntimeDefault
+        supplementalGroups:
+        - 0
+      serviceAccount: pgo-default
+      serviceAccountName: pgo-default
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - name: backrestrepo
+        persistentVolumeClaim:
+          claimName: sas-crunchy-data-postgres-pgbr-repo
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    sas.com/admin: none
+    webinfdsvr.sas.com/upgrade-crunchy-step-2: sas-crunchy-data-postgres
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+spec:
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateful
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - cas
+                - compute
+                - stateless
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+      containers:
+      - command:
+        - sh
+        - -cex
+        - |
+          target='/pgdata/sas-crunchy-data-postgres'
+          chmod -R g+rwx "${target}" && chown -R :0 "${target}"
+        image: sas-crunchy5-postgres-operator
+        name: postgres-data-fix
+        resources:
+          limits:
+            cpu: "1"
+            memory: 500Mi
+          requests:
+            cpu: 10m
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /pgdata
+          name: pgdata
+      restartPolicy: Never
+      securityContext:
+        fsGroup: 1001
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+        supplementalGroups:
+        - 0
+      serviceAccount: pgo-pg
+      serviceAccountName: pgo-pg
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - name: pgdata
+        persistentVolumeClaim:
+          claimName: sas-crunchy-data-postgres
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    sas.com/admin: none
+    webinfdsvr.sas.com/upgrade-crunchy-step-3: sas-crunchy-data-postgres
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+spec:
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateful
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - cas
+                - compute
+                - stateless
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+      containers:
+      - command:
+        - sh
+        - -cex
+        - |
+          target='/pgdata/sas-crunchy-data-postgres'
+          tmp=$(mktemp -d -p "${target%/*}"); GLOBIGNORE='.:..'
+          chmod 0700 "${tmp}"; mv "${target}"/* "${tmp}"
+          rmdir "${target}"; mv "${tmp}" "${target}"
+        image: sas-crunchy5-postgres-operator
+        name: postgres-data-fix
+        resources:
+          limits:
+            cpu: "1"
+            memory: 500Mi
+          requests:
+            cpu: 10m
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+        volumeMounts:
+        - mountPath: /pgdata
+          name: postgres-data
+      restartPolicy: Never
+      securityContext:
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: sas-crunchy-data-postgres

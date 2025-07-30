@@ -1,0 +1,39 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-connect-spawner
+spec:
+  host: sas-connect-spawner
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /$(SAS_CONTEXT_PATH)/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-connect-spawner
+    sas.com/admin: namespace
+  name: sas-connect-spawner
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  tcp:
+  - match:
+    - port: 17551
+    route:
+    - destination:
+        host: sas-connect-spawner.default.svc.cluster.local
+        port:
+          number: 17551
+

@@ -1,0 +1,46 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-SASThemeDesigner
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-theme-designer-app
+    sas.com/admin: namespace
+  name: sas-theme-designer-app
+spec:
+  host: $(INGRESS_HOST)
+  path: /SASThemeDesigner
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-theme-designer-app
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-SASThemeDesigner
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-theme-designer-app
+    sas.com/admin: namespace
+  name: sas-theme-designer-app-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /SASThemeDesigner
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-theme-designer-app
+  wildcardPolicy: Subdomain
+

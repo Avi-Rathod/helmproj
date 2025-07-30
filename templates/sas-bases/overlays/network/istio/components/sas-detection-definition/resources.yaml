@@ -1,0 +1,41 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-detection-definition
+spec:
+  host: sas-detection-definition
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /detectionDefinition/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-detection-definition
+    sas.com/admin: namespace
+  name: sas-detection-definition
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /detectionDefinition
+    - uri:
+        prefix: /detectionDefinition/
+    route:
+    - destination:
+        host: sas-detection-definition
+    timeout: 300s
+

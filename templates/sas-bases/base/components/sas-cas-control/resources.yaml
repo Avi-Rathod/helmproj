@@ -1,0 +1,368 @@
+
+---
+apiVersion: v1
+automountServiceAccountToken: true
+kind: ServiceAccount
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  name: sas-cas-control
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    sas.com/admin: cluster-wide
+  name: sas-cas-control
+rules:
+- apiGroups:
+  - viya.sas.com
+  resources:
+  - casdeployments
+  - casdeployments/status
+  - casdeployments/finalizers
+  verbs:
+  - get
+  - list
+  - update
+  - patch
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    sas.com/admin: cluster-local
+  name: sas-cas-control
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sas-cas-control
+subjects:
+- kind: ServiceAccount
+  name: sas-cas-control
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+    sas.com/registry-sync: default
+    sas.com/registry-tags: proxy
+  labels:
+    app.kubernetes.io/name: sas-cas-control
+    sas.com/admin: namespace
+    sas.com/registry-sync: default
+  name: sas-cas-access-management
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/name: sas-cas-control
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+    sas.com/registry-sync: default
+    sas.com/registry-tags: proxy
+  labels:
+    app.kubernetes.io/name: sas-cas-control
+    sas.com/admin: namespace
+    sas.com/registry-sync: default
+  name: sas-cas-formats
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/name: sas-cas-control
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+    sas.com/registry-providers: dataTables-provider,jobExecution-provider,jobExecution-provider-casManager,dataSources-provider,dataSources-provider-cas,dataTables-provider-cas
+    sas.com/registry-sync: default
+    sas.com/registry-tags: proxy
+  labels:
+    app.kubernetes.io/name: sas-cas-control
+    sas.com/admin: namespace
+    sas.com/registry-sync: default
+  name: sas-cas-management
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/name: sas-cas-control
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+    sas.com/registry-providers: jobExecution-provider,jobExecution-provider-casl
+    sas.com/registry-sync: default
+    sas.com/registry-tags: proxy
+  labels:
+    app.kubernetes.io/name: sas-cas-control
+    sas.com/admin: namespace
+    sas.com/registry-sync: default
+  name: sas-cas-proxy
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/name: sas-cas-control
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+    sas.com/registry-providers: rowSets-provider,rowSets-provider-cas
+    sas.com/registry-sync: default
+    sas.com/registry-tags: proxy
+  labels:
+    app.kubernetes.io/name: sas-cas-control
+    sas.com/admin: namespace
+    sas.com/registry-sync: default
+  name: sas-cas-row-sets
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/name: sas-cas-control
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/kustomize-base: golang
+    sas.com/pod-uses-liveness-probe: http
+    sas.com/pod-uses-readiness-probe: http
+    sas.com/pod-uses-startup-probe: http
+    sidecar.istio.io/proxyCPU: 15m
+    sidecar.istio.io/proxyMemory: 115Mi
+  labels:
+    app.kubernetes.io/name: sas-cas-control
+    sas.com/admin: namespace
+    sas.com/deployment-base: golang
+    workload.sas.com/class: stateless
+  name: sas-cas-control
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-cas-control
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /internal/metrics
+        prometheus.io/port: "8080"
+        prometheus.io/scheme: http
+        prometheus.io/scrape: "true"
+        sas.com/certificate-file-format: pem
+        sas.com/kustomize-base: golang
+        sas.com/pod-uses-liveness-probe: http
+        sas.com/pod-uses-readiness-probe: http
+        sas.com/pod-uses-startup-probe: http
+        sidecar.istio.io/proxyCPU: 15m
+        sidecar.istio.io/proxyMemory: 115Mi
+      labels:
+        app: sas-cas-control
+        app.kubernetes.io/name: sas-cas-control
+        workload.sas.com/class: stateless
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateless
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - compute
+                - cas
+                - stateful
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - sas-cas-control
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution: []
+      automountServiceAccountToken: true
+      containers:
+      - env:
+        - name: SAS_K8S_DEPLOYMENT_NAME
+          value: sas-cas-control
+        envFrom:
+        - configMapRef:
+            name: sas-go-config
+        - configMapRef:
+            name: sas-shared-config
+        - secretRef:
+            name: sas-consul-client
+        image: sas-cas-control
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - sh
+              - -c
+              - sleep 5
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /internal/live
+            port: http
+            scheme: HTTP
+          periodSeconds: 20
+          timeoutSeconds: 5
+        name: sas-cas-control
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /internal/ready
+            port: http
+            scheme: HTTP
+          periodSeconds: 20
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 500m
+            memory: 2500Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add: []
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        startupProbe:
+          failureThreshold: 180
+          httpGet:
+            path: /internal/live
+            port: http
+            scheme: HTTP
+          periodSeconds: 10
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+      imagePullSecrets: []
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: sas-cas-control
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - emptyDir: {}
+        name: tmp
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  annotations:
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: base
+  name: sas-cas-control
+spec:
+  minAvailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-cas-control
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  annotations:
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: golang
+  name: sas-cas-control
+spec:
+  maxReplicas: 1
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sas-cas-control

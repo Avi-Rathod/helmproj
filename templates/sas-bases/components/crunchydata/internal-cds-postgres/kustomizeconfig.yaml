@@ -1,0 +1,12 @@
+nameReference:
+- kind: Secret
+  version: v1
+  fieldSpecs:
+  - kind: PostgresCluster
+    group: postgres-operator.crunchydata.com
+    version: v1beta1
+    path: spec/imagePullSecrets/name
+  - kind: PGUpgrade
+    group: postgres-operator.crunchydata.com
+    version: v1beta1
+    path: spec/imagePullSecrets/name

@@ -1,0 +1,22 @@
+apiVersion: orchestration.sas.com/v2beta6
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-pyconfig
+    sas.com/component-version: 1.21.7-20241008.1728403724456
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: sas-pyconfig
+    participate.lifecycle.sas.com/deploy-post: "true"
+  name: deploy-post-pyconfig
+spec:
+  args:
+  - name: namespace
+  - name: manifest
+  steps:
+  - args:
+    - pyconfig-runonce-execute
+    - --namespace
+    - $namespace
+    cmd: run
+    when: (.ManifestResource $manifest (((((.NewManifestResourcesIterationSpec).WithGroup "batch").WithVersion "v1").WithKind "CronJob").WithName "sas-pyconfig"))

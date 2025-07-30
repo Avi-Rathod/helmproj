@@ -1,0 +1,14 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: detection-definition-sa-transformer
+patch: |-
+  # Add serviceAcountName
+  - op: add
+    path: /spec/template/spec/serviceAccountName
+    value: sas-detection-definition
+target:
+  group: apps
+  kind: Deployment
+  name: sas-detection-definition
+  version: v1

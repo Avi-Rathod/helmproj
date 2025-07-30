@@ -1,0 +1,99 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-server-host-launch
+patch: |-
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/securityContext
+    value: {}
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/securityContext/allowPrivilegeEscalation
+    value: true
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/securityContext/capabilities
+    value: {}
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/securityContext/capabilities
+    value:
+      add: ["SETGID", "SETUID", "CHOWN", "DAC_READ_SEARCH", "FOWNER", "KILL", "AUDIT_WRITE" ]
+      drop: ["ALL"]
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/securityContext/privileged
+    value: false
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/securityContext/readOnlyRootFilesystem
+    value: true
+  - op: add
+    path: /spec/controllerTemplate/spec/volumes/-
+    value:
+      name: sudo-ts-tmp
+      emptyDir: {}
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/volumeMounts/-
+    value:
+      name: sudo-ts-tmp
+      mountPath: /run/sudo
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/1/securityContext
+    value: {}
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/1/securityContext/allowPrivilegeEscalation
+    value: true
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/1/securityContext/capabilities
+    value: {}
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/1/securityContext/capabilities
+    value:
+      add: ["CHOWN", "DAC_READ_SEARCH", "FOWNER"]
+      drop: ["ALL"]
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/1/securityContext/privileged
+    value: false
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/1/securityContext/readOnlyRootFilesystem
+    value: true
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  # The following name specification will target all CAS servers. To target specific
+  # CAS servers, comment out the following line then uncomment and edit one of the lines
+  # targeting specific CAS servers.
+  name: .*
+  # Uncomment this to apply to one particular named CAS server:
+  #name: {{ NAME-OF-SERVER }}
+  # Uncomment this to apply to the default CAS server:
+  #labelSelector: "sas.com/cas-server-default"
+  version: v1alpha1
+
+#Update securityContext for sas-backup-pv-copy-cleanup-job spec
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: update-fsgroup-securitycontext-sas-backup-pv-copy-cleanup-job-transformer
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/securityContext
+    value: {}
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/securityContext/allowPrivilegeEscalation
+    value: true
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/securityContext/capabilities
+    value: {}
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/securityContext/capabilities
+    value:
+      add: ["CHOWN", "DAC_READ_SEARCH", "FOWNER"]
+      drop: ["ALL"]
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/securityContext/privileged
+    value: false
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/securityContext/readOnlyRootFilesystem
+    value: true
+target:
+  kind: CronJob
+  name: sas-backup-pv-copy-cleanup-job

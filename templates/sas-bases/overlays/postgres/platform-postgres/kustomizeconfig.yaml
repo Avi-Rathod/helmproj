@@ -1,0 +1,5 @@
+nameReference:
+- kind: Secret
+  fieldSpecs:
+  - path: spec/users/credentials/input/secretRef/name
+    kind: DataServer

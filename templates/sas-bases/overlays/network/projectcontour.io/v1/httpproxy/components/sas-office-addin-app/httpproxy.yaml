@@ -1,0 +1,34 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-office-addin-app
+    sas.com/admin: namespace
+  name: sas-office-addin-app
+spec:
+  routes:
+  - conditions:
+    - prefix: /SASOfficeAddin
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /SASOfficeAddin/
+    services:
+    - name: sas-office-addin-app
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /SASOfficeAddin/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-office-addin-app
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

@@ -1,0 +1,276 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-analyticsComponents
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-components
+    sas.com/admin: namespace
+  name: sas-analytics-components
+spec:
+  host: $(INGRESS_HOST)
+  path: /analyticsComponents
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-analytics-components
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-analyticsComponents
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-components
+    sas.com/admin: namespace
+  name: sas-analytics-components-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /analyticsComponents
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-analytics-components
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-analyticsDataSegmentation
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-data-segmentation
+    sas.com/admin: namespace
+  name: sas-analytics-data-segmentation
+spec:
+  host: $(INGRESS_HOST)
+  path: /analyticsDataSegmentation
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-analytics-data-segmentation
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-analyticsDataSegmentation
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-data-segmentation
+    sas.com/admin: namespace
+  name: sas-analytics-data-segmentation-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /analyticsDataSegmentation
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-analytics-data-segmentation
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-analyticsFlows
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-flows
+    sas.com/admin: namespace
+  name: sas-analytics-flows
+spec:
+  host: $(INGRESS_HOST)
+  path: /analyticsFlows
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-analytics-flows
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-analyticsFlows
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-flows
+    sas.com/admin: namespace
+  name: sas-analytics-flows-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /analyticsFlows
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-analytics-flows
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-analyticsLocalization
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-localization
+    sas.com/admin: namespace
+  name: sas-analytics-localization
+spec:
+  host: $(INGRESS_HOST)
+  path: /analyticsLocalization
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-analytics-localization
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-analyticsLocalization
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-localization
+    sas.com/admin: namespace
+  name: sas-analytics-localization-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /analyticsLocalization
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-analytics-localization
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-analyticsPipelines
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-pipelines
+    sas.com/admin: namespace
+  name: sas-analytics-pipelines
+spec:
+  host: $(INGRESS_HOST)
+  path: /analyticsPipelines
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-analytics-pipelines
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-analyticsPipelines
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-pipelines
+    sas.com/admin: namespace
+  name: sas-analytics-pipelines-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /analyticsPipelines
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-analytics-pipelines
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-analyticsValidation
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-validation
+    sas.com/admin: namespace
+  name: sas-analytics-validation
+spec:
+  host: $(INGRESS_HOST)
+  path: /analyticsValidation
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-analytics-validation
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-analyticsValidation
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-validation
+    sas.com/admin: namespace
+  name: sas-analytics-validation-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /analyticsValidation
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-analytics-validation
+  wildcardPolicy: Subdomain
+

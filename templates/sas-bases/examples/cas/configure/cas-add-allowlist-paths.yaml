@@ -1,0 +1,35 @@
+# This block of code is for appending paths to the file system path
+# allowlist for the CAS server.  The {{ PATH-OR-VOLUME }} and
+# {{ PATH-OR-VOLUME-2 }} values can be either the name of a
+# Volume or a direct path.  These two values are provided
+# as an example for appending multiple paths to the
+# appendCASAllowlistPaths array.
+# If the value is the name of a Volume, e.g., "test-data-volume",
+# the CAS Operator will discover any Volume Mounts associated with
+# that Volume and append those path(s) to the CAS allowlist.
+# If the value is a path, e.g., "/data03/test-data", this
+# path will appended to the CAS allowlist directly.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-add-allowlist-paths
+patch: |-
+  - op: add
+    path: /spec/appendCASAllowlistPaths/-
+    value:
+      {{ PATH-OR-VOLUME }}
+  - op: add
+    path: /spec/appendCASAllowlistPaths/-
+    value:
+      {{ PATH-OR-VOLUME-2 }}
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  # Uncomment this to apply to all CAS servers:
+  name: .*
+  # Uncomment this to apply to one particular named CAS server:
+  #name: {{ NAME-OF-SERVER }}
+  # Uncomment this to apply to the default CAS server:
+  #labelSelector: "sas.com/cas-server-default"
+  version: v1alpha1

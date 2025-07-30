@@ -1,0 +1,176 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-restore-cronjob-truststores-only-transformer
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/initContainers/-
+    value:
+      name: sas-certframe
+      image: sas-certframe
+      env:
+      - name: KUBE_POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: SAS_CERTFRAME_TOKEN_DIR
+        value: /certframe-token
+      - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+        value: /customer-provided-ca-certificates
+      envFrom:
+      - configMapRef:
+          name: sas-certframe-ingress-certificate-config
+      - configMapRef:
+          name: sas-certframe-truststore-config
+      volumeMounts:
+      - name: certframe-token
+        mountPath: /certframe-token
+      - name: security
+        mountPath: /security
+      - name: customer-provided-ca-certificates
+        mountPath: /customer-provided-ca-certificates
+      resources:
+        requests:
+          memory: "50Mi"
+          cpu: "50m"
+        limits:
+          memory: "500Mi"
+          cpu: "500m"
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/envFrom/-
+    value:
+      configMapRef:
+        name: sas-certframe-truststore-config
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/volumeMounts/-
+    value:
+      name: security
+      mountPath: /security
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/volumeMounts/-
+    value:
+      name: security
+      mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
+      subPath: cacerts
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/volumeMounts/-
+    value:
+      name: security
+      mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
+      subPath: private
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/volumes/-
+    value:
+      name: certframe-token
+      secret:
+        secretName: sas-certframe-token
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/volumes/-
+    value:
+      name: security
+      emptyDir: {}
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/volumes/-
+    value:
+      name: customer-provided-ca-certificates
+      configMap:
+        name: sas-customer-provided-ca-certificates
+target:
+  kind: CronJob
+  annotationSelector: sas.com/component-name=sas-restore-job
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-restore-job-truststores-only-transformer
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/-
+    value:
+      name: sas-certframe
+      image: sas-certframe
+      env:
+      - name: KUBE_POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: SAS_CERTFRAME_TOKEN_DIR
+        value: /certframe-token
+      - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+        value: /customer-provided-ca-certificates
+      envFrom:
+      - configMapRef:
+          name: sas-certframe-ingress-certificate-config
+      - configMapRef:
+          name: sas-certframe-truststore-config
+      volumeMounts:
+      - name: certframe-token
+        mountPath: /certframe-token
+      - name: security
+        mountPath: /security
+      - name: customer-provided-ca-certificates
+        mountPath: /customer-provided-ca-certificates
+      resources:
+        requests:
+          memory: "50Mi"
+          cpu: "50m"
+        limits:
+          memory: "500Mi"
+          cpu: "500m"
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+  - op: add
+    path: /spec/template/spec/containers/0/envFrom/-
+    value:
+      configMapRef:
+        name: sas-certframe-truststore-config
+  - op: add
+    path: /spec/template/spec/containers/0/volumeMounts/-
+    value:
+      name: security
+      mountPath: /security
+  - op: add
+    path: /spec/template/spec/containers/0/volumeMounts/-
+    value:
+      name: security
+      mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
+      subPath: cacerts
+  - op: add
+    path: /spec/template/spec/containers/0/volumeMounts/-
+    value:
+      name: security
+      mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
+      subPath: private
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: certframe-token
+      secret:
+        secretName: sas-certframe-token
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: security
+      emptyDir: {}
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: customer-provided-ca-certificates
+      configMap:
+        name: sas-customer-provided-ca-certificates
+target:
+  kind: Job
+  annotationSelector: sas.com/component-name=sas-restore-job

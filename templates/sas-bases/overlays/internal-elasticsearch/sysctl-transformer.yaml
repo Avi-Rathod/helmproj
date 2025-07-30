@@ -1,0 +1,28 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-opendistro-sysctl-transformer
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/-
+    value:
+      name: sas-opendistro-sysctl
+      image: sas-opendistro-sysctl
+      resources:
+        limits:
+          cpu: 500m
+          memory: 500Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+      securityContext:
+        allowPrivilegeEscalation: true
+        capabilities:
+          drop:
+          - ALL
+        privileged: true
+        readOnlyRootFilesystem: true
+        runAsNonRoot: false
+target:
+  kind: OpenDistroCluster

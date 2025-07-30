@@ -1,0 +1,22 @@
+###################################################################################
+# Kustomize patch configuration to edit the Locale and Encoding defaults in the
+# sas-launcher-init-nls-config configmap. Changing these defaults will affect the
+# default locale/encodings that are used to create SAS Sessions.
+# See README.md for more information.
+###############################################################################
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-launcher-locale-encoding-defaults
+patch: |-
+  - op: replace
+    path: /data/SAS_LAUNCHER_INIT_LOCALE_DEFAULT
+    value: {{ LOCALE-DEFAULT }}
+  - op: replace
+    path: /data/SAS_LAUNCHER_INIT_ENCODING_DEFAULT
+    value: {{ ENCODING-DEFAULT }}
+target:
+  version: v1
+  kind: ConfigMap
+  name: sas-launcher-init-nls-config

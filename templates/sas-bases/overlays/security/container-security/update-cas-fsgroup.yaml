@@ -1,0 +1,28 @@
+## Patch that ensure fsGroup exists and is numeric
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: ensure-fsgroup-exists-casdeployment-transformer
+target:
+  kind: CASDeployment
+patch: |-
+  - op: add
+    path: /spec/controllerTemplate/spec/securityContext/fsGroup
+    value: 0
+## Replacement that updates fsGroup to the desired value
+---
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: update-fsgroup-casdeployment-transformer
+replacements:
+- source:
+    kind: ConfigMap
+    name: security-container-security-inputs
+    fieldPath: data.fsGroup
+  targets:
+  - select:
+      kind: CASDeployment
+    fieldPaths:
+      - spec.controllerTemplate.spec.securityContext.fsGroup

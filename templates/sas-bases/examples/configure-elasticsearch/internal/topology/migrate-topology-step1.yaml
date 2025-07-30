@@ -1,0 +1,37 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-opendistro-migrate-topology-step1
+# update the patch value to define cluster nodes 
+patch: |-
+  - op: add
+    path: /spec/nodes/-
+    value:
+      name: custom-master
+      replicas: 3
+      roles:
+        - master
+      heapsize: 2G
+      volume:
+        resources:
+          requests:
+            storage: 40Gi
+  - op: add
+    path: /spec/nodes/-
+    value:
+      name: custom-data
+      replicas: 3
+      roles:
+        - data
+      heapsize: 8G
+      volume:
+        resources:
+          requests:
+            storage: 128Gi
+
+  # note that additional op replace blocks can be used to alter image, env, jvm, security and other paths      
+
+target:
+  kind: OpenDistroCluster
+  name: sas-opendistro

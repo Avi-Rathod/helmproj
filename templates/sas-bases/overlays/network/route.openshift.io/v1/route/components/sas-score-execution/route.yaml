@@ -1,0 +1,46 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-scoreExecution
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-score-execution
+    sas.com/admin: namespace
+  name: sas-score-execution
+spec:
+  host: $(INGRESS_HOST)
+  path: /scoreExecution
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-score-execution
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-scoreExecution
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-score-execution
+    sas.com/admin: namespace
+  name: sas-score-execution-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /scoreExecution
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-score-execution
+  wildcardPolicy: Subdomain
+

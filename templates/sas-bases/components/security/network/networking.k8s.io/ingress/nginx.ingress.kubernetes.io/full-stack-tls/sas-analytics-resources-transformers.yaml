@@ -1,0 +1,210 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-analytics-components-full-stack-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: full-stack
+  - op: replace
+    path: /spec/rules/0/http/paths/0/backend/service/port/number
+    value: 443
+  - op: replace
+    path: /spec/rules/1/http/paths/0/backend/service/port/number
+    value: 443
+  - op: add
+    path: /spec/tls
+    value: [{hosts: [$(INGRESS_HOST), '*.$(INGRESS_HOST)'], secretName: sas-ingress-certificate}]
+target:
+  version: v1
+  kind: Ingress
+  name: sas-analytics-components
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-analytics-components-full-stack-tls-transformer-nginx
+patch: |-
+  - op: add
+    path: /metadata/annotations/nginx.ingress.kubernetes.io~1backend-protocol
+    value: HTTPS
+target:
+  version: v1
+  kind: Ingress
+  name: sas-analytics-components
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-analytics-data-segmentation-full-stack-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: full-stack
+  - op: replace
+    path: /spec/rules/0/http/paths/0/backend/service/port/number
+    value: 443
+  - op: replace
+    path: /spec/rules/1/http/paths/0/backend/service/port/number
+    value: 443
+  - op: add
+    path: /spec/tls
+    value: [{hosts: [$(INGRESS_HOST), '*.$(INGRESS_HOST)'], secretName: sas-ingress-certificate}]
+target:
+  version: v1
+  kind: Ingress
+  name: sas-analytics-data-segmentation
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-analytics-data-segmentation-full-stack-tls-transformer-nginx
+patch: |-
+  - op: add
+    path: /metadata/annotations/nginx.ingress.kubernetes.io~1backend-protocol
+    value: HTTPS
+target:
+  version: v1
+  kind: Ingress
+  name: sas-analytics-data-segmentation
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-analytics-flows-full-stack-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: full-stack
+  - op: replace
+    path: /spec/rules/0/http/paths/0/backend/service/port/number
+    value: 443
+  - op: replace
+    path: /spec/rules/1/http/paths/0/backend/service/port/number
+    value: 443
+  - op: add
+    path: /spec/tls
+    value: [{hosts: [$(INGRESS_HOST), '*.$(INGRESS_HOST)'], secretName: sas-ingress-certificate}]
+target:
+  version: v1
+  kind: Ingress
+  name: sas-analytics-flows
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-analytics-flows-full-stack-tls-transformer-nginx
+patch: |-
+  - op: add
+    path: /metadata/annotations/nginx.ingress.kubernetes.io~1backend-protocol
+    value: HTTPS
+target:
+  version: v1
+  kind: Ingress
+  name: sas-analytics-flows
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-analytics-localization-full-stack-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: full-stack
+  - op: replace
+    path: /spec/rules/0/http/paths/0/backend/service/port/number
+    value: 443
+  - op: replace
+    path: /spec/rules/1/http/paths/0/backend/service/port/number
+    value: 443
+  - op: add
+    path: /spec/tls
+    value: [{hosts: [$(INGRESS_HOST), '*.$(INGRESS_HOST)'], secretName: sas-ingress-certificate}]
+target:
+  version: v1
+  kind: Ingress
+  name: sas-analytics-localization
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-analytics-localization-full-stack-tls-transformer-nginx
+patch: |-
+  - op: add
+    path: /metadata/annotations/nginx.ingress.kubernetes.io~1backend-protocol
+    value: HTTPS
+target:
+  version: v1
+  kind: Ingress
+  name: sas-analytics-localization
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-analytics-pipelines-full-stack-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: full-stack
+  - op: replace
+    path: /spec/rules/0/http/paths/0/backend/service/port/number
+    value: 443
+  - op: replace
+    path: /spec/rules/1/http/paths/0/backend/service/port/number
+    value: 443
+  - op: add
+    path: /spec/tls
+    value: [{hosts: [$(INGRESS_HOST), '*.$(INGRESS_HOST)'], secretName: sas-ingress-certificate}]
+target:
+  version: v1
+  kind: Ingress
+  name: sas-analytics-pipelines
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-analytics-pipelines-full-stack-tls-transformer-nginx
+patch: |-
+  - op: add
+    path: /metadata/annotations/nginx.ingress.kubernetes.io~1backend-protocol
+    value: HTTPS
+target:
+  version: v1
+  kind: Ingress
+  name: sas-analytics-pipelines
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-analytics-validation-full-stack-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: full-stack
+  - op: replace
+    path: /spec/rules/0/http/paths/0/backend/service/port/number
+    value: 443
+  - op: replace
+    path: /spec/rules/1/http/paths/0/backend/service/port/number
+    value: 443
+  - op: add
+    path: /spec/tls
+    value: [{hosts: [$(INGRESS_HOST), '*.$(INGRESS_HOST)'], secretName: sas-ingress-certificate}]
+target:
+  version: v1
+  kind: Ingress
+  name: sas-analytics-validation
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-analytics-validation-full-stack-tls-transformer-nginx
+patch: |-
+  - op: add
+    path: /metadata/annotations/nginx.ingress.kubernetes.io~1backend-protocol
+    value: HTTPS
+target:
+  version: v1
+  kind: Ingress
+  name: sas-analytics-validation

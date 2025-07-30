@@ -1,0 +1,441 @@
+
+---
+apiVersion: v1
+automountServiceAccountToken: false
+kind: ServiceAccount
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  name: sas-data-agent-server-colocated
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    sas.com/admin: cluster-wide
+  name: sas-data-agent-server-colocated
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - create
+  - get
+  - list
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    sas.com/admin: cluster-local
+  name: sas-data-agent-server-colocated
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sas-data-agent-server-colocated
+subjects:
+- kind: ServiceAccount
+  name: sas-data-agent-server-colocated
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+    sas.com/registry-sync: default
+    sas.com/registry-tags: proxy
+  labels:
+    app.kubernetes.io/name: sas-data-agent-server-colocated
+    sas.com/admin: namespace
+    sas.com/registry-sync: default
+  name: sas-data-agent-server-colocated
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/name: sas-data-agent-server-colocated
+  sessionAffinity: ClientIP
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/kustomize-base: base
+    sas.com/sas-access-config: "true"
+    sidecar.istio.io/proxyCPU: 15m
+    sidecar.istio.io/proxyMemory: 115Mi
+  labels:
+    app.kubernetes.io/name: sas-data-agent-server-colocated
+    sas.com/admin: namespace
+    sas.com/data-agent: colocated
+    sas.com/restart: "true"
+    workload.sas.com/class: stateful
+  name: sas-data-agent-server-colocated
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-data-agent-server-colocated
+  serviceName: sas-data-agent-server-colocated
+  template:
+    metadata:
+      annotations:
+        sas.com/certificate-file-format: pem
+        sas.com/kustomize-base: base
+        sidecar.istio.io/proxyCPU: 15m
+        sidecar.istio.io/proxyMemory: 115Mi
+      labels:
+        app: sas-data-agent-server-colocated
+        app.kubernetes.io/name: sas-data-agent-server-colocated
+        workload.sas.com/class: stateful
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateful
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - compute
+                - cas
+                - stateless
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution: []
+          requiredDuringSchedulingIgnoredDuringExecution: []
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - sas-data-agent-server-colocated
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution: []
+      automountServiceAccountToken: true
+      containers:
+      - env:
+        - name: SAS_DA_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: CONSUL_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: CONSUL_TOKEN
+              name: sas-consul-client
+        - name: CONSUL_HTTP_ADDR
+          valueFrom:
+            configMapKeyRef:
+              key: CONSUL_HTTP_ADDR
+              name: sas-go-config
+        - name: SAS_LICENSE
+          valueFrom:
+            secretKeyRef:
+              key: SAS_LICENSE
+              name: sas-license
+        - name: SAS_DA_OAUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: SAS_DA_OAUTH_SECRET
+              name: sas-data-agent-server-colocated-secrets
+        envFrom:
+        - configMapRef:
+            name: sas-shared-config
+        - secretRef:
+            name: sas-consul-client
+        - configMapRef:
+            name: sas-data-agent-server-colocated-config
+        - configMapRef:
+            name: sas-access-config
+        image: sas-data-agent-server-colocated
+        imagePullPolicy: IfNotPresent
+        name: sas-data-agent-server-colocated
+        ports:
+        - containerPort: 25141
+          name: http
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - test
+            - -f
+            - /tmp/healthy
+          initialDelaySeconds: 45
+          periodSeconds: 60
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 1Gi
+          requests:
+            cpu: 50m
+            memory: 650Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add: []
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /etc/podinfo
+          name: podinfo
+        - mountPath: /tmp
+          name: tmp-volume
+        - mountPath: /opt/sas/viya/config/etc/dagentsrv/default
+          name: da-def-volume
+        - mountPath: /opt/sas/viya/config/etc/serviceaccount/dagentsrv/default
+          name: sa-da-def-volume
+        - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/tokens
+          name: tokens-volume
+      imagePullSecrets: []
+      initContainers: []
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: sas-data-agent-server-colocated
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - downwardAPI:
+          items:
+          - fieldRef:
+              fieldPath: metadata.annotations
+            path: annotations
+        name: podinfo
+      - emptyDir: {}
+        name: tmp-volume
+      - emptyDir: {}
+        name: da-def-volume
+      - emptyDir: {}
+        name: sa-da-def-volume
+      - emptyDir: {}
+        name: tokens-volume
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  annotations:
+    sas.com/ha-class: decentralized
+    sas.com/kustomize-base: decentralized
+  name: sas-data-agent-server-colocated
+spec:
+  minAvailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-data-agent-server-colocated
+
+---
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  annotations:
+    launcher.sas.com/jobContainerName: sas-data-agent-server-colocated
+    sas.com/certificate-file-format: pem
+    sas.com/component-name: sas-data-agent-server-colocated
+    sas.com/config-init-mode: initcontainer
+    sas.com/kustomize-base: base
+    sas.com/sas-access-config: "true"
+    sidecar.istio.io/proxyCPU: 15m
+    sidecar.istio.io/proxyMemory: 115Mi
+  labels:
+    sas.com/admin: namespace
+    sas.com/data-agent: colocated
+    sas.com/deployment: sas-viya
+    sas.com/pod-container-image: sas-data-agent-server-colocated
+    sas.com/restart: "false"
+    sas.com/template-intent: sas-launcher
+    sas.com/uses-start-sequencer: "true"
+    workload.sas.com/class: stateless
+  name: sas-data-agent-server-colocated
+template:
+  metadata:
+    annotations:
+      sas.com/certificate-file-format: pem
+      sas.com/kustomize-base: base
+      sidecar.istio.io/proxyCPU: 15m
+      sidecar.istio.io/proxyMemory: 115Mi
+    labels:
+      app: sas-data-agent-server-colocated
+      workload.sas.com/class: stateless
+  spec:
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - stateless
+          weight: 100
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: NotIn
+              values:
+              - cas
+              - compute
+              - stateful
+          weight: 50
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.azure.com/mode
+              operator: NotIn
+              values:
+              - system
+      podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+    automountServiceAccountToken: false
+    containers:
+    - env:
+      - name: CONSUL_TOKEN
+        valueFrom:
+          secretKeyRef:
+            key: CONSUL_TOKEN
+            name: sas-consul-client
+      - name: CONSUL_HTTP_ADDR
+        valueFrom:
+          configMapKeyRef:
+            key: CONSUL_HTTP_ADDR
+            name: sas-go-config
+      - name: SAS_DA_NAMESPACE
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.namespace
+      - name: SAS_K8S_DEPLOYMENT_NAME
+        value: sas-data-agent-server-colocated
+      - name: SAS_LICENSE
+        valueFrom:
+          secretKeyRef:
+            key: SAS_LICENSE
+            name: sas-license
+      envFrom:
+      - configMapRef:
+          name: sas-data-agent-server-colocated-config
+      - configMapRef:
+          name: sas-shared-config
+      - secretRef:
+          name: sas-consul-client
+      - configMapRef:
+          name: sas-access-config
+      image: sas-data-agent-server-colocated
+      imagePullPolicy: IfNotPresent
+      name: sas-data-agent-server-colocated
+      ports:
+      - containerPort: 25141
+        name: http
+        protocol: TCP
+      resources:
+        limits:
+          cpu: "2"
+          memory: 1Gi
+        requests:
+          cpu: 50m
+          memory: 650Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          add: []
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      volumeMounts:
+      - mountPath: /etc/podinfo
+        name: podinfo
+      - mountPath: /tmp
+        name: tmp-volume
+      - mountPath: /opt/sas/viya/config/etc/dagentsrv/default
+        name: da-def-volume
+      - mountPath: /opt/sas/viya/config/etc/serviceaccount/dagentsrv/default
+        name: sa-da-def-volume
+      - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/tokens
+        name: tokens-volume
+    imagePullSecrets: []
+    initContainers: []
+    restartPolicy: Never
+    securityContext:
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: sas-data-agent-server-colocated
+    serviceAccountName: sas-data-agent-server-colocated
+    tolerations:
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: stateless
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: stateful
+    volumes:
+    - downwardAPI:
+        items:
+        - fieldRef:
+            fieldPath: metadata.annotations
+          path: annotations
+      name: podinfo
+    - emptyDir: {}
+      name: tmp-volume
+    - emptyDir: {}
+      name: da-def-volume
+    - emptyDir: {}
+      name: sa-da-def-volume
+    - emptyDir: {}
+      name: tokens-volume

@@ -1,0 +1,34 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-execution
+    sas.com/admin: namespace
+  name: sas-analytics-execution
+spec:
+  routes:
+  - conditions:
+    - prefix: /analyticsExecution
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /analyticsExecution/
+    services:
+    - name: sas-analytics-execution
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /analyticsExecution/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-analytics-execution
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

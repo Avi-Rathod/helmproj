@@ -1,0 +1,41 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-decisions-runtime-builder
+spec:
+  host: sas-decisions-runtime-builder
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /decisionsRuntimeBuilder/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-decisions-runtime-builder
+    sas.com/admin: namespace
+  name: sas-decisions-runtime-builder
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /decisionsRuntimeBuilder
+    - uri:
+        prefix: /decisionsRuntimeBuilder/
+    route:
+    - destination:
+        host: sas-decisions-runtime-builder
+    timeout: 300s
+

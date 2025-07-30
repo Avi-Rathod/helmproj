@@ -1,0 +1,7 @@
+bases:
+- ../crd
+- ../rbac/namespace
+- ../manager
+
+patches:
+- path: manager-target.yaml

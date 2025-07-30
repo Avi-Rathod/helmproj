@@ -1,0 +1,48 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-report-templates-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: add
+    path: /spec/tls
+    value: [{hosts: [$(INGRESS_HOST), '*.$(INGRESS_HOST)'], secretName: sas-ingress-certificate}]
+target:
+  version: v1
+  kind: Ingress
+  name: sas-report-templates
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-report-transforms-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: add
+    path: /spec/tls
+    value: [{hosts: [$(INGRESS_HOST), '*.$(INGRESS_HOST)'], secretName: sas-ingress-certificate}]
+target:
+  version: v1
+  kind: Ingress
+  name: sas-report-transforms
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-reports-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: add
+    path: /spec/tls
+    value: [{hosts: [$(INGRESS_HOST), '*.$(INGRESS_HOST)'], secretName: sas-ingress-certificate}]
+target:
+  version: v1
+  kind: Ingress
+  name: sas-reports

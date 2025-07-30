@@ -1,0 +1,27 @@
+apiVersion: orchestration.sas.com/v2beta4
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-commonfiles
+    sas.com/component-version: 2.4.36-20240917.1726594981014
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: sas-commonfiles
+  name: deploy-pre-commonfiles
+spec:
+  args:
+  - name: namespace
+  - name: timeout
+  steps:
+  - args:
+    - deploy-pre-commonfiles-execute
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    cmd: run
+    when: |-
+      (eq
+        "true"
+        (.Annotation "sas.com/sas-commonfiles-update" (.ClusterResource ((((((.NewClusterResourcesIterationSpec).WithNamespace $namespace).WithGroup "").WithVersion "v1").WithResource "configmap").WithName "sas-deploy-lifecycle-operation-variables")))
+      )

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    sas.com/backup-role: "storage"
+    app.kubernetes.io/part-of: cas
+    sas.com/cas-pvc: backup
+    sas.com/tenant: shared
+    casoperator.sas.com/tenant: shared
+    casoperator.sas.com/instance: default
+  name: sas-cas-backup-data
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 8Gi

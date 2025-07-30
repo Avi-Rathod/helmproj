@@ -1,0 +1,126 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/rewrite-target: /deploymentData/$2
+    nginx.ingress.kubernetes.io/session-cookie-name: sas-ingress-nginx
+    nginx.ingress.kubernetes.io/session-cookie-path: /deploymentData/
+    nginx.ingress.kubernetes.io/session-cookie-samesite: Lax
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-deployment-data
+    sas.com/admin: namespace
+  name: sas-deployment-data
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: $(INGRESS_HOST)
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-deployment-data
+            port:
+              number: 80
+        path: /deploymentData(/|$)(.*)
+        pathType: Prefix
+  - host: '*.$(INGRESS_HOST)'
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-deployment-data
+            port:
+              number: 80
+        path: /deploymentData(/|$)(.*)
+        pathType: Prefix
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/rewrite-target: /licenses/$2
+    nginx.ingress.kubernetes.io/session-cookie-name: sas-ingress-nginx
+    nginx.ingress.kubernetes.io/session-cookie-path: /licenses/
+    nginx.ingress.kubernetes.io/session-cookie-samesite: Lax
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-licenses
+    sas.com/admin: namespace
+  name: sas-licenses
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: $(INGRESS_HOST)
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-licenses
+            port:
+              number: 80
+        path: /licenses(/|$)(.*)
+        pathType: Prefix
+  - host: '*.$(INGRESS_HOST)'
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-licenses
+            port:
+              number: 80
+        path: /licenses(/|$)(.*)
+        pathType: Prefix
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/rewrite-target: /metering/$2
+    nginx.ingress.kubernetes.io/session-cookie-name: sas-ingress-nginx
+    nginx.ingress.kubernetes.io/session-cookie-path: /metering/
+    nginx.ingress.kubernetes.io/session-cookie-samesite: Lax
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-metering
+    sas.com/admin: namespace
+  name: sas-metering
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: $(INGRESS_HOST)
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-metering
+            port:
+              number: 80
+        path: /metering(/|$)(.*)
+        pathType: Prefix
+  - host: '*.$(INGRESS_HOST)'
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-metering
+            port:
+              number: 80
+        path: /metering(/|$)(.*)
+        pathType: Prefix
+

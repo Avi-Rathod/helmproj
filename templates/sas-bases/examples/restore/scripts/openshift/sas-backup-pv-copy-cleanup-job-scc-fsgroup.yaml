@@ -1,0 +1,42 @@
+allowHostDirVolumePlugin: false
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: false
+allowPrivilegedContainer: false
+allowedCapabilities:
+  - SETUID
+  - SETGID
+  - CHOWN
+  - DAC_READ_SEARCH
+  - FOWNER
+apiVersion: security.openshift.io/v1
+defaultAddCapabilities: []
+fsGroup:
+  type: RunAsAny
+groups:
+kind: SecurityContextConstraints
+metadata:
+  annotations:
+    kubernetes.io/description: Security Context Constraints for sas-backup-pv-copy-cleanup-job
+  name: sas-backup-pv-copy-cleanup-job
+priority: 0
+readOnlyRootFilesystem: true
+requiredDropCapabilities:
+  - ALL
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: RunAsAny
+supplementalGroups:
+  type: RunAsAny
+users:
+volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - persistentVolumeClaim
+  - projected
+  - secret
+  - nfs

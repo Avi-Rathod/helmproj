@@ -1,0 +1,23 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-tripwires-postgres-config
+target:
+  kind: ESPServer
+patch: |-
+  - op: add
+    path: /spec/projectTemplate/deployment/spec/template/spec/containers/0/env/-
+    value:
+      name: PGUSER
+      valueFrom:
+        secretKeyRef:
+          name: sas-crunchy-platform-postgres-pguser-dbmsowner
+          key: user
+  - op: add
+    path: /spec/projectTemplate/deployment/spec/template/spec/containers/0/env/-
+    value:
+      name: PGPASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: sas-crunchy-platform-postgres-pguser-dbmsowner
+          key: password

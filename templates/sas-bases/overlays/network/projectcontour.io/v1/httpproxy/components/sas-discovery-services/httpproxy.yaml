@@ -1,0 +1,68 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-discovery
+    sas.com/admin: namespace
+  name: sas-data-discovery
+spec:
+  routes:
+  - conditions:
+    - prefix: /dataDiscovery
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /dataDiscovery/
+    services:
+    - name: sas-data-discovery
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /dataDiscovery/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-data-discovery
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-discovery-table-provider
+    sas.com/admin: namespace
+  name: sas-discovery-table-provider
+spec:
+  routes:
+  - conditions:
+    - prefix: /discoveryTableProvider
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /discoveryTableProvider/
+    services:
+    - name: sas-discovery-table-provider
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /discoveryTableProvider/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-discovery-table-provider
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

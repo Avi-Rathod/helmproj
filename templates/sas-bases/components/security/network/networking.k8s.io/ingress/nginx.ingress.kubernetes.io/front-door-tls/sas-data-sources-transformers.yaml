@@ -1,0 +1,64 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-data-connections-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: add
+    path: /spec/tls
+    value: [{hosts: [$(INGRESS_HOST), '*.$(INGRESS_HOST)'], secretName: sas-ingress-certificate}]
+target:
+  version: v1
+  kind: Ingress
+  name: sas-data-connections
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-data-sources-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: add
+    path: /spec/tls
+    value: [{hosts: [$(INGRESS_HOST), '*.$(INGRESS_HOST)'], secretName: sas-ingress-certificate}]
+target:
+  version: v1
+  kind: Ingress
+  name: sas-data-sources
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-data-tables-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: add
+    path: /spec/tls
+    value: [{hosts: [$(INGRESS_HOST), '*.$(INGRESS_HOST)'], secretName: sas-ingress-certificate}]
+target:
+  version: v1
+  kind: Ingress
+  name: sas-data-tables
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-row-sets-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: add
+    path: /spec/tls
+    value: [{hosts: [$(INGRESS_HOST), '*.$(INGRESS_HOST)'], secretName: sas-ingress-certificate}]
+target:
+  version: v1
+  kind: Ingress
+  name: sas-row-sets

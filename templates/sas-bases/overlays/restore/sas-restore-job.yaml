@@ -1,0 +1,119 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    sas.com/certificate-file-format: pem
+  labels:
+    app.kubernetes.io/name: sas-restore-job
+    sas.com/backup-job-type: "restore"
+    workload.sas.com/class: stateless
+  name: sas-restore-job
+spec:
+  template:
+    metadata:
+      annotations:
+        sas.com/certificate-file-format: pem
+      labels:
+        workload.sas.com/class: stateless
+    spec:
+      automountServiceAccountToken: true
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+        runAsNonRoot: true
+        supplementalGroups: []
+        sysctls: []
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - preference:
+                matchExpressions:
+                  - key: workload.sas.com/class
+                    operator: In
+                    values:
+                      - stateless
+              weight: 100
+            - preference:
+                matchExpressions:
+                  - key: workload.sas.com/class
+                    operator: NotIn
+                    values:
+                      - compute
+                      - cas
+                      - stateful
+              weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.azure.com/mode
+                    operator: NotIn
+                    values:
+                      - system
+      containers:
+        - name: sas-restore-job
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: JOB_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['job-name']
+          envFrom:
+            - configMapRef:
+                name: sas-go-config
+            - configMapRef:
+                name: sas-shared-config
+            - configMapRef:
+                name: sas-java-config
+            - configMapRef:
+                name: sas-restore-job-parameters
+            - secretRef:
+                name: sas-consul-client
+          image: sas-restore-job
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8082
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /sasviyabackup
+              name: backup
+            - mountPath: /sasviyabackuplog
+              name: backup
+            - mountPath: /tmp
+              name: tmp
+          resources:
+            requests:
+              memory: "50Mi"
+              cpu: "50m"
+            limits:
+              memory: "4Gi"
+              cpu: "2"
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+      initContainers: []
+      volumes:
+        - name: backup
+          persistentVolumeClaim:
+            claimName: sas-common-backup-data
+        - name: tmp
+          emptyDir: {}
+      restartPolicy: Never
+      serviceAccountName: sas-viya-backuprunner
+      imagePullSecrets: []
+      tolerations:
+        - effect: NoSchedule
+          key: workload.sas.com/class
+          operator: Equal
+          value: stateful
+        - effect: NoSchedule
+          key: workload.sas.com/class
+          operator: Equal
+          value: stateless

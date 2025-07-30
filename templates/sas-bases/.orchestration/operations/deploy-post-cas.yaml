@@ -1,0 +1,24 @@
+apiVersion: orchestration.sas.com/v2beta10
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-k8s-common
+    sas.com/component-version: 2.89.1-20240916.1726514392006
+  creationTimestamp: null
+  labels:
+    participate.lifecycle.sas.com/deploy-post: "true"
+  name: deploy-post-cas
+spec:
+  args:
+  - name: namespace
+  - name: manifest
+  - name: timeout
+  steps:
+  - args:
+    - deploy-post-cas-execute
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    cmd: run
+    when: (eq (.GetVariable "cas.sas.com/update") "true")

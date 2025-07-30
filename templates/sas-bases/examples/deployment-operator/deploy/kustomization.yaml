@@ -1,0 +1,10 @@
+resources:
+  - operator-base
+transformers:
+  - site-config/transformer.yaml
+  ## Uncomment the following inclusion if you are deploying the
+  ## operator in clusterwide mode.
+  #- site-config/cluster-wide-transformer.yaml
+  ## Uncomment the following inclusion if you are deploying the
+  ## operator in a cluster that does not support seccomp.
+  #- site-config/remove-seccomp-transformer.yaml

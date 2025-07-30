@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" href="sas.css"/>
+        <title>Activate sas-migration-manager</title>
+    </head>
+    <body>
+        <h1 id="140345100107888activate-sas-migration-manager">Activate sas-migration-manager</h1>
+<h2 id="140345100107888overview">Overview</h2>
+<p>The SAS Migration Management service interacts with SAS 9 Content Assessment to
+migrate applicable content from a SAS 9 system to SAS Viya 4.</p>
+<pre><code>  The SAS Migration Management service accesses and maintains information about SAS 9 objects and their statuses in the migration process.
+
+  The SAS Migration Management service provides the following functions:
+
+  1. Upload content from the SAS 9 system captured by SAS Content Assessment.
+  2. Upload profiling information for an object.
+  3. Upload code check information for an object.
+  4. Update or append objects to the content.
+  5. List content based on a filter.
+  6. Create migration batches to subset content to be assessed by SAS Content Assessment.
+  7. Maintain migration batches, including adding and deleting content based on a filter.
+  8. Download a migration batch as a CSV file.
+  9. Log migration batch events.
+</code></pre>
+<p>The sas-migration-manager, microservice is deployed in an idle state (scale=0)
+by default to save resources in Viya unless the user wants to use the migration
+manager. In order to use the migration manager service it will have to be
+activated in a deployment. To activate sas-migration-manager follow the
+installation steps in this document.</p>
+<h2 id="140345100107888installation">Installation</h2>
+<p>To activate sas-migration-manager in your deployment, copy the
+<code>$deploy/sas-bases/examples/sas-migration-manager/scale-migration-on.yaml</code> file
+to your <code>$deploy/site-config/sas-migration-manager</code> directory.</p>
+<p>After you copy the file, add a reference to it in the transformer block of the
+base <code>kustomization.yaml</code> file.</p>
+<pre class="highlight"><code class="language-yaml">transformers:
+  - sas-migration-manager/scale-migration-on.yaml</code></pre>
+
+<h2 id="140345100107888additional-resources">Additional Resources</h2>
+<p>For more information about configuration and using example files, see the
+<a href="http://documentation.sas.com/?softwareId=mysas&amp;softwareVersion=prod&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=titlepage.htm">SAS Viya Platform: Deployment Guide</a>.</p>
+    </body>
+</html>

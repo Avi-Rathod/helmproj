@@ -1,0 +1,46 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-dataMiningRiskModels
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-mining-risk-models
+    sas.com/admin: namespace
+  name: sas-data-mining-risk-models
+spec:
+  host: $(INGRESS_HOST)
+  path: /dataMiningRiskModels
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-data-mining-risk-models
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-dataMiningRiskModels
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-mining-risk-models
+    sas.com/admin: namespace
+  name: sas-data-mining-risk-models-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /dataMiningRiskModels
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-data-mining-risk-models
+  wildcardPolicy: Subdomain
+

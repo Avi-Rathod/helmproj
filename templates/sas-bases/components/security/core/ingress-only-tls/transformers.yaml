@@ -1,0 +1,14 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-certframe-ingress-configmap-secret-name-transformer
+patch: |-
+  kind: ConfigMap
+  metadata:
+    name: sas-certframe-ingress-certificate-config
+  data:
+    SAS_INGRESS_CERTIFICATE_SECRET_NAME: sas-ingress-certificate
+target:
+  kind: ConfigMap
+  name: sas-certframe-ingress-certificate-config

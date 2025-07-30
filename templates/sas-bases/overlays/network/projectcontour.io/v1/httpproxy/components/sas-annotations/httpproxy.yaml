@@ -1,0 +1,34 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-annotations
+    sas.com/admin: namespace
+  name: sas-annotations
+spec:
+  routes:
+  - conditions:
+    - prefix: /annotations
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /annotations/
+    services:
+    - name: sas-annotations
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /annotations/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-annotations
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

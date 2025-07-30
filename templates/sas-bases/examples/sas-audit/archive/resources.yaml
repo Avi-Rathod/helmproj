@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    sas.com/admin: cluster-local
+  name: audit-archive-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: {{ STORAGE-CAPACITY }} # Change this to desired capacity.
+  storageClassName: {{ STORAGE-CLASS }} # Change this the desired storage class.

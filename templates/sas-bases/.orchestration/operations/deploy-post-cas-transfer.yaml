@@ -1,0 +1,32 @@
+apiVersion: orchestration.sas.com/v2beta15
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-k8s-common
+    sas.com/component-version: 2.89.1-20240916.1726514392006
+  creationTimestamp: null
+  name: deploy-post-cas-transfer
+spec:
+  args:
+  - name: namespace
+    required: true
+  - name: casname
+    required: true
+  steps:
+  - args:
+    - Activity on CAS server
+    - $casname
+    - in namespace
+    - $namespace
+    - will be transferred to an updated server.
+    cmd: log
+  - args:
+    - patch
+    - CASDeployments
+    - $casname
+    - --namespace
+    - $namespace
+    - --type=json
+    - --patch
+    - '[{"op": "add", "path": "/spec/startStateTransfer", "value":true}]'
+    cmd: kubectl

@@ -1,0 +1,34 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-explorer-app
+    sas.com/admin: namespace
+  name: sas-data-explorer-app
+spec:
+  routes:
+  - conditions:
+    - prefix: /SASDataExplorer
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /SASDataExplorer/
+    services:
+    - name: sas-data-explorer-app
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /SASDataExplorer/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-data-explorer-app
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

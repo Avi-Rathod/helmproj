@@ -1,0 +1,19 @@
+# This block of code is used to modify the PVC access mode for the cas-default-data and
+# cas-default-permstore persistentVolumeClaims.
+# The default value for ACCESS-MODE is ReadWriteMany. To change it, replace the
+# variable with ReadWriteOnce.  ReadWriteOnce is only supported for SMP Deployments with
+# no backup controllers and has implications to how the deployment could be altered in the
+# future. Refer to the Viya Deployment Documentation for more information.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-storage-access-modes
+patch: |-
+  - op: replace
+    path: /spec/accessModes
+    value:
+      - {{ ACCESS-MODE }}
+target:
+  kind: PersistentVolumeClaim
+  labelSelector: sas.com/cas-pvc in (permstore, data)

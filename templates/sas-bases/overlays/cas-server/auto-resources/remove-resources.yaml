@@ -1,0 +1,20 @@
+# This block of code removes the resource requests for cpu and memory. This is used
+#  in conjunction with the auto-resources overlay to enable the sas-cas-operator
+#  to automatically determine the resource limits.  This requires that the sas-cas-operator
+#  Service account have a ClusterRole to read the 'nodes' resources as created by the
+#  cluster-role.yaml and cluster-role-binding.yaml files.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: remove-resources
+patch: |-
+  - op: remove
+    path: /spec/controllerTemplate/spec/containers/0/resources/requests/cpu
+  - op: remove
+    path: /spec/controllerTemplate/spec/containers/0/resources/requests/memory
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  name: .*
+  version: v1alpha1

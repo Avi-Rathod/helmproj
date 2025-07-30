@@ -1,0 +1,9 @@
+---
+nameReference:
+- kind: Secret
+  version: v1
+  fieldSpecs:
+  - path: spec/routeTemplate/metadata/annotations/cert-utils-operator.redhat-cop.io\/certs-from-secret
+    kind: CASDeployment
+  - path: spec/routeTemplate/metadata/annotations/cert-utils-operator.redhat-cop.io\/destinationCA-from-secret
+    kind: CASDeployment

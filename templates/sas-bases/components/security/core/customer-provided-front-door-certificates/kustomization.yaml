@@ -1,0 +1,7 @@
+kind: Component
+
+components:
+- ../base/front-door-tls
+
+transformers:
+- transformers.yaml

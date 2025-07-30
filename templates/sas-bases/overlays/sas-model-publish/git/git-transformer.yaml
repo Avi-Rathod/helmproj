@@ -1,0 +1,23 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-model-publish-git-transformer
+patch: |-
+  # AStore volume
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: gitpublish
+      persistentVolumeClaim:
+        claimName: sas-model-publish-git
+  #Add mount path for git ( /models/git/publish )
+  - op: add
+    path: /spec/template/spec/containers/0/volumeMounts/-
+    value:
+      name: gitpublish
+      mountPath: /models/git/publish
+target:
+  group: apps
+  kind: Deployment
+  name: sas-model-publish
+  version: v1

@@ -1,0 +1,3 @@
+varReference:
+  - path: spec/virtualhost/fqdn
+    kind: HTTPProxy

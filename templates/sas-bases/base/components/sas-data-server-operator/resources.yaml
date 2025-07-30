@@ -1,0 +1,567 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.11.1
+  creationTimestamp: null
+  name: dataservers.webinfdsvr.sas.com
+spec:
+  group: webinfdsvr.sas.com
+  names:
+    kind: DataServer
+    listKind: DataServerList
+    plural: dataservers
+    singular: dataserver
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: DataServer is the Schema for the Dataservers API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              databases:
+                items:
+                  properties:
+                    accessTypes:
+                      items:
+                        type: string
+                      type: array
+                    desiredState:
+                      type: string
+                    name:
+                      type: string
+                    outputs:
+                      items:
+                        properties:
+                          outputType:
+                            type: string
+                          patternName:
+                            type: string
+                          patternValues:
+                            additionalProperties:
+                              type: string
+                            type: object
+                        type: object
+                      type: array
+                    owner:
+                      type: string
+                    scripts:
+                      items:
+                        properties:
+                          patternName:
+                            type: string
+                          patternValues:
+                            additionalProperties:
+                              type: string
+                            type: object
+                        type: object
+                      type: array
+                  required:
+                  - name
+                  type: object
+                type: array
+              registrations:
+                items:
+                  properties:
+                    dataServiceName:
+                      type: string
+                    desiredState:
+                      type: string
+                    host:
+                      type: string
+                    patternName:
+                      type: string
+                    patternValues:
+                      additionalProperties:
+                        type: string
+                      type: object
+                    port:
+                      type: integer
+                    registrationType:
+                      type: string
+                    serviceName:
+                      description: optional, defaults to metadata.name
+                      type: string
+                    tags:
+                      items:
+                        type: string
+                      type: array
+                  type: object
+                type: array
+              ssl:
+                type: boolean
+              users:
+                items:
+                  properties:
+                    accessTypes:
+                      items:
+                        type: string
+                      type: array
+                    credentials:
+                      properties:
+                        input:
+                          properties:
+                            inputType:
+                              type: string
+                            passwordKey:
+                              type: string
+                            patternName:
+                              type: string
+                            patternValues:
+                              additionalProperties:
+                                type: string
+                              type: object
+                            scripts:
+                              items:
+                                properties:
+                                  patternName:
+                                    type: string
+                                  patternValues:
+                                    additionalProperties:
+                                      type: string
+                                    type: object
+                                type: object
+                              type: array
+                            secretRef:
+                              description: LocalObjectReference contains enough information
+                                to let you locate the referenced object inside the
+                                same namespace.
+                              properties:
+                                name:
+                                  default: ""
+                                  description: 'Name of the referent. This field is
+                                    effectively required, but due to backwards compatibility
+                                    is allowed to be empty. Instances of this type
+                                    with an empty value here are almost certainly
+                                    wrong. TODO: Add other useful fields. apiVersion,
+                                    kind, uid? More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Drop `kubebuilder:default` when controller-gen
+                                    doesn''t need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.'
+                                  type: string
+                              type: object
+                              x-kubernetes-map-type: atomic
+                            usernameKey:
+                              type: string
+                          type: object
+                        outputs:
+                          items:
+                            properties:
+                              outputType:
+                                type: string
+                              patternName:
+                                type: string
+                              patternValues:
+                                additionalProperties:
+                                  type: string
+                                type: object
+                            type: object
+                          type: array
+                      required:
+                      - input
+                      type: object
+                    desiredState:
+                      type: string
+                    name:
+                      type: string
+                  required:
+                  - credentials
+                  - name
+                  type: object
+                type: array
+            required:
+            - databases
+            - registrations
+            - ssl
+            - users
+            type: object
+          status:
+            description: DataServerStatus defines the observed state of DataServer
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+
+---
+apiVersion: v1
+automountServiceAccountToken: false
+kind: ServiceAccount
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  name: sas-data-server-operator
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    sas.com/admin: cluster-wide
+  name: sas-data-server-operator
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - create
+  - delete
+  - get
+  - update
+- apiGroups:
+  - webinfdsvr.sas.com
+  resources:
+  - dataservers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - webinfdsvr.sas.com
+  resources:
+  - dataservers/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - webinfdsvr.sas.com
+  resources:
+  - dataservers/status
+  verbs:
+  - get
+  - patch
+  - update
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    sas.com/admin: cluster-wide
+  name: sas-data-server-operator-dataserver-editor
+rules:
+- apiGroups:
+  - webinfdsvr.sas.com
+  resources:
+  - dataservers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - watch
+  - update
+  - patch
+- apiGroups:
+  - webinfdsvr.sas.com
+  resources:
+  - dataservers/status
+  verbs:
+  - get
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    sas.com/admin: cluster-wide
+  name: sas-data-server-operator-dataserver-viewer
+rules:
+- apiGroups:
+  - webinfdsvr.sas.com
+  resources:
+  - dataservers
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - webinfdsvr.sas.com
+  resources:
+  - dataservers/status
+  verbs:
+  - get
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    sas.com/admin: cluster-wide
+  name: sas-data-server-operator-leader-election-role
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - configmaps/status
+  verbs:
+  - get
+  - update
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    sas.com/admin: cluster-local
+  name: sas-data-server-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sas-data-server-operator
+subjects:
+- kind: ServiceAccount
+  name: sas-data-server-operator
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    sas.com/admin: cluster-local
+  name: sas-data-server-operator-leader-election-role-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sas-data-server-operator-leader-election-role
+subjects:
+- kind: ServiceAccount
+  name: sas-data-server-operator
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/kustomize-base: controller-manager
+    sas.com/pod-uses-liveness-probe: http
+    sas.com/pod-uses-readiness-probe: http
+    sas.com/pod-uses-startup-probe: http
+    sidecar.istio.io/proxyCPU: 15m
+    sidecar.istio.io/proxyMemory: 115Mi
+  labels:
+    app.kubernetes.io/name: sas-data-server-operator
+    sas.com/admin: namespace
+    sas.com/deployment-base: controller-manager
+    workload.sas.com/class: stateless
+  name: sas-data-server-operator
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-data-server-operator
+  template:
+    metadata:
+      annotations:
+        sas.com/certificate-file-format: pem
+        sas.com/kustomize-base: controller-manager
+        sas.com/pod-uses-liveness-probe: http
+        sas.com/pod-uses-readiness-probe: http
+        sas.com/pod-uses-startup-probe: http
+        sidecar.istio.io/proxyCPU: 15m
+        sidecar.istio.io/proxyMemory: 115Mi
+      labels:
+        app: sas-data-server-operator
+        app.kubernetes.io/name: sas-data-server-operator
+        workload.sas.com/class: stateless
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateless
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - compute
+                - cas
+                - stateful
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - sas-data-server-operator
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution: []
+      automountServiceAccountToken: true
+      containers:
+      - args:
+        - --enable-leader-election
+        command:
+        - /manager
+        env:
+        - name: SAS_K8S_DEPLOYMENT_NAME
+          value: sas-data-server-operator
+        - name: GOPROXY
+          value: http://goproxy.sas.com:3000
+        - name: SAS_LOG_SOURCE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: WATCH_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        envFrom:
+        - configMapRef:
+            name: sas-shared-config
+        - secretRef:
+            name: sas-consul-client
+        - configMapRef:
+            name: sas-go-config
+        image: sas-data-server-operator
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - sh
+              - -c
+              - sleep 5
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /internal/live
+            port: http
+            scheme: HTTP
+          periodSeconds: 10
+        name: sas-data-server-operator
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /internal/ready
+            port: http
+            scheme: HTTP
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add: []
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        startupProbe:
+          failureThreshold: 180
+          httpGet:
+            path: /internal/live
+            port: http
+            scheme: HTTP
+          periodSeconds: 10
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+      imagePullSecrets: []
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: sas-data-server-operator
+      terminationGracePeriodSeconds: 10
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - emptyDir: {}
+        name: tmp

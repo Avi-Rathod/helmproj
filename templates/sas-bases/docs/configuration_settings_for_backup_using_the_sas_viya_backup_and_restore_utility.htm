@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" href="sas.css"/>
+        <title>Configuration Settings for Backup Using the SAS Viya Backup and Restore Utility</title>
+    </head>
+    <body>
+        <h1 id="140345106796896configuration-settings-for-backup-using-the-sas-viya-backup-and-restore-utility">Configuration Settings for Backup Using the SAS Viya Backup and Restore Utility</h1>
+<h2 id="140345106796896overview">Overview</h2>
+<p>This README describes how to revise and apply the settings for
+configuring backup jobs.</p>
+<h2 id="140345106796896change-the-storageclass-for-persistentvolumeclaims-used-for-storing-backups">Change the StorageClass for PersistentVolumeClaims Used for Storing Backups</h2>
+<p>If you want to retain the PersistentVolumeClaim (PVC) used for backup utility when the namespace is deleted,
+then use a StorageClass with a ReclaimPolicy of&rsquo;Retain&rsquo; as the backup PVC.</p>
+<ol>
+<li>
+<p>Copy the file <code>$deploy/sas-bases/examples/backup/configure/sas-common-backup-data-storage-class-transformer.yaml</code>
+to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
+</li>
+<li>
+<p>Follow the instructions in the copied sas-common-backup-data-storage-class-transformer.yaml
+file to change the values in that file as necessary.</p>
+</li>
+<li>
+<p>Add the full path of the copied file to the transformers block of the base
+kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). For example, if you
+moved the file to <code>$deploy/site-config/backup</code>, you would modify the
+base kustomization.yaml file like this:</p>
+<pre class="highlight"><code class="language-yaml">...
+transformers:
+...
+- site-config/backup/sas-common-backup-data-storage-class-transformer.yaml
+...</code></pre>
+
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345106796896change-the-storage-size-for-the-sas-common-backup-data-persistentvolumeclaim">Change the Storage Size for the <code>sas-common-backup-data</code> PersistentVolumeClaim</h2>
+<ol>
+<li>
+<p>Copy the file <code>$deploy/sas-bases/examples/backup/configure/sas-common-backup-data-storage-size-transformer.yaml</code>
+to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
+</li>
+<li>
+<p>Follow the instructions in the copied sas-common-backup-data-storage-size-transformer.yaml
+file to change the values in that file as necessary.</p>
+</li>
+<li>
+<p>Add the full path of the copied file to the transformers block of the base
+kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). For example, if you
+moved the file to <code>$deploy/site-config/backup</code>, you would modify the
+base kustomization.yaml file like this:</p>
+<pre class="highlight"><code class="language-yaml">...
+transformers:
+...
+- site-config/backup/sas-common-backup-data-storage-size-transformer.yaml
+...</code></pre>
+
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345106796896change-the-default-backup-schedule-to-a-custom-schedule">Change the Default Backup Schedule to a Custom Schedule</h2>
+<p>By default, the backup utility is run once per week on Sundays at 1:00 a.m. Use
+the following instructions to schedule a backup more suited to your resources.</p>
+<ol>
+<li>
+<p>Copy the file <code>$deploy/sas-bases/examples/backup/configure/sas-scheduled-backup-job-change-default-backup-transformer.yaml</code>
+to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
+</li>
+<li>
+<p>Replace {{ SCHEDULE-BACKUP-CRON-EXPRESSION }} with the cron expression for the desired schedule in the copied sas-scheduled-backup-job-change-default-backup-transformer.yaml.</p>
+</li>
+<li>
+<p>Add the full path of the copied file to the transformers block of the base
+kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). For example, if you
+moved the file to <code>$deploy/site-config/backup</code>, you would modify the
+base kustomization.yaml file like this:</p>
+<pre class="highlight"><code class="language-yaml">...
+transformers:
+...
+- site-config/backup/sas-scheduled-backup-job-change-default-backup-transformer.yaml
+...</code></pre>
+
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345106796896customize-the-default-incremental-backup-schedule">Customize the Default Incremental Backup Schedule</h2>
+<p>By default, the incremental backup is run daily at 6:00 a.m. Use the following instructions to change the schedule of this additional job to a time more suited to your resources.</p>
+<ol>
+<li>
+<p>Copy the file <code>$deploy/sas-bases/examples/backup/configure/sas-scheduled-backup-incr-job-change-default-schedule.yaml</code>
+to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
+</li>
+<li>
+<p>In the copied file, replace {{ SCHEDULE-BACKUP-CRON-EXPRESSION }} with the cron expression for the desired schedule.</p>
+</li>
+<li>
+<p>Add the full path of the copied file to the transformers block of the base
+kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). For example, if you
+moved the file to <code>$deploy/site-config/backup</code>, you would modify the
+base kustomization.yaml file like this:</p>
+<pre class="highlight"><code class="language-yaml">...
+transformers:
+...
+- site-config/backup/sas-scheduled-backup-incr-job-change-default-schedule.yaml
+...</code></pre>
+
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345106796896change-the-default-schedule-to-back-up-all-sources-to-a-custom-schedule">Change the Default Schedule to Back Up All Sources to a Custom Schedule</h2>
+<p>By default, the additional job to back up all the data sources (including PostgreSQL) is suspended. When enabled, the job is scheduled to run once per week on Saturdays at 1:00 a.m by default.
+Use the following instructions to change the schedule of this additional job to a time more suited to your resources.
+This job should not be scheduled at the same time as <code>sas-scheduled-backup-job</code> or the <code>sas-scheduled-backup-incr-job</code>.</p>
+<ol>
+<li>
+<p>Copy the file <code>$deploy/sas-bases/examples/backup/configure/sas-scheduled-backup-all-sources-change-default-schedule.yaml</code>
+to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
+</li>
+<li>
+<p>In the copied file, Replace {{ SCHEDULE-BACKUP-CRON-EXPRESSION }} with the cron expression for the desired schedule in the copied sas-scheduled-backup-all-sources-change-default-schedule.yaml.</p>
+</li>
+<li>
+<p>Add the full path of the copied file to the transformers block of the base
+kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). For example, if you
+moved the file to <code>$deploy/site-config/backup</code>, you would modify the
+base kustomization.yaml file like this:</p>
+<pre class="highlight"><code class="language-yaml">...
+transformers:
+...
+- site-config/backup/sas-scheduled-backup-all-sources-change-default-schedule.yaml
+...</code></pre>
+
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345106796896modify-the-resources-for-the-backup-job">Modify the Resources for the Backup Job</h2>
+<p>If the default resources are not sufficient for the completion or successful execution of the backup job, modify the resources to the values you desire.</p>
+<ol>
+<li>
+<p>Copy the file <code>$deploy/sas-bases/examples/backup/configure/sas-backup-job-modify-resources-transformer.yaml</code>
+to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
+</li>
+<li>
+<p>In the copied file, replace {{ CPU-LIMIT }} with the desired value of CPU.
+{{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
+You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
+</li>
+<li>
+<p>In the same file, replace {{ MEMORY-LIMIT }} with the desired value of memory.
+{{ MEMORY-LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
+</li>
+<li>
+<p>Add the full path of the copied file to the transformers block of the base
+kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). For example, if you
+moved the file to <code>$deploy/site-config/backup</code>, you would modify the
+base kustomization.yaml file like this:</p>
+<pre class="highlight"><code class="language-yaml">...
+transformers:
+...
+- site-config/backup/sas-backup-job-modify-resources-transformer.yaml
+...</code></pre>
+
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345106796896modify-the-resources-of-the-backup-copy-and-cleanup-job">Modify the Resources of the Backup Copy and Cleanup Job</h2>
+<p>If the default resources are not sufficient for the completion or successful execution of the backup copy and cleanup job, modify the resources to the values you desire.</p>
+<ol>
+<li>
+<p>Copy the file <code>$deploy/sas-bases/examples/backup/configure/sas-backup-pv-copy-cleanup-job-modify-resources-transformer.yaml</code>
+to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
+</li>
+<li>
+<p>In the copied file, replace {{ CPU-LIMIT }} with the desired value of CPU.
+{{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
+You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
+</li>
+<li>
+<p>In the same file, replace {{ MEMORY-LIMIT }} with the desired value of memory.
+{{ MEMORY-LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
+</li>
+<li>
+<p>Add the full path of the copied file to the transformers block of the base
+kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). For example, if you
+moved the file to <code>$deploy/site-config/backup</code>, you would modify the
+base kustomization.yaml file like this:</p>
+<pre class="highlight"><code class="language-yaml">...
+transformers:
+...
+- site-config/backup/sas-backup-pv-copy-cleanup-job-modify-resources-transformer.yaml
+...</code></pre>
+
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345106796896modify-the-resources-of-the-backup-agent-container-in-the-cas-controller-pod">Modify the Resources of the Backup Agent Container in the CAS Controller Pod</h2>
+<p>If the default resources are not sufficient for the completion or successful execution of the CAS controller pod,
+modify the resources of backup agent container of CAS controller pod to the values you desire.</p>
+<ol>
+<li>
+<p>Copy the file <code>$deploy/sas-bases/examples/backup/configure/sas-cas-server-backup-agent-modify-resources-transformer.yaml</code>
+to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
+</li>
+<li>
+<p>In the copied file, replace {{ CPU-LIMIT }} with the desired value of CPU.
+{{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
+You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
+</li>
+<li>
+<p>In the same file, replace {{ MEMORY-LIMIT }} with the desired value of memory.
+{{ MEMORY-LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
+</li>
+<li>
+<p>By default the patch will be applied to all of the CAS servers. If the patch transformer is being applied to a single CAS server,
+replace {{ NAME-OF-CAS-SERVER }} with the named CAS server in the same file and comment out the lines &lsquo;name: .*&rsquo; and &lsquo;labelSelector: &ldquo;sas.com/cas-server-default&rdquo;&rsquo; with a hashtag (#).</p>
+</li>
+<li>
+<p>Add the full path of the copied file to the transformers block of the base
+kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). For example, if you
+moved the file to <code>$deploy/site-config/backup</code>, you would modify the
+base kustomization.yaml file like this:</p>
+<pre class="highlight"><code class="language-yaml">...
+transformers:
+...
+- site-config/backup/sas-cas-server-backup-agent-modify-resources-transformer.yaml
+...</code></pre>
+
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345106796896change-backup-job-timeout">Change Backup Job Timeout</h2>
+<ol>
+<li>
+<p>If you need to change the backup job timeout value, add an entry to the sas-backup-job-parameters configMap in the configMapGenerator block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</code>).
+The entry uses the following format, where {{ TIMEOUT-IN-MINUTES }} is an integer</p>
+<pre class="highlight"><code class="language-yaml">configMapGenerator:
+- name: sas-backup-job-parameters
+  behavior: merge
+  literals:
+  - JOB_TIME_OUT={{ TIMEOUT-IN-MINUTES }}</code></pre>
+
+<p>If the sas-backup-job-parameters configMap is already present in the base kustomization.yaml file, you should add the last line only. If the configMap is not present, add the entire example.</p>
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345106796896change-backup-retention-period">Change Backup Retention Period</h2>
+<ol>
+<li>
+<p>If you need to change the backup retention period, add an entry to the sas-backup-job-parameters configMap in the configMapGenerator block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</code>).
+The entry uses the following format, where {{ RETENTION-PERIOD-IN-DAYS }} is an integer.</p>
+<pre class="highlight"><code class="language-yaml">configMapGenerator:
+- name: sas-backup-job-parameters
+  behavior: merge
+  literals:
+  - RETENTION_PERIOD={{ RETENTION-PERIOD-IN-DAYS }}</code></pre>
+
+<p>If the sas-backup-job-parameters configMap is already present in the base kustomization.yaml file, you should add the last line only. If the configMap is not present, add the entire example.</p>
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345106796896back-up-additional-consul-properties">Back Up Additional Consul Properties</h2>
+<ol>
+<li>
+<p>If you want to back up additional consul properties, keys can be added to the sas-backup-agent-parameters configMap in the base kustomization.yaml file (<code>$deploy/kustomization.yaml</code>).
+To add keys, add a data block to the configMap.
+If the sas-backup-agent-parameters configMap is already included in your base kustomization.yaml file, you should add the last line only. If the configMap isn&rsquo;t included, add the entire block.</p>
+<pre class="highlight"><code class="language-yaml">configMapGenerator:
+- name: sas-backup-agent-parameters
+  behavior: merge
+  literals:
+  - BACKUP_ADDITIONAL_GENERIC_PROPERTIES="{{ CONSUL-KEY-LIST }}"</code></pre>
+
+<p>The {{ CONSUL-KEY-LIST }} should be a comma-separated list of properties to be backed up. Here is an example:</p>
+<pre class="highlight"><code class="language-yaml">configMapGenerator:
+- name: sas-backup-agent-parameters
+  behavior: merge
+  literals:
+  - BACKUP_ADDITIONAL_GENERIC_PROPERTIES="config/files/sas.files/maxFileSize,config/files/sas.files/blockedTypes"</code></pre>
+
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345106796896exclude-specific-folders-and-files-during-file-system-backup">Exclude Specific Folders and Files During File System Backup</h2>
+<ol>
+<li>
+<p>To exclude specific folders and files during file system backup, add an entry to the sas-backup-job-parameters configMap in the configMapGenerator block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</code>).
+If the sas-backup-job-parameters configMap is already included in your base kustomization.yaml file, you should add the last line only. If the configMap isn&rsquo;t included, add the entire block.</p>
+<pre class="highlight"><code class="language-yaml">configMapGenerator:
+- name: sas-backup-job-parameters
+  behavior: merge
+  literals:
+  - FILESYSTEM_BACKUP_EXCLUDELIST="{{ EXCLUDE_PATTERN }}"</code></pre>
+
+<p>The {{ EXCLUDE_PATTERN }} should be a comma-separated list of patterns for files or folders to be excluded from the backup.
+ Here is an example that excludes all the files with extensions &ldquo;.tmp&rdquo; or &ldquo;.log&rdquo;:</p>
+<pre class="highlight"><code class="language-yaml">configMapGenerator:
+- name: sas-backup-job-parameters
+  behavior: merge
+  literals:
+  - FILESYSTEM_BACKUP_EXCLUDELIST="*.tmp,*.log"</code></pre>
+
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345106796896change-the-default-filter-to-exclude-specific-folders-and-files-during-file-system-backup">Change the Default Filter to Exclude Specific Folders and Files During File System Backup</h2>
+<ol>
+<li>
+<p>By default, the filter list is set to exclude &ldquo;<em>.lck&rdquo;, &ldquo;.</em>&rdquo; and &ldquo;lost+found&rdquo; files and folders pattern from the file system backup. To change the default filter list to exclude files and folders
+during file system backup, add an entry to the sas-backup-job-parameters configMap in the
+configMapGenerator block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</code>).
+If the sas-backup-job-parameters configMap is already included in your base kustomization.yaml file, you should add the last line only. If the configMap isn&rsquo;t included, add the entire block.</p>
+<pre class="highlight"><code class="language-yaml">configMapGenerator:
+- name: sas-backup-job-parameters
+  behavior: merge
+  literals:
+  - FILESYSTEM_BACKUP_OVERRIDE_EXCLUDELIST="{{ EXCLUDE_PATTERN }}"</code></pre>
+
+<p>The {{ EXCLUDE_PATTERN }} should be a comma-separated list of patterns for files or folders to be excluded from the backup.
+ Here is an example that excludes all the files with extensions &ldquo;.tmp&rdquo; or &ldquo;.log&rdquo;:</p>
+<pre class="highlight"><code class="language-yaml">configMapGenerator:
+- name: sas-backup-job-parameters
+  behavior: merge
+  literals:
+  - FILESYSTEM_BACKUP_OVERRIDE_EXCLUDELIST="*.tmp,*.log"</code></pre>
+
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345106796896disable-backup-job-failure-notification">Disable Backup Job Failure Notification</h2>
+<ol>
+<li>
+<p>By default, you are notified if the backup job fails. To disable backup job failure notification, add an entry to the sas-backup-job-parameters configMap in the configMapGenerator block of the base
+kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). Replace {{ ENABLE-NOTIFICATIONS }} with the string &ldquo;false&rdquo;.</p>
+<pre class="highlight"><code class="language-yaml">configMapGenerator:
+- name: sas-backup-job-parameters
+  behavior: merge
+  literals:
+  - ENABLE_NOTIFICATIONS={{ ENABLE-NOTIFICATIONS }}</code></pre>
+
+<p>If the sas-backup-job-parameters configMap is already present in the base kustomization.yaml file, add the last line only. If the configMap is not present, add the entire example.</p>
+<p>To restore the default, change the value of {{ ENABLE-NOTIFICATIONS }} from &ldquo;false&rdquo; to &ldquo;true&rdquo;.</p>
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345106796896include-or-exclude-all-registered-postgresql-servers-from-backup">Include or Exclude All Registered PostgreSQL Servers from Backup</h2>
+<ol>
+<li>
+<p>To include or exclude all Postgres servers registered with SAS Viya in the default back up, add the INCLUDE_POSTGRES variable to sas-backup-job-parameters configMap in the configMapGenerator
+block of the base kustomization.yaml file ($deploy/kustomization.yaml). If the sas-backup-job-parameters configMap is already present in the base kustomization.yaml file, you should add the last line only.
+If the configMap is not present, add the entire example.</p>
+<pre class="highlight"><code class="language-yaml">configMapGenerator:
+- name: sas-backup-job-parameters
+  behavior: merge
+  literals:
+  - INCLUDE_POSTGRES="{{ INCLUDE-POSTGRES }}"</code></pre>
+
+</li>
+<li>
+<p>To include all the registered PostgreSQL servers, replace {{ INCLUDE-POSTGRES }} in the code with a value &lsquo;true&rsquo;.
+To exclude all the registered PostgreSQL servers, replace {{ INCLUDE-POSTGRES }} in the code with a value &lsquo;false&rsquo;.</p>
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345106796896modify-the-fsgroup-resources-of-the-backup-and-restore-jobs">Modify the fsGroup Resources of the Backup and Restore Jobs</h2>
+<p>If using the default fsGroup settings does not result in the completion or successful execution of the backup job, modify the fsGroup resources to the values you desire.</p>
+<ol>
+<li>
+<p>Copy the file <code>$deploy/sas-bases/examples/backup/configure/sas-backup-job-modify-fsgroup-transformer.yaml</code>
+to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
+</li>
+<li>
+<p>Follow the instructions in the copied sas-backup-job-modify-fsgroup-transformer.yaml
+file to change the values in that file as necessary.</p>
+</li>
+<li>
+<p>Add the full path of the copied file to the transformers block of the base
+kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). For example, if you
+moved the file to <code>$deploy/site-config/backup</code>, you would modify the
+base kustomization.yaml file like this:</p>
+<pre class="highlight"><code class="language-yaml">...
+transformers:
+...
+- site-config/backup/sas-backup-job-modify-fsgroup-transformer.yaml
+...</code></pre>
+
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345106796896disable-resource-validation">Disable Resource Validation</h2>
+<p>By default, resources such as space available for a PVC are pre-validated against PVC capacity to store data for a backup job. You can disable the resource validations for backup job if necessary.</p>
+<h3 id="140345106796896disable-the-resource-validation-temporarily">Disable the resource validation temporarily</h3>
+<p>Add an entry to the sas-backup-job-parameters configMap with the following command.</p>
+<pre class="highlight"><code class="language-bash">kubectl patch cm sas-backup-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/DISABLE_VALIDATION", "value":"true" }]'</code></pre>
+
+<h3 id="140345106796896disable-the-resource-validations-permanently">Disable the resource validations permanently</h3>
+<ol>
+<li>
+<p>Add an entry to the sas-backup-job-parameters configMap in the configMapGenerator block of the base kustomization.yaml file.</p>
+<pre class="highlight"><code class="language-yaml">configMapGenerator:
+- name: sas-backup-job-parameters
+  behavior: merge
+  literals:
+  - DISABLE_VALIDATION="true"</code></pre>
+
+<p>If the sas-backup-job-parameters configMap is already present in the base kustomization.yaml file, add the last line only. If the configMap is not present, add the entire example.</p>
+</li>
+<li>
+<p>Build and apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+    </body>
+</html>

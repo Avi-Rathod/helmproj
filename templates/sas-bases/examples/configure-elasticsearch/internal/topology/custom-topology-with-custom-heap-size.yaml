@@ -1,0 +1,26 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-opendistro-custom-topology-with-custom-heap-size
+# update the patch value to define cluster nodes 
+patch: |-
+  - op: replace
+    path: /spec/nodes
+    value:
+      - name: custom-master
+        replicas: 3
+        roles:
+          - master
+        heapsize: {{HEAP-SIZE}}
+      - name: custom-data
+        replicas: 3
+        roles:
+          - data
+        heapsize: {{HEAP-SIZE}}
+
+  # note that additional op replace blocks can be used to alter image, env, jvm, security and other paths      
+
+target:
+  kind: OpenDistroCluster
+  name: sas-opendistro

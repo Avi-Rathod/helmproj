@@ -1,0 +1,19 @@
+###################################################################################
+# Kustomize patch configuration to change the add the launcher.sas.com/nfs-server
+# PodTemplate annotation. This allows you to configure Viya with the location of
+# the NFS server hosting a user's home directories at deployment time. The path
+# is determined by the identities service.
+# See README.md for more information.
+###############################################################################
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-launcher-nfs-mount
+patch: |-
+  - op: add
+    path: /metadata/annotations/launcher.sas.com~1nfs-server
+    value: {{ NFS-SERVER-LOCATION }}
+target:
+  kind: PodTemplate
+  labelSelector: sas.com/template-intent=sas-launcher

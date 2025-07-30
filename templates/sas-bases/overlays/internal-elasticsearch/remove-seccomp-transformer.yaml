@@ -1,0 +1,11 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-opendistro-disable-seccomp
+patch: |-
+   - op: replace
+     path: /spec/disableSeccomp
+     value:
+       true
+target:
+  kind: OpenDistroCluster

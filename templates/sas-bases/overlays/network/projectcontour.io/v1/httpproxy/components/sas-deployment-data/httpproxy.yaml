@@ -1,0 +1,102 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-deployment-data
+    sas.com/admin: namespace
+  name: sas-deployment-data
+spec:
+  routes:
+  - conditions:
+    - prefix: /deploymentData
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /deploymentData/
+    services:
+    - name: sas-deployment-data
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /deploymentData/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-deployment-data
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-licenses
+    sas.com/admin: namespace
+  name: sas-licenses
+spec:
+  routes:
+  - conditions:
+    - prefix: /licenses
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /licenses/
+    services:
+    - name: sas-licenses
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /licenses/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-licenses
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-metering
+    sas.com/admin: namespace
+  name: sas-metering
+spec:
+  routes:
+  - conditions:
+    - prefix: /metering
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /metering/
+    services:
+    - name: sas-metering
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /metering/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-metering
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

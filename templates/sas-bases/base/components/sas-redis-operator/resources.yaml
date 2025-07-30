@@ -1,0 +1,569 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: distributedredisclusters.redis.kun
+spec:
+  group: redis.kun
+  names:
+    kind: DistributedRedisCluster
+    listKind: DistributedRedisClusterList
+    plural: distributedredisclusters
+    shortNames:
+    - drc
+    singular: distributedrediscluster
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - description: The number of redis master node in the ensemble
+      jsonPath: .spec.masterSize
+      name: MasterSize
+      type: integer
+    - description: The status of redis cluster
+      jsonPath: .status.status
+      name: Status
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: The current master number of redis cluster
+      jsonPath: .status.numberOfMaster
+      name: CurrentMasters
+      priority: 1
+      type: integer
+    - description: The image of redis cluster
+      jsonPath: .spec.image
+      name: Images
+      priority: 1
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: DistributedRedisCluster is the Schema for the distributedredisclusters
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DistributedRedisClusterSpec defines the desired state of
+              DistributedRedisCluster
+            properties:
+              clusterReplicas:
+                default: 1
+                format: int32
+                maximum: 3
+                minimum: 1
+                type: integer
+              config:
+                additionalProperties:
+                  type: string
+                type: object
+              masterSize:
+                default: 3
+                format: int32
+                maximum: 3
+                minimum: 3
+                type: integer
+              shutdown:
+                type: boolean
+              storage:
+                properties:
+                  class:
+                    type: string
+                  deleteClaim:
+                    type: boolean
+                  size:
+                    default: 1Gi
+                    type: string
+                  type:
+                    default: persistent-claim
+                    type: string
+                type: object
+            type: object
+          status:
+            description: DistributedRedisClusterStatus defines the observed state
+              of DistributedRedisCluster
+            properties:
+              maxReplicationFactor:
+                type: integer
+              minReplicationFactor:
+                type: integer
+              nodes:
+                items:
+                  properties:
+                    id:
+                      type: string
+                    ip:
+                      type: string
+                    masterRef:
+                      type: string
+                    nodeName:
+                      type: string
+                    podName:
+                      type: string
+                    port:
+                      type: string
+                    role:
+                      type: string
+                    slots:
+                      items:
+                        type: string
+                      type: array
+                    statefulSet:
+                      type: string
+                  type: object
+                type: array
+              nodesPlacement:
+                type: string
+              numberOfMaster:
+                type: integer
+              reason:
+                type: string
+              status:
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+
+---
+apiVersion: v1
+automountServiceAccountToken: false
+kind: ServiceAccount
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  name: sas-redis-operator
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    sas.com/admin: cluster-wide
+  name: sas-redis-operator
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - secrets
+  - endpoints
+  - persistentvolumeclaims
+  verbs:
+  - get
+  - list
+  - watch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - secrets
+  - services
+  - events
+  - persistentvolumeclaims
+  verbs:
+  - create
+  - get
+  - list
+  - patch
+  - update
+  - watch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  - podtemplates
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  verbs:
+  - create
+  - get
+  - list
+  - patch
+  - update
+  - watch
+  - delete
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  - replicasets
+  - statefulsets
+  verbs:
+  - create
+  - get
+  - list
+  - patch
+  - update
+  - watch
+  - delete
+- apiGroups:
+  - policy
+  resources:
+  - poddisruptionbudgets
+  verbs:
+  - create
+  - get
+  - list
+  - patch
+  - update
+  - watch
+  - delete
+- apiGroups:
+  - apps
+  resourceNames:
+  - redis-operator
+  resources:
+  - deployments/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - redis.kun
+  resources:
+  - '*'
+  verbs:
+  - delete
+  - deletecollection
+  - get
+  - list
+  - patch
+  - update
+  - watch
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app.kubernetes.io/name: sas-redis-operator
+  name: sas-start-all-redis
+rules:
+- apiGroups:
+  - redis.kun
+  resources:
+  - distributedredisclusters
+  verbs:
+  - get
+  - list
+  - patch
+  - watch
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app.kubernetes.io/name: sas-redis-operator
+  name: sas-stop-all-redis
+rules:
+- apiGroups:
+  - redis.kun
+  resources:
+  - distributedredisclusters
+  verbs:
+  - get
+  - list
+  - patch
+  - watch
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    sas.com/admin: cluster-local
+  name: sas-redis-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sas-redis-operator
+subjects:
+- kind: ServiceAccount
+  name: sas-redis-operator
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/name: sas-redis-operator
+  name: sas-start-all-redis
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sas-start-all-redis
+subjects:
+- kind: ServiceAccount
+  name: sas-start-all
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/name: sas-redis-operator
+  name: sas-stop-all-redis
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sas-stop-all-redis
+subjects:
+- kind: ServiceAccount
+  name: sas-stop-all
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  annotations:
+    orchestration.sas.com/literal: "true"
+  name: sas-redis-server-secret
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/kustomize-base: golang
+    sas.com/pod-uses-liveness-probe: exec
+    sas.com/pod-uses-readiness-probe: exec
+    sas.com/pod-uses-startup-probe: exec
+    sidecar.istio.io/proxyCPU: 15m
+    sidecar.istio.io/proxyMemory: 115Mi
+  labels:
+    app.kubernetes.io/name: sas-redis-operator
+    sas.com/admin: namespace
+    sas.com/deployment-base: golang
+    sas.com/zero-scale-phase: "1"
+    workload.sas.com/class: stateless
+  name: sas-redis-operator
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-redis-operator
+  template:
+    metadata:
+      annotations:
+        sas.com/certificate-file-format: pem
+        sas.com/kustomize-base: golang
+        sas.com/pod-uses-liveness-probe: exec
+        sas.com/pod-uses-readiness-probe: exec
+        sas.com/pod-uses-startup-probe: exec
+        sidecar.istio.io/proxyCPU: 15m
+        sidecar.istio.io/proxyMemory: 115Mi
+      labels:
+        app: sas-redis-operator
+        app.kubernetes.io/name: sas-redis-operator
+        workload.sas.com/class: stateless
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateless
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - compute
+                - cas
+                - stateful
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - sas-redis-operator
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution: []
+      automountServiceAccountToken: true
+      containers:
+      - args:
+        - --rename-command-path=/etc/redisconf
+        - --rename-command-file=redis.conf
+        command:
+        - /usr/local/bin/tini
+        - --
+        - redis-operator
+        env:
+        - name: SAS_K8S_DEPLOYMENT_NAME
+          value: sas-redis-operator
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        envFrom:
+        - configMapRef:
+            name: sas-go-config
+        - configMapRef:
+            name: sas-shared-config
+        - secretRef:
+            name: sas-consul-client
+        image: sas-redis-operator
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - sh
+              - -c
+              - sleep 5
+        livenessProbe:
+          exec:
+            command:
+            - pgrep
+            - redis-operator
+          initialDelaySeconds: 5
+          periodSeconds: 30
+          timeoutSeconds: 10
+        name: sas-redis-operator
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - pgrep
+            - redis-operator
+          initialDelaySeconds: 5
+          timeoutSeconds: 10
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add: []
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        startupProbe:
+          exec:
+            command:
+            - pgrep
+            - redis-operator
+          failureThreshold: 30
+          periodSeconds: 10
+          timeoutSeconds: 10
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+        - mountPath: /etc/redisconf
+          name: redisconf
+      imagePullSecrets: []
+      initContainers:
+      - env:
+        - name: SAS_KEYS_SECRET_NAME
+          value: sas-redis-server-secret
+        - name: SAS_KEYS_KEY_NAMES
+          value: REDIS_DEFAULT_PASS REDIS_ADMIN_PASS
+        - name: SAS_SECURITY_ARTIFACTS_DIR
+          value: /security
+        - name: SAS_CERTFRAME_TOKEN_DIR
+          value: /certframe-token
+        image: sas-certframe
+        name: sas-certframe-token-generator
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /security
+          name: security
+        - mountPath: /certframe-token
+          name: certframe-token
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: sas-redis-operator
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - emptyDir: {}
+        name: tmp
+      - configMap:
+          name: sas-redis-admin
+        name: redisconf
+      - name: certframe-token
+        secret:
+          secretName: sas-certframe-token
+      - emptyDir: {}
+        name: security
+
+---
+apiVersion: redis.kun/v1alpha1
+kind: DistributedRedisCluster
+metadata:
+  name: sas-redis-server
+spec:
+  shutdown: false

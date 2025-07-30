@@ -1,0 +1,21 @@
+# This block of code is for specifying the memory resources for Redis nodes.
+# The default required value is 90Mi, the default limit is 500Mi.
+# The redis 'maxmemory' setting is set to 90% of the container memory limit.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: redis-modify-memory
+patch: |-
+    - op: replace
+      path: /template/spec/containers/0/resources/requests/memory
+      value:
+        {{ MEMORY-REQUIRED }}
+    - op: replace
+      path: /template/spec/containers/0/resources/limits/memory
+      value:
+        {{ MEMORY-LIMIT }}
+target:
+  kind: PodTemplate
+  name: sas-redis-server
+  version: v1

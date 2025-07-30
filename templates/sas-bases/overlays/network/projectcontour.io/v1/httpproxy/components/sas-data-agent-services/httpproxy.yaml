@@ -1,0 +1,68 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-agent-content
+    sas.com/admin: namespace
+  name: sas-data-agent-content
+spec:
+  routes:
+  - conditions:
+    - prefix: /dataAgentContent
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /dataAgentContent/
+    services:
+    - name: sas-data-agent-content
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /dataAgentContent/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-data-agent-content
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-agent-management
+    sas.com/admin: namespace
+  name: sas-data-agent-management
+spec:
+  routes:
+  - conditions:
+    - prefix: /dataAgentManagement
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /dataAgentManagement/
+    services:
+    - name: sas-data-agent-management
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /dataAgentManagement/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-data-agent-management
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

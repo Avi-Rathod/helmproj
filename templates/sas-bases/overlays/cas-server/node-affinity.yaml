@@ -1,0 +1,50 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-node-affinity
+patch: |-
+  - op: add
+    path: /spec/controllerTemplate/spec/affinity
+    value:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - cas
+        - weight: 1
+          preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: NotIn
+              values:
+              - compute
+              - stateless
+              - stateful
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.azure.com/mode
+              operator: NotIn
+              values:
+              - system
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                - sas-cas-server
+            topologyKey: kubernetes.io/hostname
+
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  name: .*
+  version: v1alpha1

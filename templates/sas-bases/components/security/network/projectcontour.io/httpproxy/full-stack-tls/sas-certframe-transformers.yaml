@@ -1,0 +1,18 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-certframe-httpproxy-root-full-stack-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: full-stack
+  - op: add
+    path: /spec/virtualhost/tls
+    value:
+      secretName: sas-ingress-certificate
+target:
+  kind: HTTPProxy
+  group: projectcontour.io
+  version: v1
+  name: sas-httpproxy-root

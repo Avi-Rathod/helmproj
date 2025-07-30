@@ -1,0 +1,12 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-migration-manager-on
+patch: |-
+  - op: add
+    path: /spec/replicas
+    value: 1
+target:
+  kind: Deployment
+  name: sas-migration-manager

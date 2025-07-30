@@ -1,0 +1,216 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/configuration-snippet: proxy_set_header X-Sas-Ingress-Request
+      "true";
+    nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/session-cookie-name: sas-ingress-nginx
+    nginx.ingress.kubernetes.io/session-cookie-path: /casAccessManagement/
+    nginx.ingress.kubernetes.io/session-cookie-samesite: Lax
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-access-management
+    sas.com/admin: namespace
+  name: sas-cas-access-management
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: $(INGRESS_HOST)
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-cas-access-management
+            port:
+              number: 80
+        path: /casAccessManagement
+        pathType: Prefix
+  - host: '*.$(INGRESS_HOST)'
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-cas-access-management
+            port:
+              number: 80
+        path: /casAccessManagement
+        pathType: Prefix
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/configuration-snippet: proxy_set_header X-Sas-Ingress-Request
+      "true";
+    nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/session-cookie-name: sas-ingress-nginx
+    nginx.ingress.kubernetes.io/session-cookie-path: /casFormats/
+    nginx.ingress.kubernetes.io/session-cookie-samesite: Lax
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-formats
+    sas.com/admin: namespace
+  name: sas-cas-formats
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: $(INGRESS_HOST)
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-cas-formats
+            port:
+              number: 80
+        path: /casFormats
+        pathType: Prefix
+  - host: '*.$(INGRESS_HOST)'
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-cas-formats
+            port:
+              number: 80
+        path: /casFormats
+        pathType: Prefix
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/configuration-snippet: proxy_set_header X-Sas-Ingress-Request
+      "true";
+    nginx.ingress.kubernetes.io/proxy-body-size: 25g
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+    nginx.ingress.kubernetes.io/session-cookie-name: sas-ingress-nginx
+    nginx.ingress.kubernetes.io/session-cookie-path: /casManagement/
+    nginx.ingress.kubernetes.io/session-cookie-samesite: Lax
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-management
+    sas.com/admin: namespace
+  name: sas-cas-management
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: $(INGRESS_HOST)
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-cas-management
+            port:
+              number: 80
+        path: /casManagement
+        pathType: Prefix
+  - host: '*.$(INGRESS_HOST)'
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-cas-management
+            port:
+              number: 80
+        path: /casManagement
+        pathType: Prefix
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/configuration-snippet: proxy_set_header X-Sas-Ingress-Request
+      "true";
+    nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/session-cookie-name: sas-ingress-nginx
+    nginx.ingress.kubernetes.io/session-cookie-path: /casProxy/
+    nginx.ingress.kubernetes.io/session-cookie-samesite: Lax
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-proxy
+    sas.com/admin: namespace
+  name: sas-cas-proxy
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: $(INGRESS_HOST)
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-cas-proxy
+            port:
+              number: 80
+        path: /casProxy
+        pathType: Prefix
+  - host: '*.$(INGRESS_HOST)'
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-cas-proxy
+            port:
+              number: 80
+        path: /casProxy
+        pathType: Prefix
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/configuration-snippet: proxy_set_header X-Sas-Ingress-Request
+      "true";
+    nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/session-cookie-name: sas-ingress-nginx
+    nginx.ingress.kubernetes.io/session-cookie-path: /casRowSets/
+    nginx.ingress.kubernetes.io/session-cookie-samesite: Lax
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-row-sets
+    sas.com/admin: namespace
+  name: sas-cas-row-sets
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: $(INGRESS_HOST)
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-cas-row-sets
+            port:
+              number: 80
+        path: /casRowSets
+        pathType: Prefix
+  - host: '*.$(INGRESS_HOST)'
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-cas-row-sets
+            port:
+              number: 80
+        path: /casRowSets
+        pathType: Prefix
+

@@ -1,0 +1,20 @@
+# PVC for the transferdir where state information is saved during a state transfer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app.kubernetes.io/part-of: cas
+    sas.com/cas-pvc: transfer
+    sas.com/tenant: shared
+    casoperator.sas.com/tenant: shared
+    casoperator.sas.com/instance: default
+  annotations:
+    sas.com/component-name: sas-cas-operator
+  name: sas-cas-transfer-data
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 8Gi

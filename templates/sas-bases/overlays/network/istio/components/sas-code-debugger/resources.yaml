@@ -1,0 +1,41 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-code-debugger
+spec:
+  host: sas-code-debugger
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /codeDebugger/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-code-debugger
+    sas.com/admin: namespace
+  name: sas-code-debugger
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /codeDebugger
+    - uri:
+        prefix: /codeDebugger/
+    route:
+    - destination:
+        host: sas-code-debugger
+    timeout: 300s
+

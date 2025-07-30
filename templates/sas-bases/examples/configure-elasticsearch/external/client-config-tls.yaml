@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sas-opendistro-client-config
+data:
+  # Replace {{ URL }} with the URL and the port of your external OpenSearch instance
+  SAS_URL_ELASTICSEARCH: "{{URL}}"
+  ELASTICSEARCH_CLIENT_SSL_ENABLED: "true"
+  ELASTICSEARCH_SECURITY: OPENSEARCH

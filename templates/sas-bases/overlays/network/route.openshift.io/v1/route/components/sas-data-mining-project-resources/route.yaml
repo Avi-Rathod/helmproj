@@ -1,0 +1,138 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-dataMining
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-mining
+    sas.com/admin: namespace
+  name: sas-data-mining
+spec:
+  host: $(INGRESS_HOST)
+  path: /dataMining
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-data-mining
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-dataMining
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-mining
+    sas.com/admin: namespace
+  name: sas-data-mining-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /dataMining
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-data-mining
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-dataMiningProjectResources
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-mining-project-resources
+    sas.com/admin: namespace
+  name: sas-data-mining-project-resources
+spec:
+  host: $(INGRESS_HOST)
+  path: /dataMiningProjectResources
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-data-mining-project-resources
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-dataMiningProjectResources
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-mining-project-resources
+    sas.com/admin: namespace
+  name: sas-data-mining-project-resources-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /dataMiningProjectResources
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-data-mining-project-resources
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-dataMiningProjectSettings
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-mining-project-settings
+    sas.com/admin: namespace
+  name: sas-data-mining-project-settings
+spec:
+  host: $(INGRESS_HOST)
+  path: /dataMiningProjectSettings
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-data-mining-project-settings
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-dataMiningProjectSettings
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-mining-project-settings
+    sas.com/admin: namespace
+  name: sas-data-mining-project-settings-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /dataMiningProjectSettings
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-data-mining-project-settings
+  wildcardPolicy: Subdomain
+

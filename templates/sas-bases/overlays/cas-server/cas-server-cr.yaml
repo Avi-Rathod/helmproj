@@ -1,0 +1,210 @@
+apiVersion: viya.sas.com/v1alpha1
+kind: CASDeployment
+metadata:
+  annotations:
+    sas.com/sas-access-config: "true"
+    sas.com/sas-kerberos-config: "true"
+    sas.com/config-init-mode: "initcontainer"
+  labels:
+    app: sas-cas-operator
+    app.kubernetes.io/instance: "$(CAS_INSTANCE)"
+    app.kubernetes.io/name: "cas"
+    app.kubernetes.io/managed-by: sas-cas-operator
+    sas.com/admin: "namespace"
+    workload.sas.com/class: cas
+    sas.com/cas-server-default: "true"
+    sas.com/tenant: "shared"
+    casoperator.sas.com/tenant: "shared"
+    casoperator.sas.com/instance: "$(CAS_INSTANCE)"
+  name: "$(CAS_INSTANCE)"
+spec:
+  controllerTemplate:
+    metadata:
+      annotations: {}
+      labels:
+        pod.security.sas.com/exception-default-capabilities: "exempt"
+        pod.security.sas.com/exception-allow-privilege-escalation: "exempt"
+        pod.security.sas.com/exception-run-as-non-root: "exempt"
+    spec:
+      tolerations:
+      - key: "workload.sas.com/class"
+        operator: "Equal"
+        value: "cas"
+        effect: "NoSchedule"
+      initContainers:
+      - image: sas-config-init
+        imagePullPolicy: IfNotPresent
+        name: sas-config-init
+        env:
+        - name: SAS_INIT_CONFIG_LOG_LEVEL
+          value: INFO
+        envFrom:
+          - configMapRef:
+              name: sas-go-config
+          - configMapRef:
+              name: sas-shared-config
+          - configMapRef:
+              name: sas-access-config
+          - secretRef:
+              name: sas-consul-client
+        volumeMounts:
+          - mountPath: /cas/config/
+            name: cas-default-config-volume
+          - mountPath: /opt/sas/viya/home/commonfiles
+            name: commonfilesvols
+        resources:
+          limits:
+            memory: 500Mi
+            cpu: 500m
+          requests:
+            memory: 500Mi
+            cpu: 500m
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+      containers:
+      - name: sas-cas-server  # required name for the CAS container
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /internal/state
+            port: 8777
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        #args:  # change the command so we can manually run the entrypoint script and debug cas
+          #- while true; do sleep 30; done;
+        #command:
+          #- /bin/bash
+          #- -c
+          #- --
+        env:
+        - name: SAS_LICENSE
+          valueFrom:
+            secretKeyRef:
+              key: SAS_LICENSE
+              name: sas-cas-license
+        - name: CONSUL_HTTP_ADDR
+          value: http://localhost:8500
+        envFrom:
+        - configMapRef:
+            name: sas-shared-config
+        - configMapRef:
+            name: sas-java-config
+        - configMapRef:
+            name: sas-access-config
+        - configMapRef:
+            name: sas-cas-config
+        - configMapRef:
+            name: sas-deployment-metadata
+        - secretRef:
+            name: sas-consul-client
+        image: sas-cas-server
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: 2Gi
+            cpu: 250m
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+        volumeMounts:
+        - name: cas-default-permstore-volume
+          mountPath: /cas/permstore
+        - name: cas-default-data-volume
+          mountPath: /cas/data
+        - name: cas-default-cache-volume
+          mountPath: /cas/cache
+        - name: cas-default-config-volume
+          mountPath: /cas/config
+        - name: cas-tmp-volume
+          mountPath: /tmp
+          subPath: tmp
+        - name: cas-tmp-volume
+          mountPath: /opt/sas/viya/config/tmp/sas-cas
+          subPath: sas-cas
+        - name: cas-license-volume
+          mountPath: /cas/license
+        - name: commonfilesvols
+          mountPath: /opt/sas/viya/home/commonfiles
+          readOnly: true
+        - name: podinfo
+          mountPath: /etc/podinfo
+      imagePullSecrets:
+      - name: sas-image-pull-secrets
+      serviceAccountName: sas-cas-server
+      volumes:
+      - name: podinfo
+        downwardAPI:
+          items:
+            - path: "labels"
+              fieldRef:
+                fieldPath: metadata.labels
+      - name: cas-default-permstore-volume
+        persistentVolumeClaim:
+          claimName: cas-$(CAS_INSTANCE)-permstore
+      - name: cas-default-data-volume
+        persistentVolumeClaim:
+          claimName: cas-$(CAS_INSTANCE)-data
+      - name: cas-default-cache-volume
+        emptyDir: {}
+      - name: cas-default-config-volume
+        emptyDir: {}
+      - name: cas-tmp-volume
+        emptyDir: {}
+      - name: cas-license-volume
+        secret:
+          secretName: sas-cas-license
+          items:
+          - key: SAS_LICENSE
+            path: license.sas
+      - name: commonfilesvols
+        persistentVolumeClaim:
+          claimName: sas-commonfiles
+          readOnly: true
+  workers: 0
+  backupControllers: 0
+  workerTemplate: {}
+  controllerTemplateAdditions:
+    spec:
+      tolerations:
+      - key: "workload.sas.com/class"
+        operator: "Equal"
+        value: "cascontroller"
+        effect: "NoSchedule"
+  workerTemplateAdditions:
+    metadata:
+      annotations:
+        casoperator.sas.com/remove-sidecars: "sas-backup-agent,sas-consul-agent"
+    spec:
+      tolerations:
+      - key: "workload.sas.com/class"
+        operator: "Equal"
+        value: "casworker"
+        effect: "NoSchedule"
+  instanceID: "$(CAS_INSTANCE)"
+  publishHTTPIngress: true
+  routeTemplate:
+    spec:
+      host: $(INGRESS_HOST)
+    metadata:
+      annotations: {}
+      labels: {}
+  ingressTemplate:
+    spec:
+      rules:
+      - host: $(INGRESS_HOST)
+    metadata:
+      annotations:
+        nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+        nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+        nginx.ingress.kubernetes.io/proxy-buffer-size: "16k"
+      labels: {}
+  appendCASAllowlistPaths: []

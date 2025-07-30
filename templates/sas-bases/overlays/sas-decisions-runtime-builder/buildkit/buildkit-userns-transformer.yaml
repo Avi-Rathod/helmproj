@@ -1,0 +1,26 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-decisions-runtime-builder-buildkit-userns-transformer
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/-
+    value:
+      name: sysctl-userns
+      image:  busybox
+      command:
+        - sh
+        - '-euxc'
+        - sysctl -w user.max_user_namespaces=31477
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      imagePullPolicy: Always
+      securityContext:
+        privileged: true
+
+target:
+  name: buildkitd
+  group: apps
+  kind: Deployment
+  version: v1

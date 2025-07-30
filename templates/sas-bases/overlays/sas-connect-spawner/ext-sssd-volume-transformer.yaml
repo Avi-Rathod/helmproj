@@ -1,0 +1,20 @@
+###############################################################################
+# Kustomize patch to add external SSSD volume mount to sssd sidecar container
+# in sas-connect-spawner deployment.
+# See README.md for more information.
+###############################################################################
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: ext-sssd-volume-mount-patch
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/1/volumeMounts/-
+    value:
+      name: sas-sssd-config
+      mountPath: /sssd
+target:
+  version: v1
+  group: apps
+  kind: Deployment
+  name: sas-connect-spawner

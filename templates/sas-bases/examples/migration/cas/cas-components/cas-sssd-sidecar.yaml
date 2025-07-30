@@ -1,0 +1,173 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-sssd-sidecar-no-tls
+patch: |-
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/-
+    value:
+      env:
+      - name: SAS_K8S_DEPLOYMENT_NAME
+        value: "sas-sssd-server"
+      image: sas-sssd-server
+      imagePullPolicy: IfNotPresent
+      name: sssd
+      lifecycle:
+        preStop:
+          exec:
+            command: ["bash", "-c", "kill -SIGKILL $(ps -Af | grep '/opt/sas/viya/home/bin/consul-template'  | grep -v grep | awk '{print $2}'); kill -SIGKILL $(ps -Af | grep '/sbin/sssd'  | grep -v grep | awk '{print $2}')"]
+      securityContext:
+        allowPrivilegeEscalation: false
+        privileged: false
+        readOnlyRootFilesystem: false
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
+      resources:
+        requests:
+          memory: 512Mi
+          cpu: 100m
+        limits:
+          memory: 512Mi
+          cpu: 100m
+      envFrom:
+      - configMapRef:
+          name: sas-shared-config
+      - configMapRef:
+          name: sas-java-config
+      - secretRef:
+          name: sas-consul-client
+      volumeMounts:
+       - mountPath: /var/lib/sss
+         name: sss
+    volumes:
+    - emptyDir: {}
+      name: sss
+
+  - op: add
+    path: /metadata/annotations/sas.com~1pod-uses-sssd
+    value: "true"
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  name: .*
+  version: v1alpha1
+  annotationSelector: sas.com/tls-mode notin (full-stack, front-door, truststores-only)
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-sssd-sidecar-tls
+patch: |-
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/-
+    value:
+      env:
+      - name: SAS_K8S_DEPLOYMENT_NAME
+        value: "sas-sssd-server"
+      - name: SSL_CERT_FILE
+        value: /security/trustedcerts.pem
+      image: sas-sssd-server
+      imagePullPolicy: IfNotPresent
+      name: sssd
+      lifecycle:
+        preStop:
+          exec:
+            command: ["bash", "-c", "kill -SIGKILL $(ps -Af | grep '/opt/sas/viya/home/bin/consul-template'  | grep -v grep | awk '{print $2}'); kill -SIGKILL $(ps -Af | grep '/sbin/sssd'  | grep -v grep | awk '{print $2}')"]
+      securityContext:
+        allowPrivilegeEscalation: false
+        privileged: false
+        readOnlyRootFilesystem: false
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
+      resources:
+        requests:
+          memory: 512Mi
+          cpu: 100m
+        limits:
+          memory: 512Mi
+          cpu: 100m
+      envFrom:
+      - configMapRef:
+          name: sas-shared-config
+      - configMapRef:
+          name: sas-java-config
+      - secretRef:
+          name: sas-consul-client
+      volumeMounts:
+       - mountPath: /var/lib/sss
+         name: sss
+       - mountPath: /security
+         name: security
+    volumes:
+    - emptyDir: {}
+      name: sss
+
+  - op: add
+    path: /metadata/annotations/sas.com~1pod-uses-sssd
+    value: "true"
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  name: .*
+  version: v1alpha1
+  annotationSelector: sas.com/tls-mode in (full-stack, front-door, truststores-only)
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-container-sssd-mounts
+patch: |-
+  - op: add
+    path: /spec/controllerTemplate/spec/volumes/-
+    value:
+      name: sss
+      emptyDir: {}
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/volumeMounts/-
+    value:
+      name: sss
+      mountPath: /var/lib/sss
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  name: .*
+  version: v1alpha1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-add-sssd-psp
+patch: |-
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/securityContext/readOnlyRootFilesystem
+    value: false
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/securityContext/capabilities
+    value: {}
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/securityContext/capabilities
+    value:
+       add: ["ALL"]
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  name: .*
+  version: v1alpha1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-add-sssd-env
+patch: |-
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/env/-
+    value:
+      name: SAS_POD_USES_SSSD
+      value: "true"
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  name: .*
+  version: v1alpha1

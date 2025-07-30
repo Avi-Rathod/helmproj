@@ -1,0 +1,364 @@
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    sas.com/component-name: sas-microanalytic-score
+    sas.com/kustomize-base: base
+  name: sas-microanalytic-score
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: sas-microanalytic-score
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - watch
+  - list
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sas-microanalytic-score
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sas-microanalytic-score
+subjects:
+- kind: ServiceAccount
+  name: sas-microanalytic-score
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+    sas.com/registry-sync: default
+    sas.com/registry-tags: proxy
+  labels:
+    app.kubernetes.io/name: sas-microanalytic-score
+    sas.com/admin: namespace
+    sas.com/registry-sync: default
+  name: sas-microanalytic-score
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/name: sas-microanalytic-score
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    sas.com/certificate-file-format: jks
+    sas.com/kustomize-base: spring
+    sas.com/pod-uses-liveness-probe: http
+    sas.com/pod-uses-readiness-probe: http
+    sas.com/pod-uses-startup-probe: http
+    sidecar.istio.io/proxyCPU: 15m
+    sidecar.istio.io/proxyMemory: 115Mi
+  labels:
+    app.kubernetes.io/name: sas-microanalytic-score
+    sas.com/admin: namespace
+    sas.com/deployment-base: spring
+    workload.sas.com/class: stateless
+  name: sas-microanalytic-score
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-microanalytic-score
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /internal/metrics
+        prometheus.io/port: "10445"
+        prometheus.io/scheme: http
+        prometheus.io/scrape: "true"
+        sas.com/certificate-file-format: jks
+        sas.com/kustomize-base: spring
+        sas.com/pod-uses-liveness-probe: http
+        sas.com/pod-uses-readiness-probe: http
+        sas.com/pod-uses-startup-probe: http
+        sidecar.istio.io/proxyCPU: 15m
+        sidecar.istio.io/proxyMemory: 115Mi
+      labels:
+        app: sas-microanalytic-score
+        app.kubernetes.io/name: sas-microanalytic-score
+        workload.sas.com/class: stateless
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateless
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - compute
+                - cas
+                - stateful
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - sas-microanalytic-score
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution: []
+      automountServiceAccountToken: true
+      containers:
+      - env:
+        - name: SAS_K8S_DEPLOYMENT_NAME
+          value: sas-microanalytic-score
+        - name: NLP_VIYA_LANG_BINARIES
+          value: /tmp/commonfiles/home/SASFoundation/misc/tktg/
+        - name: TKPARSE_BINDAT_DIR
+          value: /tmp/commonfiles/home/SASFoundation/misc/tktg/
+        - name: SAS_EVENT_CONFIGURATION_ARKE_ENABLED
+          value: "false"
+        envFrom:
+        - configMapRef:
+            name: sas-java-config
+        - configMapRef:
+            name: sas-shared-config
+        - secretRef:
+            name: sas-consul-client
+        - configMapRef:
+            name: sas-spring-23-management-config
+        - configMapRef:
+            name: sas-microanalytic-score-db-config
+        image: sas-microanalytic-score
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - sh
+              - -c
+              - sleep 5
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /internal/live
+            port: http-internal
+            scheme: HTTP
+          periodSeconds: 20
+          timeoutSeconds: 5
+        name: sas-microanalytic-score
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 10445
+          name: http-internal
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /internal/ready
+            port: http-internal
+            scheme: HTTP
+          periodSeconds: 20
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 4000m
+            memory: 2Gi
+          requests:
+            cpu: 250m
+            memory: 750M
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add: []
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        startupProbe:
+          failureThreshold: 360
+          httpGet:
+            path: /internal/live
+            port: http-internal
+            scheme: HTTP
+          initialDelaySeconds: 20
+          periodSeconds: 10
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+        - mountPath: /opt/sas/viya/config/tmp
+          name: tmp
+        - mountPath: /opt/sas/viya/config/etc/licenses
+          name: sas-license
+          readOnly: true
+        - mountPath: /opt/sas/viya/home/commonfiles
+          name: commonfilesvols
+          readOnly: true
+      imagePullSecrets: []
+      initContainers:
+      - env:
+        - name: SAS_K8S_POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: SAS_K8S_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: SAS_INIT_CONFIG_PATH
+          value: /cas/config
+        envFrom:
+        - configMapRef:
+            name: sas-go-config
+        - configMapRef:
+            name: sas-shared-config
+        - secretRef:
+            name: sas-consul-client
+        - configMapRef:
+            name: sas-access-config
+        image: sas-config-init
+        name: sas-config-init
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /cas/config
+          name: tmp
+        - mountPath: /opt/sas/viya/home/commonfiles
+          name: commonfilesvols
+      - command:
+        - /opt/sas/viya/home/bin/commonfiles-init.sh
+        image: sas-microanalytic-score
+        imagePullPolicy: IfNotPresent
+        name: sas-commonfiles-init
+        resources:
+          limits:
+            cpu: 250m
+            memory: 250Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+        - mountPath: /opt/sas/viya/home/commonfiles
+          name: commonfilesvols
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: sas-microanalytic-score
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - emptyDir: {}
+        name: tmp
+      - name: sas-license
+        secret:
+          items:
+          - key: SAS_LICENSE
+            path: default
+          secretName: sas-license
+      - name: commonfilesvols
+        persistentVolumeClaim:
+          claimName: sas-commonfiles
+          readOnly: true
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  annotations:
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: base
+  name: sas-microanalytic-score
+spec:
+  minAvailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-microanalytic-score
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  annotations:
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: spring
+  name: sas-microanalytic-score
+spec:
+  maxReplicas: 1
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sas-microanalytic-score

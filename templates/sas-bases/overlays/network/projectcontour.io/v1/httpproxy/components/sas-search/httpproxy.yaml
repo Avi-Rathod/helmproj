@@ -1,0 +1,68 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-search
+    sas.com/admin: namespace
+  name: sas-search
+spec:
+  routes:
+  - conditions:
+    - prefix: /search
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /search/
+    services:
+    - name: sas-search
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /search/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-search
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-search-index
+    sas.com/admin: namespace
+  name: sas-search-index
+spec:
+  routes:
+  - conditions:
+    - prefix: /searchIndex
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /searchIndex/
+    services:
+    - name: sas-search-index
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /searchIndex/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-search-index
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

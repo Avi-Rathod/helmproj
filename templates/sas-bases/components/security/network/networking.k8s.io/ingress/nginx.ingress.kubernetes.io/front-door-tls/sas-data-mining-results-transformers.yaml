@@ -1,0 +1,32 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-data-mining-results-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: add
+    path: /spec/tls
+    value: [{hosts: [$(INGRESS_HOST), '*.$(INGRESS_HOST)'], secretName: sas-ingress-certificate}]
+target:
+  version: v1
+  kind: Ingress
+  name: sas-data-mining-results
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-v1-ingress-sas-data-mining-warehouse-front-door-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: front-door
+  - op: add
+    path: /spec/tls
+    value: [{hosts: [$(INGRESS_HOST), '*.$(INGRESS_HOST)'], secretName: sas-ingress-certificate}]
+target:
+  version: v1
+  kind: Ingress
+  name: sas-data-mining-warehouse

@@ -1,0 +1,230 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-casAccessManagement
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-access-management
+    sas.com/admin: namespace
+  name: sas-cas-access-management
+spec:
+  host: $(INGRESS_HOST)
+  path: /casAccessManagement
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-cas-access-management
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-casAccessManagement
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-access-management
+    sas.com/admin: namespace
+  name: sas-cas-access-management-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /casAccessManagement
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-cas-access-management
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-casFormats
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-formats
+    sas.com/admin: namespace
+  name: sas-cas-formats
+spec:
+  host: $(INGRESS_HOST)
+  path: /casFormats
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-cas-formats
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-casFormats
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-formats
+    sas.com/admin: namespace
+  name: sas-cas-formats-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /casFormats
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-cas-formats
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-casManagement
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-management
+    sas.com/admin: namespace
+  name: sas-cas-management
+spec:
+  host: $(INGRESS_HOST)
+  path: /casManagement
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-cas-management
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-casManagement
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-management
+    sas.com/admin: namespace
+  name: sas-cas-management-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /casManagement
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-cas-management
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-casProxy
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-proxy
+    sas.com/admin: namespace
+  name: sas-cas-proxy
+spec:
+  host: $(INGRESS_HOST)
+  path: /casProxy
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-cas-proxy
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-casProxy
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-proxy
+    sas.com/admin: namespace
+  name: sas-cas-proxy-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /casProxy
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-cas-proxy
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-casRowSets
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-row-sets
+    sas.com/admin: namespace
+  name: sas-cas-row-sets
+spec:
+  host: $(INGRESS_HOST)
+  path: /casRowSets
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-cas-row-sets
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-casRowSets
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-row-sets
+    sas.com/admin: namespace
+  name: sas-cas-row-sets-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /casRowSets
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-cas-row-sets
+  wildcardPolicy: Subdomain
+

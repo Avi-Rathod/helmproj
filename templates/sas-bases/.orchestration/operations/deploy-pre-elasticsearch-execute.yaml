@@ -1,0 +1,171 @@
+apiVersion: orchestration.sas.com/v2beta4
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-opendistro-operator
+    sas.com/component-version: 7.37.5-20241010.1728552675911
+  creationTimestamp: null
+  name: deploy-pre-elasticsearch-execute
+spec:
+  args:
+  - name: namespace
+  - name: timeout
+  - name: serviceAccountName
+  steps:
+  - args:
+    - delete
+    - --namespace
+    - $namespace
+    - --wait
+    - --timeout
+    - $timeout
+    - --ignore-not-found
+    - role
+    - sas-prepare-for-update-elasticsearch-pods
+    cmd: kubectl
+    when: $serviceAccountName
+  - args:
+    - create
+    - --namespace
+    - $namespace
+    - role
+    - sas-prepare-for-update-elasticsearch-pods
+    - --verb
+    - get,list,watch
+    - --resource
+    - pods
+    cmd: kubectl
+    when: $serviceAccountName
+  - args:
+    - delete
+    - --namespace
+    - $namespace
+    - --wait
+    - --timeout
+    - $timeout
+    - --ignore-not-found
+    - role
+    - sas-prepare-for-update-elasticsearch-deployments
+    cmd: kubectl
+    when: $serviceAccountName
+  - args:
+    - create
+    - --namespace
+    - $namespace
+    - role
+    - sas-prepare-for-update-elasticsearch-deployments
+    - --verb
+    - get,patch
+    - --resource
+    - deployments.apps,deployments.apps/scale
+    cmd: kubectl
+    when: $serviceAccountName
+  - args:
+    - delete
+    - --namespace
+    - $namespace
+    - --wait
+    - --timeout
+    - $timeout
+    - --ignore-not-found
+    - rolebinding
+    - sas-prepare-for-update-elasticsearch-pods
+    cmd: kubectl
+    when: $serviceAccountName
+  - args:
+    - create
+    - --namespace
+    - $namespace
+    - rolebinding
+    - sas-prepare-for-update-elasticsearch-pods
+    - --role
+    - sas-prepare-for-update-elasticsearch-pods
+    - --serviceaccount
+    - (print $namespace ":" $serviceAccountName)
+    cmd: kubectl
+    when: $serviceAccountName
+  - args:
+    - delete
+    - --namespace
+    - $namespace
+    - --wait
+    - --timeout
+    - $timeout
+    - --ignore-not-found
+    - rolebinding
+    - sas-prepare-for-update-elasticsearch-deployments
+    cmd: kubectl
+    when: $serviceAccountName
+  - args:
+    - create
+    - --namespace
+    - $namespace
+    - rolebinding
+    - sas-prepare-for-update-elasticsearch-deployments
+    - --role
+    - sas-prepare-for-update-elasticsearch-deployments
+    - --serviceaccount
+    - (print $namespace ":" $serviceAccountName)
+    cmd: kubectl
+    when: $serviceAccountName
+  - args:
+    - scale
+    - --namespace
+    - $namespace
+    - deployments
+    - --replicas
+    - "0"
+    - sas-opendistro-operator
+    cmd: kubectl
+  - args:
+    - wait
+    - --namespace
+    - $namespace
+    - --for
+    - delete
+    - pod
+    - --selector
+    - app=sas-opendistro-operator
+    - --timeout
+    - $timeout
+    cmd: kubectl
+  - always: true
+    args:
+    - delete
+    - --namespace
+    - $namespace
+    - --ignore-not-found
+    - rolebinding
+    - sas-prepare-for-update-elasticsearch-pods
+    cmd: kubectl
+    when: $serviceAccountName
+  - always: true
+    args:
+    - delete
+    - --namespace
+    - $namespace
+    - --ignore-not-found
+    - rolebinding
+    - sas-prepare-for-update-elasticsearch-deployments
+    cmd: kubectl
+    when: $serviceAccountName
+  - always: true
+    args:
+    - delete
+    - --namespace
+    - $namespace
+    - --ignore-not-found
+    - role
+    - sas-prepare-for-update-elasticsearch-pods
+    cmd: kubectl
+    when: $serviceAccountName
+  - always: true
+    args:
+    - delete
+    - --namespace
+    - $namespace
+    - --ignore-not-found
+    - role
+    - sas-prepare-for-update-elasticsearch-deployments
+    cmd: kubectl
+    when: $serviceAccountName

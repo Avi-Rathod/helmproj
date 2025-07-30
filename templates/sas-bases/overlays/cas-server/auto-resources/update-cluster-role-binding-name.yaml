@@ -1,0 +1,20 @@
+# This block of code updates the SAS-CAS-Operator ClusterRoleBinding
+#  to be a unique name and in the correct namespace,
+#  as it is a cluster-wide resource
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: update-cluster-role-binding-name
+patch: |-
+  - op: replace
+    path: /metadata/name
+    value: sas-cas-operator-$(BINDING_NAMESPACE)
+  - op: replace
+    path: /subjects/0/namespace
+    value: $(BINDING_NAMESPACE)
+
+target:
+  kind: ClusterRoleBinding
+  name: sas-cas-operator
+  apiVersion: rbac.authorization.k8s.io/v1

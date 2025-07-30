@@ -1,0 +1,157 @@
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sas-studio-steps
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: sas-studio-steps
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - list
+  - delete
+- apiGroups:
+  - batch
+  resources:
+  - cronjobs
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sas-studio-steps
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sas-studio-steps
+subjects:
+- kind: ServiceAccount
+  name: sas-studio-steps
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/component-name: sas-studio-steps
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-studio-steps
+    workload.sas.com/class: stateless
+  name: sas-studio-steps
+spec:
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            sas.com/certificate-file-format: pem
+            sas.com/kustomize-base: base
+          labels:
+            app.kubernetes.io/name: sas-studio-steps
+            workload.sas.com/class: stateless
+        spec:
+          affinity:
+            nodeAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - preference:
+                  matchExpressions:
+                  - key: workload.sas.com/class
+                    operator: In
+                    values:
+                    - stateless
+                weight: 100
+              - preference:
+                  matchExpressions:
+                  - key: workload.sas.com/class
+                    operator: NotIn
+                    values:
+                    - cas
+                    - compute
+                    - stateful
+                weight: 50
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.azure.com/mode
+                    operator: NotIn
+                    values:
+                    - system
+            podAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution: []
+              requiredDuringSchedulingIgnoredDuringExecution: []
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution: []
+              requiredDuringSchedulingIgnoredDuringExecution: []
+          automountServiceAccountToken: true
+          containers:
+          - env:
+            - name: SSLREQCERT
+              value: "no"
+            envFrom:
+            - configMapRef:
+                name: sas-go-config
+            - configMapRef:
+                name: sas-shared-config
+            - configMapRef:
+                name: sas-java-config
+            - configMapRef:
+                name: sas-studio-steps-parameters
+            - secretRef:
+                name: sas-consul-client
+            image: sas-studio-steps
+            name: sas-studio-steps
+            resources:
+              limits:
+                cpu: 500m
+                memory: 500Mi
+              requests:
+                cpu: 50m
+                memory: 50Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                add: []
+                drop:
+                - ALL
+              privileged: false
+              readOnlyRootFilesystem: true
+            volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+          imagePullSecrets: []
+          restartPolicy: Never
+          securityContext:
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+          serviceAccountName: sas-studio-steps
+          tolerations:
+          - effect: NoSchedule
+            key: workload.sas.com/class
+            operator: Equal
+            value: stateless
+          - effect: NoSchedule
+            key: workload.sas.com/class
+            operator: Equal
+            value: stateful
+          volumes:
+          - emptyDir: {}
+            name: tmp
+  schedule: '*/10 * * * *'
+  suspend: false

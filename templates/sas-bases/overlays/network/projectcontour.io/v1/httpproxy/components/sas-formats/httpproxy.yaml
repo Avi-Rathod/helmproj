@@ -1,0 +1,34 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-formats
+    sas.com/admin: namespace
+  name: sas-formats
+spec:
+  routes:
+  - conditions:
+    - prefix: /formats
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /formats/
+    services:
+    - name: sas-formats
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /formats/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-formats
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

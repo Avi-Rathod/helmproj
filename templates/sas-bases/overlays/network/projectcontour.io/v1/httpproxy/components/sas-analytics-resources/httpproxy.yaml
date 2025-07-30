@@ -1,0 +1,204 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-components
+    sas.com/admin: namespace
+  name: sas-analytics-components
+spec:
+  routes:
+  - conditions:
+    - prefix: /analyticsComponents
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /analyticsComponents/
+    services:
+    - name: sas-analytics-components
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /analyticsComponents/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-analytics-components
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-data-segmentation
+    sas.com/admin: namespace
+  name: sas-analytics-data-segmentation
+spec:
+  routes:
+  - conditions:
+    - prefix: /analyticsDataSegmentation
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /analyticsDataSegmentation/
+    services:
+    - name: sas-analytics-data-segmentation
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /analyticsDataSegmentation/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-analytics-data-segmentation
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-flows
+    sas.com/admin: namespace
+  name: sas-analytics-flows
+spec:
+  routes:
+  - conditions:
+    - prefix: /analyticsFlows
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /analyticsFlows/
+    services:
+    - name: sas-analytics-flows
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /analyticsFlows/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-analytics-flows
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-localization
+    sas.com/admin: namespace
+  name: sas-analytics-localization
+spec:
+  routes:
+  - conditions:
+    - prefix: /analyticsLocalization
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /analyticsLocalization/
+    services:
+    - name: sas-analytics-localization
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /analyticsLocalization/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-analytics-localization
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-pipelines
+    sas.com/admin: namespace
+  name: sas-analytics-pipelines
+spec:
+  routes:
+  - conditions:
+    - prefix: /analyticsPipelines
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /analyticsPipelines/
+    services:
+    - name: sas-analytics-pipelines
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /analyticsPipelines/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-analytics-pipelines
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-validation
+    sas.com/admin: namespace
+  name: sas-analytics-validation
+spec:
+  routes:
+  - conditions:
+    - prefix: /analyticsValidation
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /analyticsValidation/
+    services:
+    - name: sas-analytics-validation
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /analyticsValidation/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-analytics-validation
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

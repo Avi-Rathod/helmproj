@@ -1,0 +1,41 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-alerts-transaction
+spec:
+  host: sas-alerts-transaction
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /alertsTransaction/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-alerts-transaction
+    sas.com/admin: namespace
+  name: sas-alerts-transaction
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /alertsTransaction
+    - uri:
+        prefix: /alertsTransaction/
+    route:
+    - destination:
+        host: sas-alerts-transaction
+    timeout: 300s
+

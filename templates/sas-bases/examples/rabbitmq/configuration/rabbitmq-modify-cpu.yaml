@@ -1,0 +1,20 @@
+# This block of code is for specifying the cpu resources for RabbitMQ nodes.
+# The default required value is 1 core, the default limit is 4 cores.
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: rabbitmq-modify-cpu
+patch: |-
+  - op: replace
+    path: /spec/template/spec/containers/0/resources/requests/cpu
+    value:
+      {{ CPU_REQUIRED }}
+  - op: replace
+    path: /spec/template/spec/containers/0/resources/limits/cpu
+    value:
+      {{ CPU_LIMIT }}
+target:
+  group: apps
+  kind: StatefulSet
+  name: sas-rabbitmq-server
+  version: v1

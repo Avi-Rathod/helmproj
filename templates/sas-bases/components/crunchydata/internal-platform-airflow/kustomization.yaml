@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+resources:
+- sas-crunchy-platform-postgres-airflow-configmap.yaml
+
+transformers:
+- sas-crunchy-platform-postgres-airflow-transformer.yaml
+- sas-crunchy-platform-postgres-init-sql-transformer.yaml

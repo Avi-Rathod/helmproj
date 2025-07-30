@@ -1,0 +1,11 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cds-postgres-deployment-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1crunchy-cds-postgres
+    value: "true"
+target:
+  kind: Deployment
+  name: pgo

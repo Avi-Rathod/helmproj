@@ -1,0 +1,45 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-analytics-execution
+spec:
+  host: sas-analytics-execution
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /analyticsExecution/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-execution
+    sas.com/admin: namespace
+  name: sas-analytics-execution
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /analyticsExecution
+    - uri:
+        prefix: /analyticsExecution/
+    route:
+    - destination:
+        host: sas-analytics-execution
+      headers:
+        request:
+          set:
+            X-Sas-Ingress-Request: "true"
+    timeout: 300s
+

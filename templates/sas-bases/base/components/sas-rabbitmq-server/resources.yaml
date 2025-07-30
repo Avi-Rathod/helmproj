@@ -1,0 +1,327 @@
+
+---
+apiVersion: v1
+automountServiceAccountToken: false
+kind: ServiceAccount
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  name: sas-rabbitmq-server
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    sas.com/admin: cluster-wide
+  name: sas-rabbitmq-server
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - endpoints
+  verbs:
+  - get
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    sas.com/admin: cluster-local
+  name: sas-rabbitmq-server
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sas-rabbitmq-server
+subjects:
+- kind: ServiceAccount
+  name: sas-rabbitmq-server
+
+---
+apiVersion: v1
+data:
+  RABBITMQ_DEFAULT_USER: c2FzY2xpZW50
+kind: Secret
+metadata:
+  annotations:
+    orchestration.sas.com/literal: "true"
+  name: sas-rabbitmq-server-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    sas.com/contextRoot: ""
+  labels:
+    app.kubernetes.io/name: sas-rabbitmq-server
+    sas.com/admin: namespace
+    sas.com/registry-sync: default
+  name: sas-rabbitmq-server
+spec:
+  clusterIP: None
+  ports:
+  - name: amqp
+    port: 5672
+    protocol: TCP
+    targetPort: amqp
+  - name: management
+    port: 15672
+    protocol: TCP
+    targetPort: management
+  - name: erlang
+    port: 25672
+    protocol: TCP
+    targetPort: erlang
+  - name: epmd
+    port: 4369
+    protocol: TCP
+    targetPort: epmd
+  - name: metrics
+    port: 15692
+    protocol: TCP
+    targetPort: metrics
+  selector:
+    app.kubernetes.io/name: sas-rabbitmq-server
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/kustomize-base: base
+    sidecar.istio.io/proxyCPU: 15m
+    sidecar.istio.io/proxyMemory: 115Mi
+  labels:
+    app.kubernetes.io/name: sas-rabbitmq-server
+    sas.com/admin: namespace
+    workload.sas.com/class: stateful
+  name: sas-rabbitmq-server
+spec:
+  podManagementPolicy: Parallel
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-rabbitmq-server
+  serviceName: sas-rabbitmq-server
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "15692"
+        prometheus.io/scheme: http
+        prometheus.io/scrape: "true"
+        sas.com/certificate-file-format: pem
+        sas.com/kustomize-base: base
+        sidecar.istio.io/proxyCPU: 15m
+        sidecar.istio.io/proxyMemory: 115Mi
+      labels:
+        app: sas-rabbitmq-server
+        app.kubernetes.io/name: sas-rabbitmq-server
+        workload.sas.com/class: stateful
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateful
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - compute
+                - cas
+                - stateless
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution: []
+          requiredDuringSchedulingIgnoredDuringExecution: []
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - sas-rabbitmq-server
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution: []
+      automountServiceAccountToken: true
+      containers:
+      - env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: RABBITMQ_USE_LONGNAME
+          value: "true"
+        envFrom:
+        - configMapRef:
+            name: sas-shared-config
+        - secretRef:
+            name: sas-consul-client
+        - configMapRef:
+            name: sas-java-config
+        - secretRef:
+            name: sas-rabbitmq-server-secret
+        image: sas-rabbitmq-server
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - |
+              source ${HOME}/.bashrc; timeout 120 ${SASHOME}/sbin/liveness.sh
+          failureThreshold: 5
+          periodSeconds: 30
+          timeoutSeconds: 120
+        name: sas-rabbitmq-server
+        ports:
+        - containerPort: 5672
+          name: amqp
+          protocol: TCP
+        - containerPort: 15672
+          name: management
+          protocol: TCP
+        - containerPort: 25672
+          name: erlang
+          protocol: TCP
+        - containerPort: 4369
+          name: epmd
+          protocol: TCP
+        - containerPort: 15692
+          name: metrics
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - |
+              source ${HOME}/.bashrc; timeout 120 ${SASHOME}/sbin/readiness.sh
+          failureThreshold: 5
+          periodSeconds: 10
+          timeoutSeconds: 120
+        resources:
+          limits:
+            cpu: 4000m
+            memory: 8Gi
+          requests:
+            cpu: 1000m
+            memory: 1Gi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add: []
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /rabbitmq/data
+          name: sas-viya-rabbitmq-data-volume
+      imagePullSecrets: []
+      initContainers:
+      - env:
+        - name: SAS_KEYS_SECRET_NAME
+          value: sas-rabbitmq-server-secret
+        - name: SAS_KEYS_KEY_NAMES
+          value: SAS_RABBITMQ_ERLANG_COOKIE RABBITMQ_DEFAULT_PASS
+        - name: SAS_SECURITY_ARTIFACTS_DIR
+          value: /security
+        - name: SAS_CERTFRAME_TOKEN_DIR
+          value: /certframe-token
+        image: sas-certframe
+        name: sas-certframe-token-generator
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /security
+          name: security
+        - mountPath: /certframe-token
+          name: certframe-token
+      securityContext:
+        fsGroup: 1001
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: sas-rabbitmq-server
+      terminationGracePeriodSeconds: 60
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - emptyDir: {}
+        name: security
+      - name: certframe-token
+        secret:
+          secretName: sas-certframe-token
+  volumeClaimTemplates:
+  - metadata:
+      name: sas-viya-rabbitmq-data-volume
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 2Gi
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  annotations:
+    sas.com/ha-class: decentralized
+    sas.com/kustomize-base: decentralized
+  name: sas-rabbitmq-server
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-rabbitmq-server

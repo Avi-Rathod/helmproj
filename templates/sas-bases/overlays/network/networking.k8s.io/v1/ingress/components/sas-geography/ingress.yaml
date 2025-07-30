@@ -1,0 +1,168 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/rewrite-target: /crossdomainproxy/$2
+    nginx.ingress.kubernetes.io/session-cookie-name: sas-ingress-nginx
+    nginx.ingress.kubernetes.io/session-cookie-path: /crossdomainproxy/
+    nginx.ingress.kubernetes.io/session-cookie-samesite: Lax
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-crossdomainproxy
+    sas.com/admin: namespace
+  name: sas-crossdomainproxy
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: $(INGRESS_HOST)
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-crossdomainproxy
+            port:
+              number: 80
+        path: /crossdomainproxy(/|$)(.*)
+        pathType: Prefix
+  - host: '*.$(INGRESS_HOST)'
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-crossdomainproxy
+            port:
+              number: 80
+        path: /crossdomainproxy(/|$)(.*)
+        pathType: Prefix
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/rewrite-target: /geoEnrichment/$2
+    nginx.ingress.kubernetes.io/session-cookie-name: sas-ingress-nginx
+    nginx.ingress.kubernetes.io/session-cookie-path: /geoEnrichment/
+    nginx.ingress.kubernetes.io/session-cookie-samesite: Lax
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-geo-enrichment
+    sas.com/admin: namespace
+  name: sas-geo-enrichment
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: $(INGRESS_HOST)
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-geo-enrichment
+            port:
+              number: 80
+        path: /geoEnrichment(/|$)(.*)
+        pathType: Prefix
+  - host: '*.$(INGRESS_HOST)'
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-geo-enrichment
+            port:
+              number: 80
+        path: /geoEnrichment(/|$)(.*)
+        pathType: Prefix
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/rewrite-target: /maps/$2
+    nginx.ingress.kubernetes.io/session-cookie-name: sas-ingress-nginx
+    nginx.ingress.kubernetes.io/session-cookie-path: /maps/
+    nginx.ingress.kubernetes.io/session-cookie-samesite: Lax
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-maps
+    sas.com/admin: namespace
+  name: sas-maps
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: $(INGRESS_HOST)
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-maps
+            port:
+              number: 80
+        path: /maps(/|$)(.*)
+        pathType: Prefix
+  - host: '*.$(INGRESS_HOST)'
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-maps
+            port:
+              number: 80
+        path: /maps(/|$)(.*)
+        pathType: Prefix
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/rewrite-target: /webDataAccess/$2
+    nginx.ingress.kubernetes.io/session-cookie-name: sas-ingress-nginx
+    nginx.ingress.kubernetes.io/session-cookie-path: /webDataAccess/
+    nginx.ingress.kubernetes.io/session-cookie-samesite: Lax
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-web-data-access
+    sas.com/admin: namespace
+  name: sas-web-data-access
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: $(INGRESS_HOST)
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-web-data-access
+            port:
+              number: 80
+        path: /webDataAccess(/|$)(.*)
+        pathType: Prefix
+  - host: '*.$(INGRESS_HOST)'
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-web-data-access
+            port:
+              number: 80
+        path: /webDataAccess(/|$)(.*)
+        pathType: Prefix
+

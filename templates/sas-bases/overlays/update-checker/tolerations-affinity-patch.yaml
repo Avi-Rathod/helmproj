@@ -1,0 +1,49 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: tolerations-affinity-patch
+patch: |-
+  - op: add
+    path: '/spec/jobTemplate/spec/template/spec/tolerations'
+    value:
+      - key: "workload.sas.com/class"
+        operator: "Equal"
+        value: "stateful"
+        effect: "NoSchedule"
+      - key: "workload.sas.com/class"
+        operator: "Equal"
+        value: "stateless"
+        effect: "NoSchedule"
+  - op: add
+    path: '/spec/jobTemplate/spec/template/spec/affinity'
+    value:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+                - key: workload.sas.com/class
+                  operator: In
+                  values:
+                    - stateless
+          - weight: 50
+            preference:
+              matchExpressions:
+                - key: workload.sas.com/class
+                  operator: NotIn
+                  values:
+                    - compute
+                    - cas
+                    - stateful
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.azure.com/mode
+                  operator: NotIn
+                  values:
+                    - system
+target:
+  group: batch
+  version: v1
+  kind: CronJob
+  name: sas-update-checker

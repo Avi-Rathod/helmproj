@@ -1,0 +1,3 @@
+# Alias for current default version of Ingress
+resources:
+  - ./v1/ingress

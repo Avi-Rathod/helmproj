@@ -1,0 +1,34 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-code-debugger
+    sas.com/admin: namespace
+  name: sas-code-debugger
+spec:
+  routes:
+  - conditions:
+    - prefix: /codeDebugger
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /codeDebugger/
+    services:
+    - name: sas-code-debugger
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /codeDebugger/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-code-debugger
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

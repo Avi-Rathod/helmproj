@@ -1,0 +1,13 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-disable-java-policy-file-generation
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/env/-
+    value:
+      name: SAS_NO_JAVA_POLICY_FILE_GEN
+      value: "1"
+target:
+  kind: PodTemplate
+  labelSelector: "sas.com/template-intent=sas-launcher"

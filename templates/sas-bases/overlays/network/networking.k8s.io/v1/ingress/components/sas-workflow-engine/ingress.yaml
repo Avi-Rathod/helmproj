@@ -1,0 +1,84 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/rewrite-target: /workflow/$2
+    nginx.ingress.kubernetes.io/session-cookie-name: sas-ingress-nginx
+    nginx.ingress.kubernetes.io/session-cookie-path: /workflow/
+    nginx.ingress.kubernetes.io/session-cookie-samesite: Lax
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-workflow
+    sas.com/admin: namespace
+  name: sas-workflow
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: $(INGRESS_HOST)
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-workflow
+            port:
+              number: 80
+        path: /workflow(/|$)(.*)
+        pathType: Prefix
+  - host: '*.$(INGRESS_HOST)'
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-workflow
+            port:
+              number: 80
+        path: /workflow(/|$)(.*)
+        pathType: Prefix
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/rewrite-target: /workflowDefinition/$2
+    nginx.ingress.kubernetes.io/session-cookie-name: sas-ingress-nginx
+    nginx.ingress.kubernetes.io/session-cookie-path: /workflowDefinition/
+    nginx.ingress.kubernetes.io/session-cookie-samesite: Lax
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-workflow-definition
+    sas.com/admin: namespace
+  name: sas-workflow-definition
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: $(INGRESS_HOST)
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-workflow-definition
+            port:
+              number: 80
+        path: /workflowDefinition(/|$)(.*)
+        pathType: Prefix
+  - host: '*.$(INGRESS_HOST)'
+    http:
+      paths:
+      - backend:
+          service:
+            name: sas-workflow-definition
+            port:
+              number: 80
+        path: /workflowDefinition(/|$)(.*)
+        pathType: Prefix
+

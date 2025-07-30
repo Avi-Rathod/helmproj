@@ -1,0 +1,102 @@
+namespace: sasviya
+resources:
+- sas-bases/base
+- sas-bases/overlays/network/route.openshift.io
+- site-config/security/openssl-generated-ingress-certificate.yaml
+- sas-bases/overlays/cas-server
+- sas-bases/overlays/crunchydata/postgres-operator
+- sas-bases/overlays/postgres/platform-postgres
+# If your deployment contains SAS Viya Programming, comment out the next line
+- sas-bases/overlays/internal-elasticsearch
+- sas-bases/overlays/update-checker
+- sas-bases/overlays/cas-server/auto-resources
+- site-config/sas-open-source-config/python
+- site-config/sas-microanalytic-score/astores/resources.yaml
+- site-config/security/configmap-inputs.yaml
+configurations:
+- sas-bases/overlays/required/kustomizeconfig.yaml
+transformers:
+# If your deployment does not support privileged containers or if your deployment
+# contains SAS Viya Programming, comment out the next line
+#- site-config/cas/cas-manage-workers.yaml
+#- site-config/cas/cas-manage-backup.yaml
+#- sas-bases/overlays/cas-server/require-cas-label-pools.yaml
+- sas-bases/overlays/internal-elasticsearch/sysctl-transformer.yaml
+- sas-bases/overlays/sas-prepull/change-relpath.yaml
+- sas-bases/overlays/required/transformers.yaml
+- sas-bases/overlays/cas-server/auto-resources/remove-resources.yaml
+- site-config/sas-open-source-config/python/python-transformer.yaml
+- sas-bases/overlays/sas-microanalytic-score/astores/astores-transformer.yaml
+- sas-bases/overlays/security/container-security/remove-seccomp-transformer.yaml
+- sas-bases/overlays/internal-elasticsearch/remove-seccomp-transformer.yaml
+- site-config/security/update-fsgroup.yaml
+# If your deployment contains SAS Viya Programming, comment out the next line
+- sas-bases/overlays/internal-elasticsearch/internal-elasticsearch-transformer.yaml
+# Mount information
+- site-config/cas/cas-add-nfs-mount.yaml
+- site-config/cas/cas_disk_cache-config.yaml
+- site-config/compute/set-saswork.yaml
+- site-config/compute/compute-server-add-nfs-mount.yaml
+- site-config/mirror.yaml
+- site-config/sas-programming-environment/enable-admin-script-access.yaml
+- site-config/sas-programming-environment/enable-lockdown-access-methods.yaml
+- site-config/data-access/data-mounts-cas.yaml
+- site-config/data-access/data-mounts-deployment.yaml
+- site-config/data-access/data-mounts-job.yaml
+- site-config/data-access/data-mounts-statefulset.yaml
+#- site-config/sas-microanalytic-score/add-required-realtime-mas-label.yaml
+- site-config/sas-launcher/launcher-nfs-mount.yaml
+- site-config/sas-launcher/launcher-user-homedirectory-volume.yaml
+- site-config/sas-pyconfig/change-configuration.yaml
+- site-config/sas-pyconfig/change-limits.yaml
+- site-config/configure-elasticsearch/internal/storage/storage-class-transformer.yaml
+- site-config/configure-elasticsearch/internal/topology/single-node-topology.yaml
+- sas-bases/overlays/sas-workload-orchestrator/enable-disable/sas-workload-orchestrator-disable-patch-transformer.yaml
+- site-config/transformer/sas-consul-storageclass-transformer.yaml
+- site-config/transformer/rabbitmq-storageclass-transformer.yaml
+- site-config/transformer/redis-modify-storage.yaml
+- site-config/transformer/platform-postgres-crunchy-storage-transformer.yaml
+- site-config/transformer/consul-bind-external-patchtransformer.yaml
+- site-config/transformer/consul-bind-external-cas-patchtransformer.yaml
+generators:
+- site-config/security/customer-provided-ca-certificates.yaml
+- site-config/security/customer-provided-ingress-certificate.yaml
+components:
+- sas-bases/components/crunchydata/internal-platform-postgres
+- sas-bases/components/security/core/base/full-stack-tls
+- sas-bases/components/security/network/route.openshift.io/route/full-stack-tls
+patches:
+- path: site-config/storageclass.yaml
+  target:
+    kind: PersistentVolumeClaim
+    annotationSelector: sas.com/component-name in (sas-backup-job,sas-data-quality-services,sas-commonfiles,sas-cas-operator,sas-pyconfig,sas-risk-cirrus-search,sas-risk-modeling-core)
+# License information
+secretGenerator:
+- name: sas-license
+  type: sas.com/license
+  behavior: merge
+  files:
+  - SAS_LICENSE=site-config/license.jwt
+- name: sas-image-pull-secrets
+  behavior: replace
+  type: kubernetes.io/dockerconfigjson
+  literals:
+  - '.dockerconfigjson={"auths":{"enterprisequay.hbctxdom.com":{"username":"sasviyaquaynp1","password":"hdfcbank1234$","email":"youremail@example.com","auth":"c2Fzdml5YXF1YXlucDE6aGRmY2JhbmsxMjM0JA=="}}}'
+configMapGenerator:
+- name: ingress-input
+  behavior: merge
+  literals:
+  - INGRESS_HOST=sasviuat.hdfcbankuat.com
+- name: sas-shared-config
+  behavior: merge
+  literals:
+  - SAS_SERVICES_URL=https://sasviuat.hdfcbankuat.com:443
+  - SAS_URL_EXTERNAL_VIYA=https://sasviuat.hdfcbankuat.com:443
+- name: input
+  behavior: merge
+  literals:
+  - IMAGE_REGISTRY=enterprisequay.hbctxdom.com/sasvi
+- name: sas-access-config
+  behavior: merge
+  envs:
+  - site-config/data-access/sas-access.properties

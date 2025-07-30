@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- cluster-role.yaml
+- cluster-role-binding.yaml
+
+configurations:
+- kustomizeconfig.yaml
+
+# Extract out the namespace from a config map and
+#  set the clusterrolebinding to that namespace,
+#  and with a namespace unique name.
+generators:
+- configmaps.yaml
+vars:
+- name: BINDING_NAMESPACE
+  objref:
+    kind: ConfigMap
+    name: cluster-role-input
+    apiVersion: v1
+  fieldref:
+    fieldpath: metadata.namespace
+
+transformers:
+- update-cluster-role-binding-name.yaml

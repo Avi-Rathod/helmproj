@@ -1,0 +1,12 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-shared-configmap-mt-enabled-transformer
+patch: |-
+  - op: replace
+    path: /data/SAS_MULTI_TENANCY_ENABLED
+    value: "true"
+target:
+  kind: ConfigMap
+  name: sas-shared-config

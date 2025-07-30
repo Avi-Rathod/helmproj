@@ -1,0 +1,102 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-fonts
+    sas.com/admin: namespace
+  name: sas-fonts
+spec:
+  routes:
+  - conditions:
+    - prefix: /fonts
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /fonts/
+    services:
+    - name: sas-fonts
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /fonts/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-fonts
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-theme-content
+    sas.com/admin: namespace
+  name: sas-theme-content
+spec:
+  routes:
+  - conditions:
+    - prefix: /themeContent
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /themeContent/
+    services:
+    - name: sas-theme-content
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /themeContent/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-theme-content
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-themes
+    sas.com/admin: namespace
+  name: sas-themes
+spec:
+  routes:
+  - conditions:
+    - prefix: /themes
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /themes/
+    services:
+    - name: sas-themes
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /themes/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-themes
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

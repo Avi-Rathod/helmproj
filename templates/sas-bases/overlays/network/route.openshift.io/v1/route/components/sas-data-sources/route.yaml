@@ -1,0 +1,184 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-dataConnections
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-connections
+    sas.com/admin: namespace
+  name: sas-data-connections
+spec:
+  host: $(INGRESS_HOST)
+  path: /dataConnections
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-data-connections
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-dataConnections
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-connections
+    sas.com/admin: namespace
+  name: sas-data-connections-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /dataConnections
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-data-connections
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-dataSources
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-sources
+    sas.com/admin: namespace
+  name: sas-data-sources
+spec:
+  host: $(INGRESS_HOST)
+  path: /dataSources
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-data-sources
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-dataSources
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-sources
+    sas.com/admin: namespace
+  name: sas-data-sources-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /dataSources
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-data-sources
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-dataTables
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-tables
+    sas.com/admin: namespace
+  name: sas-data-tables
+spec:
+  host: $(INGRESS_HOST)
+  path: /dataTables
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-data-tables
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-dataTables
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-tables
+    sas.com/admin: namespace
+  name: sas-data-tables-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /dataTables
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-data-tables
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-rowSets
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-row-sets
+    sas.com/admin: namespace
+  name: sas-row-sets
+spec:
+  host: $(INGRESS_HOST)
+  path: /rowSets
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-row-sets
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-rowSets
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-row-sets
+    sas.com/admin: namespace
+  name: sas-row-sets-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /rowSets
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-row-sets
+  wildcardPolicy: Subdomain
+

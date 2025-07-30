@@ -1,0 +1,9 @@
+apiVersion: v2
+name: my-sass-proj-chart
+description: Conversion of project to helm project
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+maintainers:
+- email: contact@sasviyacube.com
+  name: sas

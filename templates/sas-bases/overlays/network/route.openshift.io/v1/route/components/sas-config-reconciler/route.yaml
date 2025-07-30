@@ -1,0 +1,46 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-configReconciler
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-config-reconciler
+    sas.com/admin: namespace
+  name: sas-config-reconciler
+spec:
+  host: $(INGRESS_HOST)
+  path: /configReconciler
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-config-reconciler
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-configReconciler
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-config-reconciler
+    sas.com/admin: namespace
+  name: sas-config-reconciler-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /configReconciler
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-config-reconciler
+  wildcardPolicy: Subdomain
+

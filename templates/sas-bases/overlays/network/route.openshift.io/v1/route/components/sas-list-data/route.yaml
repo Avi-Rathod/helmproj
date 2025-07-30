@@ -1,0 +1,46 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-listData
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-list-data
+    sas.com/admin: namespace
+  name: sas-list-data
+spec:
+  host: $(INGRESS_HOST)
+  path: /listData
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-list-data
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-listData
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-list-data
+    sas.com/admin: namespace
+  name: sas-list-data-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /listData
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-list-data
+  wildcardPolicy: Subdomain
+

@@ -1,0 +1,16 @@
+# This block of code updates the sas-workload-orchestrator ClusterRoleBinding
+#  to be a unique name, as it is a cluster-wide resource
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: update-swo-cluster-role-binding-name
+patch: |-
+  - op: replace
+    path: /metadata/name
+    value: sas-workload-orchestrator-$(SWO_BINDING_NAMESPACE)
+
+target:
+  kind: ClusterRoleBinding
+  name: sas-workload-orchestrator
+  apiVersion: rbac.authorization.k8s.io/v1

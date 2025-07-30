@@ -1,0 +1,97 @@
+## Patches that ensure fsGroup exists and is numeric
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: ensure-fsgroup-exists-statefulset-transformer
+target:
+  kind: StatefulSet
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/fsGroup
+    value: 0
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: ensure-fsgroup-exists-opendistrocluster-transformer
+target:
+  kind: OpenDistroCluster
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/fsGroup
+    value: 0
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: ensure-fsgroup-exists-job-transformer
+target:
+  kind: Job
+  annotationSelector: sas.com/component-name=sas-commonfiles
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/fsGroup
+    value: 0
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: ensure-fsgroup-exists-podtemplate-transformer
+target:
+  kind: PodTemplate
+patch: |-
+  - op: add
+    path: /template/spec/securityContext/fsGroup
+    value: 0
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: ensure-fsgroup-exists-deployment-transformer
+target:
+  kind: Deployment
+  annotationSelector: sas.com/component-name in (sas-audit, sas-model-publish)
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/fsGroup
+    value: 0
+---
+## Replacements that update fsGroup to the desired value.
+apiVersion: builtin
+kind: ReplacementTransformer
+metadata:
+  name: update-fsgroup-transformer
+replacements:
+- source:
+    kind: ConfigMap
+    name: security-container-security-inputs
+    fieldPath: data.fsGroup
+  targets:
+  - select:
+      kind: StatefulSet
+    fieldPaths:
+      - spec.template.spec.securityContext.fsGroup
+  - select:
+      kind: OpenDistroCluster
+    fieldPaths:
+    - spec.template.spec.securityContext.fsGroup
+  - select:
+      kind: Job
+      annotationSelector: sas.com/component-name=sas-commonfiles
+    fieldPaths:
+    - spec.template.spec.securityContext.fsGroup
+  - select:
+      kind: PodTemplate
+    fieldPaths:
+    - template.spec.securityContext.fsGroup
+  - select:
+      kind: Deployment
+      annotationSelector: sas.com/component-name in (sas-audit, sas-model-publish)
+    fieldPaths:
+    - spec.template.spec.securityContext.fsGroup
+  - select:
+      kind: Deployment
+      annotationSelector: sas.com/component-name=sas-singlestore-operator
+    fieldPaths:
+    - spec.template.spec.containers.0.args.2

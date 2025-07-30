@@ -1,0 +1,92 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-workflow
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-workflow
+    sas.com/admin: namespace
+  name: sas-workflow
+spec:
+  host: $(INGRESS_HOST)
+  path: /workflow
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-workflow
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-workflowDefinition
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-workflow-definition
+    sas.com/admin: namespace
+  name: sas-workflow-definition
+spec:
+  host: $(INGRESS_HOST)
+  path: /workflowDefinition
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-workflow-definition
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-workflowDefinition
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-workflow-definition
+    sas.com/admin: namespace
+  name: sas-workflow-definition-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /workflowDefinition
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-workflow-definition
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-workflow
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-workflow
+    sas.com/admin: namespace
+  name: sas-workflow-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /workflow
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-workflow
+  wildcardPolicy: Subdomain
+

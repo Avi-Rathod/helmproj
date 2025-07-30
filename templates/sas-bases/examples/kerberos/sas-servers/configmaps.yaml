@@ -1,0 +1,30 @@
+apiVersion: builtin
+kind: ConfigMapGenerator
+metadata:
+  name: sas-servers-kerberos-sidecar-config
+literals:
+  - KRB5_KTNAME=/opt/kerberos/keytab
+  - KRB5_CONFIG=/opt/kerberos/krb5.conf
+  - SAS_KRB5_PROXY_SPN={{ SPN }} # SPN from keytab file
+  - SAS_KRB5_PROXY_OUTPUT_PATH=/tmp/
+  - SAS_KERBEROS_ENABLED="true"
+  - KRB5PROXY_LOG_TYPE="error" # Logger levels: trace < debug < info < warn < error < fatal
+  - SAS_KRB5_PROXY_CREDAUTHDOMAIN=KerberosAuth # name of authentication domain to query for stored credentials
+---
+apiVersion: builtin
+kind: ConfigMapGenerator
+metadata:
+  name: sas-servers-kerberos-container-config
+literals:
+  - SAS_KERBEROS_ENABLED=true
+#- SAS_KRB5_PROXY_CHECKCREDSERVICE="false" # Set to true if SAS should prefer stored credentials over constrained delegation
+#- SAS_KRB5_PROXY_LOOKUPINGROUP="true" # Set to true if SAS should look for a group credential if no user credential is stored
+---
+#For SAS/Connect utilizing external clients
+#apiVersion: builtin
+#kind: ConfigMapGenerator
+#metadata:
+#  name: sas-connect-spawner-kerberos-config
+#literals:
+#- KRB5_KTNAME=/opt/kerberos/keytab
+#- SAS_KRB5_PROXY_SPN={{ SPN }} # HTTP SPN from keytab
