@@ -13,7 +13,7 @@ metadata:
 patch: |-
   - op: add
     path: /metadata/annotations/launcher.sas.com~1nfs-server
-    value: {{ NFS-SERVER-LOCATION }}
+    value: {{ .Values.NFS_SERVER_LOCATION }}
 target:
   kind: PodTemplate
   labelSelector: sas.com/template-intent=sas-launcher

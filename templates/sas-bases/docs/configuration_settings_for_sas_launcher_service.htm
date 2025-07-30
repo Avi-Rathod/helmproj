@@ -55,7 +55,7 @@ Identities service.</p>
 <p>Copy the sas-bases/examples/sas-launcher/configure/launcher-nfs-mount.yaml file to the site-config/sas-launcher/configure/ location.</p>
 </li>
 <li>
-<p>In the file, replace {{ NFS-SERVER-LOCATION }} with the location of the NFS server. Here is an example: </p>
+<p>In the file, replace {{ .Values.NFS_SERVER_LOCATION }} with the location of the NFS server. Here is an example: </p>
 <pre class="highlight"><code class="language-yaml">patch: |-
   - op: add
     path: /template/metadata/annotations/launcher.sas.com~1nfs-server

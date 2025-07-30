@@ -173,7 +173,7 @@ transformers:
 The example file `sas-workload-orchestrator-global-user-defined-resources-script-storage.yaml`
 mounts an NFS volume as the 'scripts' volume.
 
-To update the volume, replace the `{{ NFS-SERVER-ADDR }}` variable with the fully-qualified
+To update the volume, replace the `{{ .Values.NFS_SERVER_ADDR }}` variable with the fully-qualified
 domain name of the server and replace the `{{ NFS-SERVER-PATH }}` variable with the path to
 the volume on the server. Here is an example:
 
@@ -219,8 +219,8 @@ transformers:
 The example file `sas-workload-orchestrator-host-user-defined-resources-script-storage.yaml`
 mounts an NFS volume as the 'scripts' volume.
 
-To update the volume, replace the `{{ NFS-SERVER-ADDR }}` variable with the fully-qualified
-domain name of the server and replace the `{{ NFS-SERVER-PATH }}` variable with the path to
+To update the volume, replace the `{{ .Values.NFS_SERVER_ADDR }}` variable with the fully-qualified
+domain name of the server and replace the `{{ .Values.NFS_SERVER_PATH }}` variable with the path to
 the volume on the server. Here is an example:
 
 ```yaml
