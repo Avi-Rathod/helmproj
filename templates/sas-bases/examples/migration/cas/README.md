@@ -38,13 +38,13 @@ patch:
 
 1. Open cas-migration.yaml to modify its contents.
 
-2. Set up the NFS mount by replacing the NFS-MOUNT-PATH and NFS-SERVER tokens
+2. Set up the NFS mount by replacing the NFS_MOUNT_PATH and NFS-SERVER tokens
    with the mounted path to your backup location and the NFS server where it
    lives:
 
    ```yaml
    nfs:
-     path: {{NFS-MOUNT-PATH}}
+     path: {{NFS_MOUNT_PATH}}
      server: {{NFS-SERVER}}
    ```
 

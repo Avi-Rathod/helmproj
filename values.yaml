@@ -1,4 +1,5 @@
 STORAGE_ACCOUNT_NAME: "SOME NAME SAAS"
+NFS_MOUNT_PATH: "ABC"
 replicaCount: 2
 
 image:
