@@ -1,3 +1,4 @@
+STORAGE_ACCOUNT_NAME: "SOME NAME SAAS"
 replicaCount: 2
 
 image:

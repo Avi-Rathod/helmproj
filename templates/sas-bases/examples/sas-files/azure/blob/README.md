@@ -29,7 +29,7 @@ directory, and paste the storage account key into the file. The file should
 only contain the storage account key.
 
 3. In the `$deploy/site-config/sas-files/azure/blob/configmaps.yaml` file, replace
-`{{ STORAGE-ACCOUNT-NAME }}` with the name of the storage account to be used by
+`{{ .Values.STORAGE_ACCOUNT_NAME }}` with the name of the storage account to be used by
 the files service.
 
 4. Make the following changes to the base kustomization.yaml file in the `$deploy`
