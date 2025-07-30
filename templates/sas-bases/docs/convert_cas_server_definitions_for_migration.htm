@@ -39,7 +39,7 @@ patch:</p>
    with the mounted path to your backup location and the NFS server where it
    lives:</p>
 <pre class="highlight"><code class="language-yaml">nfs:
-  path: {{NFS_MOUNT_PATH}}
+  path: {{ .Values.NFS_MOUNT_PATH}}
   server: {{NFS-SERVER}}</code></pre>
 
 </li>

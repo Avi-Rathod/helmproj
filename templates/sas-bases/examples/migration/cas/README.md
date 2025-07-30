@@ -44,7 +44,7 @@ patch:
 
    ```yaml
    nfs:
-     path: {{NFS_MOUNT_PATH}}
+     path: {{.Values.NFS_MOUNT_PATH}}
      server: {{NFS-SERVER}}
    ```
 
