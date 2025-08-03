@@ -97,7 +97,7 @@ When the volume claim's storage capacity is not specified in the node spec, the 
 
 Similarly, when the volume claim's storage class is not specified in the node spec, the operator creates a PersistentVolumeClaim using either the default StorageClass for that OpenSearch cluster (if specified) or the default storage class for the Kubernetes cluster (see `sas-bases/examples/configure-elasticsearch/internal/storage/README.md` for instructions for configuring a default storage class for the OpenSearch cluster).
 
-To define your own volume claim template with your desired storage capacity and the Kubernetes storage class that is associated with the persistent volume, see the example file located at `sas-bases/examples/configure-elasticsearch/internal/topology/custom-topology-with-custom-volume-claim.yaml` . Replace {{.Values.STORAGE_CLASS }} with the name of the StorageClass and {{.Values.STORAGE_CAPACITY }} with the desired storage capacity for this volume claim.
+To define your own volume claim template with your desired storage capacity and the Kubernetes storage class that is associated with the persistent volume, see the example file located at `sas-bases/examples/configure-elasticsearch/internal/topology/custom-topology-with-custom-volume-claim.yaml` . Replace {{.Values.STORAGE_CLASS}} with the name of the StorageClass and {{.Values.STORAGE_CAPACITY}} with the desired storage capacity for this volume claim.
 
 ### Configuring the Heap Size
 
