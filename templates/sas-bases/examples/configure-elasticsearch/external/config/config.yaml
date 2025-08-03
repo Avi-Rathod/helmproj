@@ -31,10 +31,10 @@ config.yml: |
                 config:
                   jwt_header: Authorization
                   jwt_url_parameter: "null"
-                  openid_connect_url: {{openid-url}}
+                  openid_connect_url: {{.Values.openid_url}}
                   openid_connect_idp.enable_ssl: true
                   openid_connect_idp.verify_hostnames: false
-                  openid_connect_idp.pemtrustedcas_filepath: {{ingress-cert-path}}
+                  openid_connect_idp.pemtrustedcas_filepath: {{.Values.ingress_cert_path}}
                   roles_key: authorities
                   subject_key: user_name
                 type: openid
@@ -50,10 +50,10 @@ config.yml: |
                 config:
                   jwt_header: Authorization
                   jwt_url_parameter: "null"
-                  openid_connect_url: {{openid-url}}
+                  openid_connect_url: {{.Values.openid_url}}
                   openid_connect_idp.enable_ssl: true
                   openid_connect_idp.verify_hostnames: false
-                  openid_connect_idp.pemtrustedcas_filepath: {{ingress-cert-path}}
+                  openid_connect_idp.pemtrustedcas_filepath: {{.Values.ingress_cert_path}}
                   roles_key: authorities
                   subject_key: client_id
                 type: openid
