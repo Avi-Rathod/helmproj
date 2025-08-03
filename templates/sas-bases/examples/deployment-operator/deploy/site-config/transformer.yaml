@@ -9,7 +9,7 @@ patch: |-
   - op: replace
     path: /metadata/name
     value:
-      "{{ NAME_OF_CLUSTERROLEBINDING }}"
+      "{{ .Values.NAME_OF_CLUSTERROLEBINDING }}"
   # namespace: MUST BE PROVIDED BY USER. THIS MUST BE THE NAMESPACE INTO WHICH
   # THE SAS DEPLOYMENT OPERATOR IS DEPLOYED.
   - op: add
