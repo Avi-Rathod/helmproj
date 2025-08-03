@@ -6,8 +6,7 @@ NFS_SERVER_ADDR: "add"
 NFS_SERVER_PATH: "path"
 EXISTING_K8S_PVC_NAME: "EXISTING"
 PVC_NAME: "pvc"
-
-
+VIYA_STOP_SCHEDULE: "stop schedule"
 replicaCount: 2
 
 image:
