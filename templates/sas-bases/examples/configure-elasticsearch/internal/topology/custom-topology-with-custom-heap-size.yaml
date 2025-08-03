@@ -12,7 +12,7 @@ patch: |-
         replicas: 3
         roles:
           - master
-        heapsize: {{HEAP-SIZE}}
+        heapsize: {{.Values.HEAP-SIZE}}
       - name: custom-data
         replicas: 3
         roles:
