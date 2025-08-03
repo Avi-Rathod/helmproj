@@ -48,7 +48,7 @@ security context constraints to the appropriate service account that will use
 it. Use the following command:
 
 ```yaml
-oc -n {{ NAME-OF-NAMESPACE }} adm policy add-scc-to-user sas-model-repository -z
+oc -n {{.Values.NAME_OF_NAMESPACE }} adm policy add-scc-to-user sas-model-repository -z
 sas-model-repository
 ```
 

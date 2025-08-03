@@ -34,7 +34,7 @@ oc create -f sas-microanalytic-score-scc.yaml
 After the security context constraints have been applied, you must link the security context constraints to the appropriate service account that will use it. Use the following command:
 
 ```yaml
-oc -n {{ NAME-OF-NAMESPACE }} adm policy add-scc-to-user sas-microanalytic-score -z sas-microanalytic-score
+oc -n {{.Values.NAME_OF_NAMESPACE }} adm policy add-scc-to-user sas-microanalytic-score -z sas-microanalytic-score
 ```
 
 ## Post-Installation Tasks

@@ -28,7 +28,7 @@ The following example assumes:
 * The orchestration image has been pulled and has the local tag 'sas-orchestration'
 * The `$deploy` directory is the current working directory.
   `cd` to $deploy and use `$(pwd)` to mount the current directory into the container.
-* `{{ NAME-OF-NAMESPACE }}` is the namespace where the SAS Viya platform deployment described by the manifest file being assessed will be located.
+* `{{ .Values.NAME_OF_NAMESPACE }}` is the namespace where the SAS Viya platform deployment described by the manifest file being assessed will be located.
 
 ## Example
 
@@ -44,7 +44,7 @@ docker run --rm \
     --deployment-dir /cwd \
     -- \
     --manifest /cwd/site.yaml \
-    --namespace {{ NAME-OF-NAMESPACE }}
+    --namespace {{.Values.NAME_OF_NAMESPACE }}
 ```
 
 **Note:** To see the commands that would be executed from the operation without

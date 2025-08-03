@@ -47,7 +47,7 @@ The examples that follow assume:
 * The orchestration image has been pulled and has the local tag 'sas-orchestration'
 * The `$deploy` directory is the current working directory.
   `cd` to $deploy and use `$(pwd)` to mount the current directory into the container.
-* The software has been deployed into the namespace '{{ NAME-OF-NAMESPACE }}'
+* The software has been deployed into the namespace '{{.Values.NAME_OF_NAMESPACE }}'
 
 ### lifecycle
 
@@ -81,7 +81,7 @@ docker run --rm \
   -e "KUBECONFIG=/kubernetes/config" \
   -w /cwd \
   sas-orchestration \
-  lifecycle list --namespace {{ NAME-OF-NAMESPACE }}
+  lifecycle list --namespace {{.Values.NAME_OF_NAMESPACE  }}
 ```
 
 #### lifecycle run
@@ -104,7 +104,7 @@ docker run --rm \
     --deployment-dir /cwd \
     -- \
     --manifest /cwd/site.yaml \
-    --namespace {{ NAME-OF-NAMESPACE }}
+    --namespace {{.Values.NAME_OF_NAMESPACE  }}
 ```
 
 As indicated in the example, the `run` sub-command needs an operation (`--operation`) and the location of

@@ -18,7 +18,7 @@ The Kaniko container is started after a batch job is executed. The Decisions Run
 If you are deploying in a Red Hat OpenShift cluster, use the following command to link the service account to run as the root user.
 
 ```yaml
-oc -n {{ NAME-OF-NAMESPACE }} adm policy add-scc-to-user anyuid -z sas-decisions-runtime-builder-kaniko
+oc -n {{.Values.NAME_OF_NAMESPACE }} adm policy add-scc-to-user anyuid -z sas-decisions-runtime-builder-kaniko
 ```
 
 ## Installation

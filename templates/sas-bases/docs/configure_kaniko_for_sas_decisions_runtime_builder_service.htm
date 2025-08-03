@@ -13,7 +13,7 @@
 <p>The Kaniko container is started after a batch job is executed. The Decisions Runtime Builder service checks the job status every 30 seconds. The job times out after 30 minutes, if it has not completed.</p>
 <h2 id="140345099398928prerequisites">Prerequisites</h2>
 <p>If you are deploying in a Red Hat OpenShift cluster, use the following command to link the service account to run as the root user.</p>
-<pre class="highlight"><code class="language-yaml">oc -n {{ NAME-OF-NAMESPACE }} adm policy add-scc-to-user anyuid -z sas-decisions-runtime-builder-kaniko</code></pre>
+<pre class="highlight"><code class="language-yaml">oc -n {{.Values.NAME_OF_NAMESPACE }} adm policy add-scc-to-user anyuid -z sas-decisions-runtime-builder-kaniko</code></pre>
 
 <h2 id="140345099398928installation">Installation</h2>
 <ol>

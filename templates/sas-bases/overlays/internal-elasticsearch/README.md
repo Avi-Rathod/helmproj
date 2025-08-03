@@ -114,14 +114,14 @@ safely ignored.
 
 The following steps need to be performed before applying your manifest for the
 new version of the SAS Viya platform. Replace the entire variable
-`{{ NAME-OF-NAMESPACE }}`, including the braces, with the Kubernetes
+`{{.Values.NAME_OF_NAMESPACE }}`, including the braces, with the Kubernetes
 namespace used for the SAS Viya platform.
 
 1. As an administrator with namespace permissions, scale down the existing internal
    OpenSearch Operator deployment:
 
    ```bash
-   kubectl scale deployment --replicas=0 sas-opendistro-operator -n {{ NAME-OF-NAMESPACE }}
+   kubectl scale deployment --replicas=0 sas-opendistro-operator -n {{ .Values.NAME_OF_NAMESPACE  }}
    ```
 
 2. As an administrator with namespace permissions, run the following command.
@@ -129,5 +129,5 @@ namespace used for the SAS Viya platform.
    operator.
 
    ```bash
-   kubectl get po -l name=sas-opendistro-operator -n {{ NAME-OF-NAMESPACE }}
+   kubectl get po -l name=sas-opendistro-operator -n {{ .Values.NAME_OF_NAMESPACE  }}
    ```

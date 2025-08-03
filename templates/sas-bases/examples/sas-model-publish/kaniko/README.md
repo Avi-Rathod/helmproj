@@ -53,7 +53,7 @@ If you are deploying in a Red Hat OpenShift cluster, use this command to link
 the service account to run as root user.
 
 ```yaml
-oc -n {{ NAME-OF-NAMESPACE }} adm policy add-scc-to-user anyuid -z
+oc -n {{ .Values.NAME_OF_NAMESPACE  }} adm policy add-scc-to-user anyuid -z
 sas-model-publish-kaniko
 ```
 

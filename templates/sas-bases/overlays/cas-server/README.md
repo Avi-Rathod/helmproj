@@ -118,10 +118,10 @@ After the SCC has been applied, you must link the SCC to the appropriate Service
 Perform the following command which corresponds to the appropriate host launch type:
 
 No host launch:
-oc -n {{ NAME-OF-NAMESPACE }} adm policy add-scc-to-user sas-cas-server -z sas-cas-server
+oc -n {{.Values.NAME_OF_NAMESPACE }} adm policy add-scc-to-user sas-cas-server -z sas-cas-server
 
 Host launch enabled:
-oc -n {{ NAME-OF-NAMESPACE }} adm policy add-scc-to-user sas-cas-server-host -z sas-cas-server
+oc -n {{.Values.NAME_OF_NAMESPACE  }} adm policy add-scc-to-user sas-cas-server-host -z sas-cas-server
 
 Note: If you are enabling host launch, use the SecurityContexConstraint file
 cas-server-scc-host-launch.yaml instead of cas-server-scc.yaml. This file sets

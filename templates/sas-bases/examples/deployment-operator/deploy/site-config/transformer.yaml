@@ -15,7 +15,7 @@ patch: |-
   - op: add
     path: /subjects/0/namespace
     value:
-      "{{ NAME-OF-NAMESPACE }}"
+      "{{.Values.NAME_OF_NAMESPACE }}"
 target:
   annotationSelector: sas.com/component-name=sas-deployment-operator
   # Some required components for the SAS Viya platform are scoped to the
