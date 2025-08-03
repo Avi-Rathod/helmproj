@@ -17,7 +17,7 @@ patch: |-
         replicas: 3
         roles:
           - data
-        heapsize: {{HEAP-SIZE}}
+        heapsize: {{.Values.HEAP_SIZE}}
 
   # note that additional op replace blocks can be used to alter image, env, jvm, security and other paths      
 
