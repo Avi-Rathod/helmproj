@@ -10,7 +10,7 @@ patch: |-
     # This is the cron schedule by which the sas-stop-all job is run.
     # Example:
     #   value: '0 19 * * 1-5'
-    value: {{.Values. VIYA_STOP_SCHEDULE }}
+    value: {{.Values.VIYA_STOP_SCHEDULE }}
   - op: replace
     path: /spec/suspend
     value: false
