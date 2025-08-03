@@ -107,7 +107,7 @@ Generally, the heap size value should be up to half of the available physical RA
 
 The maximum heap size also affects the maximum number of shards that can be safely stored on the node without suffering from oversharding and circuit breaker events. As a rule of thumb you should aim for 25 shards or fewer per GB of heap memory with each shard not exceeding 50 GB. 
 
-See `sas-bases/examples/configure-elasticsearch/internal/topology/custom-topology-with-custom-heap-size.yaml` for an example of how to configure the amount of heap memory dedicated to OpenSearch nodes. Replace {{ HEAP-SIZE }} with the appropriate heap size for your needs. 
+See `sas-bases/examples/configure-elasticsearch/internal/topology/custom-topology-with-custom-heap-size.yaml` for an example of how to configure the amount of heap memory dedicated to OpenSearch nodes. Replace {{ .Values.HEAP_SIZE }} with the appropriate heap size for your needs. 
 
 ## Installing a Custom Topology
 
