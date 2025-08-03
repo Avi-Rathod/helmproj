@@ -16,8 +16,8 @@ patch: |-
         volume:
           resources:
             requests:
-              storage: {{.Values.STORAGE-CAPACITY}}
-          storageClassName: {{.Values.STORAGE-CLASS}}
+              storage: {{.Values.STORAGE_CAPACITY}}
+          storageClassName: {{.Values.STORAGE_CLASS}}
       - name: custom-data
         replicas: 3
         roles:
@@ -27,7 +27,7 @@ patch: |-
           resources:
             requests:
               storage: {{.Values.STORAGE_CAPACITY}}
-          storageClassName: {{.Values.STORAGE-CLASS}}
+          storageClassName: {{.Values.STORAGE_CLASS}}
 
 target:
   kind: OpenDistroCluster
