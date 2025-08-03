@@ -8,6 +8,6 @@ patch: |-
     value: {}
   - op: add
     path: /spec/template/spec/containers/0/securityContext/runAsUser
-    value: {{ USER-ID }}
+    value: {{ .Values.USER_ID }}
 target:
   kind: OpenDistroCluster
