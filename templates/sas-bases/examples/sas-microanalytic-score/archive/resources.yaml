@@ -9,4 +9,4 @@ spec:
   resources:
     requests:
       storage: {{ STORAGE-CAPACITY }} # change this to desired capacity
-  storageClassName: {{ STORAGE-CLASS-NAME }} # change this the desired storage class
+  storageClassName: {{ .Values.STORAGE_CLASS_NAME }} # change this the desired storage class

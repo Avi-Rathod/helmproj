@@ -41,7 +41,7 @@ example file located at <code>$deploy/sas-bases/examples/sas-batch-server/storag
 file to the site-config directory.</p>
 </li>
 <li>
-<p>To change the storage class, replace the {{ VOLUME-STORAGE-CLASS }} variable
+<p>To change the storage class, replace the {{ .Values.STORAGE_CLASS_NAME }} variable
 in the copied file with a different volume storage class.
 The unedited example file contains a transformer that looks like this:</p>
 <pre class="highlight"><code class="language-yaml"> ---
@@ -54,7 +54,7 @@ The unedited example file contains a transformer that looks like this:</p>
      path: /template/spec/volumes/-
      value:
        name: viya
-       {{ VOLUME-STORAGE-CLASS }}
+       {{ .Values.STORAGE_CLASS_NAME }}
  target:
    kind: PodTemplate
    labelSelector: "launcher.sas.com/job-type=sas-batch-job"</code></pre>
@@ -66,7 +66,7 @@ The unedited example file contains a transformer that looks like this:</p>
    path: /path/to/my/location</code></pre>
 
 <p>To use this storage location in the transformer, substitute in the volume definition in the
- {{ VOLUME-STORAGE-CLASS }} location.  The result would look like this:</p>
+ {{ .Values.STORAGE_CLASS_NAME }} location.  The result would look like this:</p>
 <pre class="highlight"><code class="language-yaml"> ---
  apiVersion: builtin
  kind: PatchTransformer

@@ -48,7 +48,7 @@ The example file provided looks like the following:</p>
   path: /template/spec/volumes/-
   value:
     name: viya
-    {{ VOLUME-STORAGE-CLASS }}</code></pre>
+    {{.Values.STORAGE_CLASS_NAME }}</code></pre>
 
 <p>For example, assume that the storage location you want to use is an NFS volume.   That volume may be
  described in the following way:</p>
@@ -57,7 +57,7 @@ The example file provided looks like the following:</p>
   path: /path/to/my/location</code></pre>
 
 <p>To use this in the transformer, substitute in the volume definition in the
- {{ VOLUME-STORAGE-CLASS }} location.  The result would look like this:</p>
+ {{ .Values.STORAGE_CLASS_NAME }} location.  The result would look like this:</p>
 <pre class="highlight"><code class="language-yaml">- op: add
   path: /template/spec/volumes/-
   value:

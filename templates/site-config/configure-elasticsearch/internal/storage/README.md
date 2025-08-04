@@ -26,7 +26,7 @@ for details on available storage options and how to configure a new StorageClass
 1. Copy the StorageClass transformer from `$deploy/sas-bases/examples/configure-elasticsearch/internal/storage/storage-class-transformer.yaml` 
    into the `$deploy/site-config` directory.
 
-2. Open the storage-class-transformer.yaml file for editing and replace `{{ STORAGE-CLASS }}` with the name of the StorageClass to be used by OpenSearch.
+2. Open the storage-class-transformer.yaml file for editing and replace `{{ .Values.STORAGE_CLASS }}` with the name of the StorageClass to be used by OpenSearch.
 
 3. Add the storage-class-transformer.yaml file to the transformers block of the base kustomization.yaml file (`$deploy/kustomization.yaml`). Here is an example:
    

@@ -10,8 +10,8 @@ patch: |-
   - op: add
     path: /spec/storage
     value:
-      size: {{ STORAGE-SIZE }}
-      class: {{ STORAGE-CLASS }}
+      size: {{ .Values.STORAGE_SIZE }}
+      class: {{ .Values.STORAGE_CLASS }}
 target:
   kind: DistributedRedisCluster
   name: sas-redis-server

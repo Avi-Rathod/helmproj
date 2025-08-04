@@ -12,7 +12,7 @@ This directory contains an example transformer that illustrates how to change th
 ## Installation
 1.  Copy the file `sas-bases/examples/data-quality/storageclass/storage-class-transformer.yaml` and place it in your site-config directory.
 
-2.  Replace the {{ QKB-STORAGE-CLASS }} value with your desired StorageClass. Note that the QKB requires that your storage class support the RWX accessMode.
+2.  Replace the {{ .Values.QKB_STORAGE_CLASS }} value with your desired StorageClass. Note that the QKB requires that your storage class support the RWX accessMode.
 
 3.  Also replace the {{ QKB-STORAGE-SIZE }} value with the size you wish to allocate to the QKB volume.  The recommended size is 8Gi.  Note that using a lower value may restrict your ability to add new QKBs to the SAS Viya platform; 1Gi is the absolute minimum required.
 

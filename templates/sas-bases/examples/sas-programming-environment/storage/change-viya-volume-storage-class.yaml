@@ -25,7 +25,7 @@ patch: |-
     path: /template/spec/volumes/-
     value:
       name: viya
-      {{ VOLUME-STORAGE-CLASS }} 
+      {{ VOLUME_STORAGE_CLASS }} 
 target:
   kind: PodTemplate
   labelSelector: "sas.com/template-intent=sas-launcher"

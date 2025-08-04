@@ -24,7 +24,7 @@ for details on available storage options and how to configure a new StorageClass
    into the <code>$deploy/site-config</code> directory.</p>
 </li>
 <li>
-<p>Open the storage-class-transformer.yaml file for editing and replace <code>{{ STORAGE-CLASS }}</code> with the name of the StorageClass to be used by OpenSearch.</p>
+<p>Open the storage-class-transformer.yaml file for editing and replace <code>{{ .Values_STORAGE_CLASS }}</code> with the name of the StorageClass to be used by OpenSearch.</p>
 </li>
 <li>
 <p>Add the storage-class-transformer.yaml file to the transformers block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). Here is an example:</p>
