@@ -7,6 +7,15 @@ NFS_SERVER_PATH: "path"
 EXISTING_K8S_PVC_NAME: "EXISTING"
 PVC_NAME: "pvc"
 VIYA_STOP_SCHEDULE: "stop schedule"
+STORAGE_CLASS: "storage"
+STORAGE_CAPACITY: "capacity"
+openid_url: "openid"
+ingress_cert_path: "ingress"
+USER_ID: "user-id"
+STORAGE_CLASS: "storage"
+HEAP_SIZE: "hip"
+NAME_OF_CLUSTERROLEBINDING: "clustur"
+NAME_OF_NAMESPACE: "name"
 replicaCount: 2
 
 image:
