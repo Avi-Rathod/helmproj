@@ -5,7 +5,7 @@
 ## actual value.
 ## Replace the curly braces, interior spaces, and the variable name.
 ##
-## For instance, "{{ SECCOMP_PROFILE }}"
+## For instance, "{{ .Values.SECCOMP_PROFILE }}"
 ## should be replaced by the desired seccompProfile spec as defined in either of these two examples:
 ## https://kubernetes.io/docs/tutorials/security/seccomp/#create-pod-that-uses-the-container-runtime-default-seccomp-profile
 ## https://kubernetes.io/docs/tutorials/security/seccomp/#create-pod-with-seccomp-profile-that-only-allows-necessary-syscalls
@@ -29,7 +29,7 @@ patch: |-
   - op: replace
     path: /spec/template/spec/securityContext/seccompProfile
     value:
-      type: {{ SECCOMP_PROFILE }}
+      type: {{ .Values.SECCOMP_PROFILE }}
 target:
   kind: Deployment
 
@@ -48,7 +48,7 @@ patch: |-
   - op: replace
     path: /spec/template/spec/securityContext/seccompProfile
     value:
-      type: {{ SECCOMP_PROFILE }}
+      type: {{ .Values.SECCOMP_PROFILE }}
 target:
   kind: StatefulSet
 
@@ -67,7 +67,7 @@ patch: |-
   - op: replace
     path: /spec/projectTemplate/deployment/spec/template/spec/securityContext/seccompProfile
     value:
-      type: {{ SECCOMP_PROFILE }}
+      type: {{ .Values.SECCOMP_PROFILE }}
 target:
   kind: ESPConfig
 
@@ -86,7 +86,7 @@ patch: |-
   - op: replace
     path: /spec/jobTemplate/spec/template/spec/securityContext/seccompProfile
     value:
-      type: {{ SECCOMP_PROFILE }}
+      type: {{ .Values.SECCOMP_PROFILE }}
 target:
   kind: CronJob
 
@@ -105,7 +105,7 @@ patch: |-
   - op: replace
     path: /spec/template/spec/securityContext/seccompProfile
     value:
-      type: {{ SECCOMP_PROFILE }}
+      type: {{ .Values.SECCOMP_PROFILE }}
 target:
   kind: Job
 
@@ -124,7 +124,7 @@ patch: |-
   - op: replace
     path: /template/spec/securityContext/seccompProfile
     value:
-      type: {{ SECCOMP_PROFILE }}
+      type: {{ .Values.SECCOMP_PROFILE }}
 target:
   kind: PodTemplate
 
@@ -137,7 +137,7 @@ metadata:
 patch: |-
   - op: add
     path: /spec/seccompProfile
-    value: {{ SECCOMP_PROFILE }}
+    value: {{ .Values.SECCOMP_PROFILE }}
 target:
   group: viya.sas.com
   kind: CASDeployment
@@ -159,7 +159,7 @@ patch: |-
   - op: replace
     path: /spec/template/spec/securityContext/seccompProfile
     value:
-      type: {{ SECCOMP_PROFILE }}
+      type: {{.Values.SECCOMP_PROFILE}}
 target:
   kind: DaemonSet
 
@@ -173,6 +173,6 @@ metadata:
 patch: |-
   - op: replace
     path: /spec/metadata/annotations/seccomp.security.alpha.kubernetes.io~1pod
-    value: {{ SECCOMP_PROFILE }}
+    value: {{ .Values.SECCOMP_PROFILE }}
 target:
   kind: PostgresCluster
