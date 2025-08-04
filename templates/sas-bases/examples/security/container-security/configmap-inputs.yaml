@@ -3,7 +3,7 @@
 ## The location that requires a user specified value is indicated by a capitalized and
 ## name set off by curly braces and a space at each end. Replace this token with the
 ## actual value. Replace the curly braces, interior spaces, and the variable name.
-## For instance, {{ FSGROUP_VALUE }} should be replaced by the desired fsgroup value.
+## For instance, {{ .Values.FSGROUP_VALUE }} should be replaced by the desired fsgroup value.
 ## Example:
 ##   fsGroup: "1000700000"
 
@@ -14,4 +14,4 @@ metadata:
   labels:
     sas.com/admin: none
 data:
-  fsGroup: "{{ FSGROUP_VALUE }}"
+  fsGroup: "{{ .Values.FSGROUP_VALUE }}"
