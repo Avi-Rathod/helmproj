@@ -217,9 +217,9 @@ update the sas-restore-job-parameters config map with the following parameters b
 
 * AUTO_SWITCH_POSTGRES: "true"
 
-* DATASERVER_HOST_MAP: "{{ DATASERVER_HOST_MAP }}"
+* DATASERVER_HOST_MAP: "{{ .values.DATASERVER_HOST_MAP }}"
 
-   {{ DATASERVER_HOST_MAP }} is comma-separated list of key value pairs that describes the mapping of dataserver custom resource to updated host names.
+   {{ .values.DATASERVER_HOST_MAP }} is comma-separated list of key value pairs that describes the mapping of dataserver custom resource to updated host names.
    The key and value within each KV pair is separated by colon (:).
    Here is an example that switches the host names for SAS platform PostgreSQL and SAS CDS PostgreSQL servers with the new host names:
 

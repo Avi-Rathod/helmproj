@@ -114,7 +114,7 @@ External PostgreSQL is configured by modifying the DataServer CustomResource to 
 
 By default, the SAS Viya platform uses a database named "SharedServices" in each PostgreSQL server.
 
-To set a custom database name, uncomment the surrounding block and replace the `{{ DB-NAME }}` variable in your copied `dataserver-transformer.yaml` file(s) with the custom database name.
+To set a custom database name, uncomment the surrounding block and replace the `{{ .VALUES.DB_NAME }}` variable in your copied `dataserver-transformer.yaml` file(s) with the custom database name.
 
 #### Security Considerations
 

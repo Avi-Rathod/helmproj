@@ -181,8 +181,8 @@ update the sas-restore-job-parameters config map with the following parameters b
 <p>AUTO_SWITCH_POSTGRES: &ldquo;true&rdquo;</p>
 </li>
 <li>
-<p>DATASERVER_HOST_MAP: &ldquo;{{ DATASERVER_HOST_MAP }}&rdquo;</p>
-<p>{{ DATASERVER_HOST_MAP }} is comma-separated list of key value pairs that describes the mapping of dataserver custom resource to updated host names.
+<p>DATASERVER_HOST_MAP: &ldquo;{{ .values.DATASERVER_HOST_MAP }}&rdquo;</p>
+<p>{{ .values.DATASERVER_HOST_MAP }} is comma-separated list of key value pairs that describes the mapping of dataserver custom resource to updated host names.
  The key and value within each KV pair is separated by colon (:).
  Here is an example that switches the host names for SAS platform PostgreSQL and SAS CDS PostgreSQL servers with the new host names:</p>
 <p><code>DATASERVER_HOST_MAP="sas-platform-postgres:restored-postgres.postgres.azure.com,sas-cds-postgres:restored-cds-postgres.postgres.azure.com"</code></p>

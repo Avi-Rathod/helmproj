@@ -13,11 +13,11 @@ patch: |-
       name: {{ MOUNT-NAME }}
       configMap:
         name: {{ CONFIGMAP-NAME }}
-        defaultMode: {{ DEFAULT-PERMISSIONS }}
+        defaultMode: {{ .values.DEFAULT_PERMISSIONS}}
         items:
         - key: {{ KEY-REPRESENTING-DATA-FILE-SOURCE }}
           mode: {{ FILE-PERMISSION }}
-          path: {{ DATASOURCE-FILE }}
+          path: {{ .VALUES.DATASOURCE_FILE }}
 
   - op: add
     path: /spec/controllerTemplate/spec/containers/0/volumeMounts/-

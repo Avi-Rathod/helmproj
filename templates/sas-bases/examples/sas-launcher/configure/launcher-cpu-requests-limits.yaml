@@ -12,10 +12,10 @@ metadata:
 patch: |-
   - op: add
     path: /metadata/annotations/launcher.sas.com~1default-cpu-request
-    value: {{ DEFAULT-CPU-REQUEST }}
+    value:{{ .values. DEFAULT_CPU_REQUEST  }}
   - op: add
     path: /metadata/annotations/launcher.sas.com~1max-cpu-request
-    value: {{ MAX-CPU-REQUEST }}
+    value: {{ .values.MAX_CPU_REQUEST }}
   - op: add
     path: /metadata/annotations/launcher.sas.com~1default-cpu-limit
     value: {{ DEFAULT-CPU-LIMIT }}

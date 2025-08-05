@@ -13,7 +13,7 @@ This README file describes the configuration settings available for deploying an
 
 Create a copy of the example template in `/$deploy/sas-bases/examples/sas-detection/detection-engine-deployment.yaml`. Save this copy in `/$deploy/site-config/sas-detection/detection-engine-deployment.yaml`.
 
-Placeholders are indicated by curly brackets, such as {{ DECISION }}. Find and replace the placeholders with the values you want for your deployment. After all placeholders have been filled in, directly apply your deployment yaml via kubectl apply, indicating the file you've just filled in.
+Placeholders are indicated by curly brackets, such as {{ .VALUES.DECISION }}. Find and replace the placeholders with the values you want for your deployment. After all placeholders have been filled in, directly apply your deployment yaml via kubectl apply, indicating the file you've just filled in.
 
 ```sh
 kubectl apply -f detection-engine-deployment.yaml
@@ -44,7 +44,7 @@ The SAS Container Runtime (SCR) container requires an image to be specified. Thi
 containers:
 - name: sas-sda-scr
     # Image from your docker registry
-    image: {{ DECISION }}
+    image: {{ .VALUES.DECISION }}
 ```
 
 Other than the image, the only required properties for the sas-sda-scr container are SAS_REDIS_HOST and SAS_REDIS_PORT. The other properties are optional security properties covered in detail in the security section. See the container-configuration.yaml file for the minimal required configuration.

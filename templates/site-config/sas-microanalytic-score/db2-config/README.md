@@ -25,18 +25,18 @@ Ensure that the two directories contain the installed client files (for example,
 2. Modify the three files under the site-config/sas-microanalytic-score/db2-config folder to point to your settings.
 
    * Modify the `$deploy/site-config/sas-microanalytic-score/db2-config/data-mounts-mas.yaml` file:
-     * Replace each instance of {{ DB2_CLIENT_DIR_NAME }} with a desired name (for example, db2client)
-     * Replace {{ DB2_CLIENT_DIR_MOUNT_PATH }} with an appropriate path for the installed DB2 client files (for example, "/db2client")
-     * Replace {{ DB2_CLIENT_DIR_PATH }} with the location of the db2client folder (for example, /shared/gelcontent/access-clients/db2client)
-     * Replace {{ DB2_CLIENT_DIR_SERVER_NAME }} with the name of the server where DB2 Client is installed (for example, cloud.example.com)
-     * Replace each instance of {{ DB2_CONFIGURED_DIR_NAME }} with a desired name (for example, db2)
-     * Replace {{ DB2_CONFIGURED_DIR_MOUNT_PATH }} with an appropriate path for the DB2 configured server definition files (for example, "/db2")
-     * Replace {{ DB2_CONFIGURED_DIR_PATH }} with the location where the DB2 configured server definition files exist (for example, /shared/gelcontent/access-clients/db2)
-     * Replace {{ DB2_CONFIGURED_DIR_SERVER_NAME }} with the name of the server where the DB2 configured server definition files exist (for example, cloud.example.com)
+     * Replace each instance of {{ .values.DB2_CLIENT_DIR_NAME }} with a desired name (for example, db2client)
+     * Replace {{ .values.DB2_CLIENT_DIR_MOUNT_PATH }} with an appropriate path for the installed DB2 client files (for example, "/db2client")
+     * Replace {{ .values.DB2_CLIENT_DIR_PATH }}with the location of the db2client folder (for example, /shared/gelcontent/access-clients/db2client)
+     * Replace {{ .values.DB2_CLIENT_DIR_SERVER_NAME }} with the name of the server where DB2 Client is installed (for example, cloud.example.com)
+     * Replace each instance of {{ .values.DB2_CONFIGURED_DIR_NAME }} with a desired name (for example, db2)
+     * Replace {{ .values.DB2_CONFIGURED_DIR_MOUNT_PATH }} with an appropriate path for the DB2 configured server definition files (for example, "/db2")
+     * Replace {{ .values.DB2_CONFIGURED_DIR_PATH }} with the location where the DB2 configured server definition files exist (for example, /shared/gelcontent/access-clients/db2)
+     * Replace {{ .values.DB2_CONFIGURED_DIR_SERVER_NAME }} with the name of the server where the DB2 configured server definition files exist (for example, cloud.example.com)
 
    * Modify the `$deploy/site-config/sas-microanalytic-score/db2-config/etc-hosts-mas.yaml` file:
-     * Replace {{ DB2_DATABASE_IP }} with the IP address of the DB2 database server (for example, "192.0.2.0")
-     * Replace {{ DB2_DATABASE_HOSTNAME }} with the DB2 database host name (for example, "MyDBHost")
+     * Replace {{ .values.DB2_DATABASE_IP }} with the IP address of the DB2 database server (for example, "192.0.2.0")
+     * Replace {{ .VALUES.DB2_DATABASE_HOSTNAME }} with the DB2 database host name (for example, "MyDBHost")
 
    * Modify the `$deploy/site-config/sas-microanalytic-score/db2-config/db2-environment-variables-mas.yaml` file:
      * Replace {{ .values.VALUE_1 }} with the appropriate value of DB2DIR (for example, "/db2client/sqllib")

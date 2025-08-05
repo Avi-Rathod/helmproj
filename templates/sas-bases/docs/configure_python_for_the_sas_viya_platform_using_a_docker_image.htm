@@ -108,7 +108,7 @@ patch: |-
 - name: python-regcred
   type: kubernetes.io/dockerconfigjson
   literals:
-  - '.dockerconfigjson={{ DOCKER-REGISTRY-CONFIG }}'</code></pre>
+  - '.dockerconfigjson={{ .values.DOCKER_REGISTRY_CONFIG }}'</code></pre>
 
 <p>The relevant code excerpt from the kustomization.yaml file after the change:</p>
 <p><code>yaml

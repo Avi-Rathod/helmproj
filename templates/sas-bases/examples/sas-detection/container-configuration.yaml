@@ -22,7 +22,7 @@ spec:
       containers:
         - name: sas-sda-scr
           # Image from your docker registry
-          image: {{ DECISION }}
+          image: {{ .VALUES.DECISION }}
           imagePullPolicy: "Always"
           ports:
             - name: http

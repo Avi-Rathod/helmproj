@@ -49,7 +49,7 @@ If you are running the restore job with this configuration frequently, then add 
 If you change the name of the PostgreSQL service during migration, you must map the new name to the old name. Edit the sas-restore-job-parameters configMap using the following command:
 
    ```bash
-   kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/data-service-{{ NEW-SERVICE-NAME }}", "value":"{{ DIRECTORY-NAME-OF-POSTGRES-IN-BACKUP }}" }]'
+   kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/data-service-{{ NEW-SERVICE-NAME }}", "value":"{{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }}" }]'
    ```
 
 To get the value for {{ NEW-SERVICE-NAME }}:
@@ -58,10 +58,10 @@ To get the value for {{ NEW-SERVICE-NAME }}:
    kubectl -n <name-of-namespace> get dataserver -o=custom-columns=SERVICE_NAME:.spec.registrations[].serviceName --no-headers
    ```
 
-The command lists all the PostgreSQL clusters in your deployment. Choose the appropriate one from the list. {{ DIRECTORY-NAME-OF-POSTGRES-IN-BACKUP }} is the name of the directory in backup where the
+The command lists all the PostgreSQL clusters in your deployment. Choose the appropriate one from the list. {{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is the name of the directory in backup where the
 PostgreSQL backup is stored (for example, `2022-03-02T09_04_11_611_0700/acme/**postgres**`).
 
-In the following example, {{ NEW-SERVICE-NAME }} is sas-cdspostgres, and {{ DIRECTORY-NAME-OF-POSTGRES-IN-BACKUP }} is cpspostgres:
+In the following example, {{ NEW-SERVICE-NAME }} is sas-cdspostgres, and {{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is cpspostgres:
 
    ```bash
       kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/data-service-sas-cdspostgres", "value":"cpspostgres" }]'
@@ -72,7 +72,7 @@ If you are running the restore job with this configuration frequently, then add 
 1. Edit `$deploy/kustomization.yaml` and add an entry to the restore_job_parameters configMap in the configMapGenerator section. The entry uses the following format:
 
    ```yaml
-   data-service-{{ NEW-SERVICE-NAME }}={{ DIRECTORY-NAME-OF-POSTGRES-IN-BACKUP }}
+   data-service-{{ NEW-SERVICE-NAME }}={{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }}
    ```
 
    To get the value for {{ NEW-SERVICE-NAME }}:
@@ -83,9 +83,9 @@ If you are running the restore job with this configuration frequently, then add 
 
    The command lists all the PostgreSQL clusters in your deployment. Choose the appropriate one from the list.
 
-   {{ DIRECTORY-NAME-OF-POSTGRES-IN-BACKUP }} is the name of the directory in backup where the PostgreSQL backup is stored (for example, `2022-03-02T09_04_11_611_0700/acme/**postgres**`).
+   {{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is the name of the directory in backup where the PostgreSQL backup is stored (for example, `2022-03-02T09_04_11_611_0700/acme/**postgres**`).
 
-   In the following example, {{ NEW-SERVICE-NAME }} is sas-cdspostgres, and {{ DIRECTORY-NAME-OF-POSTGRES-IN-BACKUP }} is cpspostgres:
+   In the following example, {{ NEW-SERVICE-NAME }} is sas-cdspostgres, and {{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is cpspostgres:
 
    ```yaml
    configMapGenerator:

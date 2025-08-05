@@ -15,7 +15,7 @@ This README contains information for customizations potentially required for mig
 and add an entry to the restore_job_parameters configMap in configMapGenerator section. The entry uses the following format:
 
    ```yaml
-   data-service-{{ NEW-SERVICE-NAME }}={{ DIRECTORY-NAME-OF-POSTGRES-IN-BACKUP }}
+   data-service-{{ NEW-SERVICE-NAME }}={{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }}
    ```
 
    To get the value for {{ NEW-SERVICE-NAME }}:
@@ -26,9 +26,9 @@ and add an entry to the restore_job_parameters configMap in configMapGenerator s
 
    The command lists all the PostgreSQL clusters in your deployment. Choose the appropriate one from the list.
 
-   {{ DIRECTORY-NAME-OF-POSTGRES-IN-BACKUP }} is the name of the directory in backup where the PostgreSQL backup is stored (for example, `2022-03-02T09_04_11_611_0700/acme/**postgres**`).
+   {{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is the name of the directory in backup where the PostgreSQL backup is stored (for example, `2022-03-02T09_04_11_611_0700/acme/**postgres**`).
 
-   In the following example, {{ NEW-SERVICE-NAME }} is sas-cdspostgres, and {{ DIRECTORY-NAME-OF-POSTGRES-IN-BACKUP }} is cpspostgres:
+   In the following example, {{ NEW-SERVICE-NAME }} is sas-cdspostgres, and {{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is cpspostgres:
 
    ```yaml
    configMapGenerator:

@@ -11,7 +11,7 @@
 <p>This README file describes the configuration settings available for deploying and running SAS Detection Engine. The sections of this README correspond to sections of the full example template, detection-engine-deployment.yaml. In addition to the full template, examples of how to complete each section are also available in <code>/$deploy/sas-bases/examples/sas-detection/</code>.</p>
 <h2 id="140345099398880installation">Installation</h2>
 <p>Create a copy of the example template in <code>/$deploy/sas-bases/examples/sas-detection/detection-engine-deployment.yaml</code>. Save this copy in <code>/$deploy/site-config/sas-detection/detection-engine-deployment.yaml</code>.</p>
-<p>Placeholders are indicated by curly brackets, such as {{ DECISION }}. Find and replace the placeholders with the values you want for your deployment. After all placeholders have been filled in, directly apply your deployment yaml via kubectl apply, indicating the file you&rsquo;ve just filled in.</p>
+<p>Placeholders are indicated by curly brackets, such as {{ .VALUES.DECISION }}. Find and replace the placeholders with the values you want for your deployment. After all placeholders have been filled in, directly apply your deployment yaml via kubectl apply, indicating the file you&rsquo;ve just filled in.</p>
 <pre class="highlight"><code class="language-sh">kubectl apply -f detection-engine-deployment.yaml</code></pre>
 
 <h2 id="140345099398880examples">Examples</h2>
@@ -33,7 +33,7 @@
 <pre class="highlight"><code class="language-yaml">containers:
 - name: sas-sda-scr
     # Image from your docker registry
-    image: {{ DECISION }}</code></pre>
+    image: {{ .VALUES.DECISION }}</code></pre>
 
 <p>Other than the image, the only required properties for the sas-sda-scr container are SAS_REDIS_HOST and SAS_REDIS_PORT. The other properties are optional security properties covered in detail in the security section. See the container-configuration.yaml file for the minimal required configuration.</p>
 <h4 id="140345099398880sas-detection-container">sas-detection container</h4>

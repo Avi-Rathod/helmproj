@@ -118,7 +118,7 @@ Because Python can be used from a Docker image only by the Micro Analytic Score 
    - name: python-regcred
      type: kubernetes.io/dockerconfigjson
      literals:
-     - '.dockerconfigjson={{ DOCKER-REGISTRY-CONFIG }}'
+     - '.dockerconfigjson={{ .values.DOCKER_REGISTRY_CONFIG }}'
    ```
 
    The relevant code excerpt from the kustomization.yaml file after the change:

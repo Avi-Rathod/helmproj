@@ -21,4 +21,4 @@ secretGenerator:
   - name: python-regcred
     type: kubernetes.io/dockerconfigjson
     literals:
-    - '.dockerconfigjson={{ DOCKER-REGISTRY-CONFIG }}'
+    - '.dockerconfigjson={{ .values.DOCKER_REGISTRY_CONFIG }}'

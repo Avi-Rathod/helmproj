@@ -2,7 +2,7 @@
 #   - In the following code, user-defined values are indicated by a capitalized
 #     and hyphenated name set off by curly braces and a space at each end. To
 #     replace the variable, replace the curly braces, interior spaces, and the
-#     variable name. For instance, {{ DB-NAME }} could be replaced by
+#     variable name. For instance, {{ .VALUES.DB_NAME }} could be replaced by
 #     SharedServices.
 #   - Replace all instance of {{ DATASERVER-NAME }} with the name of the
 #     DataServer CustomResource you are targeting. Refer to the below list to
@@ -22,10 +22,10 @@ patch: |-
 
   # # (Optional) Uncomment this section to change which database inside the
   # # PostgreSQL server Viya will use by default. Defaults to "SharedServices"
-  # # if not specified. Replace {{ DB-NAME }} with the name of the database.
+  # # if not specified. Replace {{ .VALUES.DB_NAME }} with the name of the database.
   # - op: replace
   #   path: /spec/databases/0/name
-  #   value: {{ DB-NAME }}
+  #   value: {{ .VALUES.DB_NAME }}
 
   # Replace {{ .values.POSTGRES_USER_SECRET_NAME }} with the name of the
   # secretGenerator containing PostgreSQL user credentials.

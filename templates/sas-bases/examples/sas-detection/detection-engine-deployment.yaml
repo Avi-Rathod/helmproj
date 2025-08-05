@@ -6,7 +6,7 @@
 #
 # {{ NAMESPACE }}: This must be the namespace to which you are deploying
 #
-# {{ DECISION }}: This is the decision image you are pulling for the SCR container, found in your Docker registry. 
+# {{ .VALUES.DECISION }}: This is the decision image you are pulling for the SCR container, found in your Docker registry. 
 #
 # {{ ORGANIZATION }}: The name of your organization.  This is used to make your deployed resources unique and easily identifiable.
 #
@@ -156,7 +156,7 @@ spec:
       containers:
         - name: sas-sda-scr
           # Image from your docker registry
-          image: {{ DECISION }}
+          image: {{ .VALUES.DECISION }}
           imagePullPolicy: "Always"
           ports:
             - name: http
