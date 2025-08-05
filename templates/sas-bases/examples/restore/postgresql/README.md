@@ -105,7 +105,7 @@ If you are running the restore job with this configuration frequently, then add 
 If you need to exclude some of the schemas during migration once, edit the sas-restore-job-parameters configMap using the following command:
 
    ```yaml
-   kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/EXCLUDE_SCHEMAS", "value":"{{ schema1, schema2,... }}" }]'
+   kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/EXCLUDE_SCHEMAS", "value":"{ { schema1, schema2,... }}" }]'
    ```
 
 In the following example, "dataprofiles" and "naturallanguageunderstanding" are schemas that will not be restored.

@@ -1,5 +1,5 @@
 #   # NOTE:
-#   # {{ SCHEDULE-BACKUP-CRON-EXPRESSION }} should be the cron expression to replace default schedule of incremental backup cronjob.
+#   # {{ .VALUES.SCHEDULE_BACKUP_CRON_EXPRESSION }} should be the cron expression to replace default schedule of incremental backup cronjob.
 apiVersion: builtin
 kind: PatchTransformer
 metadata:
@@ -7,7 +7,7 @@ metadata:
 patch: |-
   - op: replace
     path: /spec/schedule
-    value: "{{ SCHEDULE-BACKUP-CRON-EXPRESSION }}"
+    value: "{{ .VALUES.SCHEDULE_BACKUP_CRON_EXPRESSION }}"
 target:
   kind: CronJob
   name: sas-scheduled-backup-incr-job

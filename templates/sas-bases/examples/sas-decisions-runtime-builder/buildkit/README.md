@@ -23,8 +23,8 @@ The Decisions Runtime Builder service deletes the job and the temporary director
 
 2. Modify the parameters in the files storage.yaml and publish-storage.yaml in the directory $deploy/site-config/sas-decisions-runtime-builder/buildkit. For more information about PersistentVolume Claims (PVCs), see [Persistent Volume Claims on Kubernetes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims).
 
-   - Replace {{ STORAGE-CAPACITY }} with the amount of storage required.
-   - Replace {{ STORAGE-CLASS-NAME }} with the appropriate storage class from the cloud provider that supports ReadWriteMany access mode.
+   - Replace {{ .VALUES.STORAGE-CAPACITY }} with the amount of storage required.
+   - Replace {{ .VALUES.STORAGE_CLASS_NAME }} with the appropriate storage class from the cloud provider that supports ReadWriteMany access mode.
 
 3. Make the following changes to the base kustomization.yaml file in the $deploy directory.
 

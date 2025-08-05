@@ -102,7 +102,7 @@ docker push &lt;repository_url&gt;/&lt;image_name&gt;:&lt;tag&gt;</code></pre>
 
 </li>
 <li>
-<p>Edit the <code>$deploy/site-config/sas-business-orchestration-worker/business-orchestration-worker-deployment.yaml</code> file. In the Deployment section, uncomment the init container for &ldquo;fetch-ode-jars&rdquo;, and replace {{ SFM_JAR_IMAGE }} with the URL to the Docker image generated in Step 2. Here is an example:</p>
+<p>Edit the <code>$deploy/site-config/sas-business-orchestration-worker/business-orchestration-worker-deployment.yaml</code> file. In the Deployment section, uncomment the init container for &ldquo;fetch-ode-jars&rdquo;, and replace {{ .VALUES.SFM_JAR_IMAGE }} with the URL to the Docker image generated in Step 2. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">initContainers:
 - name: fetch-ode-jars
     image: myrepository/myimage:latest
@@ -186,7 +186,7 @@ $ kubectl -n {{ NAMESPACE }} get cm "$CONFIGMAP" -o yaml | grep 'sas-business-or
 <p>To secure your ingress, the following annotations can be used to add one-way TLS, two-way TLS (mTLS), or both.</p>
 <pre class="highlight"><code class="language-yaml">annotations:
     # Used to enable TLS
-    nginx.ingress.kubernetes.io/auth-tls-secret: {{ NAMESPACE }}/business-orchestration-worker-ingress-tls-ca-config-{{ SUFFIX }}   
+    nginx.ingress.kubernetes.io/auth-tls-secret: {{ NAMESPACE }}/business-orchestration-worker-ingress-tls-ca-config-{{ .VALUES.SUFFIX }}   
     # used to enable mTLS
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    </code></pre>
 
@@ -194,7 +194,7 @@ $ kubectl -n {{ NAMESPACE }} get cm "$CONFIGMAP" -o yaml | grep 'sas-business-or
 <pre class="highlight"><code class="language-yaml">tls:
     - hosts:
         - {{ .values.POSTGRES_USER_FILE }}REFIX }}.{{ INGRESS-TYPE }}.{{ HOST }}
-    secretName: business-orchestration-worker-ingress-tls-config-{{ SUFFIX }}</code></pre>
+    secretName: business-orchestration-worker-ingress-tls-config-{{ .VALUES.SUFFIX }}</code></pre>
 
 <p>See the resource comments for more specific details.</p>
 <h4 id="140345100038928volumes-and-volume-mounts">Volumes and Volume Mounts</h4>

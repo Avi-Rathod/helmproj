@@ -16,7 +16,7 @@ metadata:
 patch: |-
   - op: add
     path: /spec/seccompProfile
-    value: {{ SECCOMP-PROFILE }}
+    value: {{ .Values.SECCOMP_PROFILE }}
 
 target:
   group: viya.sas.com

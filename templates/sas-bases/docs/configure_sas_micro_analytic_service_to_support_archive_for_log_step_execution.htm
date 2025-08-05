@@ -25,8 +25,8 @@ This README describes how to configure SAS Micro Analytic Service to use a Persi
 <li>
 <p>The resources.yaml file in <code>$deploy/site-config/sas-microanalytic-score/archive</code> contains the parameters of the storage that is required in the PeristentVolumeClaim. For more information about PersistentVolumeClaims, see <a href="#140345099399024additional-resources">Additional Resources</a>.</p>
 <ul>
-<li>Replace {{ STORAGE-CAPACITY }} with the amount of storage required.</li>
-<li>Replace {{ STORAGE-CLASS-NAME }} with the appropriate storage class from the cloud provider that supports ReadWriteMany access mode.</li>
+<li>Replace {{ .VALUES.STORAGE-CAPACITY }} with the amount of storage required.</li>
+<li>Replace {{ .VALUES.STORAGE_CLASS_NAME }} with the appropriate storage class from the cloud provider that supports ReadWriteMany access mode.</li>
 </ul>
 </li>
 <li>

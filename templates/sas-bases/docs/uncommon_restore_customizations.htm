@@ -84,7 +84,7 @@ PostgreSQL backup is stored (for example, <code>2022-03-02T09_04_11_611_0700/acm
 <h2 id="140345100436480exclude-schemas-during-restore">Exclude Schemas During Restore</h2>
 <p>If you need to exclude some of the schemas during migration once, edit the sas-restore-job-parameters configMap using the following command:</p>
 <pre><code> ```yaml
- kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/EXCLUDE_SCHEMAS", "value":"{{ schema1, schema2,... }}" }]'
+ kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/EXCLUDE_SCHEMAS", "value":"{ { schema1, schema2,... }}" }]'
  ```
 </code></pre>
 <p>In the following example, &ldquo;dataprofiles&rdquo; and &ldquo;naturallanguageunderstanding&rdquo; are schemas that will not be restored.</p>

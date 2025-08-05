@@ -4,7 +4,7 @@
 # This uses the service defined in ingress-setup-insecure-example, but adds properties
 # to the insecure ingress to add front door TLS and/or mTLS as desired. 
 ########################################################################
-# {{ SECURITY }} Uncomment this and comment the above sas-detection ingress to enable Front Door TLS
+# {{ .Values.SECURITY }} Uncomment this and comment the above sas-detection ingress to enable Front Door TLS
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -16,7 +16,7 @@ metadata:
     # backend-protocol is HTTP because this is only front-door TLS, we would use HTTPS for full-tls
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 
-    # {{ SECURITY }} Note that these 3 annotations enable two-way front door TLS. Without them, the ingress only has one-way TLS enabled
+    # {{ .Values.SECURITY }} Note that these 3 annotations enable two-way front door TLS. Without them, the ingress only has one-way TLS enabled
     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
     nginx.ingress.kubernetes.io/auth-tls-secret: "{{ NAMESPACE }}/detection-ingress-tls-ca-config-{{ ORGANIZATION }}   # Used to enable TLS"
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    # used to enable mTLS

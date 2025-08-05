@@ -75,7 +75,7 @@ the following instructions to schedule a backup more suited to your resources.</
 to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
 </li>
 <li>
-<p>Replace {{ SCHEDULE-BACKUP-CRON-EXPRESSION }} with the cron expression for the desired schedule in the copied sas-scheduled-backup-job-change-default-backup-transformer.yaml.</p>
+<p>Replace {{ .VALUES.SCHEDULE_BACKUP_CRON_EXPRESSION }} with the cron expression for the desired schedule in the copied sas-scheduled-backup-job-change-default-backup-transformer.yaml.</p>
 </li>
 <li>
 <p>Add the full path of the copied file to the transformers block of the base
@@ -102,7 +102,7 @@ transformers:
 to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
 </li>
 <li>
-<p>In the copied file, replace {{ SCHEDULE-BACKUP-CRON-EXPRESSION }} with the cron expression for the desired schedule.</p>
+<p>In the copied file, replace {{ .VALUES.SCHEDULE_BACKUP_CRON_EXPRESSION }} with the cron expression for the desired schedule.</p>
 </li>
 <li>
 <p>Add the full path of the copied file to the transformers block of the base
@@ -131,7 +131,7 @@ This job should not be scheduled at the same time as <code>sas-scheduled-backup-
 to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
 </li>
 <li>
-<p>In the copied file, Replace {{ SCHEDULE-BACKUP-CRON-EXPRESSION }} with the cron expression for the desired schedule in the copied sas-scheduled-backup-all-sources-change-default-schedule.yaml.</p>
+<p>In the copied file, Replace {{ .VALUES.SCHEDULE_BACKUP_CRON_EXPRESSION }} with the cron expression for the desired schedule in the copied sas-scheduled-backup-all-sources-change-default-schedule.yaml.</p>
 </li>
 <li>
 <p>Add the full path of the copied file to the transformers block of the base

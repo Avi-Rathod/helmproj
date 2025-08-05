@@ -9,7 +9,7 @@ patch: |-
     value:
       mountPath: /opt/sas/viya/config/var
       name: viya
-      subPath: {{ SAS-TENANT-ID }}
+      subPath: {{ .Values.SAS_TENANT_ID }}
 target:
   version: v1
   kind: PodTemplate
@@ -25,7 +25,7 @@ patch: |-
     value:
       mountPath: /opt/sas/viya/config/var
       name: viya
-      subPath: {{ SAS-TENANT-ID }}
+      subPath: {{ .Values.SAS_TENANT_ID }}
 target:
   version: v1
   kind: PodTemplate

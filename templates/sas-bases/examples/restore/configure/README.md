@@ -240,9 +240,9 @@ update the sas-restore-job-parameters config map with the following parameters b
 
 * AUTO_SWITCH_POSTGRES: "true"
 
-* SQL_PROXY_POSTGRES_CONNECTION_MAP: "{{ SQL_PROXY_POSTGRES_CONNECTION_MAP }}"
+* SQL_PROXY_POSTGRES_CONNECTION_MAP: "{{ .VALUES.SQL_PROXY_POSTGRES_CONNECTION_MAP }}"
 
-   {{ SQL_PROXY_POSTGRES_CONNECTION_MAP }} is comma-separated list of key value pairs that describes the mapping of the SQL proxy Kubernetes deployment name to new PostgreSQL connection string.
+   {{ .VALUES.SQL_PROXY_POSTGRES_CONNECTION_MAP }} is comma-separated list of key value pairs that describes the mapping of the SQL proxy Kubernetes deployment name to new PostgreSQL connection string.
    The key and value within each KV pair is separated by the first colon (:).
    Here is an example that switches the host names for SAS platform PostgreSQL and SAS CDS PostgreSQL servers with the new connection strings:
 

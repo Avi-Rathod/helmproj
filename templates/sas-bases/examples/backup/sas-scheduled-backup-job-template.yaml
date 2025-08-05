@@ -187,7 +187,7 @@ spec:
               key: workload.sas.com/class
               operator: Equal
               value: stateless
-  schedule: "{{ SCHEDULE_CRON_EXPR }}"
+  schedule: "{{ .VALUES.SCHEDULE_CRON_EXPR }}"
   successfulJobsHistoryLimit: 100
   failedJobsHistoryLimit: 100
   suspend: false

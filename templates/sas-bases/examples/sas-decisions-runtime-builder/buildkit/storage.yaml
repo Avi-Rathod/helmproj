@@ -8,5 +8,5 @@ spec:
   volumeMode: Filesystem
   resources:
     requests:
-      storage: {{ STORAGE-CAPACITY }} #change this to desired capacity
-  storageClassName: {{ STORAGE-CLASS-NAME }} # change this the desired storage class
+      storage: {{ .VALUES.STORAGE-CAPACITY }} #change this to desired capacity
+  storageClassName: {{ .VALUES.STORAGE_CLASS_NAME }} # change this the desired storage class

@@ -5,7 +5,7 @@ metadata:
 literals:
   - KRB5_KTNAME=/opt/kerberos/keytab
   - KRB5_CONFIG=/opt/kerberos/krb5.conf
-  - SAS_KRB5_PROXY_SPN={{ SPN }} # SPN from keytab file
+  - SAS_KRB5_PROXY_SPN={{ .VALUES.SPN }} # SPN from keytab file
   - SAS_KRB5_PROXY_OUTPUT_PATH=/tmp/
   - SAS_KERBEROS_ENABLED="true"
   - KRB5PROXY_LOG_TYPE="error" # Logger levels: trace < debug < info < warn < error < fatal
@@ -27,4 +27,4 @@ literals:
 #  name: sas-connect-spawner-kerberos-config
 #literals:
 #- KRB5_KTNAME=/opt/kerberos/keytab
-#- SAS_KRB5_PROXY_SPN={{ SPN }} # HTTP SPN from keytab
+#- SAS_KRB5_PROXY_SPN={{ .VALUES.SPN }} # HTTP SPN from keytab

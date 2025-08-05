@@ -22,11 +22,11 @@ spec:
           - name: TENANT_LIFECYCLE_ACTION
             value: onboard
           - name: SAS_TENANT_IDS
-            value: "{{ SAS-TENANT-IDS }}"
+            value: "{{ .Values.SAS_TENANT_IDS }}"
           - name: SAS_LOG_LEVEL
             value: INFO
           - name: SAS_PROVIDER_PASSWORD
-            value: {{ SAS-PROVIDER-PASSWORD }}
+            value: {{ .Values.SAS_PROVIDER_PASSWORD }}
         envFrom: []
         volumeMounts: []
       initContainers: []

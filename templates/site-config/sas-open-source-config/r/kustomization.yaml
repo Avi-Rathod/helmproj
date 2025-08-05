@@ -3,4 +3,4 @@ configMapGenerator:
   literals:
   - DM_RHOME={{ R-MOUNTPATH }}/{{ R-HOMEDIR }}
   - SAS_EXTLANG_SETTINGS={{ .values.SAS_EXTLANG_SETTINGS_XML_FILE }}
-  - SAS_EXT_LLP_R={{ SAS-EXT-LLP-R-PATH }}
+  - SAS_EXT_LLP_R={{ .VALUES.SAS_EXT_LLP_R_PATH }}

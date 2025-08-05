@@ -79,12 +79,12 @@ set to <code>RESTORE</code> or <code>MIGRATION</code>.</p>
   - name: sas-restore-job-parameters
     behavior: merge
     literals:
-      - SAS_BACKUP_ID={{ SAS-BACKUP-ID-VALUE }}
+      - SAS_BACKUP_ID={{ .VALUES.SAS_BACKUP_ID_VALUE }}
       - SAS_DEPLOYMENT_START_MODE=RESTORE</code></pre>
 
 <p>Here are more details about the previous code.</p>
 <ul>
-<li>Replace the value for <code>{{SAS-BACKUP-ID-VALUE}}</code> with the ID of the backup
+<li>Replace the value for <code>{{ .VALUES.SAS_BACKUP_ID_VALUE }}</code> with the ID of the backup
    that is selected for restore.</li>
 <li>To increase the logging levels, add the following line to the literals
    section:<ul>

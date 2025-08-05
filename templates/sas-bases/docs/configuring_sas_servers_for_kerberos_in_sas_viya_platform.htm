@@ -101,7 +101,7 @@ the target directory, if it does not already exist.</p>
  Kubernetes secret. If you are using either of these deployment types, see <a href="https://go.documentation.sas.com/doc/en/sasadmincdc/default/calauthmdl/n1iyx40th7exrqn1ej8t12gfhm88.htm#p1bk7fvjzt9fahn1kllczegxicvi">Manually Configure a Kubernetes Secret for the Kerberos Keytab</a> for the steps.</p>
 </li>
 <li>
-<p>Replace {{ SPN }} in
+<p>Replace {{ .VALUES.SPN }} in
 <code>$deploy/site-config/kerberos/sas-servers/configmaps.yaml</code> under the
 <code>sas-servers-kerberos-sidecar-config</code> stanza with the name of the
 principal as it appears in the keytab file.</p>
@@ -185,7 +185,7 @@ the target directory, if it does not already exist.</p>
 <code>krb5.conf</code> respectively.</p>
 </li>
 <li>
-<p>Replace {{ SPN }} in
+<p>Replace {{ .VALUES.SPN }} in
 <code>$deploy/site-config/kerberos/cas-server/configmaps.yaml</code> under the
 <code>cas-server-kerberos-config</code> stanza with the name of the service
 principal as it appears in the keytab file without the @DOMAIN.COM.</p>
@@ -256,7 +256,7 @@ change the <code>keytab</code> name to the actual keytab file name in each stanz
 <code>$deploy/site-config/kerberos/sas-servers/configmaps.yaml</code>.</p>
 <ul>
 <li>
-<p>Replace {{ SPN }} with the HTTP SPN from the keytab file without the
+<p>Replace {{ .VALUES.SPN }} with the HTTP SPN from the keytab file without the
    @DOMAIN.COM.</p>
 </li>
 <li>
@@ -319,7 +319,7 @@ add the following under <code>literals</code>:</p>
 <li>
 <p>If you are using SAS/CONNECT, in the <code>sas-connect-spawner-kerberos-config</code>
 stanza, add the following under <code>literals</code>:</p>
-<pre class="highlight"><code class="language-yaml">- SAS_SERVICE_PRINCIPAL={{ SAS service account SPN }}
+<pre class="highlight"><code class="language-yaml">- SAS_SERVICE_PRINCIPAL={{ .Values.SAS_service_account_SPN }}
 - SAS_CONSTRAINED_DELEG_ENABLED="true"</code></pre>
 
 </li>
@@ -392,7 +392,7 @@ add the following under <code>literals</code>:</p>
 <li>
 <p>If you are using SAS/CONNECT, in the <code>sas-connect-spawner-kerberos-config</code>
 stanza, add the following under <code>literals</code>:</p>
-<pre class="highlight"><code class="language-yaml">- SAS_SERVICE_PRINCIPAL={{ SAS service account SPN }}
+<pre class="highlight"><code class="language-yaml">- SAS_SERVICE_PRINCIPAL={{ .Values.SAS_service_account_SPN }}
 - SAS_CONSTRAINED_DELEG_ENABLED="true"</code></pre>
 
 </li>

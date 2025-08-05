@@ -28,8 +28,8 @@ The archive feature requires storage with ReadWriteMany access mode for storing 
 
 2. The resources.yaml file in `$deploy/site-config/sas-microanalytic-score/archive` contains the parameters of the storage that is required in the PeristentVolumeClaim. For more information about PersistentVolumeClaims, see [Additional Resources](#additional-resources).
 
-   * Replace {{ STORAGE-CAPACITY }} with the amount of storage required.
-   * Replace {{ STORAGE-CLASS-NAME }} with the appropriate storage class from the cloud provider that supports ReadWriteMany access mode.
+   * Replace {{ .VALUES.STORAGE-CAPACITY }} with the amount of storage required.
+   * Replace {{ .VALUES.STORAGE_CLASS_NAME }} with the appropriate storage class from the cloud provider that supports ReadWriteMany access mode.
 
 3. Make the following changes to the kustomization.yaml file in the $deploy directory:
 

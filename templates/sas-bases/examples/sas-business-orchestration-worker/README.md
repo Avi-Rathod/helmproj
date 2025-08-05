@@ -140,7 +140,7 @@ When using ODE processor, you must create a sas-business-orchestration-worker in
    docker push myrepository/myimage:latest
    ```
 
-4. Edit the `$deploy/site-config/sas-business-orchestration-worker/business-orchestration-worker-deployment.yaml` file. In the Deployment section, uncomment the init container for "fetch-ode-jars", and replace {{ SFM_JAR_IMAGE }} with the URL to the Docker image generated in Step 2. Here is an example:
+4. Edit the `$deploy/site-config/sas-business-orchestration-worker/business-orchestration-worker-deployment.yaml` file. In the Deployment section, uncomment the init container for "fetch-ode-jars", and replace {{ .VALUES.SFM_JAR_IMAGE }} with the URL to the Docker image generated in Step 2. Here is an example:
 
    ```yaml
    initContainers:
@@ -277,7 +277,7 @@ To secure your ingress, the following annotations can be used to add one-way TLS
 ```yaml
 annotations:
     # Used to enable TLS
-    nginx.ingress.kubernetes.io/auth-tls-secret: {{ NAMESPACE }}/business-orchestration-worker-ingress-tls-ca-config-{{ SUFFIX }}   
+    nginx.ingress.kubernetes.io/auth-tls-secret: {{ NAMESPACE }}/business-orchestration-worker-ingress-tls-ca-config-{{ .VALUES.SUFFIX }}   
     # used to enable mTLS
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    
 ```
@@ -288,7 +288,7 @@ For one-way TLS, fill in the tls field under the spec field. This also includes 
 tls:
     - hosts:
         - {{ PREFIX }}.{{ INGRESS-TYPE }}.{{ HOST }}
-    secretName: business-orchestration-worker-ingress-tls-config-{{ SUFFIX }}
+    secretName: business-orchestration-worker-ingress-tls-config-{{ .VALUES.SUFFIX }}
 ```
 
 See the resource comments for more specific details.

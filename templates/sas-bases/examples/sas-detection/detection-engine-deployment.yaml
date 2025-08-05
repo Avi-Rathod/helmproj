@@ -15,7 +15,7 @@
 # {{ .values.VALUE_NEEDED }}: Miscellaneous placeholder used for setting up environment variables and volume mounts for your containers.
 # Context and environment variable names will help you fill these out. 
 #
-# {{ SECURITY }}: blocks tagged with this should be uncommented in order to enable Front Door TLS. Further instructions are located around each occurance of the tag
+# {{ .Values.SECURITY }}: blocks tagged with this should be uncommented in order to enable Front Door TLS. Further instructions are located around each occurance of the tag
 ########################################################################
 
 ########################################################################
@@ -56,7 +56,7 @@ spec:
   selector:
     app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
 ---
-# {{ SECURITY }} OPTIONAL: uncomment these secrets and add base64 encoded certificate and private key to each
+# {{ .Values.SECURITY }} OPTIONAL: uncomment these secrets and add base64 encoded certificate and private key to each
 # if you are managing these manually
 ########################################################################
 # create secret for TLS certs and keys for ingress
@@ -140,7 +140,7 @@ spec:
         app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
         sas.com/scr: "true"
     spec:
-      # {{ SECURITY }} 
+      # {{ .Values.SECURITY }} 
       # Uncomment for detection ingress, kafka, and/or redis security as needed
       volumes:
       # uncomment security volume for TLS from goODE <SECURITY>
@@ -162,7 +162,7 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
-          # {{ SECURITY }}  uncomment if using TLS from goODE
+          # {{ .Values.SECURITY }}  uncomment if using TLS from goODE
           # volumeMounts:
           #   - name: security
           #     readOnly: true
@@ -186,7 +186,7 @@ spec:
             - name: SAS_REDIS_PROFILE_COMPRESS # Default value is false if not specified
               value: false 
 
-            # {{ SECURITY }}
+            # {{ .Values.SECURITY }}
             # - name: SAS_REDIS_AUTH_USER
             #   value: {{ .values.VALUE_NEEDED }}
             # - name: SAS_REDIS_AUTH_PASS
@@ -217,7 +217,7 @@ spec:
             - name: http
               containerPort: 8777
               protocol: TCP
-          # {{ SECURITY }} uncomment if using TLS from goODE
+          # {{ .Values.SECURITY }} uncomment if using TLS from goODE
           # volumeMounts:
           #   - name: security
           #     readOnly: true
@@ -254,7 +254,7 @@ spec:
               value: input-{{ ORGANIZATION }}
             - name: SAS_DETECTION_KAFKA_CONSUMER_ENABLED
               value: {{ .values.VALUE_NEEDED }}
-            # {{ SECURITY }}
+            # {{ .Values.SECURITY }}
             # - name: SAS_DETECTION_KAFKA_SECURITY_PROTOCOL
             #   value: {{ .values.VALUE_NEEDED }} # PLAINTEXT, SSL, SASL_PLAINTEXT, SASL_SSL. defaults to PLAINTEXT
             # - name: SAS_DETECTION_KAFKA_TRUSTSTORE
@@ -281,7 +281,7 @@ spec:
               value: {{ .values.VALUE_NEEDED }}
             - name: SAS_DETECTION_REDIS_PORT
               value: {{ .values.VALUE_NEEDED }}
-            # {{ SECURITY }}
+            # {{ .Values.SECURITY }}
             # - name: SAS_DETECTION_REDIS_AUTH_PASS
             #   value: {{ .values.VALUE_NEEDED }}
             # # Optionally, store and get from a secret
@@ -410,7 +410,7 @@ spec:
 ########################################################################
 # create TLS Enabled Ingress for sas-detection container
 ########################################################################
-# {{ SECURITY }} Uncomment this and comment the above sas-detection ingress to enable Front Door TLS
+# {{ .Values.SECURITY }} Uncomment this and comment the above sas-detection ingress to enable Front Door TLS
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
 # metadata:
@@ -422,7 +422,7 @@ spec:
 #     # backend-protocol is HTTP because this is only front-door TLS, we would use HTTPS for full-tls
 #     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 
-#     # {{ SECURITY }} Note that these 3 annotations enable two-way front door TLS. Without them, the ingress only has one-way TLS enabled
+#     # {{ .Values.SECURITY }} Note that these 3 annotations enable two-way front door TLS. Without them, the ingress only has one-way TLS enabled
 #     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
 #     nginx.ingress.kubernetes.io/auth-tls-secret: {{ NAMESPACE }}/detection-ingress-tls-ca-config-{{ ORGANIZATION }}   # Used to enable TLS
 #     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    # used to enable mTLS

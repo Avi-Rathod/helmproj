@@ -19,7 +19,7 @@ spec:
         app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
         sas.com/scr: "true"
     spec:
-      # {{ SECURITY }} 
+      # {{ .Values.SECURITY }} 
       volumes:
         - name: security
           secret:
@@ -39,7 +39,7 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
-          # {{ SECURITY }} 
+          # {{ .Values.SECURITY }} 
           volumeMounts:
             - name: security
               readOnly: true
@@ -63,7 +63,7 @@ spec:
             - name: SAS_REDIS_TLS # Setting to 0, N, or F will prohibit TLS. Setting to 1, Y, or T will allow TLS.
               value: Y
               
-            # {{ SECURITY }}
+            # {{ .Values.SECURITY }}
             - name: SAS_REDIS_AUTH_USER
               value: {{ .values.VALUE_NEEDED }}
             - name: SAS_REDIS_AUTH_PASS
@@ -128,7 +128,7 @@ spec:
               value: input-{{ ORGANIZATION }}
             - name: SAS_DETECTION_KAFKA_CONSUMER_ENABLED
               value: {{ .values.VALUE_NEEDED }}
-            # {{ SECURITY }}
+            # {{ .Values.SECURITY }}
             - name: SAS_DETECTION_KAFKA_SECURITY_PROTOCOL
               value: {{ .values.VALUE_NEEDED }} # PLAINTEXT, SSL, SASL_PLAINTEXT, SASL_SSL. defaults to PLAINTEXT
             - name: SAS_DETECTION_KAFKA_TRUSTSTORE
@@ -157,7 +157,7 @@ spec:
               value: {{ .values.VALUE_NEEDED }}
             - name: SAS_DETECTION_REDIS_POOL_SIZE # Default value is 10 if not specified
               value: '10'
-            # {{ SECURITY }}
+            # {{ .Values.SECURITY }}
             - name: SAS_DETECTION_REDIS_AUTH_PASS
               value: {{ .values.VALUE_NEEDED }}
             # Optionally, store and get from a secret

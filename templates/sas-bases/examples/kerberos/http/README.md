@@ -22,7 +22,7 @@ service account. Make sure you have tested the keytab before proceeding with the
 3. Modify the parameters in `$deploy/site-config/kerberos/http/configmaps.yaml`.
 
    * Replace {{ .values.PRINCIPAL_NAME_IN_KEYTAB }} with the name of the principal as it appears in the keytab.
-   * Replace {{ SPN }} with the name of the SPN. This should have a format of `HTTP/<hostname>` and may be the same as the principal name in the keytab.
+   * Replace {{ .VALUES.SPN }} with the name of the SPN. This should have a format of `HTTP/<hostname>` and may be the same as the principal name in the keytab.
 
 4. Make the following changes to the base kustomization.yaml file in the $deploy directory.
 

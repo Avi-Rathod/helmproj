@@ -71,7 +71,7 @@ the following instructions to schedule a backup more suited to your resources.
 1. Copy the file `$deploy/sas-bases/examples/backup/configure/sas-scheduled-backup-job-change-default-backup-transformer.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/backup`.
 
-2. Replace {{ SCHEDULE-BACKUP-CRON-EXPRESSION }} with the cron expression for the desired schedule in the copied sas-scheduled-backup-job-change-default-backup-transformer.yaml.
+2. Replace {{ .VALUES.SCHEDULE_BACKUP_CRON_EXPRESSION }} with the cron expression for the desired schedule in the copied sas-scheduled-backup-job-change-default-backup-transformer.yaml.
 
 3. Add the full path of the copied file to the transformers block of the base
 kustomization.yaml file (`$deploy/kustomization.yaml`). For example, if you
@@ -97,7 +97,7 @@ By default, the incremental backup is run daily at 6:00 a.m. Use the following i
 1. Copy the file `$deploy/sas-bases/examples/backup/configure/sas-scheduled-backup-incr-job-change-default-schedule.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/backup`.
 
-2. In the copied file, replace {{ SCHEDULE-BACKUP-CRON-EXPRESSION }} with the cron expression for the desired schedule.
+2. In the copied file, replace {{ .VALUES.SCHEDULE_BACKUP_CRON_EXPRESSION }} with the cron expression for the desired schedule.
 
 3. Add the full path of the copied file to the transformers block of the base
 kustomization.yaml file (`$deploy/kustomization.yaml`). For example, if you
@@ -125,7 +125,7 @@ This job should not be scheduled at the same time as `sas-scheduled-backup-job` 
 1. Copy the file `$deploy/sas-bases/examples/backup/configure/sas-scheduled-backup-all-sources-change-default-schedule.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/backup`.
 
-2. In the copied file, Replace {{ SCHEDULE-BACKUP-CRON-EXPRESSION }} with the cron expression for the desired schedule in the copied sas-scheduled-backup-all-sources-change-default-schedule.yaml.
+2. In the copied file, Replace {{ .VALUES.SCHEDULE_BACKUP_CRON_EXPRESSION }} with the cron expression for the desired schedule in the copied sas-scheduled-backup-all-sources-change-default-schedule.yaml.
 
 3. Add the full path of the copied file to the transformers block of the base
 kustomization.yaml file (`$deploy/kustomization.yaml`). For example, if you

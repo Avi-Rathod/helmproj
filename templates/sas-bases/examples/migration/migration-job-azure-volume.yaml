@@ -1,6 +1,6 @@
 #   # NOTE:
-#   # {{ SECRET-NAME }} should be a standard Kubernetes secret that provides secure access to the file storage account.
-#   # {{ SHARE-NAME }} should be the name of an Azure file share.
+#   # {{ .Values.SECRET_NAME }} should be a standard Kubernetes secret that provides secure access to the file storage account.
+#   # {{ .Values.SHARE_NAME }} should be the name of an Azure file share.
 apiVersion: builtin
 kind: PatchTransformer
 metadata:
@@ -11,8 +11,8 @@ patch: |-
     value:
       name: migration
       azureFile:
-        secretName: {{ SECRET-NAME }}
-        shareName: {{ SHARE-NAME }}
+        secretName: {{ .Values.SECRET_NAME }}
+        shareName: {{ .Values.SHARE_NAME }}
         readOnly: false
 target:
   apiVersion: v1
