@@ -13,7 +13,7 @@ patch: |-
   - op: replace
     path: /spec/template/spec/containers/0/resources/limits/memory
     value:
-      {{ MEMORY-LIMIT }}
+      {{ .values.MEMORY_LIMIT }}
 target:
   kind: Deployment
   name: sas-arke

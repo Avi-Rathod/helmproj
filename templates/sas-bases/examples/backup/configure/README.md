@@ -155,8 +155,8 @@ to a location of your choice under `$deploy/site-config`, such as `$deploy/site-
 {{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
-3. In the same file, replace {{ MEMORY-LIMIT }} with the desired value of memory.
-{{ MEMORY-LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
+3. In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
+{{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
 
 4. Add the full path of the copied file to the transformers block of the base
 kustomization.yaml file (`$deploy/kustomization.yaml`). For example, if you
@@ -186,8 +186,8 @@ to a location of your choice under `$deploy/site-config`, such as `$deploy/site-
 {{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
-3. In the same file, replace {{ MEMORY-LIMIT }} with the desired value of memory.
-{{ MEMORY-LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
+3. In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
+{{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
 
 4. Add the full path of the copied file to the transformers block of the base
 kustomization.yaml file (`$deploy/kustomization.yaml`). For example, if you
@@ -218,8 +218,8 @@ to a location of your choice under `$deploy/site-config`, such as `$deploy/site-
 {{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
-3. In the same file, replace {{ MEMORY-LIMIT }} with the desired value of memory.
-{{ MEMORY-LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
+3. In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
+{{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
 
 4. By default the patch will be applied to all of the CAS servers. If the patch transformer is being applied to a single CAS server,
 replace {{ NAME-OF-CAS-SERVER }} with the named CAS server in the same file and comment out the lines 'name: .*' and 'labelSelector: "sas.com/cas-server-default"' with a hashtag (#).

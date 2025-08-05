@@ -174,10 +174,10 @@ You can specify fractional values for the CPUs by using decimals, such as "1.5" 
    kubectl patch cronjob sas-restore-job -n name-of-namespace --type json -p '[{"op": "replace", "path": "/spec/jobTemplate/spec/template/spec/containers/0/resources/limits/cpu", "value":"{{ CPU-LIMIT }}" }]'
 ```
 
-Replace {{ MEMORY-LIMIT }} with the desired value for memory. {{ MEMORY-LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
+Replace {{ .values.MEMORY_LIMIT }} with the desired value for memory. {{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
 
    ```bash
-      kubectl patch cronjob sas-restore-job -n name-of-namespace --type json -p '[{"op": "replace", "path": "/spec/jobTemplate/spec/template/spec/containers/0/resources/limits/memory", "value":"{{ MEMORY-LIMIT }}" }]'
+      kubectl patch cronjob sas-restore-job -n name-of-namespace --type json -p '[{"op": "replace", "path": "/spec/jobTemplate/spec/template/spec/containers/0/resources/limits/memory", "value":"{{ .values.MEMORY_LIMIT }}" }]'
    ```
 
 If you are running the restore job with this configuration frequently, then add this configuration permanently using the following method.
@@ -189,8 +189,8 @@ to a location of your choice under `$deploy/site-config`, such as `$deploy/site-
 {{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
-3. In the same file, replace {{ MEMORY-LIMIT }} with the desired value of memory.
-{{ MEMORY-LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
+3. In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
+{{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
 
 4. Add the full path of the copied file to the transformers block of the base
 kustomization.yaml file (`$deploy/kustomization.yaml`). For example, if you

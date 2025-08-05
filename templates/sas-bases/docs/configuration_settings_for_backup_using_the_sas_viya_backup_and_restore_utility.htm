@@ -163,8 +163,8 @@ to a location of your choice under <code>$deploy/site-config</code>, such as <co
 You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
 </li>
 <li>
-<p>In the same file, replace {{ MEMORY-LIMIT }} with the desired value of memory.
-{{ MEMORY-LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
+<p>In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
+{{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
 </li>
 <li>
 <p>Add the full path of the copied file to the transformers block of the base
@@ -196,8 +196,8 @@ to a location of your choice under <code>$deploy/site-config</code>, such as <co
 You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
 </li>
 <li>
-<p>In the same file, replace {{ MEMORY-LIMIT }} with the desired value of memory.
-{{ MEMORY-LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
+<p>In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
+{{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
 </li>
 <li>
 <p>Add the full path of the copied file to the transformers block of the base
@@ -230,8 +230,8 @@ to a location of your choice under <code>$deploy/site-config</code>, such as <co
 You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
 </li>
 <li>
-<p>In the same file, replace {{ MEMORY-LIMIT }} with the desired value of memory.
-{{ MEMORY-LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
+<p>In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
+{{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
 </li>
 <li>
 <p>By default the patch will be applied to all of the CAS servers. If the patch transformer is being applied to a single CAS server,

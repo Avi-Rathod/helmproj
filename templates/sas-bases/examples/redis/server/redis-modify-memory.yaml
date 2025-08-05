@@ -14,7 +14,7 @@ patch: |-
     - op: replace
       path: /template/spec/containers/0/resources/limits/memory
       value:
-        {{ MEMORY-LIMIT }}
+        {{ .values.MEMORY_LIMIT }}
 target:
   kind: PodTemplate
   name: sas-redis-server

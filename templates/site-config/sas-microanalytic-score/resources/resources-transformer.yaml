@@ -10,7 +10,7 @@ patch: |-
   #Change Memory upper limit
   - op: replace
     path: /spec/template/spec/containers/0/resources/limits/memory
-    value: {{ MEMORY-LIMIT }}                                    
+    value: {{ .values.MEMORY_LIMIT }}                                    
   #Change required cpu 
   - op: replace
     path: /spec/template/spec/containers/0/resources/requests/cpu

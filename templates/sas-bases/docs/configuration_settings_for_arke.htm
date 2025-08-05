@@ -15,7 +15,7 @@ This README file describes the settings available for deploying Arke.</p>
 want to use any example file in your deployment. If you do, copy the example
 file and place it in your site-config directory.</p>
 <p>Each file has information about its content. The variables in the file are set
-off by curly braces and spaces, such as {{ MEMORY-LIMIT }}. Replace the
+off by curly braces and spaces, such as {{ .values.MEMORY_LIMIT }}. Replace the
 entire variable string, including the braces, with the value you want to use.</p>
 <p>After you have edited the file, add a reference to it in the transformers block
 of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). Here is an

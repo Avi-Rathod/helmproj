@@ -16,7 +16,7 @@ The `redis-modify-memory.yaml` transformer file allows you to change the memory 
 1. Copy the `$deploy/sas-bases/examples/redis/server/redis-modify-memory.yaml` file to `site-config/redis/server/redis-modify-memory.yaml`.
 
 2. The variables in the copied file are set
-off by curly braces and spaces, such as {{ MEMORY-LIMIT }}. Replace
+off by curly braces and spaces, such as {{ .values.MEMORY_LIMIT }}. Replace
 each variable string, including the braces, with the values you want to use. If you want to use the default for a variable, make no changes to that variable.
 
 3. After you have edited the file, add a reference to it in the transformers block

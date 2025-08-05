@@ -135,9 +135,9 @@ resulting in the pod status being marked as OOMKilled. In this case, modify the 
 You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
 <pre class="highlight"><code class="language-bash">   kubectl patch cronjob sas-restore-job -n name-of-namespace --type json -p '[{"op": "replace", "path": "/spec/jobTemplate/spec/template/spec/containers/0/resources/limits/cpu", "value":"{{ CPU-LIMIT }}" }]'</code></pre>
 
-<p>Replace {{ MEMORY-LIMIT }} with the desired value for memory. {{ MEMORY-LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
+<p>Replace {{ .values.MEMORY_LIMIT }} with the desired value for memory. {{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
 <pre><code> ```bash
-    kubectl patch cronjob sas-restore-job -n name-of-namespace --type json -p '[{"op": "replace", "path": "/spec/jobTemplate/spec/template/spec/containers/0/resources/limits/memory", "value":"{{ MEMORY-LIMIT }}" }]'
+    kubectl patch cronjob sas-restore-job -n name-of-namespace --type json -p '[{"op": "replace", "path": "/spec/jobTemplate/spec/template/spec/containers/0/resources/limits/memory", "value":"{{ .values.MEMORY_LIMIT }}" }]'
  ```
 </code></pre>
 <p>If you are running the restore job with this configuration frequently, then add this configuration permanently using the following method.</p>
@@ -152,8 +152,8 @@ to a location of your choice under <code>$deploy/site-config</code>, such as <co
 You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
 </li>
 <li>
-<p>In the same file, replace {{ MEMORY-LIMIT }} with the desired value of memory.
-{{ MEMORY-LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
+<p>In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
+{{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
 </li>
 <li>
 <p>Add the full path of the copied file to the transformers block of the base

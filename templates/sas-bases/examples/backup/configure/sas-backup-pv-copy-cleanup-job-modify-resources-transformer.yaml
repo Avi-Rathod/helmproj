@@ -1,6 +1,6 @@
 #   # NOTE:
 #   # {{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as "3" or "5".
-#   # {{ MEMORY-LIMIT }} must be a non-zero and non-negative value followed by "Gi". For example, "8Gi" for 8 gigabytes.
+#   # {{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative value followed by "Gi". For example, "8Gi" for 8 gigabytes.
 apiVersion: builtin
 kind: PatchTransformer
 metadata:
@@ -11,7 +11,7 @@ patch: |-
     value: "{{ CPU-LIMIT }}"
   - op: replace
     path: /spec/jobTemplate/spec/template/spec/containers/0/resources/limits/memory
-    value: "{{ MEMORY-LIMIT }}"
+    value: "{{ .values.MEMORY_LIMIT }}"
 target:
   kind: CronJob
   name: sas-backup-pv-copy-cleanup-job
