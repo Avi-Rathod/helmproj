@@ -51,9 +51,9 @@ Ensure that the two directories contain the installed client files (for example,
      * Replace {{ .Values.VALUE_10}} with the appropriate value of INSTHOME (for example, "/db2")
      * Replace {{ .Values.VALUE_11}} with the appropriate value of INST_DIR (for example, "/db2client/sqllib")
      * Replace {{ .Values.VALUE_12}} with the appropriate value of DB2 (for example, "/db2client/sqllib/lib64:/db2client/sqllib/lib64/gskit:/db2client/sqllib/lib32")
-     * Replace {{ VALUE_13 }} with the appropriate value of DB2_BIN (for example, "/db2client/sqllib/bin:/db2client/sqllib/adm:/db2client/sqllib/misc")
-     * Replace {{ VALUE_14 }} with the appropriate value of SAS_EXT_LLP_ACCESS (for example, "/db2client/sqllib/lib64:/db2client/sqllib/lib64/gskit:/db2client/sqllib/lib32")
-     * Replace {{ VALUE_15 }} with the appropriate value of SAS_EXT_PATH_ACCESS (for example, "/db2client/sqllib/bin:/db2client/sqllib/adm:/db2client/sqllib/misc")
+     * Replace {{ .Values.VALUE_13 }} with the appropriate value of DB2_BIN (for example, "/db2client/sqllib/bin:/db2client/sqllib/adm:/db2client/sqllib/misc")
+     * Replace {{ .Values.VALUE_14 }} with the appropriate value of SAS_EXT_LLP_ACCESS (for example, "/db2client/sqllib/lib64:/db2client/sqllib/lib64/gskit:/db2client/sqllib/lib32")
+     * Replace {{ .Values.VALUE_15 }} with the appropriate value of SAS_EXT_PATH_ACCESS (for example, "/db2client/sqllib/bin:/db2client/sqllib/adm:/db2client/sqllib/misc")
 
 
 3. Make the following changes to the transformers block of base kustomization.yaml file ('$deploy/kustomization.yaml')

@@ -14,7 +14,8 @@
 #
 # {{ INGRESS_TYPE }}/{{ HOST }}: These placeholders are used along with {{ PREFIX }} for creating your deployment's ingresses.
 #
-# {{ VALUE_NEEDED }}: Miscellaneous placeholder used for setting up environment variables, pull secrets, and volume mounts for your containers.
+# {{ .Values.VALUE_NEEDED }}
+: Miscellaneous placeholder used for setting up environment variables, pull secrets, and volume mounts for your containers.
 # Context and environment variable names will help you fill these out. 
 #
 # {{ SECURITY }}: blocks tagged with this should be uncommented in order to enable Front Door TLS. Further instructions are located around each occurance of the tag
@@ -757,9 +758,9 @@ spec:
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
 #   tls.crt: |+
-#     {{ VALUE_NEEDED }}
+#     {{ .Values.VALUE_NEEDED }}
 #   tls.key: |+
-#     {{ VALUE_NEEDED }}
+#     {{ .Values.VALUE_NEEDED }}
 ---
 ########################################################################
 # section - secret for a ca cert and key to make a request to sign a client cert for two-way tls
@@ -772,9 +773,9 @@ spec:
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
 #   ca.crt: |+
-#     {{ VALUE_NEEDED }}
+#     {{ .Values.VALUE_NEEDED }}
 #   ca.key: |+
-#     {{ VALUE_NEEDED }}
+#     {{ .Values.VALUE_NEEDED }}
 ---
 ##############################################################################################################################
 # section - create separate cert and key for external service such as redis, kafka, rabbitmq, etc.  Note: duplicate as needed.
@@ -787,6 +788,6 @@ spec:
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
 #   ca.crt: |+
-#     {{ VALUE_NEEDED }}
+#     {{ .Values.VALUE_NEEDED }}
 #   ca.key: |+
-#     {{ VALUE_NEEDED }}
+#     {{ .Values.VALUE_NEEDED }}

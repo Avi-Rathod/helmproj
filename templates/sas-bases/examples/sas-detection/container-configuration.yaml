@@ -36,9 +36,9 @@ spec:
               
             # REDIS PROPERTIES FOR SIGNATURE STORAGE
             - name: SAS_REDIS_HOST
-              value: {{ VALUE_NEEDED }}
+              value: {{ .Values.VALUE_NEEDED }}
             - name: SAS_REDIS_PORT
-              value: {{ VALUE_NEEDED }}
+              value: {{ .Values.VALUE_NEEDED }}
             - name: SAS_REDIS_PROFILE_COMPRESS
               value: false
 
@@ -66,13 +66,13 @@ spec:
               
             # LOG LEVEL... DEBUG, INFO, WARN, ERROR
             - name: SAS_LOG_LEVEL
-              value: {{ VALUE_NEEDED }} # Defaults to 'INFO' if removed
+              value: {{ .Values.VALUE_NEEDED }} # Defaults to 'INFO' if removed
             - name: SAS_LOG_LOCALE
-              value: {{ VALUE_NEEDED }} # Defaults to 'en' if removed
+              value: {{ .Values.VALUE_NEEDED }} # Defaults to 'en' if removed
               
             # KAFKA PROPERTIES
             - name: SAS_DETECTION_KAFKA_SERVER
-              value: {{ VALUE_NEEDED }}   # Bootstrap server, host:port
+              value: {{ .Values.VALUE_NEEDED }}   # Bootstrap server, host:port
             - name: SAS_DETECTION_KAFKA_TDR_TOPIC
               value: tdr-{{ ORGANIZATION }}
             - name: SAS_DETECTION_KAFKA_REJECTTOPIC
@@ -80,13 +80,13 @@ spec:
             - name: SAS_DETECTION_KAFKA_TOPIC
               value: input-{{ ORGANIZATION }}
             - name: SAS_DETECTION_KAFKA_CONSUMER_ENABLED
-              value: {{ VALUE_NEEDED }}
+              value: {{ .Values.VALUE_NEEDED }}
 
             # REDIS CONNECTION PROPERTY, FOR RULE METRICS
             - name: SAS_DETECTION_REDIS_HOST
-              value: {{ VALUE_NEEDED }}
+              value: {{ .Values.VALUE_NEEDED }}
             - name: SAS_DETECTION_REDIS_PORT
-              value: {{ VALUE_NEEDED }}
+              value: {{ .Values.VALUE_NEEDED }}
             - name: SAS_DETECTION_REDIS_POOL_SIZE # Default value is 10 if not specified
               value: '10'
 
@@ -94,30 +94,30 @@ spec:
             - name: SAS_DETECTION_DEPLOYMENT_NAME
               value: sas-sda-scr-{{ ORGANIZATION }}
             - name: SAS_DETECTION_PROCESSING_DISABLEMETRICS
-              value: {{ VALUE_NEEDED }}   
+              value: {{ .Values.VALUE_NEEDED }}   
             - name: SAS_DETECTION_PROCESSING_SLA
-              value: {{ VALUE_NEEDED }}   # In Milliseconds
+              value: {{ .Values.VALUE_NEEDED }}   # In Milliseconds
             - name: SAS_DETECTION_PROCESSING_SETVERBOSE
-              value: {{ VALUE_NEEDED }}   # 1-13, sets logging verbosity for SCR container logs
+              value: {{ .Values.VALUE_NEEDED }}   # 1-13, sets logging verbosity for SCR container logs
             - name: SAS_DETECTION_PROCESSING_OUTPUT_FILTER
-              value: {{ VALUE_NEEDED }}   # comma separated list of variable set or variable paths to include... message.sas.system,message.request,message.sas.decision
+              value: {{ .Values.VALUE_NEEDED }}   # comma separated list of variable set or variable paths to include... message.sas.system,message.request,message.sas.decision
             - name: SAS_DETECTION_KAFKA_BYPASS
               value: "false"
 
             # WATCHER CONFIGURATION PROPERTIES
             - name: SAS_DETECTION_WATCHER_INTERVAL_SEC
-              value: {{ VALUE_NEEDED }}   # How many seconds between each run of the watcher. Setting 0 disables the watcher.
+              value: {{ .Values.VALUE_NEEDED }}   # How many seconds between each run of the watcher. Setting 0 disables the watcher.
             - name: SAS_DETECTION_WATCHER_SSL_ENABLED
               value: "true"               # True if the watcher should make requests to the Docker registry with SSL, false if not.  Default: true
             # Optionally, store and get from a secret
             # valueFrom:
             #   secretKeyRef:
-            #     name: {{ VALUE_NEEDED }}
-            #     key: {{ VALUE_NEEDED }}
+            #     name: {{ .Values.VALUE_NEEDED }}
+            #     key: {{ .Values.VALUE_NEEDED }}
 
           # Optional - uncomment below block for running python models
           # - name: sas-sda-mlserver
-          #   image: {{ VALUE_NEEDED }} # The model to run
+          #   image: {{ .Values.VALUE_NEEDED }} # The model to run
           #   imagePullPolicy: "Always"
           #   ports:
           #     - name: http

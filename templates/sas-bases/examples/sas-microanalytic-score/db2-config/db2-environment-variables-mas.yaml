@@ -68,17 +68,17 @@ patch: |-
     path: /spec/template/spec/containers/0/env/-
     value:
       name: DB2_BIN
-      value: {{ VALUE_13 }}   #for example, "/db2client/sqllib/bin:/db2client/sqllib/adm:/db2client/sqllib/misc"
+      value: {{ .Values.VALUE_13 }}   #for example, "/db2client/sqllib/bin:/db2client/sqllib/adm:/db2client/sqllib/misc"
   - op: add
     path: /spec/template/spec/containers/0/env/-
     value:
       name: SAS_EXT_LLP_ACCESS
-      value: {{ VALUE_14 }}   #for example, "/db2client/sqllib/lib64:/db2client/sqllib/lib64/gskit:/db2client/sqllib/lib32"
+      value: {{ .Values.VALUE_14 }}   #for example, "/db2client/sqllib/lib64:/db2client/sqllib/lib64/gskit:/db2client/sqllib/lib32"
   - op: add
     path: /spec/template/spec/containers/0/env/-
     value:
       name: SAS_EXT_PATH_ACCESS
-      value: {{ VALUE_15 }}   #for example, "/db2client/sqllib/bin:/db2client/sqllib/adm:/db2client/sqllib/misc"
+      value: {{ .Values.VALUE_15 }}   #for example, "/db2client/sqllib/bin:/db2client/sqllib/adm:/db2client/sqllib/misc"
 target:
   group: apps
   kind: Deployment

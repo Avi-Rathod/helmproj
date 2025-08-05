@@ -92,7 +92,7 @@ directory location on the NFS server.
 
 The launcher-user-homedirectory-volume.yaml allows you to specify the runtime
 storage location of the user's home directory. The path is determined by the identities
-service and is mounted using the specified {{ VOLUME-STORAGE-CLASS }}.
+service and is mounted using the specified {{ .Values.VOLUME_STORAGE_CLASS }}.
 
 **Note:** Using this feature overrides changes made for the [Use NFS Server To Mount Home Directory](#use-nfs-server-to-mount-home-directory) feature.
 
@@ -100,7 +100,7 @@ service and is mounted using the specified {{ VOLUME-STORAGE-CLASS }}.
 
 2. Copy the sas-bases/examples/sas-launcher/configure/launcher-user-homedirectory-volume.yaml file to the `site-config/sas-launcher/configure/` location.
 
-3. In the file, replace {{ VOLUME-STORAGE-CLASS }} with the location of the volume storage call of your choice. Here is an example:
+3. In the file, replace {{ .Values.VOLUME_STORAGE_CLASS }} with the location of the volume storage call of your choice. Here is an example:
 
    ```yaml
    patch: |-

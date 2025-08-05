@@ -9,7 +9,7 @@ patch: |-
     path: /spec/template/spec/containers/0/env/-
     value:
       name: {{ .Values.VARIABLE_NAME }}
-      value: {{ VARIABLE-VALUE }}
+      value: {{ .Values.VARIABLE_VALUE }}
 target:
   group: apps
   kind: Deployment
