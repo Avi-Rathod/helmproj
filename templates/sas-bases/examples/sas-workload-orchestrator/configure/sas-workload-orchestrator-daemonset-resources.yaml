@@ -13,16 +13,16 @@ metadata:
 patch: |-
   - op: replace
     path: /spec/template/spec/containers/0/resources/requests/memory
-    value: {{ MEM-REQUIRED }}
+    value: {{ .Values.MEM_REQUIRED }}
   - op: replace
     path: /spec/template/spec/containers/0/resources/limits/memory
-    value: {{ MEM-REQUIRED }}
+    value: {{ .Values.MEM_REQUIRED }}
   - op: replace
     path: /spec/template/spec/containers/0/resources/requests/cpu
-    value: {{ CPU-REQUIRED }}
+    value: {{ .Values.CPU_REQUIRED }}
   - op: replace
     path: /spec/template/spec/containers/0/resources/limits/cpu
-    value: {{ CPU-REQUIRED }}
+    value: {{ .Values.CPU_REQUIRED }}
 target:
   kind: DaemonSet
   name: sas-workload-orchestrator

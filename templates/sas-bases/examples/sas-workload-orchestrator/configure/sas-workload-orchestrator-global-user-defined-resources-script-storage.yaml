@@ -15,8 +15,8 @@ patch: |-
     value:
       name: scripts
       nfs:
-        path: {{ NFS-SERVER-PATH }}
-        server: {{ NFS-SERVER-FQDN }}
+        path: {{ .Values.NFS_SERVER_PATH }}
+        server: {{ .Values.NFS_SERVER_FQDN }}
 target:
   kind: StatefulSet
   name: sas-workload-orchestrator
