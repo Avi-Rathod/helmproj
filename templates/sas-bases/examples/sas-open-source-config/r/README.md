@@ -79,7 +79,7 @@ The SAS Viya platform provides YAML files that the Kustomize tool uses to config
    ```
 
 4. Also in the r-transformer.yaml file, there is a PatchTransformer called sas-r-sas-java-policy-allow-list.  This PatchTransformer sets paths to the R interpreter so that the SAS runtime
-   allows execution of the R script.  Replace the {{ R-MOUNTPATH }} and {{ R-HOMEDIR }} tags with the appropriate values.  Here is an example:
+   allows execution of the R script.  Replace the {{ .Values.R_MOUNTPATH }} and {{ .Values.R_HOMEDIR }} tags with the appropriate values.  Here is an example:
 
    ```yaml
    apiVersion: builtin
