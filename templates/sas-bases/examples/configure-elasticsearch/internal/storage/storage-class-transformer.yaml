@@ -5,6 +5,6 @@ metadata:
 patch: |-
   - op: replace
     path: /spec/defaultStorageClassName
-    value: {{ .Values.STORAGE_CLASS }}
+    value: {{ .values.STORAGE_CLASS }}
 target:
   kind: OpenDistroCluster

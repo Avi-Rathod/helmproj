@@ -27,15 +27,15 @@ patch: |-
   #   path: /spec/databases/0/name
   #   value: {{ DB-NAME }}
 
-  # Replace {{ POSTGRES-USER-SECRET-NAME }} with the name of the
+  # Replace {{ .values.POSTGRES_USER_SECRET_NAME }} with the name of the
   # secretGenerator containing PostgreSQL user credentials.
-  # This name must match the value specified by {{ POSTGRES-USER-SECRET-NAME }}
+  # This name must match the value specified by {{ .values.POSTGRES_USER_SECRET_NAME }}
   # in the secretGenerator block within the kustomization.yaml.
   - op: replace
     path: /spec/users/0/credentials/input
     value:
       secretRef:
-        name: {{ POSTGRES-USER-SECRET-NAME }}
+        name: {{ .values.POSTGRES_USER_SECRET_NAME }}
       usernameKey: username # For internal use, do not modify
       passwordKey: password # For internal use, do not modify
 

@@ -11,11 +11,11 @@ patch: |-
   # Replace with the storage class name of your choice.
   - op: replace
     path: /spec/storageClassName
-    value: {{ .Values.QKB_STORAGE_CLASS }}
+    value: {{ .values.QKB_STORAGE_CLASS }}
   # Replace with the size of your choice.
   - op: replace
     path: /spec/resources/requests/storage
-    value: {{ .Values.QKB_STORAGE_SIZE }}
+    value: {{ .values.QKB_STORAGE_SIZE }}
 target:
   kind: PersistentVolumeClaim
   name: sas-quality-knowledge-base

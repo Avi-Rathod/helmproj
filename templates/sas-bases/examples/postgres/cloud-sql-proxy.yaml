@@ -8,28 +8,28 @@
 ## If you use the suggested example, the correct, final syntax would be:
 ##   image: "gcr.io/cloudsql-docker/gce-proxy:1.20.2"
 ## 
-## For {{ POSTGRES-SERVER-NAME }}, use "platform-postgres" or "cds-postgres".
+## For {{ .values.POSTGRES_SERVER_NAME }}, use "platform-postgres" or "cds-postgres".
 ## A separate proxy file is needed for each when both platform and cds postgres are used.
 ## Customize the credential variables similarly if different for each.
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ POSTGRES-SERVER-NAME }}-sql-proxy
+  name: {{ .values.POSTGRES_SERVER_NAME }}-sql-proxy
   labels:
-    app: {{ POSTGRES-SERVER-NAME }}-sql-proxy
+    app: {{ .values.POSTGRES_SERVER_NAME }}-sql-proxy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ POSTGRES-SERVER-NAME }}-sql-proxy
+      app: {{ .values.POSTGRES_SERVER_NAME }}-sql-proxy
   template:
     metadata:
       labels:
-        app: {{ POSTGRES-SERVER-NAME }}-sql-proxy
+        app: {{ .values.POSTGRES_SERVER_NAME }}-sql-proxy
     spec:
       containers:
-        - name: {{ POSTGRES-SERVER-NAME }}-sql-proxy
+        - name: {{ .values.POSTGRES_SERVER_NAME }}-sql-proxy
           image: "{{ CLOUD-SQL-PROXY-IMAGE-NAME }}" # For example: "gcr.io/cloudsql-docker/gce-proxy:1.20.2"
           env:
             - name: POSTGRES_CONNECTION_NAME
@@ -53,9 +53,9 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: {{ POSTGRES-SERVER-NAME }}-sql-proxy
+  name: {{ .values.POSTGRES_SERVER_NAME }}-sql-proxy
   labels:
-    app: {{ POSTGRES-SERVER-NAME }}-sql-proxy
+    app: {{ .values.POSTGRES_SERVER_NAME }}-sql-proxy
 spec:
   ports:
     - name: sql
@@ -63,5 +63,5 @@ spec:
       port: 5432
       targetPort: 5432
   selector:
-    app: {{ POSTGRES-SERVER-NAME }}-sql-proxy
+    app: {{ .values.POSTGRES_SERVER_NAME }}-sql-proxy
   type: ClusterIP

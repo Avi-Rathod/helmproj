@@ -1,5 +1,5 @@
 ---
-namespace: {{ .Values.VIYA_DEPLOYMENT_NAMESPACE }}
+namespace: {{ .values.VIYA_DEPLOYMENT_NAMESPACE }}
 resources:
 - tenant-offboard-job.yaml
 

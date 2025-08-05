@@ -45,7 +45,7 @@ sas-model-publish deployment object.
    [Persistent Volume Claims on Kubernetes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims).
 
    - Replace {{ STORAGE-CAPACITY }} with the amount of storage required.
-   - Replace {{ .Values.STORAGE_CLASS_NAME }} with the appropriate storage class from
+   - Replace {{ .values.STORAGE_CLASS_NAME }} with the appropriate storage class from
      the cloud provider that supports ReadWriteMany access mode.
 
 3. Make the following changes to the base kustomization.yaml file in the $deploy

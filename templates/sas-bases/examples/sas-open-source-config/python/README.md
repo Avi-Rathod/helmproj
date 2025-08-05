@@ -22,10 +22,10 @@ The SAS Viya platform provides YAML files that the Kustomize tool uses to config
 
 3. In addition to the volume attributes, you must have the following information:
 
-   * {{ values.PYTHON_EXECUTABLE }} - the name of the Python executable file (for example, python or python3.8)
-   * {{ values.PYTHON_EXE_DIR }} - the directory or partial path (relative to the mount) containing the executable (for example, /bin or /virt_environs/envron_dm1/bin). Note the mount point for your Python deployment should be its top level directory.
-   * {{ values.SAS_EXTLANG_SETTINGS_XML_FILE }} - configuration file for enabling Python and R integration in CAS. This is only required if you are using Python with CMP or the EXTLANG package.
-   * {{ values.SAS_EXT_LLP_PYTHON_PATH }} - list of directories to look for when searching for run-time shared libraries (similar to LD_LIBRARY_PATH)
+   * {{ .values.PYTHON_EXECUTABLE }} - the name of the Python executable file (for example, python or python3.8)
+   * {{ .values.PYTHON_EXE_DIR }} - the directory or partial path (relative to the mount) containing the executable (for example, /bin or /virt_environs/envron_dm1/bin). Note the mount point for your Python deployment should be its top level directory.
+   * {{ .values.SAS_EXTLANG_SETTINGS_XML_FILE }} - configuration file for enabling Python and R integration in CAS. This is only required if you are using Python with CMP or the EXTLANG package.
+   * {{ .values.SAS_EXT_LLP_PYTHON_PATH }} - list of directories to look for when searching for run-time shared libraries (similar to LD_LIBRARY_PATH)
 
 4. The Python overlay for sas-microanalytic-score uses a Persistent Volume named astores-volume, which is defined in the astores overlay. The Python and astore overlays are usually installed together. If you choose to install the python overlay only, you still need to install the astores overlay as well. For more information on installing the astores overlay, refer to the "Configure SAS Micro Analytic Service to Support Analytic Stores" README file at `$deploy/sas-bases/examples/sas-microanalytic-score/astores/README.md` (for Markdown format) or `$deploy/sas-bases/docs/configure_sas_micro_analytic_service_to_support_analytic_stores.htm` (for HTML format).
 
@@ -37,7 +37,7 @@ The SAS Viya platform provides YAML files that the Kustomize tool uses to config
    **Note:** If the destination directory already exists, [verify that the overlay](#verify-overlay-for-python-volume) has been applied.
    If the output contains the `/python` mount directory path, you do not need to take any further actions, unless you want to change the overlay parameters to use a different Python environment.
 
-2. The kustomization.yaml file defines all the necessary environment variables. Replace all tags, such as {{ values.PYTHON_EXE_DIR }}, with the values that you gathered in the [Prerequisites](#prerequisites) step.
+2. The kustomization.yaml file defines all the necessary environment variables. Replace all tags, such as {{ .values.PYTHON_EXE_DIR }}, with the values that you gathered in the [Prerequisites](#prerequisites) step.
    Then, set the following parameters, according to the SAS products you will be using:
 
    * MAS_PYPATH and MAS_M2PATH are used by SAS Micro Analytic Service.
@@ -56,9 +56,9 @@ The SAS Viya platform provides YAML files that the Kustomize tool uses to config
 
    ```<LANGUAGE name="PYTHON3" interpreter="$MAS_PYPATH"></LANGUAGE>```
 
-3. Attach storage to your SAS Viya platform deployment. The python-transformer.yaml file uses PatchTransformers in Kustomize to attach the volume containing your Python installation to the SAS Viya platform. Replace {{ .Values.VOLUME_ATTRIBUTES }} with the appropriate volume specification.
+3. Attach storage to your SAS Viya platform deployment. The python-transformer.yaml file uses PatchTransformers in Kustomize to attach the volume containing your Python installation to the SAS Viya platform. Replace {{ .values.VOLUME_ATTRIBUTES }} with the appropriate volume specification.
 
-   For example, when using an NFS mount, the {{ .Values.VOLUME_ATTRIBUTES }} tag should be replaced with `nfs: {path: /vol/python, server: myserver.sas.com}`
+   For example, when using an NFS mount, the {{ .values.VOLUME_ATTRIBUTES }} tag should be replaced with `nfs: {path: /vol/python, server: myserver.sas.com}`
    where `myserver.sas.com` is the NFS server and `/vol/python` is the NFS path you recorded in the Prerequisites step.
 
    The relevant code excerpt from python-transformer.yaml file before the change:
@@ -68,7 +68,7 @@ The SAS Viya platform provides YAML files that the Kustomize tool uses to config
    # Add Python Volume
      - op: add
        path: /spec/template/spec/volumes/-
-       value: { name: python-volume, {{ .Values.VOLUME_ATTRIBUTES }} }
+       value: { name: python-volume, {{ .values.VOLUME_ATTRIBUTES }} }
    ```
 
    The relevant code excerpt from python-transformer.yaml file after the change:
@@ -82,7 +82,7 @@ The SAS Viya platform provides YAML files that the Kustomize tool uses to config
    ```
 
 4. Also in the python-transformer.yaml file, there is a PatchTransformer called sas-python-sas-java-policy-allow-list.  This PatchTransformer sets paths to the python executable so that the SAS runtime
-   allows execution of the python code.  Replace the {{ values.PYTHON_EXE_DIR }} and {{ values.PYTHON_EXECUTABLE }} tags with the appropriate values.  If you are specifying multiple Python
+   allows execution of the python code.  Replace the {{ .values.PYTHON_EXE_DIR }} and {{ .values.PYTHON_EXECUTABLE }} tags with the appropriate values.  If you are specifying multiple Python
    environments, each need to be set here.   Here is an example:
 
    ```yaml

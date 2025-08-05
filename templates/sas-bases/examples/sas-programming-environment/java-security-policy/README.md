@@ -48,7 +48,7 @@ replace the following in the copied file.
 
    - Replace {{.Values.NAME }} with an unique name for the class.   This is for
    internal identification.
-   - Replace {{ .Values.CLASS_NAME}} with the Java class name that is to be allowed.
+   - Replace {{ .values.CLASS_NAME}} with the Java class name that is to be allowed.
 
    For example,
 

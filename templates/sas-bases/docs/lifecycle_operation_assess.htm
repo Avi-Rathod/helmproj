@@ -26,7 +26,7 @@
 <li>The orchestration image has been pulled and has the local tag &lsquo;sas-orchestration&rsquo;</li>
 <li>The <code>$deploy</code> directory is the current working directory.
   <code>cd</code> to $deploy and use <code>$(pwd)</code> to mount the current directory into the container.</li>
-<li><code>{{ .Values.NAME_OF_NAMESPACE }}</code> is the namespace where the SAS Viya platform deployment described by the manifest file being assessed will be located.</li>
+<li><code>{{ .values.NAME_OF_NAMESPACE }}</code> is the namespace where the SAS Viya platform deployment described by the manifest file being assessed will be located.</li>
 </ul>
 <h2 id="140345100182048example">Example</h2>
 <pre class="highlight"><code>cd $deploy
@@ -40,7 +40,7 @@ docker run --rm \
     --deployment-dir /cwd \
     -- \
     --manifest /cwd/site.yaml \
-    --namespace {{ .Values.NAME_OF_NAMESPACE }}</code></pre>
+    --namespace {{ .values.NAME_OF_NAMESPACE }}</code></pre>
 
 <p><strong>Note:</strong> To see the commands that would be executed from the operation without
 making any changes to the cluster, add <code>-e "DISABLE_APPLY=true"</code> to the container.</p>

@@ -193,7 +193,7 @@ $ kubectl -n {{ NAMESPACE }} get cm "$CONFIGMAP" -o yaml | grep 'sas-business-or
 <p>For one-way TLS, fill in the tls field under the spec field. This also includes a secretName, which includes your TLS certificate.</p>
 <pre class="highlight"><code class="language-yaml">tls:
     - hosts:
-        - {{ PREFIX }}.{{ INGRESS-TYPE }}.{{ HOST }}
+        - {{ .values.POSTGRES_USER_FILE }}REFIX }}.{{ INGRESS-TYPE }}.{{ HOST }}
     secretName: business-orchestration-worker-ingress-tls-config-{{ SUFFIX }}</code></pre>
 
 <p>See the resource comments for more specific details.</p>

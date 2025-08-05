@@ -44,7 +44,7 @@ transformers in the example file located at
 `$deploy/sas-bases/examples/sas-programming-environment/storage/change-viya-volume-storage-class.yaml`
 file to the site-config directory.
 
-2. To change the StorageClass replace the {{ .Values.VOLUME_STORAGE_CLASS }} variable
+2. To change the StorageClass replace the {{ .values.VOLUME_STORAGE_CLASS }} variable
 in the copied file with a different volume storage class.
 The example file provided looks like the following:
 
@@ -53,7 +53,7 @@ The example file provided looks like the following:
      path: /template/spec/volumes/-
      value:
        name: viya
-       {{ .Values.VOLUME_STORAGE_CLASS }}
+       {{ .values.VOLUME_STORAGE_CLASS }}
    ```
 
    For example, assume that the storage location you want to use is an NFS volume.   That volume may be
@@ -66,7 +66,7 @@ The example file provided looks like the following:
    ```
 
    To use this in the transformer, substitute in the volume definition in the
-   {{ .Values.VOLUME_STORAGE_CLASS }} location.  The result would look like this:
+   {{ .values.VOLUME_STORAGE_CLASS }} location.  The result would look like this:
 
    ```yaml
    - op: add

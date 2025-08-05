@@ -29,8 +29,8 @@ Storage for the ASTORE files must support ReadWriteMany access permissions.
    
 2. The resources.yaml file in `$deploy/site-config/sas-microanalytic-score/astores` contains the parameters of the storage that is required in the PeristentVolumeClaim. For more information about PersistentVolumeClaims, see [Additional Resources](#additional-resources).
 
-   * Replace {{ .Values.STORAGE_CAPACITY }} with the amount of storage required.
-   * Replace {{ .Values.STORAGE_CLASS_NAME }} with the appropriate storage class from the cloud provider that supports ReadWriteMany access mode.
+   * Replace {{ .values.STORAGE_CAPACITY }} with the amount of storage required.
+   * Replace {{ .values.STORAGE_CLASS_NAME }} with the appropriate storage class from the cloud provider that supports ReadWriteMany access mode.
 
 3. Make the following changes to the base kustomization.yaml file in the $deploy directory.
 

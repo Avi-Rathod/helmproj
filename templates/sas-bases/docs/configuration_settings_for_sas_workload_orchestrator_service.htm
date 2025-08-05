@@ -130,7 +130,7 @@ block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</cod
 <h3 id="140345099667824user-defined-scripts-volume-for-manager-pods">User-Defined Scripts Volume for Manager Pods</h3>
 <p>The example file <code>sas-workload-orchestrator-global-user-defined-resources-script-storage.yaml</code>
 mounts an NFS volume as the &lsquo;scripts&rsquo; volume.</p>
-<p>To update the volume, replace the <code>{{ .Values.NFS_SERVER_ADDR }}</code> variable with the fully-qualified
+<p>To update the volume, replace the <code>{{ .values.NFS_SERVER_ADDR }}</code> variable with the fully-qualified
 domain name of the server and replace the <code>{{ NFS-SERVER-PATH }}</code> variable with the path to
 the volume on the server. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">  - op: replace
@@ -163,7 +163,7 @@ block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</cod
 <h3 id="140345099667824daemonset-pods-user-defined-script-volume">DaemonSet Pods User-Defined Script Volume</h3>
 <p>The example file <code>sas-workload-orchestrator-host-user-defined-resources-script-storage.yaml</code>
 mounts an NFS volume as the &lsquo;scripts&rsquo; volume.</p>
-<p>To update the volume, replace the <code>{{ .Values.NFS_SERVER_ADDR }}</code> variable with the fully-qualified
+<p>To update the volume, replace the <code>{{ .values.NFS_SERVER_ADDR }}</code> variable with the fully-qualified
 domain name of the server and replace the <code>{{ NFS-SERVER-PATH }}</code> variable with the path to
 the volume on the server. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">  - op: replace
@@ -229,7 +229,7 @@ plugin to the sas-viya CLI.</p>
 <p>The example file <code>sas-workload-orchestrator-prometheus-gateway-url.yaml</code> changes the
 Prometheus Pushgateway URL from the default of <code>http://prometheus-pushgateway:9091</code>
 to the value specified by the <code>SGMG_PROMETHEUS_PUSHGATEWAY_URL</code> environment variable.</p>
-<p>To update the URL, replace the <code>{{ PROMETHEUS_PUSHGATEWAY_URL }}</code> variable with the
+<p>To update the URL, replace the <code>{{ .values.PROMETHEUS_PUSHGATEWAY_URL }}</code> variable with the
 URL where SAS Workload Orchestrator should push its metrics. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">  - op: add
     path: /spec/template/spec/containers/0/env/-

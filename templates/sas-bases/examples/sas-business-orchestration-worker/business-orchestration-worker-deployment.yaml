@@ -14,7 +14,7 @@
 #
 # {{ INGRESS_TYPE }}/{{ HOST }}: These placeholders are used along with {{ PREFIX }} for creating your deployment's ingresses.
 #
-# {{ .Values.VALUE_NEEDED }}
+# {{ .values.VALUE_NEEDED }}
 : Miscellaneous placeholder used for setting up environment variables, pull secrets, and volume mounts for your containers.
 # Context and environment variable names will help you fill these out. 
 #
@@ -758,9 +758,9 @@ spec:
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
 #   tls.crt: |+
-#     {{ .Values.VALUE_NEEDED }}
+#     {{ .values.VALUE_NEEDED }}
 #   tls.key: |+
-#     {{ .Values.VALUE_NEEDED }}
+#     {{ .values.VALUE_NEEDED }}
 ---
 ########################################################################
 # section - secret for a ca cert and key to make a request to sign a client cert for two-way tls
@@ -773,9 +773,9 @@ spec:
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
 #   ca.crt: |+
-#     {{ .Values.VALUE_NEEDED }}
+#     {{ .values.VALUE_NEEDED }}
 #   ca.key: |+
-#     {{ .Values.VALUE_NEEDED }}
+#     {{ .values.VALUE_NEEDED }}
 ---
 ##############################################################################################################################
 # section - create separate cert and key for external service such as redis, kafka, rabbitmq, etc.  Note: duplicate as needed.
@@ -788,6 +788,6 @@ spec:
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
 #   ca.crt: |+
-#     {{ .Values.VALUE_NEEDED }}
+#     {{ .values.VALUE_NEEDED }}
 #   ca.key: |+
-#     {{ .Values.VALUE_NEEDED }}
+#     {{ .values.VALUE_NEEDED }}

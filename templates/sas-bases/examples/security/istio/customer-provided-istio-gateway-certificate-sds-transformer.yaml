@@ -13,7 +13,7 @@
 ## hyphenated name set off by curly braces and a space at each end. You should replace this token with the
 ## actual value.
 ## Replace the curly braces, interior spaces, and the variable name.
-## For instance, "{{ .Values.GATEWAY_CERTIFICATE_SECRET_NAME  }}" Example: deploymentNamespace_credential
+## For instance, "{{ .values.GATEWAY_CERTIFICATE_SECRET_NAME  }}" Example: deploymentNamespace_credential
 ## should be replaced with the name of the secret that contains the certificate and key that will
 ## be used to secure the ingress gateway.
 ## If you are following the example, the correct final syntax will look like:
@@ -27,7 +27,7 @@ metadata:
 patch: |-
   - op: replace
     path: /spec/servers/0/tls/credentialName
-    value: {{ .Values.GATEWAY_CERTIFICATE_SECRET_NAME  }} Example: deploymentNamespace_credential # Should match the secret name from customer-provided-istio-gateway-certificate.yaml
+    value: {{ .values.GATEWAY_CERTIFICATE_SECRET_NAME  }} Example: deploymentNamespace_credential # Should match the secret name from customer-provided-istio-gateway-certificate.yaml
 target:
   Kind: Gateway
   name: public-gateway

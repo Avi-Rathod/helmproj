@@ -55,7 +55,7 @@ Identities service.</p>
 <p>Copy the sas-bases/examples/sas-launcher/configure/launcher-nfs-mount.yaml file to the site-config/sas-launcher/configure/ location.</p>
 </li>
 <li>
-<p>In the file, replace {{ .Values.NFS_SERVER_LOCATION }} with the location of the NFS server. Here is an example: </p>
+<p>In the file, replace {{ .values.NFS_SERVER_LOCATION }} with the location of the NFS server. Here is an example: </p>
 <pre class="highlight"><code class="language-yaml">patch: |-
   - op: add
     path: /template/metadata/annotations/launcher.sas.com~1nfs-server
@@ -81,7 +81,7 @@ directory location on the NFS server.</p>
 <h4 id="140345100040272use-kubernetes-volumes-for-user-home-directories">Use Kubernetes Volumes for User Home Directories</h4>
 <p>The launcher-user-homedirectory-volume.yaml allows you to specify the runtime
 storage location of the user&rsquo;s home directory. The path is determined by the identities
-service and is mounted using the specified {{ .Values.VOLUME_STORAGE_CLASS }}.</p>
+service and is mounted using the specified {{ .values.VOLUME_STORAGE_CLASS }}.</p>
 <p><strong>Note:</strong> Using this feature overrides changes made for the <a href="#140345100040272use-nfs-server-to-mount-home-directory">Use NFS Server To Mount Home Directory</a> feature.</p>
 <ol>
 <li>
@@ -91,7 +91,7 @@ service and is mounted using the specified {{ .Values.VOLUME_STORAGE_CLASS }}.</
 <p>Copy the sas-bases/examples/sas-launcher/configure/launcher-user-homedirectory-volume.yaml file to the <code>site-config/sas-launcher/configure/</code> location.</p>
 </li>
 <li>
-<p>In the file, replace {{ .Values.VOLUME_STORAGE_CLASS }} with the location of the volume storage call of your choice. Here is an example:</p>
+<p>In the file, replace {{ .values.VOLUME_STORAGE_CLASS }} with the location of the volume storage call of your choice. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">patch: |-
   - op: add
     path: /template/spec/volumes/-

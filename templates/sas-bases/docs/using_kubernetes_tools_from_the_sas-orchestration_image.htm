@@ -37,7 +37,7 @@ Pull the <code>sas-orchestration</code> image:</p>
 <li>The orchestration image has been pulled and has the local tag &lsquo;sas-orchestration&rsquo;</li>
 <li>The <code>$deploy</code> directory is the current working directory.
   <code>cd</code> to $deploy and use <code>$(pwd)</code> to mount the current directory into the container.</li>
-<li>The software has been deployed into the namespace &lsquo;{{ .Values.NAME_OF_NAMESPACE  }}&rsquo;</li>
+<li>The software has been deployed into the namespace &lsquo;{{ .values.NAME_OF_NAMESPACE  }}&rsquo;</li>
 </ul>
 <h3 id="140345100479840lifecycle">lifecycle</h3>
 <p>The <code>lifecycle</code> command executes deployment-wide operations over the assets deployed from an order.
@@ -84,7 +84,7 @@ docker run --rm \
     --deployment-dir /cwd \
     -- \
     --manifest /cwd/site.yaml \
-    --namespace {{ .Values.NAME_OF_NAMESPACE  }}</code></pre>
+    --namespace {{ .values.NAME_OF_NAMESPACE  }}</code></pre>
 
 <p>As indicated in the example, the <code>run</code> sub-command needs an operation (<code>--operation</code>) and the location of
 your assets (&ndash;deployment-dir). The <code>assess</code> lifecycle operation needs a manifest (<code>--manifest</code>) and the

@@ -24,7 +24,7 @@ Perform the steps under each of the following subsections in the order they are 
 1. Scale down the existing SAS Data Server Operator deployment. In the following command, replace the entire variable `{{.Values.NAME_OF_NAMESPACE }}`, including the braces, with your SAS Viya platform namespace.
 
     ```bash
-    kubectl scale deployment --replicas=0 sas-data-server-operator -n {{ .Values.NAME_OF_NAMESPACE  }}
+    kubectl scale deployment --replicas=0 sas-data-server-operator -n {{ .values.NAME_OF_NAMESPACE  }}
     ```
 
     If you receive the following error, your SAS Viya platform deployment did not include the SAS Data Server Operator. In this case, skip to [Prepare and Terminate PostgreSQL Clusters](#prepare-and-terminate-postgresql-clusters).
@@ -36,7 +36,7 @@ Perform the steps under each of the following subsections in the order they are 
 2. Wait for the SAS Data Server Operator pod to be terminated:
 
     ```bash
-    kubectl wait --for=delete --selector="app.kubernetes.io/name=sas-data-server-operator" pods --timeout=300s -n {{ .Values.NAME_OF_NAMESPACE }}
+    kubectl wait --for=delete --selector="app.kubernetes.io/name=sas-data-server-operator" pods --timeout=300s -n {{ .values.NAME_OF_NAMESPACE }}
     ```
 
 ### Prepare and Terminate PostgreSQL Clusters
@@ -47,14 +47,14 @@ Perform the steps under each of the following subsections in the order they are 
     kubectl get pgclusters.crunchydata.com -n {{.Values.NAME_OF_NAMESPACE  }}
     ```
 
-    The remaining steps in this section should be performed for *each* PostgreSQL cluster listed by the command. Replace the variable `{{ PGCLUSTER-NAME }}` in any later commands with the PostgreSQL cluster resource you are targeting.
+    The remaining steps in this section should be performed for *each* PostgreSQL cluster listed by the command. Replace the variable `{{ .values.PGCLUSTER_NAME }}` in any later commands with the PostgreSQL cluster resource you are targeting.
 
 2. Scale down the replica deployments. Scaling down fails back the primary if it was failed over to a replica.
 
     ```bash
-    kubectl scale --replicas=0 deployment --selector=crunchy-pgha-scope={{ PGCLUSTER-NAME }},name!={{ PGCLUSTER-NAME }} -n {{ .Values.NAME_OF_NAMESPACE  }}
+    kubectl scale --replicas=0 deployment --selector=crunchy-pgha-scope={{ .values.PGCLUSTER_NAME }},name!={{ .values.PGCLUSTER_NAME }} -n {{ .values.NAME_OF_NAMESPACE  }}
 
-    kubectl wait --for=delete --selector=crunchy-pgha-scope={{ PGCLUSTER-NAME }},name!={{ PGCLUSTER-NAME }} pods --timeout=300s -n {{.Values.NAME_OF_NAMESPACE  }}
+    kubectl wait --for=delete --selector=crunchy-pgha-scope={{ .values.PGCLUSTER_NAME }},name!={{ .values.PGCLUSTER_NAME }} pods --timeout=300s -n {{.Values.NAME_OF_NAMESPACE  }}
     ```
 
     Ignore the following error, which is returned if the pods are already down before the wait command.
@@ -66,7 +66,7 @@ Perform the steps under each of the following subsections in the order they are 
 3. Check the cluster to ensure only one pod is running as Leader.
 
     ```bash
-    kubectl exec deployment/{{ PGCLUSTER-NAME }} -c database -n {{.Values.NAME_OF_NAMESPACE }} -- patronictl list
+    kubectl exec deployment/{{ .values.PGCLUSTER_NAME }} -c database -n {{.Values.NAME_OF_NAMESPACE }} -- patronictl list
     ```
 
     The output should look something like the following:
@@ -82,15 +82,15 @@ Perform the steps under each of the following subsections in the order they are 
 4. Delete the replica PVCs.
 
     ```bash
-    kubectl delete pvc $(kubectl get deploy --selector=crunchy-pgha-scope={{ PGCLUSTER-NAME }},name!={{ PGCLUSTER-NAME }} -o jsonpath='{.items[*].metadata.name}' -n {{.Values.NAME_OF_NAMESPACE  }} ) --timeout=300s -n {{ .Values.NAME_OF_NAMESPACE  }}
+    kubectl delete pvc $(kubectl get deploy --selector=crunchy-pgha-scope={{ .values.PGCLUSTER_NAME }},name!={{ .values.PGCLUSTER_NAME }} -o jsonpath='{.items[*].metadata.name}' -n {{.Values.NAME_OF_NAMESPACE  }} ) --timeout=300s -n {{ .values.NAME_OF_NAMESPACE  }}
     ```
 
 5. Scale down the primary deployment.
 
     ```bash
-    kubectl scale --replicas=0 deployment --selector=crunchy-pgha-scope={{ PGCLUSTER-NAME }},name={{ PGCLUSTER-NAME }} -n {{.Values.NAME_OF_NAMESPACE  }}
+    kubectl scale --replicas=0 deployment --selector=crunchy-pgha-scope={{ .values.PGCLUSTER_NAME }},name={{ .values.PGCLUSTER_NAME }} -n {{.Values.NAME_OF_NAMESPACE  }}
 
-    kubectl wait --for=delete --selector=crunchy-pgha-scope={{ PGCLUSTER-NAME }},name={{ PGCLUSTER-NAME }} pods --timeout=300s -n {{ .Values.NAME_OF_NAMESPACE  }}
+    kubectl wait --for=delete --selector=crunchy-pgha-scope={{ .values.PGCLUSTER_NAME }},name={{ .values.PGCLUSTER_NAME }} pods --timeout=300s -n {{ .values.NAME_OF_NAMESPACE  }}
     ```
 
     Ignore the following error, which is returned if the pods are already down before the wait command.
@@ -102,27 +102,27 @@ Perform the steps under each of the following subsections in the order they are 
 6. Patch the security context of the pgBackrest deployment. If your deployment is running on OpenShift, skip this step.
 
     ```bash
-    kubectl patch -n {{.Values.NAME_OF_NAMESPACE }} deployment {{ PGCLUSTER-NAME }}-backrest-shared-repo --type json -p '[{"op": "replace", "path": "/spec/template/spec/securityContext", "value": { "runAsNonRoot": true, "runAsUser": 2000, "runAsGroup": 26, "fsGroup": 26, "supplementalGroups": [26, 2000]}}]'
+    kubectl patch -n {{.Values.NAME_OF_NAMESPACE }} deployment {{ .values.PGCLUSTER_NAME }}-backrest-shared-repo --type json -p '[{"op": "replace", "path": "/spec/template/spec/securityContext", "value": { "runAsNonRoot": true, "runAsUser": 2000, "runAsGroup": 26, "fsGroup": 26, "supplementalGroups": [26, 2000]}}]'
 
-    kubectl rollout status -n {{.Values.NAME_OF_NAMESPACE }} deployment {{ PGCLUSTER-NAME }}-backrest-shared-repo
+    kubectl rollout status -n {{.Values.NAME_OF_NAMESPACE }} deployment {{ .values.PGCLUSTER_NAME }}-backrest-shared-repo
     ```
 
 7. Modify file permissions for the pgBackrest directory. If your deployment is running on OpenShift, skip this step.
 
     ```bash
-    kubectl exec -n {{ .Values.NAME_OF_NAMESPACE  }} deployment/{{ PGCLUSTER-NAME }}-backrest-shared-repo -- chmod -R 770 /backrestrepo/{{ PGCLUSTER-NAME }}-backrest-shared-repo/
+    kubectl exec -n {{ .values.NAME_OF_NAMESPACE  }} deployment/{{ .values.PGCLUSTER_NAME }}-backrest-shared-repo -- chmod -R 770 /backrestrepo/{{ .values.PGCLUSTER_NAME }}-backrest-shared-repo/
 
-    kubectl exec -n {{ .Values.NAME_OF_NAMESPACE  }} deployment/{{ PGCLUSTER-NAME }}-backrest-shared-repo -- chgrp -R postgres /backrestrepo/{{ PGCLUSTER-NAME }}-backrest-shared-repo/
+    kubectl exec -n {{ .values.NAME_OF_NAMESPACE  }} deployment/{{ .values.PGCLUSTER_NAME }}-backrest-shared-repo -- chgrp -R postgres /backrestrepo/{{ .values.PGCLUSTER_NAME }}-backrest-shared-repo/
     ```
 
 8. Terminate the PostgreSQL cluster.
 
     Copy the template file `$deploy/sas-bases/examples/crunchydata/pgo4upgrade/pgtask-rmdata.yaml` to your site-config directory, `$deploy/site-config/`. If a copy already exists, you may overwrite it. Then, follow the instructions within the copied file to populate any necessary variables.
 
-    After copying and filling out the file, apply it to terminate the PostgreSQL cluster. Replace the entire variable `{{ PGTASK-PATH }}`, including the braces, with the expanded location of your copy of the file `$deploy/sas-bases/examples/crunchydata/pgo4upgrade/pgtask-rmdata.yaml`.
+    After copying and filling out the file, apply it to terminate the PostgreSQL cluster. Replace the entire variable `{{ .values.PGTASK_PATH }}`, including the braces, with the expanded location of your copy of the file `$deploy/sas-bases/examples/crunchydata/pgo4upgrade/pgtask-rmdata.yaml`.
 
     ```bash
-    kubectl apply -f {{ PGTASK-PATH }} -n {{.Values.NAME_OF_NAMESPACE  }}
+    kubectl apply -f {{ .values.PGTASK_PATH }} -n {{.Values.NAME_OF_NAMESPACE  }}
     ```
 
     **Note:** Your copy of the file `$deploy/sas-bases/examples/crunchydata/pgo4upgrade/pgtask-rmdata.yaml` should NOT be added or referenced in any kustomization files. After applying it, you may delete your copy of the file.
@@ -130,21 +130,21 @@ Perform the steps under each of the following subsections in the order they are 
 9. Wait for the internal PostgreSQL pods to be terminated.
 
     ```bash
-    kubectl wait --for=delete --selector=pg-cluster={{ PGCLUSTER-NAME }} pods --timeout=300s -n {{ .Values.NAME_OF_NAMESPACE  }}
+    kubectl wait --for=delete --selector=pg-cluster={{ .values.PGCLUSTER_NAME }} pods --timeout=300s -n {{ .values.NAME_OF_NAMESPACE  }}
     ```
 
 10. Wait for the custom resource pgtask to be terminated.
 
     ```bash
-    kubectl wait --for=delete --selector=pg-cluster={{ PGCLUSTER-NAME }} pgtask --timeout=300s -n {{ .Values.NAME_OF_NAMESPACE  }}
+    kubectl wait --for=delete --selector=pg-cluster={{ .values.PGCLUSTER_NAME }} pgtask --timeout=300s -n {{ .values.NAME_OF_NAMESPACE  }}
     ```
 
 11. Remove the TLS artifacts for the PostgreSQL cluster.
 
     ```bash
-    kubectl delete job "{{ PGCLUSTER-NAME }}-tls-generator" --ignore-not-found=true --timeout=300s -n {{ .Values.NAME_OF_NAMESPACE  }}
+    kubectl delete job "{{ .values.PGCLUSTER_NAME }}-tls-generator" --ignore-not-found=true --timeout=300s -n {{ .values.NAME_OF_NAMESPACE  }}
 
-    kubectl delete secret "{{ PGCLUSTER-NAME }}-tls-secret" --ignore-not-found=true --timeout=300s -n {{ .Values.NAME_OF_NAMESPACE }}
+    kubectl delete secret "{{ .values.PGCLUSTER_NAME }}-tls-secret" --ignore-not-found=true --timeout=300s -n {{ .values.NAME_OF_NAMESPACE }}
     ```
 
 12. Modify PostgreSQL file permissions. If your deployment is running on a provider other than OpenShift, skip this step.
@@ -158,14 +158,14 @@ Perform the steps under each of the following subsections in the order they are 
     2. Run Kubernetes jobs to modify PVC file permissions.
 
         ```bash
-        kubectl -n {{ .Values.NAME_OF_NAMESPACE  }} apply -f site.yaml -l "webinfdsvr.sas.com/upgrade-crunchy-step-1={{ PGCLUSTER-NAME }}"
-        kubectl -n {{.Values.NAME_OF_NAMESPACE  }} wait --for=condition=complete job --timeout=300s -l "webinfdsvr.sas.com/upgrade-crunchy-step-1={{ PGCLUSTER-NAME }}"
+        kubectl -n {{ .values.NAME_OF_NAMESPACE  }} apply -f site.yaml -l "webinfdsvr.sas.com/upgrade-crunchy-step-1={{ .values.PGCLUSTER_NAME }}"
+        kubectl -n {{.Values.NAME_OF_NAMESPACE  }} wait --for=condition=complete job --timeout=300s -l "webinfdsvr.sas.com/upgrade-crunchy-step-1={{ .values.PGCLUSTER_NAME }}"
 
-        kubectl -n {{ .Values.NAME_OF_NAMESPACE  }} apply -f site.yaml -l "webinfdsvr.sas.com/upgrade-crunchy-step-2={{ PGCLUSTER-NAME }}"
-        kubectl -n {{ .Values.NAME_OF_NAMESPACE  }} wait --for=condition=complete job --timeout=300s -l "webinfdsvr.sas.com/upgrade-crunchy-step-2={{ PGCLUSTER-NAME }}"
+        kubectl -n {{ .values.NAME_OF_NAMESPACE  }} apply -f site.yaml -l "webinfdsvr.sas.com/upgrade-crunchy-step-2={{ .values.PGCLUSTER_NAME }}"
+        kubectl -n {{ .values.NAME_OF_NAMESPACE  }} wait --for=condition=complete job --timeout=300s -l "webinfdsvr.sas.com/upgrade-crunchy-step-2={{ .values.PGCLUSTER_NAME }}"
 
-        kubectl -n {{.Values.NAME_OF_NAMESPACE  }} apply -f site.yaml -l "webinfdsvr.sas.com/upgrade-crunchy-step-3={{ PGCLUSTER-NAME }}"
-        kubectl -n {{ .Values.NAME_OF_NAMESPACE  }} wait --for=condition=complete job --timeout=300s -l "webinfdsvr.sas.com/upgrade-crunchy-step-3={{ PGCLUSTER-NAME }}"
+        kubectl -n {{.Values.NAME_OF_NAMESPACE  }} apply -f site.yaml -l "webinfdsvr.sas.com/upgrade-crunchy-step-3={{ .values.PGCLUSTER_NAME }}"
+        kubectl -n {{ .values.NAME_OF_NAMESPACE  }} wait --for=condition=complete job --timeout=300s -l "webinfdsvr.sas.com/upgrade-crunchy-step-3={{ .values.PGCLUSTER_NAME }}"
         ```
 
 13. Repeat steps 2-12 for any remaining PostgreSQL clusters listed in step 1.

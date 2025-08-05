@@ -53,7 +53,7 @@ The example files are located at
  `$deploy/sas-bases/examples/sas-programming-environment/lockdown`.
 
 - To enable access methods not included in the list above, such as PYTHON or
-PYTHON_EMBED, replace {{ .Values.ACCESS_METHOD_LIST }}
+PYTHON_EMBED, replace {{ .values.ACCESS_METHOD_LIST }}
 in `enable-lockdown-access-methods.yaml`. For example,
 
 ```yaml
@@ -68,7 +68,7 @@ patch : |-
 **NOTE:** The names of the access methods are case-insensitive.
 
 - To disable access methods from the default list, such as JAVA, replace
-the {{ .Values.ACCESS_METHOD_LIST }} in `disable-lockdown-access-methods.yaml` with a list
+the {{ .values.ACCESS_METHOD_LIST }} in `disable-lockdown-access-methods.yaml` with a list
 of values to remove.  For example,
 
 ```yaml

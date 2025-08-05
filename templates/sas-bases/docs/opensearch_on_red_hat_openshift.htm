@@ -50,9 +50,9 @@ allowPrivilegedContainer: true</code></pre>
 <h3 id="140345100056512add-security-context-constraints-to-sas-opendistro-service-account">Add Security Context Constraints to sas-opendistro Service Account</h3>
 <p>The sas-opendistro SecurityContextConstraints must be added to the sas-opendistro ServiceAccount within each target deployment namespace to grant the
 necessary privileges.</p>
-<p>Use the following command to configure the ServiceAccount. Replace the entire variable <code>{{ .Values.NAME_OF_NAMESPACE }}</code>, including the braces,
+<p>Use the following command to configure the ServiceAccount. Replace the entire variable <code>{{ .values.NAME_OF_NAMESPACE }}</code>, including the braces,
 with the Kubernetes namespace used for the SAS Viya platform.</p>
-<pre class="highlight"><code>oc -n {{ .Values.NAME_OF_NAMESPACE }} adm policy add-scc-to-user sas-opendistro -z sas-opendistro</code></pre>
+<pre class="highlight"><code>oc -n {{ .values.NAME_OF_NAMESPACE }} adm policy add-scc-to-user sas-opendistro -z sas-opendistro</code></pre>
 
 <h2 id="140345100056512remove-seccomp-profile-property-and-annotation-on-opensearch-pods">Remove Seccomp Profile Property and Annotation on OpenSearch Pods</h2>
 <p>An example transformer that removes the seccomp property and annotation from the OpenSearch pods through the OpenDistroCluster resource is available at <code>$deploy/sas-bases/overlays/internal-elasticsearch/remove-seccomp-transformer.yaml</code>.</p>

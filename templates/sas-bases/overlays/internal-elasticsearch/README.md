@@ -121,7 +121,7 @@ namespace used for the SAS Viya platform.
    OpenSearch Operator deployment:
 
    ```bash
-   kubectl scale deployment --replicas=0 sas-opendistro-operator -n {{ .Values.NAME_OF_NAMESPACE  }}
+   kubectl scale deployment --replicas=0 sas-opendistro-operator -n {{ .values.NAME_OF_NAMESPACE  }}
    ```
 
 2. As an administrator with namespace permissions, run the following command.
@@ -129,5 +129,5 @@ namespace used for the SAS Viya platform.
    operator.
 
    ```bash
-   kubectl get po -l name=sas-opendistro-operator -n {{ .Values.NAME_OF_NAMESPACE  }}
+   kubectl get po -l name=sas-opendistro-operator -n {{ .values.NAME_OF_NAMESPACE  }}
    ```

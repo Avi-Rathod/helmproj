@@ -32,7 +32,7 @@ patch: |-
     # This is the cron schedule by which the sas-start-all job is run
     # Example:
     #   value: '0 7 * * 1-5'
-    value: {{ .Values.VIYA_START_SCHEDULE }}
+    value: {{ .values.VIYA_START_SCHEDULE }}
   - op: replace
     path: /spec/suspend
     value: false

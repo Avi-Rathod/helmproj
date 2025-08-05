@@ -1,4 +1,4 @@
-# Replace all instance of the variable {{ PGCLUSTER-NAME }}, including the braces,
+# Replace all instance of the variable {{ .values.PGCLUSTER_NAME }}, including the braces,
 # with the name of the PostgreSQL instance you would like to remove.
 #
 # **Note**: This will safely remove the PostgreSQL cluster, without deleting any data.
@@ -7,18 +7,18 @@ apiVersion: crunchydata.com/v1
 kind: Pgtask
 metadata:
   labels:
-    pg-cluster: {{ PGCLUSTER-NAME }}
+    pg-cluster: {{ .values.PGCLUSTER_NAME }}
     pgrmdata: "true"
-  name: {{ PGCLUSTER-NAME }}-rmdata
+  name: {{ .values.PGCLUSTER_NAME }}-rmdata
 spec:
-  name: {{ PGCLUSTER-NAME }}-rmdata
+  name: {{ .values.PGCLUSTER_NAME }}-rmdata
   parameters:
-    crunchy-pgha-scope: {{ PGCLUSTER-NAME }}
+    crunchy-pgha-scope: {{ .values.PGCLUSTER_NAME }}
     delete-backups: "false"
     delete-data: "false"
     is-backup: "false"
     is-replica: "false"
-    pg-cluster: {{ PGCLUSTER-NAME }}
+    pg-cluster: {{ .values.PGCLUSTER_NAME }}
     replica-name: ""
   status: ""
   storagespec:

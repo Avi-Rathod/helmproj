@@ -44,7 +44,7 @@ example file located at `$deploy/sas-bases/examples/sas-batch-server/storage`.
 `$deploy/sas-bases/examples/sas-batch-server/storage/change-batch-server-viya-volume-storage-class.yaml`
 file to the site-config directory.
 
-2. To change the storage class, replace the {{ .Values.VOLUME_STORAGE_CLASS }} variable
+2. To change the storage class, replace the {{ .values.VOLUME_STORAGE_CLASS }} variable
 in the copied file with a different volume storage class.
 The unedited example file contains a transformer that looks like this:
 
@@ -59,7 +59,7 @@ The unedited example file contains a transformer that looks like this:
         path: /template/spec/volumes/-
         value:
           name: viya
-          {{ .Values.VOLUME_STORAGE_CLASS }}
+          {{ .values.VOLUME_STORAGE_CLASS }}
     target:
       kind: PodTemplate
       labelSelector: "launcher.sas.com/job-type=sas-batch-job"
@@ -75,7 +75,7 @@ The unedited example file contains a transformer that looks like this:
    ```
 
    To use this storage location in the transformer, substitute in the volume definition in the
-   {{ .Values.VOLUME_STORAGE_CLASS }} location.  The result would look like this:
+   {{ .values.VOLUME_STORAGE_CLASS }} location.  The result would look like this:
 
    ```yaml
     ---

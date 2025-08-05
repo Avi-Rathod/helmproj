@@ -23,7 +23,7 @@ service account. Make sure you have tested the keytab before proceeding with the
 <li>
 <p>Modify the parameters in <code>$deploy/site-config/kerberos/http/configmaps.yaml</code>.</p>
 <ul>
-<li>Replace {{ PRINCIPAL-NAME-IN-KEYTAB }} with the name of the principal as it appears in the keytab.</li>
+<li>Replace {{ .values.PRINCIPAL_NAME_IN_KEYTAB }} with the name of the principal as it appears in the keytab.</li>
 <li>Replace {{ SPN }} with the name of the SPN. This should have a format of <code>HTTP/&lt;hostname&gt;</code> and may be the same as the principal name in the keytab.</li>
 </ul>
 </li>

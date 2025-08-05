@@ -8,8 +8,8 @@ patch: |-
   - op: add
     path: /spec/controllerTemplate/spec/containers/0/env/-
     value:
-      name: {{ .Values.VARIABLE_NAME }}
-    value: {{ .Values.VARIABLE_VALUE }}
+      name: {{ .values.VARIABLE_NAME }}
+    value: {{ .values.VARIABLE_VALUE }}
 target:
   group: viya.sas.com
   kind: CASDeployment

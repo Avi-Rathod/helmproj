@@ -4,7 +4,7 @@ metadata:
   name: sas-add-allowed-java-class
 patch: |-
   - op: add
-    path: /data/SAS_JAVA_POLICY_ALLOW_{{ .Values.NAME}}
+    path: /data/SAS_JAVA_POLICY_ALLOW_{{ .values.NAME}}
     value: "{{.Values.CLASS_NAME}}"
 target:
   kind: ConfigMap

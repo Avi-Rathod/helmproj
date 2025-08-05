@@ -8,7 +8,7 @@ patch: |-
     value:
       name: migration
       persistentVolumeClaim:
-        claimName: {{ .Values.EXISTING_K8S_PVC_NAME }}
+        claimName: {{ .values.EXISTING_K8S_PVC_NAME }}
 target:
   apiVersion: v1
   group: batch

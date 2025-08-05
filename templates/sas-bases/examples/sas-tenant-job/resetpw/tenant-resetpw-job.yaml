@@ -4,7 +4,7 @@ kind: Job
 metadata:
   labels:
     run: sas-tenant-resetpw-job
-  name: sas-tenant-resetpw-job-{{ .Values.JOB_TAG }}
+  name: sas-tenant-resetpw-job-{{ .values.JOB_TAG }}
 spec:
   template:
     spec:
@@ -22,7 +22,7 @@ spec:
           - name: TENANT_LIFECYCLE_ACTION
             value: resetsasproviderpw
           - name: SAS_TENANT_IDS
-            value: "{{ .Values.SAS_TENANT_IDS }}"
+            value: "{{ .values.SAS_TENANT_IDS }}"
           - name: SAS_LOG_LEVEL
             value: INFO
         envFrom: []

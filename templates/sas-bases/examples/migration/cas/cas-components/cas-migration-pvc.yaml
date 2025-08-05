@@ -10,7 +10,7 @@ patch: |-
     value:
       name: cas-backup
       persistentVolumeClaim:
-        claimName: {{ .Values.PVC_NAME }}
+        claimName: {{ .values.PVC_NAME }}
   - op: add
     path: /spec/controllerTemplate/spec/containers/0/volumeMounts/-
     value:

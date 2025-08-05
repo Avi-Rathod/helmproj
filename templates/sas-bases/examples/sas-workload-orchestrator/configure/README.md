@@ -93,7 +93,7 @@ The example files described in this README file are located at
 The values for memory and CPU resources for the SAS Workload Orchestrator Service manager pods
 are specified in `sas-workload-orchestrator-statefulset-resources.yaml`.
 
-To update the defaults, replace the `{{ .Values.MEM_REQUIRED }}` and `{{ .Values.CPU_REQUIRED }}` variables
+To update the defaults, replace the `{{ .values.MEM_REQUIRED }}` and `{{ .values.CPU_REQUIRED }}` variables
 with the values you want to use.
 
 **Note:** It is important that the values for the requests and limits
@@ -133,7 +133,7 @@ transformers:
 The values for memory and CPU resources for the SAS Workload Orchestrator Service server pods
 are specified in `sas-workload-orchestrator-daemonset-resources.yaml`.
 
-To update the defaults, replace the `{{ .Values.MEM_REQUIRED }}` and `{{ .Values.CPU_REQUIRED }}` variables
+To update the defaults, replace the `{{ .values.MEM_REQUIRED }}` and `{{ .values.CPU_REQUIRED }}` variables
 with the values you want to use.
 
 **Note:** It is important that the values for the requests and limits
@@ -173,8 +173,8 @@ transformers:
 The example file `sas-workload-orchestrator-global-user-defined-resources-script-storage.yaml`
 mounts an NFS volume as the 'scripts' volume.
 
-To update the volume, replace the `{{ .Values.NFS_SERVER_ADDR }}` variable with the fully-qualified
-domain name of the server and replace the `{{ .Values.NFS_SERVER_PATH }}` variable with the path to
+To update the volume, replace the `{{ .values.NFS_SERVER_ADDR }}` variable with the fully-qualified
+domain name of the server and replace the `{{ .values.NFS_SERVER_PATH }}` variable with the path to
 the volume on the server. Here is an example:
 
 ```yaml
@@ -219,8 +219,8 @@ transformers:
 The example file `sas-workload-orchestrator-host-user-defined-resources-script-storage.yaml`
 mounts an NFS volume as the 'scripts' volume.
 
-To update the volume, replace the `{{ .Values.NFS_SERVER_ADDR }}` variable with the fully-qualified
-domain name of the server and replace the `{{ .Values.NFS_SERVER_PATH }}` variable with the path to
+To update the volume, replace the `{{ .values.NFS_SERVER_ADDR }}` variable with the fully-qualified
+domain name of the server and replace the `{{ .values.NFS_SERVER_PATH }}` variable with the path to
 the volume on the server. Here is an example:
 
 ```yaml
@@ -266,7 +266,7 @@ The example file `sas-workload-orchestrator-initial-configuration-change.yaml`
 changes the initial SAS Workload Orchestrator configuration to add
 additional administrators.
 
-To update the initial configuration, replace the `{{ .Values.NEW_CONFIG_JSON }}` variable with the
+To update the initial configuration, replace the `{{ .values.NEW_CONFIG_JSON }}` variable with the
 JSON representation of the updated configuration. Here is an example:
 
 ```yaml
@@ -307,7 +307,7 @@ The example file `sas-workload-orchestrator-prometheus-gateway-url.yaml` changes
 Prometheus Pushgateway URL from the default of `http://prometheus-pushgateway:9091`
 to the value specified by the `SGMG_PROMETHEUS_PUSHGATEWAY_URL` environment variable.
 
-To update the URL, replace the `{{ .Values.PROMETHEUS_PUSHGATEWAY_URL }}` variable with the
+To update the URL, replace the `{{ .values.PROMETHEUS_PUSHGATEWAY_URL }}` variable with the
 URL where SAS Workload Orchestrator should push its metrics. Here is an example:
 
 ```yaml

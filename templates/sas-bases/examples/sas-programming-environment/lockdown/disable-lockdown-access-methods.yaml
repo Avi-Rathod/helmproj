@@ -5,7 +5,7 @@ metadata:
 patch: |-
   - op: add
     path: /data/VIYA_LOCKDOWN_USER_DISABLED_METHODS
-    value: "{{ .Values.ACCESS_METHOD_LIST }}"
+    value: "{{ .values.ACCESS_METHOD_LIST }}"
 target:
   kind: ConfigMap
   name: sas-launcher-lockdown-config

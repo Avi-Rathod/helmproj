@@ -212,7 +212,7 @@ If you did not enable host launch on an OpenShift cluster and are facing issues 
    ```
 
 2. Use the following command to link the SCCs to the appropriate Kubernetes service account.
-Replace the entire variable {{ .Values.NAME_OF_NAMESPACE }}, including the braces, with the Kubernetes namespace used for the SAS Viya platform.
+Replace the entire variable {{ .values.NAME_OF_NAMESPACE }}, including the braces, with the Kubernetes namespace used for the SAS Viya platform.
 
    ```sh
    oc -n {{.Values.NAME_OF_NAMESPACE }} adm policy add-scc-to-user sas-backup-pv-copy-cleanup-job -z sas-viya-backuprunner

@@ -45,8 +45,8 @@ also be added to the transformers block of the base kustomization.yaml file:
 
 ```yaml
 transformers:
-- {{ values. PATCH_FILE_1 }}
-- {{ values.PATCH_FILE_2 }}
+- {{ .values. PATCH_FILE_1 }}
+- {{ .values.PATCH_FILE_2 }}
 ```
 
 ### Optional CAS Server Placement Configuration

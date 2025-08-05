@@ -14,7 +14,7 @@
 <p>Because Python can be used from a Docker image only by the Micro Analytic Score service, until the Docker image is available to other pods, make sure that the Python environment in the Docker image is available in the mounted volume for other pods. The SAS Viya platform provides YAML files that the Kustomize tool uses to configure Python. Before you use those files, you must perform the following tasks:</p>
 <ol>
 <li>
-<p>Prepare the Python Docker image with all the necessary Python packages that you will be using. Make note of the Python image URL  in the Docker registry ( {{ .Values.PYTHON_DOCKER_IMAGE_URL }} parameter in python-transformer.yaml) and the configuration settings for accessing the registry with the Python image ( {{ DOCKER-REGISTRY-CONFIG }} parameter in kustomization.yaml).</p>
+<p>Prepare the Python Docker image with all the necessary Python packages that you will be using. Make note of the Python image URL  in the Docker registry ( {{ .values.PYTHON_DOCKER_IMAGE_URL }} parameter in python-transformer.yaml) and the configuration settings for accessing the registry with the Python image ( {{ DOCKER-REGISTRY-CONFIG }} parameter in kustomization.yaml).</p>
 <p>Here is a sample Docker registry configuration setting:</p>
 <pre class="highlight"><code class="language-json">{"auths": {"registry.company.com": {"username": "myusername","password": "mypassword","email":"myemail@company.com","auth":"&lt; mysername:mypassword in base64 encoded form&gt;"}}}</code></pre>
 
@@ -30,12 +30,12 @@
 <li>
 <p>In addition to the volume attributes, you must have the following information:</p>
 <ul>
-<li>{{ PYTHON-IMAGE-EXECUTABLE }} - the name of the Python executable file (for example, python or python3.8) in the Python image.</li>
-<li>{{ PYTHON-IMAGE-EXE-DIR }} - the directory (relative to the root) that contains the executable (for example, /bin).</li>
-<li>{{ values.PYTHON_EXECUTABLE }} - the name of the Python executable file (for example, python or python3.8) in the Python mount.</li>
-<li>{{ values.PYTHON_EXE_DIR }} - the directory or partial path (relative to the mount) that contains the executable (for example, /bin or /virt_environs/envron_dm1/bin). Note that the mount point for your Python deployment should be its top-level directory.</li>
-<li>{{ values.SAS_EXTLANG_SETTINGS_XML_FILE }} - the configuration file used to enable Python and R integration in CAS. This is required only if you are using Python with CMP or the EXTLANG package.</li>
-<li>{{ values.SAS_EXT_LLP_PYTHON_PATH }} - the list of directories to look for when searching for run-time shared libraries (similar to LD_LIBRARY_PATH).</li>
+<li>{{ .values.PYTHON_IMAGE_EXECUTABLE }} - the name of the Python executable file (for example, python or python3.8) in the Python image.</li>
+<li>{{ .values.PYTHON_IMAGE_EXE_DIR }} - the directory (relative to the root) that contains the executable (for example, /bin).</li>
+<li>{{ .values.PYTHON_EXECUTABLE }} - the name of the Python executable file (for example, python or python3.8) in the Python mount.</li>
+<li>{{ .values.PYTHON_EXE_DIR }} - the directory or partial path (relative to the mount) that contains the executable (for example, /bin or /virt_environs/envron_dm1/bin). Note that the mount point for your Python deployment should be its top-level directory.</li>
+<li>{{ .values.SAS_EXTLANG_SETTINGS_XML_FILE }} - the configuration file used to enable Python and R integration in CAS. This is required only if you are using Python with CMP or the EXTLANG package.</li>
+<li>{{ .values.SAS_EXT_LLP_PYTHON_PATH }} - the list of directories to look for when searching for run-time shared libraries (similar to LD_LIBRARY_PATH).</li>
 </ul>
 </li>
 </ol>
@@ -48,7 +48,7 @@
  If the output contains the <code>/mas2py</code> mount directory path, you do not need to take any further action unless you want to change the overlay parameters to use a different Python environment.</p>
 </li>
 <li>
-<p>Use the kustomization.yaml file to define the necessary environment variables. Replace all tags, such as {{ values.PYTHON_EXE_DIR }}, with the values that you gathered in the <a href="#140345099702816prerequisites">Prerequisites</a> step.
+<p>Use the kustomization.yaml file to define the necessary environment variables. Replace all tags, such as {{ .values.PYTHON_EXE_DIR }}, with the values that you gathered in the <a href="#140345099702816prerequisites">Prerequisites</a> step.
    Then set the following parameters according to the SAS products that you will be using:</p>
 <ul>
 <li>MAS_PYPATH and MAS_M2PATH are used by SAS Micro Analytic Service.</li>
@@ -67,8 +67,8 @@
 </li>
 <li>
 <p>Attach storage to your SAS Viya platform deployment. The python-image-transformer.yaml file uses PatchTransformers in Kustomize to attach the Python installation volume to the SAS Viya platform.
-   Replace {{ .Values.VOLUME_ATTRIBUTES }} with the appropriate volume specification.</p>
-<p>For example, when using an NFS mount, the {{ .Values.VOLUME_ATTRIBUTES }} tag should be replaced with <code>nfs: {path: /vol/python, server: myserver.sas.com}</code>
+   Replace {{ .values.VOLUME_ATTRIBUTES }} with the appropriate volume specification.</p>
+<p>For example, when using an NFS mount, the {{ .values.VOLUME_ATTRIBUTES }} tag should be replaced with <code>nfs: {path: /vol/python, server: myserver.sas.com}</code>
  where <code>myserver.sas.com</code> is the NFS server and <code>/vol/python</code> is the NFS path that you recorded in the Prerequisites step.</p>
 <p>Here is the relevant code excerpt from the python-image-transformer.yaml file before the change:</p>
 <pre class="highlight"><code class="language-yaml">patch: |-
@@ -77,13 +77,13 @@
     path: /spec/template/spec/containers/-
     value:
       name: viya4-mas-python-runner
-      image: {{ .Values.PYTHON_DOCKER_IMAGE_URL }}</code></pre>
+      image: {{ .values.PYTHON_DOCKER_IMAGE_URL }}</code></pre>
 
 <pre class="highlight"><code class="language-yaml">patch: |-
 # Add Python Volume
   - op: add
     path: /spec/template/spec/volumes/-
-    value: { name: python-volume, {{ .Values.VOLUME_ATTRIBUTES }} }</code></pre>
+    value: { name: python-volume, {{ .values.VOLUME_ATTRIBUTES }} }</code></pre>
 
 <p>Here is the relevant code excerpt from the python-image-transformer.yaml file after the change:</p>
 <pre class="highlight"><code class="language-yaml">patch: |-
@@ -120,7 +120,7 @@ patch: |-
 </li>
 <li>
 <p>The python-image-transformer.yaml file contains a PatchTransformer called sas-python-sas-java-policy-allow-list.  This PatchTransformer sets paths to the Python executable so that the SAS runtime
-   allows execution of the Python code.  Replace the {{ values.PYTHON_EXE_DIR }} and {{ values.PYTHON_EXECUTABLE }} tags with the appropriate values.  If you are specifying multiple Python
+   allows execution of the Python code.  Replace the {{ .values.PYTHON_EXE_DIR }} and {{ .values.PYTHON_EXECUTABLE }} tags with the appropriate values.  If you are specifying multiple Python
    environments, each need to be set here.   Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">apiVersion: builtin
 kind: PatchTransformer

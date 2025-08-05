@@ -44,7 +44,7 @@ For information about moving from an internal PostgreSQL server to an external o
 
 </li>
 <li>
-<p>Rename the copied file to something unique. SAS recommends following the naming convention: <code>{{ POSTGRES-SERVER-NAME }}-user.env</code>. For example, a copy of the file for Platform PostgreSQL might be called <code>platform-postgres-user.env</code>.</p>
+<p>Rename the copied file to something unique. SAS recommends following the naming convention: <code>{{ .values.POSTGRES_SERVER_NAME }}-user.env</code>. For example, a copy of the file for Platform PostgreSQL might be called <code>platform-postgres-user.env</code>.</p>
 <p><strong>Note:</strong> Take note of the name and path of your copied file. This information will be used in a later step.</p>
 </li>
 <li>
@@ -53,19 +53,19 @@ For information about moving from an internal PostgreSQL server to an external o
 <li>
 <p>Go to the base kustomization file (<code>$deploy/kustomization.yaml</code>). In the secretGenerator block of that file, add the following content, including adding the block if it doesn&rsquo;t already exist:</p>
 <pre class="highlight"><code class="language-yaml">secretGenerator:
-- name: {{ POSTGRES-USER-SECRET-NAME }}
+- name: {{ .values.POSTGRES_USER_SECRET_NAME }}
   envs:
-  - {{ POSTGRES-USER-FILE }}</code></pre>
+  - {{ .values.POSTGRES_USER_FILE }}</code></pre>
 
 </li>
 <li>
 <p>In the added secretGenerator, fill out the user-defined values as follows:</p>
 <ol>
 <li>
-<p>Replace <code>{{ POSTGRES-USER-SECRET-NAME }}</code> with a unique name for the secret. For example, you might use <code>platform-postgres-user</code> if specifying the user for Platform PostgreSQL.</p>
+<p>Replace <code>{{ .values.POSTGRES_USER_SECRET_NAME }}</code> with a unique name for the secret. For example, you might use <code>platform-postgres-user</code> if specifying the user for Platform PostgreSQL.</p>
 </li>
 <li>
-<p>Replace <code>{{ POSTGRES-USER-FILE }}</code> with the path of the file you copied in Step 2. For example, this may be something like <code>site-config/postgres/platform-postgres-user.env</code>.</p>
+<p>Replace <code>{{ .values.POSTGRES_USER_FILE }}</code> with the path of the file you copied in Step 2. For example, this may be something like <code>site-config/postgres/platform-postgres-user.env</code>.</p>
 </li>
 </ol>
 <p><strong>Note:</strong> Take note of the name you give this secretGenerator. This information will be used in a later step.</p>
@@ -76,7 +76,7 @@ For information about moving from an internal PostgreSQL server to an external o
 
 </li>
 <li>
-<p>Rename the copied file to something unique. SAS recommends following the naming convention: <code>{{ POSTGRES-SERVER-NAME }}-dataserver-transformer.yaml</code>. For example, a copy of the transformer targeting Platform PostgreSQL might be called <code>platform-postgres-dataserver-transformer.yaml</code>, and if you have CDS PostgreSQL, then a copy of the transformer targeting CDS PostgreSQL might be called <code>cds-postgres-dataserver-transformer.yaml</code>.</p>
+<p>Rename the copied file to something unique. SAS recommends following the naming convention: <code>{{ .values.POSTGRES_SERVER_NAME }}-dataserver-transformer.yaml</code>. For example, a copy of the transformer targeting Platform PostgreSQL might be called <code>platform-postgres-dataserver-transformer.yaml</code>, and if you have CDS PostgreSQL, then a copy of the transformer targeting CDS PostgreSQL might be called <code>cds-postgres-dataserver-transformer.yaml</code>.</p>
 <p><strong>Note:</strong> Take note of the name and path of your copied file. This information will be used in step 9.</p>
 </li>
 <li>
@@ -104,7 +104,7 @@ For information about moving from an internal PostgreSQL server to an external o
 
 </li>
 <li>
-<p>Rename the copied file to something unique. SAS recommends following the naming convention: <code>{{ POSTGRES-SERVER-NAME }}-cloud-sql-proxy.yaml</code>. For example, a copy of the transformer targeting Platform PostgreSQL might be called <code>platform-postgres-cloud-sql-proxy.yaml</code>, and if you have CDS PostgreSQL, then a copy of the transformer targeting CDS PostgreSQL might be called <code>cds-postgres-cloud-sql-proxy.yaml</code>.</p>
+<p>Rename the copied file to something unique. SAS recommends following the naming convention: <code>{{ .values.POSTGRES_SERVER_NAME }}-cloud-sql-proxy.yaml</code>. For example, a copy of the transformer targeting Platform PostgreSQL might be called <code>platform-postgres-cloud-sql-proxy.yaml</code>, and if you have CDS PostgreSQL, then a copy of the transformer targeting CDS PostgreSQL might be called <code>cds-postgres-cloud-sql-proxy.yaml</code>.</p>
 <p><strong>Note:</strong> Take note of the name and path of your copied file. This information will be used in step 4.</p>
 </li>
 <li>

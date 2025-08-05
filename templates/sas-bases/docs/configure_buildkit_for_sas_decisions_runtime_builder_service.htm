@@ -22,7 +22,7 @@
 <p>Modify the parameters in the files storage.yaml and publish-storage.yaml in the directory $deploy/site-config/sas-decisions-runtime-builder/buildkit. For more information about PersistentVolume Claims (PVCs), see <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims">Persistent Volume Claims on Kubernetes</a>.</p>
 <ul>
 <li>Replace {{ STORAGE-CAPACITY }} with the amount of storage required.</li>
-<li>Replace {{ .Values.STORAGE_CLASS_NAME }} with the appropriate storage class from the cloud provider that supports ReadWriteMany access mode.</li>
+<li>Replace {{ .values.STORAGE_CLASS_NAME }} with the appropriate storage class from the cloud provider that supports ReadWriteMany access mode.</li>
 </ul>
 </li>
 <li>
