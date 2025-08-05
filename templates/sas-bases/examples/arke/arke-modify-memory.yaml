@@ -9,7 +9,7 @@ patch: |-
   - op: replace
     path: /spec/template/spec/containers/0/resources/requests/memory
     value:
-      {{ MEMORY-REQUIRED }}
+      {{ .values.MEMORY_REQUIRED }}
   - op: replace
     path: /spec/template/spec/containers/0/resources/limits/memory
     value:

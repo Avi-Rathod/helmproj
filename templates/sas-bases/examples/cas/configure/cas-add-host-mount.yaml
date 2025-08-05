@@ -9,13 +9,13 @@ patch: |-
     - op: add
       path: /spec/controllerTemplate/spec/volumes/-
       value:
-        name: {{ MOUNT-NAME }}
+        name: {{ .values.MOUNT_NAME }}
         hostPath:
           path: {{ HOST-PATH-TO-BE-MOUNTED }}
     - op: add
       path: /spec/controllerTemplate/spec/containers/0/volumeMounts/-
       value:
-        name: {{ MOUNT-NAME }}
+        name: {{ .values.MOUNT_NAME }}
         mountPath: {{ CONTAINER-MOUNT-PATH }}
         readOnly: true
 target:

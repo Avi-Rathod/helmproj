@@ -11,11 +11,11 @@ patch: |-
   - op: replace
     path: /spec/maxReplicas
     value:
-      {{ MAX-REPLICAS }}
+      {{ .values.MAX_REPLICAS }}
   - op: replace
     path: /spec/minReplicas
     value:
-      {{ MIN-REPLICAS }}
+      {{ .values.MIN_REPLICAS }}
   - op: replace
     path: /spec/metrics/0/resource/target/averageUtilization
     value:

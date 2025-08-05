@@ -171,7 +171,7 @@ sas.connect.server, or sas.batch.server. For more information on setting or remo
 The default values and maximum values for CPU requests and CPU limits can be specified
 in a Launcher service pod template. The launcher-cpu-requests-limits.yaml allows
 you to change these default and maximum values for the CPU resource. To update the defaults, replace the
-{{ .values.DEFAULT_CPU_REQUEST }}, {{ .values.MAX_CPU_REQUEST }}, {{ .VALUES.DEFAULT_CPU_LIMIT }}, and {{ MAX-CPU-LIMIT }} variables with the value you want to use. Here is an example:
+{{ .values.DEFAULT_CPU_REQUEST }}, {{ .values.MAX_CPU_REQUEST }}, {{ .VALUES.DEFAULT_CPU_LIMIT }}, and {{ .values.MAX_CPU_LIMIT }} variables with the value you want to use. Here is an example:
 
 ```yaml
 patch: |-
@@ -207,7 +207,7 @@ transformers:
 The default values and maximum values for memory requests and memory limits can be specified
 in a Launcher service pod template. The launcher-memory-requests-limits.yaml allows
 you to change these default and maximum values for the memory resource. To update the defaults, replace the
-{{ .values.DEFAULT_MEMORY_REQUEST}}, {{ MAX-MEMORY-REQUEST }}, {{ .VALUES. DEFAULT_MEMORY_LIMIT }}, and {{ MAX-MEMORY-LIMIT }} variables with the value you want to use. Here is an example:
+{{ .values.DEFAULT_MEMORY_REQUEST}}, {{ .values.MAX_MEMORY_REQUEST }}, {{ .VALUES. DEFAULT_MEMORY_LIMIT }}, and {{ .values.MAX_MEMORY_LIMIT }} variables with the value you want to use. Here is an example:
 
 ```yaml
 patch: |-

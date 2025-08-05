@@ -6,7 +6,7 @@ patch: |-
   #Change required memory
   - op: replace
     path: /spec/template/spec/containers/0/resources/requests/memory
-    value: {{ MEMORY-REQUIRED }}
+    value: {{ .values.MEMORY_REQUIRED }}
   #Change Memory upper limit
   - op: replace
     path: /spec/template/spec/containers/0/resources/limits/memory

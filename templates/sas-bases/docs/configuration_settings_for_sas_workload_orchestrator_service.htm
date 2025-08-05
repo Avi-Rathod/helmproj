@@ -72,7 +72,7 @@ file and place it in your site-config directory.</p>
 <h3 id="140345099667824statefulset-pods-requests-and-limits">StatefulSet Pods Requests and Limits</h3>
 <p>The values for memory and CPU resources for the SAS Workload Orchestrator Service manager pods
 are specified in <code>sas-workload-orchestrator-statefulset-resources.yaml</code>.</p>
-<p>To update the defaults, replace the <code>{{ MEM-REQUIRED }}</code> and <code>{{ CPU-REQUIRED }}</code> variables
+<p>To update the defaults, replace the <code>{{ .values.MEM_REQUIRED }}</code> and <code>{{ CPU-REQUIRED }}</code> variables
 with the values you want to use.</p>
 <p><strong>Note:</strong> It is important that the values for the requests and limits
 be identical to get Guaranteed Quality of Service for the SAS Workload Orchestrator Service pods.</p>
@@ -101,7 +101,7 @@ block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</cod
 <h3 id="140345099667824daemonset-pods-requests-and-limits">DaemonSet Pods Requests and Limits</h3>
 <p>The values for memory and CPU resources for the SAS Workload Orchestrator Service server pods
 are specified in <code>sas-workload-orchestrator-daemonset-resources.yaml</code>.</p>
-<p>To update the defaults, replace the <code>{{ MEM-REQUIRED }}</code> and <code>{{ CPU-REQUIRED }}</code> variables
+<p>To update the defaults, replace the <code>{{ .values.MEM_REQUIRED }}</code> and <code>{{ CPU-REQUIRED }}</code> variables
 with the values you want to use.</p>
 <p><strong>Note:</strong> It is important that the values for the requests and limits
 be identical to get Guaranteed Quality of Service for the SAS Workload Orchestrator Service pods.</p>

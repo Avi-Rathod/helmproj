@@ -21,7 +21,7 @@ patch: |-
     value: {{ .VALUES.DEFAULT_CPU_LIMIT }}
   - op: add
     path: /metadata/annotations/launcher.sas.com~1max-cpu-limit
-    value: {{ MAX-CPU-LIMIT }}
+    value: {{ .values.MAX_CPU_LIMIT }}
 target:
   kind: PodTemplate
   labelSelector: sas.com/template-intent=sas-launcher

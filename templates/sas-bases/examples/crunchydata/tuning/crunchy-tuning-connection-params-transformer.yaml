@@ -6,8 +6,8 @@
 #    - .* for both clusters. In this case, use a unique name like 'both-clusters' for the transformer metadata name
 #    - If different settings are needed for each cluster, then separate transformers must be created:
 #        one for Platform Postgres, and the other for CDS Postgres.
-# - {{ MAX-CONNECTIONS }} is the calculated numeric value as shown by SAS Viya Platform Deployment Guide at http://documentation.sas.com/?cdcId=itopscdc&cdcVersion=default&docsetId=dplyml0phy0dkr&docsetTarget=titlepage.htm&locale=en.
-# - {{ MAX-PREPARED-TRANSACTIONS }} is the same value as {{ MAX-CONNECTIONS }}
+# - {{ .values.MAX_CONNECTIONS }} is the calculated numeric value as shown by SAS Viya Platform Deployment Guide at http://documentation.sas.com/?cdcId=itopscdc&cdcVersion=default&docsetId=dplyml0phy0dkr&docsetTarget=titlepage.htm&locale=en.
+# - {{ .values.MAX_PREPARED_TRANSACTIONS }} is the same value as {{ .values.MAX_CONNECTIONS }}
 #
 # NOTE: max_connections and max_prepared_transactions must go together.
 #
@@ -23,10 +23,10 @@ metadata:
 patch: |-
   - op: replace
     path: /spec/patroni/dynamicConfiguration/postgresql/parameters/max_connections
-    value: {{ MAX-CONNECTIONS }}
+    value: {{ .values.MAX_CONNECTIONS }}
   - op: replace
     path: /spec/patroni/dynamicConfiguration/postgresql/parameters/max_prepared_transactions
-    value: {{ MAX-PREPARED-TRANSACTIONS }}
+    value: {{ .values.MAX_PREPARED_TRANSACTIONS }}
 target:
   group: postgres-operator.crunchydata.com
   kind: PostgresCluster
