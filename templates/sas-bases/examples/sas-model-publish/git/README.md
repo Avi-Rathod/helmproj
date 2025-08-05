@@ -44,7 +44,7 @@ sas-model-publish deployment object.
    PersistentVolume Claims (PVCs), see
    [Persistent Volume Claims on Kubernetes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims).
 
-   - Replace {{ .VALUES.STORAGE-CAPACITY }} with the amount of storage required.
+   - Replace {{ .Values.STORAGE_CAPACITY }} with the amount of storage required.
    - Replace {{ .values.STORAGE_CLASS_NAME }} with the appropriate storage class from
      the cloud provider that supports ReadWriteMany access mode.
 
