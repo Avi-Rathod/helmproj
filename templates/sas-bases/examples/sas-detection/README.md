@@ -131,7 +131,7 @@ More information on readiness probes is available here: https://kubernetes.io/do
 
 There are optional, commented out sections that may be used to create the secrets containing TLS certificates and keys. The data must be base64 encoded and included in these definitions. These secrets could optionally be created manually via kubectl, or managed via cert-manager. If the secrets are created via some other method, the secret names must still match those referenced in the volumes and ingress definitions. 
 
-An alternative is using the selfsigned-certificates.yaml example file. Placeholders in this file are indicated by curly brackets, such as {{ DNS_NAME }}. Find and replace the placeholders with the values you want for your certificates. This file is optional and may be edited as needed to fit your purposes. As with the detection-engine deployment file, you create these resources directly using kubectl apply. This file must be applied once, and it will generate secrets containing your certificates and keys. 
+An alternative is using the selfsigned-certificates.yaml example file. Placeholders in this file are indicated by curly brackets, such as {{ .VALUES.DNS_NAME }}. Find and replace the placeholders with the values you want for your certificates. This file is optional and may be edited as needed to fit your purposes. As with the detection-engine deployment file, you create these resources directly using kubectl apply. This file must be applied once, and it will generate secrets containing your certificates and keys. 
 
 #### Secure Ingress Definition 
 

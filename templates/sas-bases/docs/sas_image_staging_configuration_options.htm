@@ -170,7 +170,7 @@ referenced by the SAS Image Staging application.</p>
 <code>$deploy/site-config/sas-prepull/change-check-interval.yaml</code>.</p>
 </li>
 <li>
-<p>Modify change-check-interval.yaml by replacing all instances of &lsquo;{{ DOUBLE-QUOTED-VALUE-IN-SECONDS }}&rsquo;
+<p>Modify change-check-interval.yaml by replacing all instances of &lsquo;{{ .VALUES.DOUBLE_QUOTED_VALUE_IN_SECONDS }}&rsquo;
 with the value in seconds for each respective mode. Note that the value must be wrapped in double quotes
 in order for Kustomize to appropriately reference the value.</p>
 </li>

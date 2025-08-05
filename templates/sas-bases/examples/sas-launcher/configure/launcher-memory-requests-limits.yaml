@@ -18,7 +18,7 @@ patch: |-
     value: {{ MAX-MEMORY-REQUEST }}
   - op: add
     path: /metadata/annotations/launcher.sas.com~1default-memory-limit
-    value: {{ DEFAULT-MEMORY-LIMIT }}
+    value: {{ .VALUES. DEFAULT_MEMORY_LIMIT }}
   - op: add
     path: /metadata/annotations/launcher.sas.com~1max-memory-limit
     value: {{ MAX-MEMORY-LIMIT }}

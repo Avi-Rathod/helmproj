@@ -10,10 +10,10 @@ metadata:
 patch: |-
   - op: replace
     path: /data/SAS_PREPULL_DAEMON_INT
-    value: {{ DOUBLE-QUOTED-VALUE-IN-SECONDS }}
+    value: {{ .VALUES.DOUBLE_QUOTED_VALUE_IN_SECONDS }}
   - op: replace
     path: /data/SAS_PREPULL_CRCRB_INT
-    value: {{ DOUBLE-QUOTED-VALUE-IN-SECONDS }}
+    value: {{ .VALUES.DOUBLE_QUOTED_VALUE_IN_SECONDS }}
 target:
   version: v1
   kind: ConfigMap

@@ -23,7 +23,7 @@ patch: |-
     path: /spec/controllerTemplate/spec/containers/0/volumeMounts/-
     value:
       name: {{ MOUNT-NAME }}
-      mountPath: {{ DATASOURCE-PATH }}
+      mountPath: {{ .VALUES.DATASOURCE_PATH }}
 target:
   group: viya.sas.com
   kind: CASDeployment

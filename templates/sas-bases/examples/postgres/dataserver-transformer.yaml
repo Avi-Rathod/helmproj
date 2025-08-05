@@ -4,7 +4,7 @@
 #     replace the variable, replace the curly braces, interior spaces, and the
 #     variable name. For instance, {{ .VALUES.DB_NAME }} could be replaced by
 #     SharedServices.
-#   - Replace all instance of {{ DATASERVER-NAME }} with the name of the
+#   - Replace all instance of {{ .VALUES.DATASERVER_NAME }} with the name of the
 #     DataServer CustomResource you are targeting. Refer to the below list to
 #     find the correct name based on the PostgreSQL server you are modifying.
 #       - For Platform PostgreSQL, use "sas-platform-postgres"
@@ -12,7 +12,7 @@
 apiVersion: builtin
 kind: PatchTransformer
 metadata:
-  name: {{ DATASERVER-NAME }}-dataserver-transformer
+  name: {{ .VALUES.DATASERVER_NAME }}-dataserver-transformer
 patch: |-
   # DO NOT REMOVE. Identifies that the database server being used
   # is external to the SAS deployment.
@@ -39,19 +39,19 @@ patch: |-
       usernameKey: username # For internal use, do not modify
       passwordKey: password # For internal use, do not modify
 
-  # Replace {{ DB-HOST }} with the host name for the PostgreSQL server.
+  # Replace {{ .VALUES.DB-HOST }} with the host name for the PostgreSQL server.
   # If you are using:
   #  * Google Cloud SQL for PostgreSQL, this value must be the private IP Address of the Google SQL server instance.
   #  * Amazon RDS, this value must be the database endpoint of RDS server.
   #  * Azure Database for PostgreSQL, this value must be the server name of the PostgreSQL server.
   - op: replace
     path: /spec/registrations/0/host
-    value: {{ DB-HOST }}
+    value: {{ .VALUES.DB-HOST }}
 
-  # Replace {{ DB-PORT }} with the port number for the PostgreSQL server.
+  # Replace {{ .VALUES. DB_PORT }} with the port number for the PostgreSQL server.
   - op: replace
     path: /spec/registrations/0/port
-    value: {{ DB-PORT }}
+    value: {{ .VALUES. DB_PORT }}
 
   - op: replace
     path: /spec/ssl
@@ -60,4 +60,4 @@ target:
   group: webinfdsvr.sas.com
   kind: DataServer
   version: v1beta1
-  name: {{ DATASERVER-NAME }}
+  name: {{ .VALUES.DATASERVER_NAME }}

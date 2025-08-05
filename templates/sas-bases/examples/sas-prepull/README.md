@@ -187,7 +187,7 @@ Steps to modify:
 1. Copy `$deploy/sas-bases/examples/sas-prepull/change-check-interval.yaml` to
 `$deploy/site-config/sas-prepull/change-check-interval.yaml`.
 
-2. Modify change-check-interval.yaml by replacing all instances of '{{ DOUBLE-QUOTED-VALUE-IN-SECONDS }}'
+2. Modify change-check-interval.yaml by replacing all instances of '{{ .VALUES.DOUBLE_QUOTED_VALUE_IN_SECONDS }}'
 with the value in seconds for each respective mode. Note that the value must be wrapped in double quotes
 in order for Kustomize to appropriately reference the value.
 

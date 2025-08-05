@@ -18,7 +18,7 @@ patch: |-
     value: {{ .values.MAX_CPU_REQUEST }}
   - op: add
     path: /metadata/annotations/launcher.sas.com~1default-cpu-limit
-    value: {{ DEFAULT-CPU-LIMIT }}
+    value: {{ .VALUES.DEFAULT_CPU_LIMIT }}
   - op: add
     path: /metadata/annotations/launcher.sas.com~1max-cpu-limit
     value: {{ MAX-CPU-LIMIT }}
