@@ -21,10 +21,10 @@ The SAS Viya platform provides YAML files that the Kustomize tool uses to config
 
 3. In addition to the volume attributes, you must have the following information:
 
-   * {{ R-MOUNTPATH }} - the install path used when R is built excluding top-level directory (for example, /nfs/r-mount).
-   * {{ R-HOMEDIR }} - the top-level directory of the R installation on that volume (for example, R-3.6.2).
-   * {{ SAS-EXTLANG-SETTINGS-XML-FILE }} - configuration file for enabling Python and R integration in CAS. This is only needed if using R with either CMP or the EXTLANG package.
-   * {{ SAS-EXT-LLP-R-PATH }} - list of directories to look for when searching for run-time shared libraries (similar to LD_LIBRARY_PATH).
+   * {{ .Values.R_MOUNTPATH }} - the install path used when R is built excluding top-level directory (for example, /nfs/r-mount).
+   * {{ .Values.R_HOMEDIR  }} - the top-level directory of the R installation on that volume (for example, R-3.6.2).
+   * {{ .Values.SAS_EXTLANG_SETTINGS_XML_FILE }} - configuration file for enabling Python and R integration in CAS. This is only needed if using R with either CMP or the EXTLANG package.
+   * {{ .Values.SAS_EXT_LLP_R_PATH }} - list of directories to look for when searching for run-time shared libraries (similar to LD_LIBRARY_PATH).
 
 ## Installation
 
@@ -33,7 +33,7 @@ The SAS Viya platform provides YAML files that the Kustomize tool uses to config
    **Note:** If the destination directory already exists, [verify that the overlay](#verify-overlay-for-r-volume) has been applied.
    If the output contains the `/nfs/r-mount` directory path, you do not need to take any further actions, unless you want to change the overlay parameters to use a different R environment.
 
-2. The kustomization.yaml file defines all the necessary environment variables. Replace all tags, such as {{ R-HOMEDIR }}, with the values that you gathered in the [Prerequisites](#prerequisites) step. Then, set the following parameters, according to the SAS products that you will be using:
+2. The kustomization.yaml file defines all the necessary environment variables. Replace all tags, such as {{ .Values.R_HOMEDIR }}, with the values that you gathered in the [Prerequisites](#prerequisites) step. Then, set the following parameters, according to the SAS products that you will be using:
 
    * DM_RHOME is used by the Open Source Code node in SAS Visual Data Mining and Machine Learning.
    * SAS_EXTLANG_SETTINGS is used by applications that run Python and R code on Cloud Analytic Services (CAS). This includes PROC FCMP and the Time Series External Languages (EXTLANG) package. SAS_EXTLANG_SETTINGS should only be set in one example file; for example, if you set it in the Python example, you should not set it the R example. SAS_EXTLANG_SETTINGS should point to an XML file that is readable by all users. The path can be in the same volume that contains the R environment or in any other volume that is accessible to CAS. Refer to the documentation for the Time Series External Languages (EXTLANG) package for details about the expected XML schema.
@@ -51,13 +51,13 @@ The SAS Viya platform provides YAML files that the Kustomize tool uses to config
    # Add R Volume
      - op: add
        path: /spec/template/spec/volumes/-
-       value: { name: r-volume, {{ VOLUME-ATTRIBUTES }} }
+       value: { name: r-volume, {{ .Values.VOLUME_ATTRIBUTES }} }
    # Add mount path for R
      - op: add
        path: /template/spec/containers/0/volumeMounts/-
        value:
          name: r-volume
-         mountPath: {{ R-MOUNTPATH }}
+         mountPath: {{ .Values.R_MOUNTPATH }}
        readOnly: true
    ```
 
