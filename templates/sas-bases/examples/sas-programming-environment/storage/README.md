@@ -44,7 +44,7 @@ transformers in the example file located at
 `$deploy/sas-bases/examples/sas-programming-environment/storage/change-viya-volume-storage-class.yaml`
 file to the site-config directory.
 
-2. To change the StorageClass replace the {{ VOLUME-STORAGE-CLASS }} variable
+2. To change the StorageClass replace the {{ .Values.VOLUME_STORAGE_CLASS }} variable
 in the copied file with a different volume storage class.
 The example file provided looks like the following:
 
