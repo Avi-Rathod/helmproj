@@ -15,7 +15,7 @@ The SAS Viya platform can use a customer-prepared environment consisting of a Py
 
 Because Python can be used from a Docker image only by the Micro Analytic Score service, until the Docker image is available to other pods, make sure that the Python environment in the Docker image is available in the mounted volume for other pods. The SAS Viya platform provides YAML files that the Kustomize tool uses to configure Python. Before you use those files, you must perform the following tasks:
 
-1. Prepare the Python Docker image with all the necessary Python packages that you will be using. Make note of the Python image URL  in the Docker registry ( {{ .values.PYTHON_DOCKER_IMAGE_URL }} parameter in python-transformer.yaml) and the configuration settings for accessing the registry with the Python image ({{ .values. DOCKER_REGISTRY_CONFIG }} parameter in kustomization.yaml).
+1. Prepare the Python Docker image with all the necessary Python packages that you will be using. Make note of the Python image URL  in the Docker registry ( {{ .values.PYTHON_DOCKER_IMAGE_URL }} parameter in python-transformer.yaml) and the configuration settings for accessing the registry with the Python image ({{ .values.DOCKER_REGISTRY_CONFIG }} parameter in kustomization.yaml).
 
    Here is a sample Docker registry configuration setting:
 
