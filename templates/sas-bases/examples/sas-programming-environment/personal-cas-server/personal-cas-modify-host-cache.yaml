@@ -12,7 +12,7 @@ patch: |-
     value:
       name: cas-cache-nvme0
       hostPath: # # hostPath, is the path on the host, outside the pod
-        path: {{/mnt-nvme0}}
+        path: {{.Values./mnt-nvme0}}
   - op: add
     path: /template/spec/containers/1/volumeMounts/-
     value:
