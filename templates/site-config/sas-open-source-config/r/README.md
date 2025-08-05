@@ -23,7 +23,7 @@ The SAS Viya platform provides YAML files that the Kustomize tool uses to config
 
    * {{ R-MOUNTPATH }} - the install path used when R is built excluding top-level directory (for example, /nfs/r-mount).
    * {{ R-HOMEDIR }} - the top-level directory of the R installation on that volume (for example, R-3.6.2).
-   * {{ SAS-EXTLANG-SETTINGS-XML-FILE }} - configuration file for enabling Python and R integration in CAS. This is only needed if using R with either CMP or the EXTLANG package.
+   * {{ values.SAS_EXTLANG_SETTINGS_XML_FILE }} - configuration file for enabling Python and R integration in CAS. This is only needed if using R with either CMP or the EXTLANG package.
    * {{ SAS-EXT-LLP-R-PATH }} - list of directories to look for when searching for run-time shared libraries (similar to LD_LIBRARY_PATH).
 
 ## Installation

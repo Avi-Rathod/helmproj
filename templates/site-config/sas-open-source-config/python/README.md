@@ -24,8 +24,8 @@ The SAS Viya platform provides YAML files that the Kustomize tool uses to config
 
    * {{ values.PYTHON_EXECUTABLE }} - the name of the Python executable file (for example, python or python3.8)
    * {{ values.PYTHON_EXE_DIR }} - the directory or partial path (relative to the mount) containing the executable (for example, /bin or /virt_environs/envron_dm1/bin). Note the mount point for your Python deployment should be its top level directory.
-   * {{ SAS-EXTLANG-SETTINGS-XML-FILE }} - configuration file for enabling Python and R integration in CAS. This is only required if you are using Python with CMP or the EXTLANG package.
-   * {{ SAS-EXT-LLP-PYTHON-PATH }} - list of directories to look for when searching for run-time shared libraries (similar to LD_LIBRARY_PATH)
+   * {{ values.SAS_EXTLANG_SETTINGS_XML_FILE }} - configuration file for enabling Python and R integration in CAS. This is only required if you are using Python with CMP or the EXTLANG package.
+   * {{ values.SAS_EXT_LLP_PYTHON_PATH }} - list of directories to look for when searching for run-time shared libraries (similar to LD_LIBRARY_PATH)
 
 4. The Python overlay for sas-microanalytic-score uses a Persistent Volume named astores-volume, which is defined in the astores overlay. The Python and astore overlays are usually installed together. If you choose to install the python overlay only, you still need to install the astores overlay as well. For more information on installing the astores overlay, refer to the "Configure SAS Micro Analytic Service to Support Analytic Stores" README file at `$deploy/sas-bases/examples/sas-microanalytic-score/astores/README.md` (for Markdown format) or `$deploy/sas-bases/docs/configure_sas_micro_analytic_service_to_support_analytic_stores.htm` (for HTML format).
 

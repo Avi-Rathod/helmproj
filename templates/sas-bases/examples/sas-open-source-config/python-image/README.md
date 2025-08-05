@@ -36,8 +36,8 @@ Because Python can be used from a Docker image only by the Micro Analytic Score 
    * {{ PYTHON-IMAGE-EXE-DIR }} - the directory (relative to the root) that contains the executable (for example, /bin).
    * {{ values.PYTHON_EXECUTABLE }} - the name of the Python executable file (for example, python or python3.8) in the Python mount.
    * {{ values.PYTHON_EXE_DIR }} - the directory or partial path (relative to the mount) that contains the executable (for example, /bin or /virt_environs/envron_dm1/bin). Note that the mount point for your Python deployment should be its top-level directory.
-   * {{ SAS-EXTLANG-SETTINGS-XML-FILE }} - the configuration file used to enable Python and R integration in CAS. This is required only if you are using Python with CMP or the EXTLANG package.
-   * {{ SAS-EXT-LLP-PYTHON-PATH }} - the list of directories to look for when searching for run-time shared libraries (similar to LD_LIBRARY_PATH).
+   * {{ values.SAS_EXTLANG_SETTINGS_XML_FILE }} - the configuration file used to enable Python and R integration in CAS. This is required only if you are using Python with CMP or the EXTLANG package.
+   * {{ values.SAS_EXT_LLP_PYTHON_PATH }} - the list of directories to look for when searching for run-time shared libraries (similar to LD_LIBRARY_PATH).
 
 ## Installation
 
