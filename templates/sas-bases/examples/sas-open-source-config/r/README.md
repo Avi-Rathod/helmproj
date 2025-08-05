@@ -41,7 +41,7 @@ The SAS Viya platform provides YAML files that the Kustomize tool uses to config
 
 3. Attach storage to your SAS Viya platform deployment. The r-transformer.yaml file uses PatchTransformers in kustomize to attach the volume containing your R installation to the SAS Viya platform.
 
-   * Replace {{ VOLUME-ATTRIBUTES }} with the appropriate volume specification. For example, when using an NFS mount, the {{ VOLUME-ATTRIBUTES }} tag should be replaced with `nfs: {path: /vol/r-mount, server: myserver.sas.com}` where `myserver.sas.com` is the NFS server and `/vol/r-mount` is the NFS path that you recorded in the Prerequisites.
+   * Replace {{ .Values.VOLUME_ATTRIBUTES }} with the appropriate volume specification. For example, when using an NFS mount, the {{ .Values.VOLUME_ATTRIBUTES }} tag should be replaced with `nfs: {path: /vol/r-mount, server: myserver.sas.com}` where `myserver.sas.com` is the NFS server and `/vol/r-mount` is the NFS path that you recorded in the Prerequisites.
    * Replace {{ R-MOUNTPATH }} with the install path used when R is built, excluding top-level directory.
 
    The relevant code excerpt from r-transformer.yaml file before the change:
