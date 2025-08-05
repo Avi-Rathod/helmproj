@@ -13,7 +13,7 @@ patch: |-
     path: /template/spec/containers/0/volumeMounts/-
     value:
       name: r-volume
-      mountPath: {{ .Values.R_MOUNTPATH }}
+      mountPath: {{.Values.R_MOUNTPATH }}
       readOnly: true
 
   # Add r-config configMap
