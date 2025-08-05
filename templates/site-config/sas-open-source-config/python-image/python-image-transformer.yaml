@@ -105,7 +105,7 @@ patch: |-
   # Add python volume
   - op: add
     path: /spec/controllerTemplate/spec/volumes/-
-    value: { name: python-volume, {{ VOLUME-ATTRIBUTES }} }
+    value: { name: python-volume, {{ .Values.VOLUME_ATTRIBUTES }} }
 
   # Add mount path for python
   - op: add
@@ -136,7 +136,7 @@ patch: |-
   # Add python volume
   - op: add
     path: /template/spec/volumes/-
-    value: { name: python-volume, {{ VOLUME-ATTRIBUTES }} }
+    value: { name: python-volume, {{ .Values.VOLUME_ATTRIBUTES }} }
 
   # Add mount path for python
   - op: add
@@ -166,7 +166,7 @@ patch: |-
   # Add python volume
   - op: add
     path: /template/spec/volumes/-
-    value: { name: python-volume, {{ VOLUME-ATTRIBUTES }} }
+    value: { name: python-volume, {{ .Values.VOLUME_ATTRIBUTES }} }
 
   # Add mount path for python
   - op: add

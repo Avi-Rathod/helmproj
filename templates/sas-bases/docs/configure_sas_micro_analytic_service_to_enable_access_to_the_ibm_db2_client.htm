@@ -45,18 +45,18 @@ Ensure that the two directories contain the installed client files (for example,
 <li>
 <p>Modify the <code>$deploy/site-config/sas-microanalytic-score/db2-config/db2-environment-variables-mas.yaml</code> file:</p>
 <ul>
-<li>Replace {{ VALUE_1 }} with the appropriate value of DB2DIR (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
-<li>Replace {{ VALUE_2 }} with the appropriate value of DB2INSTANCE (for example, &ldquo;sas&rdquo;)</li>
-<li>Replace {{ VALUE_3 }} with the appropriate value of DB2LIB (for example, &ldquo;/db2client/sqllib/lib&rdquo;)</li>
-<li>Replace {{ VALUE_4 }} with the appropriate value of DB2_HOME (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
-<li>Replace {{ VALUE_5 }} with the appropriate value of DB2_NET_CLIENT_PATH (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
-<li>Replace {{ VALUE_6 }} with the appropriate value of IBM_DB_DIR (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
-<li>Replace {{ VALUE_7 }} with the appropriate value of IBM_DB_HOME (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
-<li>Replace {{ VALUE_8 }} with the appropriate value of IBM_DB_INCLUDE (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
-<li>Replace {{ VALUE_9 }} with the appropriate value of IBM_DB_LIB (for example, &ldquo;/db2client/sqllib/lib&rdquo;)</li>
-<li>Replace {{ VALUE_10 }} with the appropriate value of INSTHOME (for example, &ldquo;/db2&rdquo;)</li>
-<li>Replace {{ VALUE_11 }} with the appropriate value of INST_DIR (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
-<li>Replace {{ VALUE_12 }} with the appropriate value of DB2 (for example, &ldquo;/db2client/sqllib/lib64:/db2client/sqllib/lib64/gskit:/db2client/sqllib/lib32&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_1 }} with the appropriate value of DB2DIR (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_2 }} with the appropriate value of DB2INSTANCE (for example, &ldquo;sas&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_3 }} with the appropriate value of DB2LIB (for example, &ldquo;/db2client/sqllib/lib&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_4 }} with the appropriate value of DB2_HOME (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_5 }} with the appropriate value of DB2_NET_CLIENT_PATH (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_6 }} with the appropriate value of IBM_DB_DIR (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_7}} with the appropriate value of IBM_DB_HOME (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_8}} with the appropriate value of IBM_DB_INCLUDE (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_9}} with the appropriate value of IBM_DB_LIB (for example, &ldquo;/db2client/sqllib/lib&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_10}} with the appropriate value of INSTHOME (for example, &ldquo;/db2&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_11}} with the appropriate value of INST_DIR (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_12}} with the appropriate value of DB2 (for example, &ldquo;/db2client/sqllib/lib64:/db2client/sqllib/lib64/gskit:/db2client/sqllib/lib32&rdquo;)</li>
 <li>Replace {{ VALUE_13 }} with the appropriate value of DB2_BIN (for example, &ldquo;/db2client/sqllib/bin:/db2client/sqllib/adm:/db2client/sqllib/misc&rdquo;)</li>
 <li>Replace {{ VALUE_14 }} with the appropriate value of SAS_EXT_LLP_ACCESS (for example, &ldquo;/db2client/sqllib/lib64:/db2client/sqllib/lib64/gskit:/db2client/sqllib/lib32&rdquo;)</li>
 <li>Replace {{ VALUE_15 }} with the appropriate value of SAS_EXT_PATH_ACCESS (for example, &ldquo;/db2client/sqllib/bin:/db2client/sqllib/adm:/db2client/sqllib/misc&rdquo;)</li>

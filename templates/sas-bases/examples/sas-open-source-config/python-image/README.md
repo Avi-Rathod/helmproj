@@ -66,9 +66,9 @@ Because Python can be used from a Docker image only by the Micro Analytic Score 
    ```<LANGUAGE name="PYTHON3" interpreter="$MAS_PYPATH"></LANGUAGE>```
 
 3. Attach storage to your SAS Viya platform deployment. The python-image-transformer.yaml file uses PatchTransformers in Kustomize to attach the Python installation volume to the SAS Viya platform.
-   Replace {{ VOLUME-ATTRIBUTES }} with the appropriate volume specification.
+   Replace {{ .Values.VOLUME_ATTRIBUTES }} with the appropriate volume specification.
 
-   For example, when using an NFS mount, the {{ VOLUME-ATTRIBUTES }} tag should be replaced with `nfs: {path: /vol/python, server: myserver.sas.com}`
+   For example, when using an NFS mount, the {{ .Values.VOLUME_ATTRIBUTES }} tag should be replaced with `nfs: {path: /vol/python, server: myserver.sas.com}`
    where `myserver.sas.com` is the NFS server and `/vol/python` is the NFS path that you recorded in the Prerequisites step.
 
    Here is the relevant code excerpt from the python-image-transformer.yaml file before the change:
@@ -88,7 +88,7 @@ Because Python can be used from a Docker image only by the Micro Analytic Score 
    # Add Python Volume
      - op: add
        path: /spec/template/spec/volumes/-
-       value: { name: python-volume, {{ VOLUME-ATTRIBUTES }} }
+       value: { name: python-volume, {{ .Values.VOLUME_ATTRIBUTES }} }
    ```
 
    Here is the relevant code excerpt from the python-image-transformer.yaml file after the change:

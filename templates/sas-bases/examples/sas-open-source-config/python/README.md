@@ -56,9 +56,9 @@ The SAS Viya platform provides YAML files that the Kustomize tool uses to config
 
    ```<LANGUAGE name="PYTHON3" interpreter="$MAS_PYPATH"></LANGUAGE>```
 
-3. Attach storage to your SAS Viya platform deployment. The python-transformer.yaml file uses PatchTransformers in Kustomize to attach the volume containing your Python installation to the SAS Viya platform. Replace {{ VOLUME-ATTRIBUTES }} with the appropriate volume specification.
+3. Attach storage to your SAS Viya platform deployment. The python-transformer.yaml file uses PatchTransformers in Kustomize to attach the volume containing your Python installation to the SAS Viya platform. Replace {{ .Values.VOLUME_ATTRIBUTES }} with the appropriate volume specification.
 
-   For example, when using an NFS mount, the {{ VOLUME-ATTRIBUTES }} tag should be replaced with `nfs: {path: /vol/python, server: myserver.sas.com}`
+   For example, when using an NFS mount, the {{ .Values.VOLUME_ATTRIBUTES }} tag should be replaced with `nfs: {path: /vol/python, server: myserver.sas.com}`
    where `myserver.sas.com` is the NFS server and `/vol/python` is the NFS path you recorded in the Prerequisites step.
 
    The relevant code excerpt from python-transformer.yaml file before the change:
@@ -68,7 +68,7 @@ The SAS Viya platform provides YAML files that the Kustomize tool uses to config
    # Add Python Volume
      - op: add
        path: /spec/template/spec/volumes/-
-       value: { name: python-volume, {{ VOLUME-ATTRIBUTES }} }
+       value: { name: python-volume, {{ .Values.VOLUME_ATTRIBUTES }} }
    ```
 
    The relevant code excerpt from python-transformer.yaml file after the change:

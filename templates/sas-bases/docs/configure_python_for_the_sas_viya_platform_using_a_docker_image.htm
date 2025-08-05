@@ -67,8 +67,8 @@
 </li>
 <li>
 <p>Attach storage to your SAS Viya platform deployment. The python-image-transformer.yaml file uses PatchTransformers in Kustomize to attach the Python installation volume to the SAS Viya platform.
-   Replace {{ VOLUME-ATTRIBUTES }} with the appropriate volume specification.</p>
-<p>For example, when using an NFS mount, the {{ VOLUME-ATTRIBUTES }} tag should be replaced with <code>nfs: {path: /vol/python, server: myserver.sas.com}</code>
+   Replace {{ .Values.VOLUME_ATTRIBUTES }} with the appropriate volume specification.</p>
+<p>For example, when using an NFS mount, the {{ .Values.VOLUME_ATTRIBUTES }} tag should be replaced with <code>nfs: {path: /vol/python, server: myserver.sas.com}</code>
  where <code>myserver.sas.com</code> is the NFS server and <code>/vol/python</code> is the NFS path that you recorded in the Prerequisites step.</p>
 <p>Here is the relevant code excerpt from the python-image-transformer.yaml file before the change:</p>
 <pre class="highlight"><code class="language-yaml">patch: |-
@@ -83,7 +83,7 @@
 # Add Python Volume
   - op: add
     path: /spec/template/spec/volumes/-
-    value: { name: python-volume, {{ VOLUME-ATTRIBUTES }} }</code></pre>
+    value: { name: python-volume, {{ .Values.VOLUME_ATTRIBUTES }} }</code></pre>
 
 <p>Here is the relevant code excerpt from the python-image-transformer.yaml file after the change:</p>
 <pre class="highlight"><code class="language-yaml">patch: |-
