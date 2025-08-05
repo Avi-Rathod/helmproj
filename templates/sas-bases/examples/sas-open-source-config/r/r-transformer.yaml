@@ -96,7 +96,7 @@ metadata:
 patch: |-
   - op: add
     path: /data/SAS_JAVA_POLICY_ALLOW_DM_RHOME
-    value: {{  .Values.R_MOUNTPATH }}/{{ R-HOMEDIR }}/bin/Rscript
+    value: {{ .Values.R_MOUNTPATH }}/{{ R-HOMEDIR }}/bin/Rscript
 target:
   kind: ConfigMap
   name: sas-programming-environment-java-policy-config
