@@ -4,7 +4,7 @@ kind: Job
 metadata:
   labels:
     run: sas-tenant-resetpw-job
-  name: sas-tenant-resetpw-job-{{ JOB-TAG }}
+  name: sas-tenant-resetpw-job-{{ .Values.JOB-TAG }}
 spec:
   template:
     spec:
