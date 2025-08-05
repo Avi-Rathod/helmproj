@@ -68,7 +68,7 @@ patch : |-
 **NOTE:** The names of the access methods are case-insensitive.
 
 - To disable access methods from the default list, such as JAVA, replace
-the {{ ACCESS-METHOD-LIST }} in `disable-lockdown-access-methods.yaml` with a list
+the {{.Values.ACCESS_METHOD_LIST}} in `disable-lockdown-access-methods.yaml` with a list
 of values to remove.  For example,
 
 ```yaml
