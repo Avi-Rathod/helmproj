@@ -53,7 +53,7 @@ The example files are located at
  `$deploy/sas-bases/examples/sas-programming-environment/lockdown`.
 
 - To enable access methods not included in the list above, such as PYTHON or
-PYTHON_EMBED, replace {{ ACCESS-METHOD-LIST }}
+PYTHON_EMBED, replace {{ .Values.ACCESS_METHOD_LIST }}
 in `enable-lockdown-access-methods.yaml`. For example,
 
 ```yaml
