@@ -149,7 +149,7 @@ Use these steps to update the seccomp profile enabled for pods in your deploymen
 
    Here is an example: `site-config/security/container-security/update-seccomp.yaml`
 
-2. Update the "{{ SECCOMP_PROFILE }}" tokens in the update-seccomp.yaml file to match the desired seccomp profile value.
+2. Update the "{{ .Values.SECCOMP_PROFILE }}" tokens in the update-seccomp.yaml file to match the desired seccomp profile value.
 
 3. Add the relative path of update-seccomp.yaml to the transformers block of the base kustomization.yaml file (`$deploy/kustomization.yaml`). Here is an example:
 

@@ -127,7 +127,7 @@ about seccomp, see <a href="https://docs.docker.com/engine/security/seccomp/">Se
 <p>Here is an example: <code>site-config/security/container-security/update-seccomp.yaml</code></p>
 </li>
 <li>
-<p>Update the &ldquo;{{ SECCOMP_PROFILE }}&rdquo; tokens in the update-seccomp.yaml file to match the desired seccomp profile value.</p>
+<p>Update the &ldquo;{{ .Values.SECCOMP_PROFILE }}&rdquo; tokens in the update-seccomp.yaml file to match the desired seccomp profile value.</p>
 </li>
 <li>
 <p>Add the relative path of update-seccomp.yaml to the transformers block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). Here is an example:</p>
