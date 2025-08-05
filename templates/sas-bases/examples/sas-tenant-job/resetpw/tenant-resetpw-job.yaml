@@ -22,7 +22,7 @@ spec:
           - name: TENANT_LIFECYCLE_ACTION
             value: resetsasproviderpw
           - name: SAS_TENANT_IDS
-            value: "{{ SAS-TENANT-IDS }}"
+            value: "{{ .Values.SAS_TENANT_IDS }}"
           - name: SAS_LOG_LEVEL
             value: INFO
         envFrom: []
