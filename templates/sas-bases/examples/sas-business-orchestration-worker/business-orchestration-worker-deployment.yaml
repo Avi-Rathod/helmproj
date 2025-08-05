@@ -10,7 +10,7 @@
 #
 # {{ NAMESPACE }}: This must be the namespace to which you are deploying
 #
-# {{ ROUTE_HOST }}: This is used for the Openshift ingress.  If on Openshift do not specify other ingresses.
+# {{ .Values.ROUTE_HOST }}: This is used for the Openshift ingress.  If on Openshift do not specify other ingresses.
 #
 # {{ INGRESS_TYPE }}/{{ HOST }}: These placeholders are used along with {{ PREFIX }} for creating your deployment's ingresses.
 #
@@ -662,7 +662,7 @@ spec:
 #     sas.com/admin: namespace
 #   name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
 # spec:
-#   host: "{{ PREFIX }}.{{ ROUTE_HOST }}"
+#   host: "{{ PREFIX }}.{{ .Values.ROUTE_HOST }}"
 #   path: /sas-business-orchestration-worker
 #   port:
 #     targetPort: http

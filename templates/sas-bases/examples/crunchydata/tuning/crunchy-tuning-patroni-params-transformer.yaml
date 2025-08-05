@@ -9,7 +9,7 @@
 #    - .* for both clusters. In this case, use a unique name like 'both-clusters' for the transformer metadata name
 #    - If different settings are needed for each cluster, then separate transformers must be created:
 #        one for Platform Postgres, and the other for CDS Postgres.
-# - {{ RETRY-TIMEOUT-VALUE }} is the timeout for DCS and PostgreSQL operation retries (in seconds). Default value: 10
+# - {{ .Values.RETRY_TIMEOUT_VALUE }} is the timeout for DCS and PostgreSQL operation retries (in seconds). Default value: 10
 #
 # To replace a variable, replace the curly braces, interior spaces, and the variable name with an actual value.
 #
@@ -23,7 +23,7 @@ metadata:
 patch: |-
   - op: replace
     path: /spec/patroni/dynamicConfiguration/retry_timeout
-    value: {{ RETRY-TIMEOUT-VALUE }}
+    value: {{ .Values.RETRY_TIMEOUT_VALUE }}
 target:
   group: postgres-operator.crunchydata.com
   kind: PostgresCluster

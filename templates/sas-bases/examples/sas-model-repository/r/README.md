@@ -61,7 +61,7 @@ the R_HOME environment variable.
    directory to the `$deploy/site-config/sas-model-repository/r` directory.
    Create the target directory, if it does not already exist.
 
-2. In rpy2-transformer.yaml replace the {{ R-HOME }} value with the R_HOME
+2. In rpy2-transformer.yaml replace the {{ .Values.R_HOME }} value with the R_HOME
    directory path. The value for the R_HOME path is the same as the DM_RHOME
    value in the kustomization.yaml file, which was specified as part of the R
    open-source configuration. That file is located in
@@ -79,7 +79,7 @@ the R_HOME environment variable.
        path: /template/spec/containers/0/env/-
        value:
          name: R_HOME
-         value:  {{ R-HOME }}
+         value:  {{ .Values.R_HOME }}
    target:
      kind: PodTemplate
      name: sas-launcher-job-config
@@ -109,7 +109,7 @@ the R_HOME environment variable.
      path: /spec/controllerTemplate/spec/containers/0/env/-
      value:
        name: CASLLP_99_EDMR
-       value: {{ R-HOME }}/lib
+       value: {{ .Values.R_HOME }}/lib
    ```
 
    Here is the relevant code excerpt after the change:

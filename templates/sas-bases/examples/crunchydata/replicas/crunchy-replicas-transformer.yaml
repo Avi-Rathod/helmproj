@@ -1,4 +1,4 @@
-# Replace all instances of the variable {{ REPLICAS-COUNT }}, including the braces,
+# Replace all instances of the variable {{ .Values.REPLICAS_COUNT }}, including the braces,
 # with the number of PostgreSQL replicas you would like to have.
 #
 # Note: this is the total count of PostgreSQL nodes you will have, not just the nodes
@@ -12,7 +12,7 @@ metadata:
 patch: |-
   - op: replace
     path: /spec/instances/0/replicas
-    value: {{ REPLICAS-COUNT }}
+    value: {{ .Values.REPLICAS_COUNT }}
 target:
   group: postgres-operator.crunchydata.com
   kind: PostgresCluster

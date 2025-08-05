@@ -42,10 +42,10 @@ The entry uses the following format, where {{ TIMEOUT-IN-MINUTES }} is an intege
 To skip the restore of the configuration definition properties once, edit the sas-restore-job-parameters configMap using the following command.
 
 ```bash
-kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/RESTORE_DEFINITION_FILTER", "value":"{{ RESTORE-DEFINITION-FILTER-CSV }}" }]'
+kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/RESTORE_DEFINITION_FILTER", "value":"{{ .Values.RESTORE_DEFINITION_FILTER_CSV }}" }]'
 ```
 
-The {{ RESTORE-DEFINITION-FILTER-CSV }} is a json string containing the comma-separated list of 'key:value' pairs where the key is in the form 'serviceName.definitionName.version'
+The {{ .Values.RESTORE_DEFINITION_FILTER_CSV }} is a json string containing the comma-separated list of 'key:value' pairs where the key is in the form 'serviceName.definitionName.version'
 and the value can be a comma-separated list of properties to be filtered. If the entire definition is to be excluded,
 then set the value to '*'. If the service name is not present
 in the definition, then only provide 'definitionName'. Each key and value must be enclosed in double quotes ("). Here is an example:
@@ -63,10 +63,10 @@ If you are running the restore job with this configuration frequently, then add 
    - name: sas-restore-job-parameters
      behavior: merge
      literals:
-     - RESTORE_DEFINITION_FILTER={{ RESTORE-DEFINITION-FILTER-CSV }}
+     - RESTORE_DEFINITION_FILTER={{ .Values.RESTORE_DEFINITION_FILTER_CSV }}
    ```
 
-   The {{ RESTORE-DEFINITION-FILTER-CSV }} is a json string containing the comma-separated list of 'key:value' pairs where key is in the form 'serviceName.definitionName.version'
+   The {{ .Values.RESTORE_DEFINITION_FILTER_CSV }} is a json string containing the comma-separated list of 'key:value' pairs where key is in the form 'serviceName.definitionName.version'
    and value itself can be a comma-separated list of properties to be filtered. If entire definition is to be excluded, then set the value to '*'. If service name is not present in
    the definition then only provide 'definitionName'. Each key and value must be enclosed in double quotes ("). Here is an example:
 
@@ -89,10 +89,10 @@ If you are running the restore job with this configuration frequently, then add 
 To skip the restore of the configuration properties once, edit  the sas-restore-job-parameters configMap using the following command.
 
 ```bash
-kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/RESTORE_CONFIGURATION_FILTER", "value":"{{ RESTORE-CONFIGURATION-FILTER-CSV }}" }]'
+kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/RESTORE_CONFIGURATION_FILTER", "value":"{{ .Values.RESTORE_CONFIGURATION_FILTER_CSV }}" }]'
 ```
 
-The {{ RESTORE-CONFIGURATION-FILTER-CSV }} is a json string containing the comma-separated list of 'key:value' pairs where the key is in the form 'serviceName.configurationMediaType' and the value can
+The {{ .Values.RESTORE_CONFIGURATION_FILTER_CSV }} is a json string containing the comma-separated list of 'key:value' pairs where the key is in the form 'serviceName.configurationMediaType' and the value can
 be a comma-separated list of properties to be filtered.
 If the entire configuration is to be excluded, then set the value to '*'.
 If the service name is not present in the configuration, then use the media type. Each key and value must be enclosed in double quotes ("). Here is an example:
@@ -110,10 +110,10 @@ If you are running the restore job with this configuration frequently, then add 
    - name: sas-restore-job-parameters
      behavior: merge
      literals:
-     - RESTORE_CONFIGURATION_FILTER={{ RESTORE-CONFIGURATION-FILTER-CSV }}
+     - RESTORE_CONFIGURATION_FILTER={{ .Values.RESTORE_CONFIGURATION_FILTER_CSV }}
    ```
 
-   The {{ RESTORE-CONFIGURATION-FILTER-CSV }} is a json string containing the comma-separated list of 'key:value' pairs where key is in the form 'serviceName.configurationMediaType' and value itself
+   The {{ .Values.RESTORE_CONFIGURATION_FILTER_CSV }} is a json string containing the comma-separated list of 'key:value' pairs where key is in the form 'serviceName.configurationMediaType' and value itself
    can be a comma-separated list of properties to be filtered. If the entire configuration is to be excluded, then set the value to '*'. If service name is not present in the configuration, then use
    the media type. Each key and value must be enclosed in double quotes ("). Here is an example:
 

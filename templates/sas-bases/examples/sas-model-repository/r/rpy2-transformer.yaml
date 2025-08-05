@@ -8,7 +8,7 @@ patch: |-
     path: /template/spec/containers/0/env/-
     value:
       name: R_HOME
-      value:  {{ R-HOME }}  #Change this to your R-HOME path.
+      value:  {{ .Values.R_HOME }}  #Change this to your R-HOME path.
 target:
   kind: PodTemplate
   name: sas-launcher-job-config
@@ -23,7 +23,7 @@ patch: |-
     path: /template/spec/containers/0/env/-
     value:
       name: R_HOME
-      value: {{ R-HOME }}
+      value: {{ .Values.R_HOME }}
 target:
   kind: PodTemplate
   name: sas-compute-job-config
@@ -38,11 +38,11 @@ patch: |-
     path: /spec/controllerTemplate/spec/containers/0/env/-
     value:
       name: R_HOME
-      value: {{ R-HOME }}
+      value: {{ .Values.R_HOME }}
   - op: add
     path: /spec/controllerTemplate/spec/containers/0/env/-
     value:
       name: CASLLP_99_EDMR
-      value: {{ R-HOME }}/lib
+      value: {{ .Values.R_HOME }}/lib
 target:
   kind: CASDeployment

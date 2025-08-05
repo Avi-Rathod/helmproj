@@ -42,9 +42,9 @@ file by adding an entry for the sas-restore-job-parameters configMap in the conf
 - name: sas-restore-job-parameters
   behavior: merge
   literals:
-  - RESTORE_DEFINITION_FILTER={{ RESTORE-DEFINITION-FILTER-CSV }}</code></pre>
+  - RESTORE_DEFINITION_FILTER={{ .Values.RESTORE_DEFINITION_FILTER_CSV }}</code></pre>
 
-<p>The {{ RESTORE-DEFINITION-FILTER-CSV }} is a json string containing the comma-separated list of &lsquo;key:value&rsquo; pairs where key is in the form &lsquo;serviceName.definitionName.version&rsquo; and value itself can
+<p>The {{ .Values.RESTORE_DEFINITION_FILTER_CSV }} is a json string containing the comma-separated list of &lsquo;key:value&rsquo; pairs where key is in the form &lsquo;serviceName.definitionName.version&rsquo; and value itself can
 be a comma-separated list of properties to be filtered. If the entire definition is to be excluded, then set the value to &lsquo;*&rsquo;.
 If the service name is not present in the definition then only provide &lsquo;definitionName&rsquo;. Each key and value must be enclosed in double quotes (&ldquo;). Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">configMapGenerator:
@@ -75,9 +75,9 @@ The entry uses the following format.</p>
 - name: sas-restore-job-parameters
   behavior: merge
   literals:
-  - RESTORE_CONFIGURATION_FILTER={{ RESTORE-CONFIGURATION-FILTER-CSV }}</code></pre>
+  - RESTORE_CONFIGURATION_FILTER={{ .Values.RESTORE_CONFIGURATION_FILTER_CSV }}</code></pre>
 
-<p>The {{ RESTORE-CONFIGURATION-FILTER-CSV }} is a json string containing the comma-separated list of &lsquo;key:value&rsquo;
+<p>The {{ .Values.RESTORE_CONFIGURATION_FILTER_CSV }} is a json string containing the comma-separated list of &lsquo;key:value&rsquo;
  pairs where key is in the form &lsquo;serviceName.configurationMediaType&rsquo; and value itself can be a comma-separated list of properties to be filtered.
  If the entire configuration is to be excluded, then set the value to &lsquo;*&rsquo;.
  If the service name is not present in the configuration, then use the media type. Each key and value must be enclosed in double quotes (&ldquo;). Here is an example:</p>

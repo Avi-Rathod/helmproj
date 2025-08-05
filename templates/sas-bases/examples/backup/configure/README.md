@@ -263,14 +263,14 @@ The entry uses the following format, where {{ TIMEOUT-IN-MINUTES }} is an intege
 ## Change Backup Retention Period
 
 1. If you need to change the backup retention period, add an entry to the sas-backup-job-parameters configMap in the configMapGenerator block of the base kustomization.yaml file (`$deploy/kustomization.yaml`).
-The entry uses the following format, where {{ RETENTION-PERIOD-IN-DAYS }} is an integer.
+The entry uses the following format, where {{ .Values.RETENTION_PERIOD_IN_DAYS }} is an integer.
 
    ```yaml
    configMapGenerator:
    - name: sas-backup-job-parameters
      behavior: merge
      literals:
-     - RETENTION_PERIOD={{ RETENTION-PERIOD-IN-DAYS }}
+     - RETENTION_PERIOD={{ .Values.RETENTION_PERIOD_IN_DAYS }}
    ```
 
    If the sas-backup-job-parameters configMap is already present in the base kustomization.yaml file, you should add the last line only. If the configMap is not present, add the entire example.

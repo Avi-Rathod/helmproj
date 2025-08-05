@@ -14,9 +14,9 @@
 #    - The default is every Sunday morning at 06:00 UTC ('0 6 * * 0')
 # - {{ INCR-BACKUP-CRONJOB }} is the schedule for incremental backups in Cron syntax
 #    - The default is every morning at 06:00 UTC except Sundays ('0 6 * * 1-6')
-# - {{ RETENTION-FULL-BACKUP }} is the number of full backups to retain. It must be a string, so quote the number as '2'.
+# - {{ .Values.RETENTION_FULL_BACKUP }} is the number of full backups to retain. It must be a string, so quote the number as '2'.
 #    - By default, it is "1" to retain only one full backup
-# - {{ RETENTION-ARCHIVE-TYPE }} and {{ RETENTION-ARCHIVE }} to control WAL data to retain.
+# - {{ .Values.RETENTION_ARCHIVE_TYPE }} and {{ .Values.RETENTION_ARCHIVE }} to control WAL data to retain.
 #    - By default, it is 'incr' and '1' to retain one 'incr' backup worth of WAL data. They must be strings, so quote the number as '1'.
 #    - The default backups automatically scheduled are weekly full backups and daily incremental backups,
 #      so the meaningful values for the backup types are 'full' and 'incr'.
@@ -41,13 +41,13 @@ patch: |-
   #  value: {{ INCR-BACKUP-CRONJOB }}
   - op: replace
     path: /spec/backups/pgbackrest/global/repo1-retention-full
-    value: {{ RETENTION-FULL-BACKUP }}
+    value: {{ .Values.RETENTION_FULL_BACKUP }}
   #- op: replace
   #  path: /spec/backups/pgbackrest/global/repo1-retention-archive-type
-  #  value: {{ RETENTION-ARCHIVE-TYPE }}
+  #  value: {{ .Values.RETENTION_ARCHIVE_TYPE }}
   #- op: replace
   #  path: /spec/backups/pgbackrest/global/repo1-retention-archive
-  #  value: {{ RETENTION-ARCHIVE }}
+  #  value: {{ .Values.RETENTION_ARCHIVE }}
 target:
   group: postgres-operator.crunchydata.com
   kind: PostgresCluster

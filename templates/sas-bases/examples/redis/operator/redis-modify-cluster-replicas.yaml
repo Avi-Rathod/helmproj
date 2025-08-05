@@ -9,7 +9,7 @@ metadata:
 patch: |-
   - op: replace
     path: /spec/clusterReplicas
-    value: {{ REPLICA-COUNT }} # will result in REPLICA-COUNT replica nodes for each primary (stateful set)
+    value: {{ .Values.REPLICA_COUNT }} # will result in REPLICA-COUNT replica nodes for each primary (stateful set)
 target:
   kind: DistributedRedisCluster
   name: sas-redis-server

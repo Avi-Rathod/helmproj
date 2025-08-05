@@ -46,10 +46,10 @@ file by adding an entry for the sas-restore-job-parameters configMap in the conf
    - name: sas-restore-job-parameters
      behavior: merge
      literals:
-     - RESTORE_DEFINITION_FILTER={{ RESTORE-DEFINITION-FILTER-CSV }}
+     - RESTORE_DEFINITION_FILTER={{ .Values.RESTORE_DEFINITION_FILTER_CSV }}
    ```
 
-   The {{ RESTORE-DEFINITION-FILTER-CSV }} is a json string containing the comma-separated list of 'key:value' pairs where key is in the form 'serviceName.definitionName.version' and value itself can
+   The {{ .Values.RESTORE_DEFINITION_FILTER_CSV }} is a json string containing the comma-separated list of 'key:value' pairs where key is in the form 'serviceName.definitionName.version' and value itself can
 be a comma-separated list of properties to be filtered. If the entire definition is to be excluded, then set the value to '*'.
 If the service name is not present in the definition then only provide 'definitionName'. Each key and value must be enclosed in double quotes ("). Here is an example:
 
@@ -85,10 +85,10 @@ The entry uses the following format.
    - name: sas-restore-job-parameters
      behavior: merge
      literals:
-     - RESTORE_CONFIGURATION_FILTER={{ RESTORE-CONFIGURATION-FILTER-CSV }}
+     - RESTORE_CONFIGURATION_FILTER={{ .Values.RESTORE_CONFIGURATION_FILTER_CSV }}
    ```
 
-   The {{ RESTORE-CONFIGURATION-FILTER-CSV }} is a json string containing the comma-separated list of 'key:value'
+   The {{ .Values.RESTORE_CONFIGURATION_FILTER_CSV }} is a json string containing the comma-separated list of 'key:value'
    pairs where key is in the form 'serviceName.configurationMediaType' and value itself can be a comma-separated list of properties to be filtered.
    If the entire configuration is to be excluded, then set the value to '*'.
    If the service name is not present in the configuration, then use the media type. Each key and value must be enclosed in double quotes ("). Here is an example:
