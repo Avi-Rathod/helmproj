@@ -68,7 +68,7 @@ Use these steps to update the fsGroup field for pods in your SAS Viya platform d
 1. Copy the `$deploy/sas-bases/examples/security/container-security/configmap-inputs.yaml` file to the location of your working container security overlay,
    such as `site-config/security/container-security/`.
 
-2. Update the `{{ FSGROUP_VALUE }}` token in the configmap-inputs.yaml file to match the desired numerical group value.
+2. Update the `{{ .Values.FSGROUP_VALUE }}` token in the configmap-inputs.yaml file to match the desired numerical group value.
 
    **Note:** For OpenShift, you can get the allocated GID and value with the `kubectl describe namespace <name-of-namespace>` command. The value to use is the minimum value of the `openshift.io/sa.scc.supplemental-groups` annotation. For example, if the output is the following, you should use `1000700000`.
 

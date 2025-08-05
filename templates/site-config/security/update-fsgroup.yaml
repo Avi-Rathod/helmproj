@@ -4,7 +4,7 @@
 ## hyphenated name set off by curly braces and a space at each end. You should replace this token with the
 ## actual value.
 ## Replace the curly braces, interior spaces, and the variable name.
-## For instance, "{{ FSGROUP_VALUE }}"
+## For instance, "{{ .Values.FSGROUP_VALUE }}"
 ## should be replaced by the desired fsgroup value
 ## The correct, final syntax would include a value within the allowed range, such as:
 ## value: 1000120000
