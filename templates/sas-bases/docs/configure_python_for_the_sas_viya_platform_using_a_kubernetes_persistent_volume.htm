@@ -24,8 +24,8 @@ This README describes how to make that volume available to your deployment.</p>
 <li>
 <p>In addition to the volume attributes, you must have the following information:</p>
 <ul>
-<li>{{ PYTHON-EXECUTABLE }} - the name of the Python executable file (for example, python or python3.8)</li>
-<li>{{ PYTHON-EXE-DIR }} - the directory or partial path (relative to the mount) containing the executable (for example, /bin or /virt_environs/envron_dm1/bin). Note the mount point for your Python deployment should be its top level directory.</li>
+<li>{{ values.PYTHON_EXECUTABLE }} - the name of the Python executable file (for example, python or python3.8)</li>
+<li>{{ values.PYTHON_EXE_DIR }} - the directory or partial path (relative to the mount) containing the executable (for example, /bin or /virt_environs/envron_dm1/bin). Note the mount point for your Python deployment should be its top level directory.</li>
 <li>{{ SAS-EXTLANG-SETTINGS-XML-FILE }} - configuration file for enabling Python and R integration in CAS. This is only required if you are using Python with CMP or the EXTLANG package.</li>
 <li>{{ SAS-EXT-LLP-PYTHON-PATH }} - list of directories to look for when searching for run-time shared libraries (similar to LD_LIBRARY_PATH)</li>
 </ul>
@@ -43,7 +43,7 @@ This README describes how to make that volume available to your deployment.</p>
  If the output contains the <code>/python</code> mount directory path, you do not need to take any further actions, unless you want to change the overlay parameters to use a different Python environment.</p>
 </li>
 <li>
-<p>The kustomization.yaml file defines all the necessary environment variables. Replace all tags, such as {{ PYTHON-EXE-DIR }}, with the values that you gathered in the <a href="#140345100760640prerequisites">Prerequisites</a> step.
+<p>The kustomization.yaml file defines all the necessary environment variables. Replace all tags, such as {{ values.PYTHON_EXE_DIR }}, with the values that you gathered in the <a href="#140345100760640prerequisites">Prerequisites</a> step.
    Then, set the following parameters, according to the SAS products you will be using:</p>
 <ul>
 <li>MAS_PYPATH and MAS_M2PATH are used by SAS Micro Analytic Service.</li>
@@ -82,7 +82,7 @@ This README describes how to make that volume available to your deployment.</p>
 </li>
 <li>
 <p>Also in the python-transformer.yaml file, there is a PatchTransformer called sas-python-sas-java-policy-allow-list.  This PatchTransformer sets paths to the python executable so that the SAS runtime
-   allows execution of the python code.  Replace the {{ PYTHON-EXE-DIR }} and {{ PYTHON-EXECUTABLE }} tags with the appropriate values.  If you are specifying multiple Python
+   allows execution of the python code.  Replace the {{ values.PYTHON_EXE_DIR }} and {{ values.PYTHON_EXECUTABLE }} tags with the appropriate values.  If you are specifying multiple Python
    environments, each need to be set here.   Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">apiVersion: builtin
 kind: PatchTransformer

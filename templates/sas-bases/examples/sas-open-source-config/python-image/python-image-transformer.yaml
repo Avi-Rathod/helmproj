@@ -195,7 +195,7 @@ metadata:
 patch: |-
   - op: add
     path: /data/SAS_JAVA_POLICY_ALLOW_DM_PYPATH
-    value: /python/{{ PYTHON-EXE-DIR }}/{{ PYTHON-EXECUTABLE }}
+    value: /python/{{ values.PYTHON_EXE_DIR }}/{{ values.PYTHON_EXECUTABLE }}
 target:
   kind: ConfigMap
   name: sas-programming-environment-java-policy-config
