@@ -9,7 +9,7 @@ patch: |-
     - op: replace
       path: /spec/replicas
       value:
-        {{ .values.NUMBER_OF_NODES }}
+        {{ .Values.NUMBER_OF_NODES }}
 target:
   group: apps
   kind: StatefulSet

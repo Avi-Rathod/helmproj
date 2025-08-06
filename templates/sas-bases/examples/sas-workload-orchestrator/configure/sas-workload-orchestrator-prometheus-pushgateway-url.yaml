@@ -15,7 +15,7 @@ patch: |-
     path: /spec/template/spec/containers/0/env/-
     value:
         name: SGMG_PROMETHEUS_PUSHGATEWAY_URL
-        value: {{ .values.PROMETHEUS_PUSHGATEWAY_URL }}
+        value: {{ .Values.PROMETHEUS_PUSHGATEWAY_URL }}
 target:
   kind: DaemonSet
   name: sas-workload-orchestrator

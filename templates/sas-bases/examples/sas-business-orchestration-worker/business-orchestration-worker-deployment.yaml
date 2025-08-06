@@ -4,23 +4,23 @@
 # Fill out the template by finding placeholders enclosed in '{{  }}' characters.
 # Recommended practices for each placeholder:
 #
-# {{ .values.PREFIX }}/{{ .VALUES.SUFFIX }}: Try to keep these the same and consistent throughout. This will make your deployed resources
+# {{ .Values.PREFIX }}/{{ .Values.SUFFIX }}: Try to keep these the same and consistent throughout. This will make your deployed resources
 # unique and easily identifiable. You can use any alphanumeric, twenty characters or less, but we recommend using your
 # user-id or something meaningful to the purpose of the deployment.
 #
-# {{ .values.NAMESPACE }}: This must be the namespace to which you are deploying
+# {{ .Values.NAMESPACE }}: This must be the namespace to which you are deploying
 #
 # {{ .Values.ROUTE_HOST }}: This is used for the Openshift ingress.  If on Openshift do not specify other ingresses.
 #
-# {{ INGRESS_TYPE }}/{{ HOST }}: These placeholders are used along with {{ .values.PREFIX }} for creating your deployment's ingresses.
+# {{ INGRESS_TYPE }}/{{ HOST }}: These placeholders are used along with {{ .Values.PREFIX }} for creating your deployment's ingresses.
 #
-# {{ .values.VALUE_NEEDED }}
+# {{ .Values.VALUE_NEEDED }}
 : Miscellaneous placeholder used for setting up environment variables, pull secrets, and volume mounts for your containers.
 # Context and environment variable names will help you fill these out. 
 #
 # {{ .Values.SECURITY }}: blocks tagged with this should be uncommented in order to enable Front Door TLS. Further instructions are located around each occurance of the tag
 #
-# {{ .VALUES.SFM_JAR_IMAGE }}: Provides the url to the docker image that contains the SFM jars required by the ODE processor.
+# {{ .Values.SFM_JAR_IMAGE }}: Provides the url to the docker image that contains the SFM jars required by the ODE processor.
 #
 ########################################################################
 
@@ -30,8 +30,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
-  namespace: {{ .values.NAMESPACE }}
+  name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
+  namespace: {{ .Values.NAMESPACE }}
 data:
   project.yaml: |-
     id: helloWorld
@@ -423,7 +423,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: sas-image-pull-secrets
-  namespace: {{ .values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACE }}
 data:
   .dockerconfigjson: {{ IMAGE_PULL_SECRET }}
 type: kubernetes.io/dockerconfigjson
@@ -452,17 +452,17 @@ type: kubernetes.io/dockerconfigjson
 apiVersion: v1
 kind: Service
 metadata:
-  name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
-  namespace: {{ .values.NAMESPACE }}
+  name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
+  namespace: {{ .Values.NAMESPACE }}
   labels:
-    app.kubernetes.io/name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
+    app.kubernetes.io/name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
 spec:
   type: ClusterIP
   ports:
     - port: 80
       targetPort: 4195
   selector:
-    app.kubernetes.io/name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
+    app.kubernetes.io/name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
 ---
 ########################################################################
 # section - deployment
@@ -470,26 +470,26 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
-  namespace: {{ .values.NAMESPACE }}
+  name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
+  namespace: {{ .Values.NAMESPACE }}
   labels:
-    app.kubernetes.io/name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
+    app.kubernetes.io/name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
+      app.kubernetes.io/name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
+        app.kubernetes.io/name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
     spec:
       imagePullSecrets:
         - name: sas-image-pull-secrets
       ## uncomment the initContainer if using ODE processor which requires client provided SFM jar files.
       # initContainers:
       #   - name: fetch-ode-jars
-      #     image: {{ .VALUES.SFM_JAR_IMAGE }}
+      #     image: {{ .Values.SFM_JAR_IMAGE }}
       #     command: ["sh", "-c"]
       #     args: ["cp -R /sfmlibs/* /tmp/data"]
       #     imagePullPolicy: Always
@@ -512,12 +512,12 @@ spec:
             privileged: false
             readOnlyRootFilesystem: true
           volumeMounts:
-            - name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
+            - name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
               mountPath: /tmp
             - name: work
               mountPath: /worker/work
           # {{ .Values.SECURITY }}  uncomment if using TLS from worker
-          #   - name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}-security
+          #   - name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}-security
           #     readOnly: true
           #     mountPath: /var/run/security
           resources:
@@ -577,7 +577,7 @@ spec:
         #   volumeMounts:
         #     - name: shared-volume
         #       mountPath: /shared-volume
-        #     - name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
+        #     - name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
         #       mountPath: /tmpdir
         #     - name: sfmlibs
         #       mountPath: /sfmlibs
@@ -610,13 +610,13 @@ spec:
         - name: work
           emptyDir:
             medium: Memory
-        - name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
+        - name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
           configMap:
-            name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
+            name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
         ## uncomment if using tls of worker
-        # - name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}-security
+        # - name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}-security
         #   secret:
-        #     secretName: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}-security
+        #     secretName: sas-business-orchestration-worker-{{ .Values.SUFFIX }}-security
         - name: shared-volume
           emptyDir: 
             medium: Memory
@@ -632,12 +632,12 @@ spec:
 # apiVersion: autoscaling/v2
 # kind: HorizontalPodAutoscaler
 # metadata:
-#   name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
+#   name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
 # spec:
 #   scaleTargetRef:
 #     apiVersion: apps/v1
 #     kind: Deployment
-#     name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
+#     name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
 #   minReplicas: 1
 #   maxReplicas: 5
 #   metrics:
@@ -654,21 +654,21 @@ spec:
 # apiVersion: route.openshift.io/v1
 # kind: Route
 # metadata:
-#   namespace: {{ .values.NAMESPACE }}
+#   namespace: {{ .Values.NAMESPACE }}
 #   annotations:
 #     haproxy.router.openshift.io/rewrite-target: /
 #   labels:
-#     app.kubernetes.io/name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
+#     app.kubernetes.io/name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
 #     sas.com/admin: namespace
-#   name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
+#   name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
 # spec:
-#   host: "{{ .values.PREFIX }}.{{ .Values.ROUTE_HOST }}"
+#   host: "{{ .Values.PREFIX }}.{{ .Values.ROUTE_HOST }}"
 #   path: /sas-business-orchestration-worker
 #   port:
 #     targetPort: http
 #   to:
 #     kind: Service
-#     name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
+#     name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
 #   wildcardPolicy: None
 ---
 ########################################################################
@@ -677,28 +677,28 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
-  namespace: {{ .values.NAMESPACE }}
+  name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
+  namespace: {{ .Values.NAMESPACE }}
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
     nginx.ingress.kubernetes.io/use-regex: "true"
     ## {{ .Values.SECURITY }} Note that these 3 annotations enable two-way front door TLS. Without them, the ingress only has one-way TLS enabled
     # nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
-    # nginx.ingress.kubernetes.io/auth-tls-secret: {{ .values.NAMESPACE }}/business-orchestration-worker-ingress-tls-ca-config-{{ .VALUES.SUFFIX }}   # Used to enable TLS
+    # nginx.ingress.kubernetes.io/auth-tls-secret: {{ .Values.NAMESPACE }}/business-orchestration-worker-ingress-tls-ca-config-{{ .Values.SUFFIX }}   # Used to enable TLS
     # nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    # used to enable mTLS
   labels:
-    app.kubernetes.io/name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
+    app.kubernetes.io/name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
 spec:
   ingressClassName: nginx
   rules:
-    - host: "{{ .values.PREFIX }}.{{ INGRESS_TYPE }}.{{ HOST }}"
+    - host: "{{ .Values.PREFIX }}.{{ INGRESS_TYPE }}.{{ HOST }}"
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
+                name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
                 port:
                   number: 4195
 ---
@@ -709,8 +709,8 @@ spec:
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
 # metadata:
-#   name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
-#   namespace: {{ .values.NAMESPACE }}
+#   name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
+#   namespace: {{ .Values.NAMESPACE }}
 #   annotations:
 #     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
 
@@ -719,29 +719,29 @@ spec:
 
 #     # {{ .Values.SECURITY }} Note that these 3 annotations enable two-way front door TLS. Without them, the ingress only has one-way TLS enabled
 #     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
-#     nginx.ingress.kubernetes.io/auth-tls-secret: {{ .values.NAMESPACE }}/business-orchestration-worker-ingress-tls-ca-config-{{ .VALUES.SUFFIX }}   # Used to enable TLS
+#     nginx.ingress.kubernetes.io/auth-tls-secret: {{ .Values.NAMESPACE }}/business-orchestration-worker-ingress-tls-ca-config-{{ .Values.SUFFIX }}   # Used to enable TLS
 #     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    # used to enable mTLS
 
 #     nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
 #     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
 #     nginx.ingress.kubernetes.io/use-regex: "true"
 #   labels:
-#     app.kubernetes.io/name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
+#     app.kubernetes.io/name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
 # spec:
 #   ingressClassName: nginx
 #   tls:
 #     - hosts:
-#         - {{ .values.PREFIX }}.{{ INGRESS-TYPE }}.{{ HOST }}
-#       secretName: business-orchestration-worker-ingress-tls-config-{{ .VALUES.SUFFIX }}
+#         - {{ .Values.PREFIX }}.{{ INGRESS-TYPE }}.{{ HOST }}
+#       secretName: business-orchestration-worker-ingress-tls-config-{{ .Values.SUFFIX }}
 #   rules:
-#     - host: {{ .values.PREFIX }}.{{ INGRESS-TYPE }}.{{ HOST }}
+#     - host: {{ .Values.PREFIX }}.{{ INGRESS-TYPE }}.{{ HOST }}
 #       http:
 #         paths:
 #           - path: "/sas-business-orchestration-worker(/|$)(.*)"
 #             pathType: Prefix
 #             backend:
 #               service:
-#                 name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
+#                 name: sas-business-orchestration-worker-{{ .Values.SUFFIX }}
 #                 port:
 #                   number: 8777
 ---
@@ -753,14 +753,14 @@ spec:
 # apiVersion: v1
 # kind: Secret
 # metadata:
-#   name: business-orchestration-worker-ingress-tls-config-{{ .VALUES.SUFFIX }}
-#   namespace: {{ .values.NAMESPACE }}
+#   name: business-orchestration-worker-ingress-tls-config-{{ .Values.SUFFIX }}
+#   namespace: {{ .Values.NAMESPACE }}
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
 #   tls.crt: |+
-#     {{ .values.VALUE_NEEDED }}
+#     {{ .Values.VALUE_NEEDED }}
 #   tls.key: |+
-#     {{ .values.VALUE_NEEDED }}
+#     {{ .Values.VALUE_NEEDED }}
 ---
 ########################################################################
 # section - secret for a ca cert and key to make a request to sign a client cert for two-way tls
@@ -768,14 +768,14 @@ spec:
 # apiVersion: v1
 # kind: Secret
 # metadata:
-#   name: business-orchestration-worker-ingress-tls-ca-config-{{ .VALUES.SUFFIX }}
-#   namespace: {{ .values.NAMESPACE }}
+#   name: business-orchestration-worker-ingress-tls-ca-config-{{ .Values.SUFFIX }}
+#   namespace: {{ .Values.NAMESPACE }}
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
 #   ca.crt: |+
-#     {{ .values.VALUE_NEEDED }}
+#     {{ .Values.VALUE_NEEDED }}
 #   ca.key: |+
-#     {{ .values.VALUE_NEEDED }}
+#     {{ .Values.VALUE_NEEDED }}
 ---
 ##############################################################################################################################
 # section - create separate cert and key for external service such as redis, kafka, rabbitmq, etc.  Note: duplicate as needed.
@@ -783,11 +783,11 @@ spec:
 # apiVersion: v1
 # kind: Secret
 # metadata:
-#   name: business-orchestration-worker-{{ .values.EXTERNAL_SERVICE }}-tls-config-{{ .VALUES.SUFFIX }}
-#   namespace: {{ .values.NAMESPACE }}
+#   name: business-orchestration-worker-{{ .Values.EXTERNAL_SERVICE }}-tls-config-{{ .Values.SUFFIX }}
+#   namespace: {{ .Values.NAMESPACE }}
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
 #   ca.crt: |+
-#     {{ .values.VALUE_NEEDED }}
+#     {{ .Values.VALUE_NEEDED }}
 #   ca.key: |+
-#     {{ .values.VALUE_NEEDED }}
+#     {{ .Values.VALUE_NEEDED }}

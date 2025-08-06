@@ -68,7 +68,7 @@ Use these steps to update the fsGroup field for pods in your SAS Viya platform d
 1. Copy the `$deploy/sas-bases/examples/security/container-security/configmap-inputs.yaml` file to the location of your working container security overlay,
    such as `site-config/security/container-security/`.
 
-2. Update the `{{ .values.FSGROUP_VALUE }}` token in the configmap-inputs.yaml file to match the desired numerical group value.
+2. Update the `{{ .Values.FSGROUP_VALUE }}` token in the configmap-inputs.yaml file to match the desired numerical group value.
 
    **Note:** For OpenShift, you can get the allocated GID and value with the `kubectl describe namespace <name-of-namespace>` command. The value to use is the minimum value of the `openshift.io/sa.scc.supplemental-groups` annotation. For example, if the output is the following, you should use `1000700000`.
 
@@ -149,7 +149,7 @@ Use these steps to update the seccomp profile enabled for pods in your deploymen
 
    Here is an example: `site-config/security/container-security/update-seccomp.yaml`
 
-2. Update the "{{ .values.SECCOMP_PROFILE }}" tokens in the update-seccomp.yaml file to match the desired seccomp profile value.
+2. Update the "{{ .Values.SECCOMP_PROFILE }}" tokens in the update-seccomp.yaml file to match the desired seccomp profile value.
 
 3. Add the relative path of update-seccomp.yaml to the transformers block of the base kustomization.yaml file (`$deploy/kustomization.yaml`). Here is an example:
 

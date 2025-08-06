@@ -55,7 +55,7 @@ Identities service.</p>
 <p>Copy the sas-bases/examples/sas-launcher/configure/launcher-nfs-mount.yaml file to the site-config/sas-launcher/configure/ location.</p>
 </li>
 <li>
-<p>In the file, replace {{ .values.NFS_SERVER_LOCATION }} with the location of the NFS server. Here is an example: </p>
+<p>In the file, replace {{ .Values.NFS_SERVER_LOCATION }} with the location of the NFS server. Here is an example: </p>
 <pre class="highlight"><code class="language-yaml">patch: |-
   - op: add
     path: /template/metadata/annotations/launcher.sas.com~1nfs-server
@@ -81,7 +81,7 @@ directory location on the NFS server.</p>
 <h4 id="140345100040272use-kubernetes-volumes-for-user-home-directories">Use Kubernetes Volumes for User Home Directories</h4>
 <p>The launcher-user-homedirectory-volume.yaml allows you to specify the runtime
 storage location of the user&rsquo;s home directory. The path is determined by the identities
-service and is mounted using the specified {{ .values.VOLUME_STORAGE_CLASS }}.</p>
+service and is mounted using the specified {{ .Values.VOLUME_STORAGE_CLASS }}.</p>
 <p><strong>Note:</strong> Using this feature overrides changes made for the <a href="#140345100040272use-nfs-server-to-mount-home-directory">Use NFS Server To Mount Home Directory</a> feature.</p>
 <ol>
 <li>
@@ -91,7 +91,7 @@ service and is mounted using the specified {{ .values.VOLUME_STORAGE_CLASS }}.</
 <p>Copy the sas-bases/examples/sas-launcher/configure/launcher-user-homedirectory-volume.yaml file to the <code>site-config/sas-launcher/configure/</code> location.</p>
 </li>
 <li>
-<p>In the file, replace {{ .values.VOLUME_STORAGE_CLASS }} with the location of the volume storage call of your choice. Here is an example:</p>
+<p>In the file, replace {{ .Values.VOLUME_STORAGE_CLASS }} with the location of the volume storage call of your choice. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">patch: |-
   - op: add
     path: /template/spec/volumes/-
@@ -122,7 +122,7 @@ home directory location in the pod.</p>
 The defaults are stored in a Kubernetes ConfigMap called sas-launcher-init-nls-config, which the Launcher service will 
 use to determine which default values are needed to be set. The LOCALE and ENCODING defaults specified here will affect 
 all consumers of SAS Launcher (SAS Compute Server, SAS/CONNECT, and SAS Batch Server) unless overridden (see below). 
-To update the defaults, replace {{ .values.LOCALE_DEFAULT }} and {{ .values.ENCODING_DEFAULT }}. Here is an example:</p>
+To update the defaults, replace {{ .Values.LOCALE_DEFAULT }} and {{ .Values.ENCODING_DEFAULT }}. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">patch: |-
   - op: replace
     path: /data/SAS_LAUNCHER_INIT_LOCALE_DEFAULT
@@ -148,7 +148,7 @@ sas.connect.server, or sas.batch.server. For more information on setting or remo
 <p>The default values and maximum values for CPU requests and CPU limits can be specified
 in a Launcher service pod template. The launcher-cpu-requests-limits.yaml allows
 you to change these default and maximum values for the CPU resource. To update the defaults, replace the
-{{ .values.DEFAULT_CPU_REQUEST }}, {{ .values.MAX_CPU_REQUEST }}, {{ .VALUES.DEFAULT_CPU_LIMIT }}, and {{ .values.MAX_CPU_LIMIT }} variables with the value you want to use. Here is an example:</p>
+{{ .Values.DEFAULT_CPU_REQUEST }}, {{ .Values.MAX_CPU_REQUEST }}, {{ .Values.DEFAULT_CPU_LIMIT }}, and {{ .Values.MAX_CPU_LIMIT }} variables with the value you want to use. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">patch: |-
   - op: add
     path: /metadata/annotations/launcher.sas.com~1default-cpu-request
@@ -175,7 +175,7 @@ block of the base kustomization.yaml file. Here is an example:</p>
 <p>The default values and maximum values for memory requests and memory limits can be specified
 in a Launcher service pod template. The launcher-memory-requests-limits.yaml allows
 you to change these default and maximum values for the memory resource. To update the defaults, replace the
-{{ .values.DEFAULT_MEMORY_REQUEST}}, {{ .values.MAX_MEMORY_REQUEST }}, {{ .VALUES. DEFAULT_MEMORY_LIMIT }}, and {{ .values.MAX_MEMORY_LIMIT }} variables with the value you want to use. Here is an example:</p>
+{{ .Values.DEFAULT_MEMORY_REQUEST}}, {{ .Values.MAX_MEMORY_REQUEST }}, {{ .Values. DEFAULT_MEMORY_LIMIT }}, and {{ .Values.MAX_MEMORY_LIMIT }} variables with the value you want to use. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">patch: |-
   - op: add
     path: /metadata/annotations/launcher.sas.com~1default-memory-request

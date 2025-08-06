@@ -9,11 +9,11 @@ patch: |-
     - op: replace
       path: /spec/template/spec/containers/0/resources/requests/memory
       value:
-        {{ .values.MEMORY_REQUIRED }}
+        {{ .Values.MEMORY_REQUIRED }}
     - op: replace
       path: /spec/template/spec/containers/0/resources/limits/memory
       value:
-        {{ .values.MEMORY_LIMIT }}
+        {{ .Values.MEMORY_LIMIT }}
 target:
   group: apps
   kind: StatefulSet

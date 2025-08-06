@@ -45,8 +45,8 @@ also be added to the transformers block of the base kustomization.yaml file:
 
 ```yaml
 transformers:
-- {{ .values. PATCH_FILE_1 }}
-- {{ .values.PATCH_FILE_2 }}
+- {{ .Values. PATCH_FILE_1 }}
+- {{ .Values.PATCH_FILE_2 }}
 ```
 
 ### Optional CAS Server Placement Configuration
@@ -157,7 +157,7 @@ to the site-config directory.
    target:
      group: viya.sas.com
      kind: CASDeployment
-     name: {{ .values.NAME_OF_SERVER }}
+     name: {{ .Values.NAME_OF_SERVER }}
      version: v1alpha1
    ```
 

@@ -4,7 +4,7 @@
 ## hyphenated name set off by curly braces and a space at each end. You should replace this token with the
 ## actual value.
 ## Replace the curly braces, interior spaces, and the variable name.
-## For instance, "{{ .values.CA_CERTIFICATE_FILE_NAME }}"
+## For instance, "{{ .Values.CA_CERTIFICATE_FILE_NAME }}"
 ## should be replaced by the path to a .pem file containing your ca certificate(s).
 ## If you use the suggested example, the correct, final syntax would be:
 ## - site-config/security/cacerts/trustedcerts.pem
@@ -23,4 +23,4 @@ files:
 ##   * the path to the files should be relative to the directory that contains the kustomization.yaml file
 ##   * one file per line.  The files themselves can contain multiple certificates in pem file syntax
 ##
-- {{ .values.CA_CERTIFICATE_FILE_NAME }} # For example, site-config/security/cacerts/trustedcerts.pem
+- {{ .Values.CA_CERTIFICATE_FILE_NAME }} # For example, site-config/security/cacerts/trustedcerts.pem

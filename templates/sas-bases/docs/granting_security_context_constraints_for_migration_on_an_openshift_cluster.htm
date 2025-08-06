@@ -22,8 +22,8 @@ oc create -f migration-job-scc.yaml</code></pre>
 
 <ol>
 <li>Use the following command to link the SCCs to the appropriate Kubernetes service account.
-Replace the entire variable {{ .values.NAME_OF_NAMESPACE }}, including the braces, with the Kubernetes namespace used for SAS Viya.</li>
+Replace the entire variable {{ .Values.NAME_OF_NAMESPACE }}, including the braces, with the Kubernetes namespace used for SAS Viya.</li>
 </ol>
-<pre class="highlight"><code class="language-sh">oc -n {{ .values.NAME_OF_NAMESPACE }} adm policy add-scc-to-user sas-migration-job -z sas-viya-backuprunner</code></pre>
+<pre class="highlight"><code class="language-sh">oc -n {{ .Values.NAME_OF_NAMESPACE }} adm policy add-scc-to-user sas-migration-job -z sas-viya-backuprunner</code></pre>
     </body>
 </html>

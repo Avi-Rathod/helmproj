@@ -2,9 +2,9 @@
 # **********INSTRUCTIONS**********
 #
 # Fill out the template by finding placeholders enclosed in '{{}}' characters.
-# For example, fill out all of the {{ .values.NAMESPACE }} placeholders with your deployment's namespace.
+# For example, fill out all of the {{ .Values.NAMESPACE }} placeholders with your deployment's namespace.
 # Some placeholders are included in lists, in which case you may add as many as you require. For instance, 
-# each {{ .VALUES. DNS_NAME }}placeholder just indicates the first item in that list of DNS names.
+# each {{ .Values. DNS_NAME }}placeholder just indicates the first item in that list of DNS names.
 #
 # This is just an example for creating several self signed certificates and may be copied and edited to serve
 # your purposes, or not used at all if you have separate certificates already available. 
@@ -17,7 +17,7 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: detection-ca-bootstrap-issuer
-  namespace: {{ .values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACE }}
 spec:
   selfSigned: {}
 ---
@@ -29,7 +29,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: detection-root-ca-certificate
-  namespace: {{ .values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACE }}
 spec:
   isCA: true
   secretName: detection-ca-secret
@@ -50,7 +50,7 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: detection-ca-issuer
-  namespace: {{ .values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACE }}
 spec:
   ca:
     secretName: detection-ca-secret
@@ -62,14 +62,14 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: detection-ingress-tls-certificate
-  namespace: {{ .values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACE }}
 spec:
   secretName: detection-ingress-tls-secret
   duration: 2160h # 90d
   renewBefore: 360h # 15d
   subject:
     organizations:
-      - {{ .values.ORGANIZATION }}
+      - {{ .Values.ORGANIZATION }}
   isCA: false
   privateKey:
     algorithm: RSA
@@ -79,7 +79,7 @@ spec:
   usages:
     - server auth
   dnsNames:
-    - {{ .VALUES.DNS_NAME }}
+    - {{ .Values.DNS_NAME }}
   issuerRef:
     name: detection-ca-issuer
     kind: Issuer
@@ -92,14 +92,14 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: detection-client-certificate
-  namespace: {{ .values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACE }}
 spec:
   secretName: detection-client-secret
   duration: 2160h # 90d
   renewBefore: 360h # 15d
   subject:
     organizations:
-      - {{ .values.ORGANIZATION }}
+      - {{ .Values.ORGANIZATION }}
   isCA: false
   privateKey:
     algorithm: RSA
@@ -109,7 +109,7 @@ spec:
   usages:
     - client auth
   dnsNames:
-    - {{ .VALUES.DNS_NAME }}
+    - {{ .Values.DNS_NAME }}
   issuerRef:
     name: detection-ca-issuer
     kind: Issuer
@@ -122,14 +122,14 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: detection-redis-tls-certificate
-  namespace: {{ .values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACE }}
 spec:
   secretName: detection-redis-tls-secret
   duration: 2160h # 90d
   renewBefore: 360h # 15d
   subject:
     organizations:
-      - {{ .values.ORGANIZATION }}
+      - {{ .Values.ORGANIZATION }}
   isCA: false
   privateKey:
     algorithm: RSA
@@ -139,7 +139,7 @@ spec:
   usages:
     - server auth
   dnsNames:
-    - {{ .VALUES.DNS_NAME }}
+    - {{ .Values.DNS_NAME }}
   issuerRef:
     name: detection-ca-issuer
     kind: Issuer
@@ -152,14 +152,14 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: detection-kafka-tls-certificate
-  namespace: {{ .values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACE }}
 spec:
   secretName: detection-kafka-tls-secret
   duration: 2160h # 90d
   renewBefore: 360h # 15d
   subject:
     organizations:
-      - {{ .values.ORGANIZATION }}
+      - {{ .Values.ORGANIZATION }}
   isCA: false
   privateKey:
     algorithm: RSA
@@ -169,7 +169,7 @@ spec:
   usages:
     - server auth
   dnsNames:
-    - {{ .VALUES.DNS_NAME }}
+    - {{ .Values.DNS_NAME }}
   issuerRef:
     name: detection-ca-issuer
     kind: Issuer

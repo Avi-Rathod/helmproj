@@ -103,7 +103,7 @@ To enable the Node List Option:
 1. Copy `$deploy/sas-bases/examples/sas-prepull/add-prepull-cr-crb.yaml` to
 `$deploy/site-config/sas-prepull/add-prepull-cr-crb.yaml`.
 
-2. Modify add-prepull-cr-crb.yaml by replacing all instances of '{{ .values.NAMESPACE }}' with the
+2. Modify add-prepull-cr-crb.yaml by replacing all instances of '{{ .Values.NAMESPACE }}' with the
 namespace of the SAS Viya platform deployment where you want node and list access granted for the
 sas-prepull service account.
 
@@ -162,8 +162,8 @@ get applied in future Kustomize builds.
 2. If there are no other SAS Viya platform deployments in other namespaces in the cluster, execute
 `kubectl delete -f $deploy/site-config/sas-prepull/add-prepull-cr-crb.yaml` to remove the
 ClusterRole and ClusterRoleBinding from the cluster. If there are other SAS Viya platform deployments
-in other namespaces in the cluster, execute `kubectl delete clusterrolebinding sas-prepull-v2-{{ .values.NAMESPACE }} -n {{ .values.NAMESPACE }}`,
-where {{ .values.NAMESPACE }} is the namespace of the deployment in which you want the ClusterRoleBinding
+in other namespaces in the cluster, execute `kubectl delete clusterrolebinding sas-prepull-v2-{{ .Values.NAMESPACE }} -n {{ .Values.NAMESPACE }}`,
+where {{ .Values.NAMESPACE }} is the namespace of the deployment in which you want the ClusterRoleBinding
 removed.
 
 ### Modify the Check Interval
@@ -187,7 +187,7 @@ Steps to modify:
 1. Copy `$deploy/sas-bases/examples/sas-prepull/change-check-interval.yaml` to
 `$deploy/site-config/sas-prepull/change-check-interval.yaml`.
 
-2. Modify change-check-interval.yaml by replacing all instances of '{{ .VALUES.DOUBLE_QUOTED_VALUE_IN_SECONDS }}'
+2. Modify change-check-interval.yaml by replacing all instances of '{{ .Values.DOUBLE_QUOTED_VALUE_IN_SECONDS }}'
 with the value in seconds for each respective mode. Note that the value must be wrapped in double quotes
 in order for Kustomize to appropriately reference the value.
 

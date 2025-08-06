@@ -63,7 +63,7 @@ Identities service.
 
 2. Copy the sas-bases/examples/sas-launcher/configure/launcher-nfs-mount.yaml file to the site-config/sas-launcher/configure/ location.
 
-3. In the file, replace {{ .values.N.Values.NFS_SERVER_LOCATION }} with the location of the NFS server. Here is an example: 
+3. In the file, replace {{ .Values.N.Values.NFS_SERVER_LOCATION }} with the location of the NFS server. Here is an example: 
 
    ```yaml
    patch: |-
@@ -92,7 +92,7 @@ directory location on the NFS server.
 
 The launcher-user-homedirectory-volume.yaml allows you to specify the runtime
 storage location of the user's home directory. The path is determined by the identities
-service and is mounted using the specified {{ .values.VOLUME_STORAGE_CLASS }}.
+service and is mounted using the specified {{ .Values.VOLUME_STORAGE_CLASS }}.
 
 **Note:** Using this feature overrides changes made for the [Use NFS Server To Mount Home Directory](#use-nfs-server-to-mount-home-directory) feature.
 
@@ -100,7 +100,7 @@ service and is mounted using the specified {{ .values.VOLUME_STORAGE_CLASS }}.
 
 2. Copy the sas-bases/examples/sas-launcher/configure/launcher-user-homedirectory-volume.yaml file to the `site-config/sas-launcher/configure/` location.
 
-3. In the file, replace {{ .values.VOLUME_STORAGE_CLASS }} with the location of the volume storage call of your choice. Here is an example:
+3. In the file, replace {{ .Values.VOLUME_STORAGE_CLASS }} with the location of the volume storage call of your choice. Here is an example:
 
    ```yaml
    patch: |-
@@ -134,7 +134,7 @@ The launcher-locale-encoding-defaults.yaml file allows you to modify the SAS LOC
 The defaults are stored in a Kubernetes ConfigMap called sas-launcher-init-nls-config, which the Launcher service will 
 use to determine which default values are needed to be set. The LOCALE and ENCODING defaults specified here will affect 
 all consumers of SAS Launcher (SAS Compute Server, SAS/CONNECT, and SAS Batch Server) unless overridden (see below). 
-To update the defaults, replace {{ .values.LOCALE_DEFAULT }} and {{ .values.ENCODING_DEFAULT }}. Here is an example:
+To update the defaults, replace {{ .Values.LOCALE_DEFAULT }} and {{ .Values.ENCODING_DEFAULT }}. Here is an example:
 
 ```yaml
 patch: |-
@@ -171,7 +171,7 @@ sas.connect.server, or sas.batch.server. For more information on setting or remo
 The default values and maximum values for CPU requests and CPU limits can be specified
 in a Launcher service pod template. The launcher-cpu-requests-limits.yaml allows
 you to change these default and maximum values for the CPU resource. To update the defaults, replace the
-{{ .values.DEFAULT_CPU_REQUEST }}, {{ .values.MAX_CPU_REQUEST }}, {{ .VALUES.DEFAULT_CPU_LIMIT }}, and {{ .values.MAX_CPU_LIMIT }} variables with the value you want to use. Here is an example:
+{{ .Values.DEFAULT_CPU_REQUEST }}, {{ .Values.MAX_CPU_REQUEST }}, {{ .Values.DEFAULT_CPU_LIMIT }}, and {{ .Values.MAX_CPU_LIMIT }} variables with the value you want to use. Here is an example:
 
 ```yaml
 patch: |-
@@ -207,7 +207,7 @@ transformers:
 The default values and maximum values for memory requests and memory limits can be specified
 in a Launcher service pod template. The launcher-memory-requests-limits.yaml allows
 you to change these default and maximum values for the memory resource. To update the defaults, replace the
-{{ .values.DEFAULT_MEMORY_REQUEST}}, {{ .values.MAX_MEMORY_REQUEST }}, {{ .VALUES. DEFAULT_MEMORY_LIMIT }}, and {{ .values.MAX_MEMORY_LIMIT }} variables with the value you want to use. Here is an example:
+{{ .Values.DEFAULT_MEMORY_REQUEST}}, {{ .Values.MAX_MEMORY_REQUEST }}, {{ .Values. DEFAULT_MEMORY_LIMIT }}, and {{ .Values.MAX_MEMORY_LIMIT }} variables with the value you want to use. Here is an example:
 
 ```yaml
 patch: |-

@@ -3,14 +3,14 @@
 # curly braces, interior spaces, and the variable name.
 #
 # The variables are as follows:
-# - {{ .values.POSTGRES_REQUEST_CPU_COUNT }} is the PostgreSQL pod request (minimum) CPU count
-# - {{ .values.POSTGRES_REQUEST_MEMORY_SIZE }} is the PostgreSQL pod request (minimum) memory size
-# - {{ .values.POSTGRES_LIMIT_CPU_COUNT }} is the PostgreSQL pod limit (maximum) CPU count
-# - {{ .values.POSTGRES_LIMIT_MEMORY_SIZE }} is the PostgreSQL pod limit (maximum) memory size
-# - {{ .values.BACKREST_REQUEST_CPU_COUNT }} is the pgBackrest pod request (minimum) CPU count
-# - {{ .values.BACKREST_REQUEST_MEMORY_SIZE }} is the pgBackrest pod request (minimum) memory size
-# - {{ .values.BACKREST_LIMIT_CPU_COUNT }} is the pgBackrest pod limit (maximum) CPU count
-# - {{ .values.BACKREST_LIMIT_MEMORY_SIZE }} is the pgBackrest pod limit (maximum) memory size
+# - {{ .Values.POSTGRES_REQUEST_CPU_COUNT }} is the PostgreSQL pod request (minimum) CPU count
+# - {{ .Values.POSTGRES_REQUEST_MEMORY_SIZE }} is the PostgreSQL pod request (minimum) memory size
+# - {{ .Values.POSTGRES_LIMIT_CPU_COUNT }} is the PostgreSQL pod limit (maximum) CPU count
+# - {{ .Values.POSTGRES_LIMIT_MEMORY_SIZE }} is the PostgreSQL pod limit (maximum) memory size
+# - {{ .Values.BACKREST_REQUEST_CPU_COUNT }} is the pgBackrest pod request (minimum) CPU count
+# - {{ .Values.BACKREST_REQUEST_MEMORY_SIZE }} is the pgBackrest pod request (minimum) memory size
+# - {{ .Values.BACKREST_LIMIT_CPU_COUNT }} is the pgBackrest pod limit (maximum) CPU count
+# - {{ .Values.BACKREST_LIMIT_MEMORY_SIZE }} is the pgBackrest pod limit (maximum) memory size
 #
 # Note: Requests must be less than or equal to limits. Do not use zero (0) or negative values.
 
@@ -24,22 +24,22 @@ patch: |-
   #   path: /spec/instances/0/resources
   #   value:
   #     requests:
-  #       cpu: {{ .values.POSTGRES_REQUEST_CPU_COUNT }}
-  #       memory: {{ .values.POSTGRES_REQUEST_MEMORY_SIZE }}
+  #       cpu: {{ .Values.POSTGRES_REQUEST_CPU_COUNT }}
+  #       memory: {{ .Values.POSTGRES_REQUEST_MEMORY_SIZE }}
   #     limits:
-  #       cpu: {{ .values.POSTGRES_LIMIT_CPU_COUNT }}
-  #       memory: {{ .values.POSTGRES_LIMIT_MEMORY_SIZE }}
+  #       cpu: {{ .Values.POSTGRES_LIMIT_CPU_COUNT }}
+  #       memory: {{ .Values.POSTGRES_LIMIT_MEMORY_SIZE }}
 
   # # Uncomment this section to change the resources for pgBackrest pods
   # - op: replace
   #   path: /spec/backups/pgbackrest/repoHost/resources
   #   value:
   #     requests:
-  #       cpu: {{ .values.BACKREST_REQUEST_CPU_COUNT }}
-  #       memory: {{ .values.BACKREST_REQUEST_MEMORY_SIZE }}
+  #       cpu: {{ .Values.BACKREST_REQUEST_CPU_COUNT }}
+  #       memory: {{ .Values.BACKREST_REQUEST_MEMORY_SIZE }}
   #     limits:
-  #       cpu: {{ .values.BACKREST_LIMIT_CPU_COUNT }}
-  #       memory: {{ .values.BACKREST_LIMIT_MEMORY_SIZE }}
+  #       cpu: {{ .Values.BACKREST_LIMIT_CPU_COUNT }}
+  #       memory: {{ .Values.BACKREST_LIMIT_MEMORY_SIZE }}
 target:
   group: postgres-operator.crunchydata.com
   kind: PostgresCluster

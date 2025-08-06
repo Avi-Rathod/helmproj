@@ -12,16 +12,16 @@ metadata:
 patch: |-
   - op: add
     path: /metadata/annotations/launcher.sas.com~1default-memory-request
-    value: {{ .values.DEFAULT_MEMORY_REQUEST}}
+    value: {{ .Values.DEFAULT_MEMORY_REQUEST}}
   - op: add
     path: /metadata/annotations/launcher.sas.com~1max-memory-request
-    value: {{ .values.MAX_MEMORY_REQUEST }}
+    value: {{ .Values.MAX_MEMORY_REQUEST }}
   - op: add
     path: /metadata/annotations/launcher.sas.com~1default-memory-limit
-    value: {{ .VALUES. DEFAULT_MEMORY_LIMIT }}
+    value: {{ .Values. DEFAULT_MEMORY_LIMIT }}
   - op: add
     path: /metadata/annotations/launcher.sas.com~1max-memory-limit
-    value: {{ .values.MAX_MEMORY_LIMIT }}
+    value: {{ .Values.MAX_MEMORY_LIMIT }}
 target:
   kind: PodTemplate
   labelSelector: sas.com/template-intent=sas-launcher

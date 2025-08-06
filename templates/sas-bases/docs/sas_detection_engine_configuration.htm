@@ -11,7 +11,7 @@
 <p>This README file describes the configuration settings available for deploying and running SAS Detection Engine. The sections of this README correspond to sections of the full example template, detection-engine-deployment.yaml. In addition to the full template, examples of how to complete each section are also available in <code>/$deploy/sas-bases/examples/sas-detection/</code>.</p>
 <h2 id="140345099398880installation">Installation</h2>
 <p>Create a copy of the example template in <code>/$deploy/sas-bases/examples/sas-detection/detection-engine-deployment.yaml</code>. Save this copy in <code>/$deploy/site-config/sas-detection/detection-engine-deployment.yaml</code>.</p>
-<p>Placeholders are indicated by curly brackets, such as {{ .VALUES.DECISION }}. Find and replace the placeholders with the values you want for your deployment. After all placeholders have been filled in, directly apply your deployment yaml via kubectl apply, indicating the file you&rsquo;ve just filled in.</p>
+<p>Placeholders are indicated by curly brackets, such as {{ .Values.DECISION }}. Find and replace the placeholders with the values you want for your deployment. After all placeholders have been filled in, directly apply your deployment yaml via kubectl apply, indicating the file you&rsquo;ve just filled in.</p>
 <pre class="highlight"><code class="language-sh">kubectl apply -f detection-engine-deployment.yaml</code></pre>
 
 <h2 id="140345099398880examples">Examples</h2>
@@ -33,7 +33,7 @@
 <pre class="highlight"><code class="language-yaml">containers:
 - name: sas-sda-scr
     # Image from your docker registry
-    image: {{ .VALUES.DECISION }}</code></pre>
+    image: {{ .Values.DECISION }}</code></pre>
 
 <p>Other than the image, the only required properties for the sas-sda-scr container are SAS_REDIS_HOST and SAS_REDIS_PORT. The other properties are optional security properties covered in detail in the security section. See the container-configuration.yaml file for the minimal required configuration.</p>
 <h4 id="140345099398880sas-detection-container">sas-detection container</h4>
@@ -77,21 +77,21 @@
 <h3 id="140345099398880security">Security</h3>
 <h4 id="140345099398880tls-secrets">TLS Secrets</h4>
 <p>There are optional, commented out sections that may be used to create the secrets containing TLS certificates and keys. The data must be base64 encoded and included in these definitions. These secrets could optionally be created manually via kubectl, or managed via cert-manager. If the secrets are created via some other method, the secret names must still match those referenced in the volumes and ingress definitions. </p>
-<p>An alternative is using the selfsigned-certificates.yaml example file. Placeholders in this file are indicated by curly brackets, such as {{ .VALUES.DNS_NAME }}. Find and replace the placeholders with the values you want for your certificates. This file is optional and may be edited as needed to fit your purposes. As with the detection-engine deployment file, you create these resources directly using kubectl apply. This file must be applied once, and it will generate secrets containing your certificates and keys. </p>
+<p>An alternative is using the selfsigned-certificates.yaml example file. Placeholders in this file are indicated by curly brackets, such as {{ .Values.DNS_NAME }}. Find and replace the placeholders with the values you want for your certificates. This file is optional and may be edited as needed to fit your purposes. As with the detection-engine deployment file, you create these resources directly using kubectl apply. This file must be applied once, and it will generate secrets containing your certificates and keys. </p>
 <h4 id="140345099398880secure-ingress-definition">Secure Ingress Definition</h4>
 <p>To add TLS to your ingress, some annotations and spec fields must be added. These will require certificates either included in this template, or created and supplied previously. The template includes a TLS ingress that is commented out, but the below examples break down what is different in this ingress. </p>
 <p>To secure your ingress, the following annotations can be used to add one-way TLS, mutual TLS, or both.</p>
 <pre class="highlight"><code class="language-yaml">annotations:
     # Used to enable TLS
-    nginx.ingress.kubernetes.io/auth-tls-secret: {{ .values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ .values.ORGANIZATION }}   
+    nginx.ingress.kubernetes.io/auth-tls-secret: {{ .Values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ .Values.ORGANIZATION }}   
     # used to enable mTLS
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    </code></pre>
 
 <p>For one-way TLS, fill in the tls field under the spec field. This also includes a secretName, which includes your TLS certificate.</p>
 <pre class="highlight"><code class="language-yaml">tls:
     - hosts:
-        - {{ .values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}
-    secretName: detection-ingress-tls-config-{{ .values.ORGANIZATION }}</code></pre>
+        - {{ .Values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}
+    secretName: detection-ingress-tls-config-{{ .Values.ORGANIZATION }}</code></pre>
 
 <p>See the ingress-setup-secure.yaml file for an example of where to add these fields to your deployment yaml.</p>
 <h4 id="140345099398880volumes-and-volume-mounts">Volumes and Volume Mounts</h4>

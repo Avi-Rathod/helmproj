@@ -66,11 +66,11 @@ oc apply -f sas-opendistro-scc.yaml
 The sas-opendistro SecurityContextConstraints must be added to the sas-opendistro ServiceAccount within each target deployment namespace to grant the
 necessary privileges.
 
-Use the following command to configure the ServiceAccount. Replace the entire variable `{{ .values.NAME_OF_NAMESPACE  }}`, including the braces,
+Use the following command to configure the ServiceAccount. Replace the entire variable `{{ .Values.NAME_OF_NAMESPACE  }}`, including the braces,
 with the Kubernetes namespace used for the SAS Viya platform.
 
 ```
-oc -n {{ .values.NAME_OF_NAMESPACE  }} adm policy add-scc-to-user sas-opendistro -z sas-opendistro
+oc -n {{ .Values.NAME_OF_NAMESPACE  }} adm policy add-scc-to-user sas-opendistro -z sas-opendistro
 ```
 
 ## Remove Seccomp Profile Property and Annotation on OpenSearch Pods

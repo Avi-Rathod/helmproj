@@ -12,10 +12,10 @@ metadata:
 patch: |-
   - op: replace
     path: /data/SAS_LAUNCHER_INIT_LOCALE_DEFAULT
-    value: {{ .values.LOCALE_DEFAULT }}
+    value: {{ .Values.LOCALE_DEFAULT }}
   - op: replace
     path: /data/SAS_LAUNCHER_INIT_ENCODING_DEFAULT
-    value: {{ .values.ENCODING_DEFAULT }}
+    value: {{ .Values.ENCODING_DEFAULT }}
 target:
   version: v1
   kind: ConfigMap

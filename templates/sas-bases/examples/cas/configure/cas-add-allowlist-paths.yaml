@@ -1,6 +1,6 @@
 # This block of code is for appending paths to the file system path
-# allowlist for the CAS server.  The {{ .values.PATH_OR_VOLUME }} and
-# {{ .values.PATH_OR_VOLUME_2 }} values can be either the name of a
+# allowlist for the CAS server.  The {{ .Values.PATH_OR_VOLUME }} and
+# {{ .Values.PATH_OR_VOLUME_2 }} values can be either the name of a
 # Volume or a direct path.  These two values are provided
 # as an example for appending multiple paths to the
 # appendCASAllowlistPaths array.
@@ -18,18 +18,18 @@ patch: |-
   - op: add
     path: /spec/appendCASAllowlistPaths/-
     value:
-      {{ .values.PATH_OR_VOLUME }}
+      {{ .Values.PATH_OR_VOLUME }}
   - op: add
     path: /spec/appendCASAllowlistPaths/-
     value:
-      {{ .values.PATH_OR_VOLUME_2 }}
+      {{ .Values.PATH_OR_VOLUME_2 }}
 target:
   group: viya.sas.com
   kind: CASDeployment
   # Uncomment this to apply to all CAS servers:
   name: .*
   # Uncomment this to apply to one particular named CAS server:
-  #name: {{ .values.NAME_OF_SERVER }}
+  #name: {{ .Values.NAME_OF_SERVER }}
   # Uncomment this to apply to the default CAS server:
   #labelSelector: "sas.com/cas-server-default"
   version: v1alpha1

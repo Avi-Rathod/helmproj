@@ -10,11 +10,11 @@ patch: |-
     - op: replace
       path: /template/spec/containers/0/resources/requests/memory
       value:
-        {{ .values.MEMORY_REQUIRED }}
+        {{ .Values.MEMORY_REQUIRED }}
     - op: replace
       path: /template/spec/containers/0/resources/limits/memory
       value:
-        {{ .values.MEMORY_LIMIT }}
+        {{ .Values.MEMORY_LIMIT }}
 target:
   kind: PodTemplate
   name: sas-redis-server

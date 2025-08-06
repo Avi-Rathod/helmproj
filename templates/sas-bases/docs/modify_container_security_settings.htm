@@ -57,7 +57,7 @@ For more information about using fsGroup, see <a href="https://kubernetes.io/doc
    such as <code>site-config/security/container-security/</code>.</p>
 </li>
 <li>
-<p>Update the <code>{{ .values.FSGROUP_VALUE }}</code> token in the configmap-inputs.yaml file to match the desired numerical group value.</p>
+<p>Update the <code>{{ .Values.FSGROUP_VALUE }}</code> token in the configmap-inputs.yaml file to match the desired numerical group value.</p>
 <p><strong>Note:</strong> For OpenShift, you can get the allocated GID and value with the <code>kubectl describe namespace &lt;name-of-namespace&gt;</code> command. The value to use is the minimum value of the <code>openshift.io/sa.scc.supplemental-groups</code> annotation. For example, if the output is the following, you should use <code>1000700000</code>.</p>
 <pre class="highlight"><code class="language-yaml">Name:         sas-1
 Labels:       &lt;none&gt;
@@ -127,7 +127,7 @@ about seccomp, see <a href="https://docs.docker.com/engine/security/seccomp/">Se
 <p>Here is an example: <code>site-config/security/container-security/update-seccomp.yaml</code></p>
 </li>
 <li>
-<p>Update the &ldquo;{{ .values.SECCOMP_PROFILE }}&rdquo; tokens in the update-seccomp.yaml file to match the desired seccomp profile value.</p>
+<p>Update the &ldquo;{{ .Values.SECCOMP_PROFILE }}&rdquo; tokens in the update-seccomp.yaml file to match the desired seccomp profile value.</p>
 </li>
 <li>
 <p>Add the relative path of update-seccomp.yaml to the transformers block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). Here is an example:</p>

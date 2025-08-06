@@ -9,14 +9,14 @@ patch: |-
     - op: add
       path: /spec/controllerTemplate/spec/volumes/-
       value:
-        name: {{ .values.MOUNT_NAME }}
+        name: {{ .Values.MOUNT_NAME }}
         hostPath:
           path: {{ HOST-PATH-TO-BE-MOUNTED }}
     - op: add
       path: /spec/controllerTemplate/spec/containers/0/volumeMounts/-
       value:
-        name: {{ .values.MOUNT_NAME }}
-        mountPath: {{ .values.CONTAINER_MOUNT_PATH }}
+        name: {{ .Values.MOUNT_NAME }}
+        mountPath: {{ .Values.CONTAINER_MOUNT_PATH }}
         readOnly: true
 target:
   group: viya.sas.com
@@ -24,7 +24,7 @@ target:
   # Uncomment this to apply to all CAS servers:
   name: .*
   # Uncomment this to apply to one particular named CAS server:
-  #name: {{ .values.NAME_OF_SERVER }}
+  #name: {{ .Values.NAME_OF_SERVER }}
   # Uncomment this to apply to the default CAS server:
   #labelSelector: "sas.com/cas-server-default"
   version: v1alpha1

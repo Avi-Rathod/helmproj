@@ -70,7 +70,7 @@ Use the following command to configure the ServiceAccount. Replace the entire va
 with the Kubernetes namespace used for the SAS Viya platform.
 
 ```
-oc -n {{ .values.NAME_OF_NAMESPACE  }} adm policy add-scc-to-user sas-opendistro -z sas-opendistro
+oc -n {{ .Values.NAME_OF_NAMESPACE  }} adm policy add-scc-to-user sas-opendistro -z sas-opendistro
 ```
 
 ## Remove Seccomp Profile Property and Annotation on OpenSearch Pods

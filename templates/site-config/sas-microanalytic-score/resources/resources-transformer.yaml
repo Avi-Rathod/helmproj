@@ -6,19 +6,19 @@ patch: |-
   #Change required memory
   - op: replace
     path: /spec/template/spec/containers/0/resources/requests/memory
-    value: {{ .values.MEMORY_REQUIRED }}
+    value: {{ .Values.MEMORY_REQUIRED }}
   #Change Memory upper limit
   - op: replace
     path: /spec/template/spec/containers/0/resources/limits/memory
-    value: {{ .values.MEMORY_LIMIT }}                                    
+    value: {{ .Values.MEMORY_LIMIT }}                                    
   #Change required cpu 
   - op: replace
     path: /spec/template/spec/containers/0/resources/requests/cpu
-    value: {{ .values.CPU_REQUIRED }}
+    value: {{ .Values.CPU_REQUIRED }}
   #Change cpu upper limit
   - op: replace
     path: /spec/template/spec/containers/0/resources/limits/cpu
-    value: {{ .values.CPU_LIMIT }}                                                           
+    value: {{ .Values.CPU_LIMIT }}                                                           
 target:
   group: apps
   kind: Deployment

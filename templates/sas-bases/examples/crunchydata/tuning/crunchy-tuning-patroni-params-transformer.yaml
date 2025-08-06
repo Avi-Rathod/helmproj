@@ -3,7 +3,7 @@
 #   It is not recommended to change Patroni parameters unless you are very familiar with Patroni tuning.
 #
 # The variables (only one sample Patroni parameter is listed in this example):
-# - {{ .values.CLUSTER_NAME }} is the name of the PostgresCluster. Valid values are:
+# - {{ .Values.CLUSTER_NAME }} is the name of the PostgresCluster. Valid values are:
 #    - sas-crunchy-platform-postgres for platform Postgres cluster
 #    - sas-crunchy-cds-postgres for CDS Postgres cluster
 #    - .* for both clusters. In this case, use a unique name like 'both-clusters' for the transformer metadata name
@@ -19,7 +19,7 @@
 apiVersion: builtin
 kind: PatchTransformer
 metadata:
-  name: {{ .values.CLUSTER_NAME }}-crunchy-tuning-patroni-transformer
+  name: {{ .Values.CLUSTER_NAME }}-crunchy-tuning-patroni-transformer
 patch: |-
   - op: replace
     path: /spec/patroni/dynamicConfiguration/retry_timeout
@@ -28,4 +28,4 @@ target:
   group: postgres-operator.crunchydata.com
   kind: PostgresCluster
   version: v1beta1
-  name: {{ .values.CLUSTER_NAME }}
+  name: {{ .Values.CLUSTER_NAME }}

@@ -17,7 +17,7 @@ To configure OpenSearch to run as a different UID:
 
 1. Copy the Run User transformer from `$deploy/sas-bases/examples/configure-elasticsearch/internal/run-user/run-user-transformer.yaml` into the `$deploy/site-config` directory.
 
-2. Open the run-user-transformer.yaml file for editing. Replace `{{ .values.USER_ID }}` with the UID under which the OpenSearch processes should run.
+2. Open the run-user-transformer.yaml file for editing. Replace `{{ .Values.USER_ID }}` with the UID under which the OpenSearch processes should run.
 
 3. Add the run-user-transformer.yaml file to the transformers block of the base kustomization.yaml file (`$deploy/kustomization.yaml`). Here is an example:
    

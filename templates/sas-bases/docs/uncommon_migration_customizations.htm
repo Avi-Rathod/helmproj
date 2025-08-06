@@ -14,14 +14,14 @@
 <li>
 <p>If you change the name of the PostgreSQL service during migration, you must map the new name to the old name. Edit <code>$deploy/kustomization.yaml</code>
 and add an entry to the restore_job_parameters configMap in configMapGenerator section. The entry uses the following format:</p>
-<pre class="highlight"><code class="language-yaml">data-service-{{ .values.NEW_SERVICE_NAME }}={{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }}</code></pre>
+<pre class="highlight"><code class="language-yaml">data-service-{{ .Values.NEW_SERVICE_NAME }}={{ .Values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }}</code></pre>
 
-<p>To get the value for {{ .values.NEW_SERVICE_NAME }}:</p>
+<p>To get the value for {{ .Values.NEW_SERVICE_NAME }}:</p>
 <pre class="highlight"><code class="language-bash">kubectl -n &lt;name-of-namespace&gt; get dataserver -o=custom-columns=SERVICE_NAME:.spec.registrations[].serviceName --no-headers</code></pre>
 
 <p>The command lists all the PostgreSQL clusters in your deployment. Choose the appropriate one from the list.</p>
-<p>{{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is the name of the directory in backup where the PostgreSQL backup is stored (for example, <code>2022-03-02T09_04_11_611_0700/acme/**postgres**</code>).</p>
-<p>In the following example, {{ .values.NEW_SERVICE_NAME }} is sas-cdspostgres, and {{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is cpspostgres:</p>
+<p>{{ .Values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is the name of the directory in backup where the PostgreSQL backup is stored (for example, <code>2022-03-02T09_04_11_611_0700/acme/**postgres**</code>).</p>
+<p>In the following example, {{ .Values.NEW_SERVICE_NAME }} is sas-cdspostgres, and {{ .Values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is cpspostgres:</p>
 <pre class="highlight"><code class="language-yaml">configMapGenerator:
 - name: sas-restore-job-parameters
   behavior: merge

@@ -10,8 +10,8 @@ patch: |-
     value:
      name: cas-backup
      nfs:
-       path: {{ .values.NFS_MOUNT_PATH }}
-       server: {{ .values.NFS_SERVER }}
+       path: {{ .Values.NFS_MOUNT_PATH }}
+       server: {{ .Values.NFS_SERVER }}
   - op: add
     path: /spec/controllerTemplate/spec/containers/0/volumeMounts/-
     value:

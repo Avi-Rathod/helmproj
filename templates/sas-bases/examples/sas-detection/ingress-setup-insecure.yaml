@@ -5,10 +5,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: sas-sda-scr-{{ .values.ORGANIZATION }}
-  namespace: {{ .values.NAMESPACE }}
+  name: sas-sda-scr-{{ .Values.ORGANIZATION }}
+  namespace: {{ .Values.NAMESPACE }}
   labels:
-    app.kubernetes.io/name: sas-sda-scr-{{ .values.ORGANIZATION }}
+    app.kubernetes.io/name: sas-sda-scr-{{ .Values.ORGANIZATION }}
 spec:
   type: ClusterIP
   ports:
@@ -16,7 +16,7 @@ spec:
       targetPort: 8080 # port exposed by this service
       protocol: TCP # IP protoocl for this port. Supported values: TCP, UDP, SCTP. Default is TCP
   selector:
-    app.kubernetes.io/name: sas-sda-scr-{{ .values.ORGANIZATION }}
+    app.kubernetes.io/name: sas-sda-scr-{{ .Values.ORGANIZATION }}
 ---
 ########################################################################
 # Create Service for sas-detection
@@ -24,10 +24,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
-  namespace: {{ .values.NAMESPACE }}
+  name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
+  namespace: {{ .Values.NAMESPACE }}
   labels:
-    app.kubernetes.io/name: sas-sda-scr-{{ .values.ORGANIZATION }}
+    app.kubernetes.io/name: sas-sda-scr-{{ .Values.ORGANIZATION }}
 spec:
   type: ClusterIP
   ports:
@@ -35,7 +35,7 @@ spec:
       targetPort: 8777 # port exposed by this service
       protocol: TCP # IP protoocl for this port. Supported values: TCP, UDP, SCTP. Default is TCP
   selector:
-    app.kubernetes.io/name: sas-sda-scr-{{ .values.ORGANIZATION }}
+    app.kubernetes.io/name: sas-sda-scr-{{ .Values.ORGANIZATION }}
 ---
 ########################################################################
 # create Ingress for SCR container
@@ -43,8 +43,8 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: sas-sda-scr-{{ .values.ORGANIZATION }}
-  namespace: {{ .values.NAMESPACE }}
+  name: sas-sda-scr-{{ .Values.ORGANIZATION }}
+  namespace: {{ .Values.NAMESPACE }}
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
@@ -52,24 +52,24 @@ metadata:
     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
   labels:
-    app.kubernetes.io/name: sas-sda-scr-{{ .values.ORGANIZATION }}
+    app.kubernetes.io/name: sas-sda-scr-{{ .Values.ORGANIZATION }}
 spec:
   ingressClassName: nginx
   defaultBackend:
     service:
-      name: sas-sda-scr-{{ .values.ORGANIZATION }}
+      name: sas-sda-scr-{{ .Values.ORGANIZATION }}
       port:
         number: 8080
   rules:
     # example: user.ingress-nginx.example.sas.com
-    - host: "{{ .values.ORGANIZATION} }}.{{ INGRESS-TYPE }}.{{ HOST }}"
+    - host: "{{ .Values.ORGANIZATION} }}.{{ INGRESS-TYPE }}.{{ HOST }}"
       http:
         paths:
           - path: "/decisionModule(/|$)(.*)"
             pathType: Prefix
             backend:
               service:
-                name: sas-sda-scr-{{ .values.ORGANIZATION }}
+                name: sas-sda-scr-{{ .Values.ORGANIZATION }}
                 port:
                   number: 8080
 ---
@@ -79,8 +79,8 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
-  namespace: {{ .values.NAMESPACE }}
+  name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
+  namespace: {{ .Values.NAMESPACE }}
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
@@ -88,23 +88,23 @@ metadata:
     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
     nginx.ingress.kubernetes.io/use-regex: "true"
   labels:
-    app.kubernetes.io/name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
+    app.kubernetes.io/name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
 spec:
   ingressClassName: nginx
   defaultBackend:
     service:
-      name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
+      name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
       port:
         number: 8777
   rules:
     # example: user.ingress-nginx.example.sas.com
-    - host: "{{ .values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}"
+    - host: "{{ .Values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}"
       http:
         paths:
             - path: "/detection(/|$)(.*)"
               pathType: Prefix
               backend:
                 service:
-                  name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
+                  name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
                   port:
                     number: 8777

@@ -11,7 +11,7 @@
 ## hyphenated name set off by curly braces and a space at each end. You should replace this token with the
 ## actual value.
 ## Replace the curly braces, interior spaces, and the variable name.
-## For instance, "{{ .values.ISTIO_INGRESSGATEWAY_FILEPATH_TO_SERVER_CERTIFICATE  }}" Example: /etc/istio/ingressgateway-certs/tls.crt
+## For instance, "{{ .Values.ISTIO_INGRESSGATEWAY_FILEPATH_TO_SERVER_CERTIFICATE  }}" Example: /etc/istio/ingressgateway-certs/tls.crt
 ## should be replaced with the file path that contains the certificate that will
 ## be used to secure the ingress gateway.
 ##
@@ -26,7 +26,7 @@ metadata:
 patch: |-
   - op: replace
     path: /spec/servers/0/tls
-    value: { mode: SIMPLE, serverCertificate: {{ .values.ISTIO_INGRESSGATEWAY_FILEPATH_TO_SERVER_CERTIFICATE  }},Example: /etc/istio/ingressgateway-certs/tls.crt privateKey: {{ .values.ISTIO_INGRESSGATEWAY_FILEPATH_TO_PRIVATE_KEY   }} }
+    value: { mode: SIMPLE, serverCertificate: {{ .Values.ISTIO_INGRESSGATEWAY_FILEPATH_TO_SERVER_CERTIFICATE  }},Example: /etc/istio/ingressgateway-certs/tls.crt privateKey: {{ .Values.ISTIO_INGRESSGATEWAY_FILEPATH_TO_PRIVATE_KEY   }} }
 target:Example: /etc/istio/ingressgateway-certs/tls.key
   Kind: Gateway
   name: public-gateway

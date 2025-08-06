@@ -10,27 +10,27 @@ patch: |-
   - op: add
     path: /spec/controllerTemplate/spec/volumes/-
     value:
-      name: {{ .values.MOUNT_NAME }}
+      name: {{ .Values.MOUNT_NAME }}
       configMap:
-        name: {{ .values.CONFIGMAP_NAME }}
-        defaultMode: {{ .values.DEFAULT_PERMISSIONS}}
+        name: {{ .Values.CONFIGMAP_NAME }}
+        defaultMode: {{ .Values.DEFAULT_PERMISSIONS}}
         items:
-        - key: {{ .values.KEY_REPRESENTING_DATA_FILE_SOURCE }}
-          mode: {{ .values.FILE_PERMISSION }}
-          path: {{ .VALUES.DATASOURCE_FILE }}
+        - key: {{ .Values.KEY_REPRESENTING_DATA_FILE_SOURCE }}
+          mode: {{ .Values.FILE_PERMISSION }}
+          path: {{ .Values.DATASOURCE_FILE }}
 
   - op: add
     path: /spec/controllerTemplate/spec/containers/0/volumeMounts/-
     value:
-      name: {{ .values.MOUNT_NAME }}
-      mountPath: {{ .VALUES.DATASOURCE_PATH }}
+      name: {{ .Values.MOUNT_NAME }}
+      mountPath: {{ .Values.DATASOURCE_PATH }}
 target:
   group: viya.sas.com
   kind: CASDeployment
   # Uncomment this to apply to all CAS servers:
   name: .*
   # Uncomment this to apply to one particular named CAS server:
-  #name: {{ .values.NAME_OF_SERVER }}
+  #name: {{ .Values.NAME_OF_SERVER }}
   # Uncomment this to apply to the default CAS server:
   #labelSelector: "sas.com/cas-server-default"
   version: v1alpha1

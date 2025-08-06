@@ -125,7 +125,7 @@ the target directory, if it does not already exist.
    binary files. For these types of deployments, the Kerberos keytab content must be loaded from an existing
    Kubernetes secret. If you are using either of these deployment types, see [Manually Configure a Kubernetes Secret for the Kerberos Keytab](https://go.documentation.sas.com/doc/en/sasadmincdc/default/calauthmdl/n1iyx40th7exrqn1ej8t12gfhm88.htm#p1bk7fvjzt9fahn1kllczegxicvi) for the steps.
 
-3. Replace {{ .VALUES.SPN }} in
+3. Replace {{ .Values.SPN }} in
 `$deploy/site-config/kerberos/sas-servers/configmaps.yaml` under the
 `sas-servers-kerberos-sidecar-config` stanza with the name of the
 principal as it appears in the keytab file.
@@ -200,7 +200,7 @@ the target directory, if it does not already exist.
 `$deploy/site-config/kerberos/cas-server` directory, naming them `keytab` and
 `krb5.conf` respectively.
 
-3. Replace {{ .VALUES.SPN }} in
+3. Replace {{ .Values.SPN }} in
 `$deploy/site-config/kerberos/cas-server/configmaps.yaml` under the
 `cas-server-kerberos-config` stanza with the name of the service
 principal as it appears in the keytab file without the @DOMAIN.COM.
@@ -268,7 +268,7 @@ change the `keytab` name to the actual keytab file name in each stanza.
 3. Uncomment the `sas-connect-spawner-kerberos-config` stanza in
 `$deploy/site-config/kerberos/sas-servers/configmaps.yaml`.
 
-   - Replace {{ .VALUES.SPN }} with the HTTP SPN from the keytab file without the
+   - Replace {{ .Values.SPN }} with the HTTP SPN from the keytab file without the
      @DOMAIN.COM.
 
    - If you are using separate keytab files for the HTTP service account and

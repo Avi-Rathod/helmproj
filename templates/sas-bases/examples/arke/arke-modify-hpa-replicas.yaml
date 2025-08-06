@@ -11,15 +11,15 @@ patch: |-
   - op: replace
     path: /spec/maxReplicas
     value:
-      {{ .values.MAX_REPLICAS }}
+      {{ .Values.MAX_REPLICAS }}
   - op: replace
     path: /spec/minReplicas
     value:
-      {{ .values.MIN_REPLICAS }}
+      {{ .Values.MIN_REPLICAS }}
   - op: replace
     path: /spec/metrics/0/resource/target/averageUtilization
     value:
-      {{ .values.CPU_UTILIZATION }}
+      {{ .Values.CPU_UTILIZATION }}
 target:
   kind: HorizontalPodAutoscaler
   name: sas-arke

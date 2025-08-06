@@ -9,7 +9,7 @@ patch: |-
     - op: replace
       path: /spec/volumeClaimTemplates/0/spec/resources/requests/storage
       value:
-        {{ .values.PVC_SIZE }}
+        {{ .Values.PVC_SIZE }}
 target:
   group: apps
   kind: StatefulSet

@@ -29,18 +29,18 @@ patch: |-
   - op: add
     path: /spec/controllerTemplate/spec/containers/0/resources/limits/cpu
     value:
-      {{ .values.NUMBER_OF_CORES }}
+      {{ .Values.NUMBER_OF_CORES }}
   - op: replace
     path: /spec/controllerTemplate/spec/containers/0/resources/requests/cpu
     value:
-      {{ .values.NUMBER_OF_CORES }}
+      {{ .Values.NUMBER_OF_CORES }}
 target:
   group: viya.sas.com
   kind: CASDeployment
   # Uncomment this to apply to all CAS servers:
   name: .*
   # Uncomment this to apply to one particular named CAS server:
-  #name: {{ .values.NAME_OF_SERVER }}
+  #name: {{ .Values.NAME_OF_SERVER }}
   # Uncomment this to apply to the default CAS server:
   #labelSelector: "sas.com/cas-server-default"
   version: v1alpha1

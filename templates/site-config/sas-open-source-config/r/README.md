@@ -23,8 +23,8 @@ The SAS Viya platform provides YAML files that the Kustomize tool uses to config
 
    * {{ .Values.R_MOUNTPATH }} - the install path used when R is built excluding top-level directory (for example, /nfs/r-mount).
    * {{ .Values.R_HOMEDIR }} - the top-level directory of the R installation on that volume (for example, R-3.6.2).
-   * {{ .values.SAS_EXTLANG_SETTINGS_XML_FILE }} - configuration file for enabling Python and R integration in CAS. This is only needed if using R with either CMP or the EXTLANG package.
-   * {{ .VALUES.SAS_EXT_LLP_R_PATH }} - list of directories to look for when searching for run-time shared libraries (similar to LD_LIBRARY_PATH).
+   * {{ .Values.SAS_EXTLANG_SETTINGS_XML_FILE }} - configuration file for enabling Python and R integration in CAS. This is only needed if using R with either CMP or the EXTLANG package.
+   * {{ .Values.SAS_EXT_LLP_R_PATH }} - list of directories to look for when searching for run-time shared libraries (similar to LD_LIBRARY_PATH).
 
 ## Installation
 
@@ -41,7 +41,7 @@ The SAS Viya platform provides YAML files that the Kustomize tool uses to config
 
 3. Attach storage to your SAS Viya platform deployment. The r-transformer.yaml file uses PatchTransformers in kustomize to attach the volume containing your R installation to the SAS Viya platform.
 
-   * Replace {{ .values.VOLUME_ATTRIBUTES }} with the appropriate volume specification. For example, when using an NFS mount, the {{ .values.VOLUME_ATTRIBUTES }} tag should be replaced with `nfs: {path: /vol/r-mount, server: myserver.sas.com}` where `myserver.sas.com` is the NFS server and `/vol/r-mount` is the NFS path that you recorded in the Prerequisites.
+   * Replace {{ .Values.VOLUME_ATTRIBUTES }} with the appropriate volume specification. For example, when using an NFS mount, the {{ .Values.VOLUME_ATTRIBUTES }} tag should be replaced with `nfs: {path: /vol/r-mount, server: myserver.sas.com}` where `myserver.sas.com` is the NFS server and `/vol/r-mount` is the NFS path that you recorded in the Prerequisites.
    * Replace {{ .Values.R_MOUNTPATH }} with the install path used when R is built, excluding top-level directory.
 
    The relevant code excerpt from r-transformer.yaml file before the change:
@@ -51,7 +51,7 @@ The SAS Viya platform provides YAML files that the Kustomize tool uses to config
    # Add R Volume
      - op: add
        path: /spec/template/spec/volumes/-
-       value: { name: r-volume, {{ .values.VOLUME_ATTRIBUTES }} }
+       value: { name: r-volume, {{ .Values.VOLUME_ATTRIBUTES }} }
    # Add mount path for R
      - op: add
        path: /template/spec/containers/0/volumeMounts/-

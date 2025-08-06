@@ -1,5 +1,5 @@
 ---
-namespace: {{ .values.VIYA_DEPLOYMENT_NAMESPACE }}
+namespace: {{ .Values.VIYA_DEPLOYMENT_NAMESPACE }}
 resources:
 - tenant-resetpw-job.yaml
 

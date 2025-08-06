@@ -11,5 +11,5 @@ literals:
 - SAS_LOGON_KERBEROS_DEBUG=true
 - SAS_LOGON_KERBEROS_DISABLEDELEGATIONWARNING=true
 - SAS_LOGON_KERBEROS_HOLDONTOGSSCONTEXT=false
-- SAS_LOGON_KERBEROS_SERVICEPRINCIPAL={{ .values.PRINCIPAL_NAME_IN_KEYTAB }}  #change this to the principal name in the keytab
-- SAS_LOGON_KERBEROS_SPN={{ .VALUES.SPN }}  #change this to the SPN
+- SAS_LOGON_KERBEROS_SERVICEPRINCIPAL={{ .Values.PRINCIPAL_NAME_IN_KEYTAB }}  #change this to the principal name in the keytab
+- SAS_LOGON_KERBEROS_SPN={{ .Values.SPN }}  #change this to the SPN

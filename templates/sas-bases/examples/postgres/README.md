@@ -68,7 +68,7 @@ External PostgreSQL is configured by modifying the DataServer CustomResource to 
    chmod +w $deploy/site-config/postgres/postgres-user.env
    ```
 
-2. Rename the copied file to something unique. SAS recommends following the naming convention: `{{ .values.POSTGRES_SERVER_NAME }}-user.env`. For example, a copy of the file for Platform PostgreSQL might be called `platform-postgres-user.env`.
+2. Rename the copied file to something unique. SAS recommends following the naming convention: `{{ .Values.POSTGRES_SERVER_NAME }}-user.env`. For example, a copy of the file for Platform PostgreSQL might be called `platform-postgres-user.env`.
 
    **Note:** Take note of the name and path of your copied file. This information will be used in a later step.
 
@@ -78,16 +78,16 @@ External PostgreSQL is configured by modifying the DataServer CustomResource to 
 
    ```yaml
    secretGenerator:
-   - name: {{ .values.POSTGRES_USER_SECRET_NAME }}
+   - name: {{ .Values.POSTGRES_USER_SECRET_NAME }}
      envs:
-     - {{ .values.POSTGRES_USER_FILE }}
+     - {{ .Values.POSTGRES_USER_FILE }}
    ```
 
 5. In the added secretGenerator, fill out the user-defined values as follows:
 
-   1. Replace `{{ .values.POSTGRES_USER_SECRET_NAME }}` with a unique name for the secret. For example, you might use `platform-postgres-user` if specifying the user for Platform PostgreSQL.
+   1. Replace `{{ .Values.POSTGRES_USER_SECRET_NAME }}` with a unique name for the secret. For example, you might use `platform-postgres-user` if specifying the user for Platform PostgreSQL.
 
-   2. Replace `{{ .values.POSTGRES_USER_FILE }}` with the path of the file you copied in Step 2. For example, this may be something like `site-config/postgres/platform-postgres-user.env`.
+   2. Replace `{{ .Values.POSTGRES_USER_FILE }}` with the path of the file you copied in Step 2. For example, this may be something like `site-config/postgres/platform-postgres-user.env`.
 
    **Note:** Take note of the name you give this secretGenerator. This information will be used in a later step.
 
@@ -97,7 +97,7 @@ External PostgreSQL is configured by modifying the DataServer CustomResource to 
    chmod +w $deploy/site-config/postgres/dataserver-transformer.yaml
    ```
 
-7. Rename the copied file to something unique. SAS recommends following the naming convention: `{{ .values.POSTGRES_SERVER_NAME }}-dataserver-transformer.yaml`. For example, a copy of the transformer targeting Platform PostgreSQL might be called `platform-postgres-dataserver-transformer.yaml`, and if you have CDS PostgreSQL, then a copy of the transformer targeting CDS PostgreSQL might be called `cds-postgres-dataserver-transformer.yaml`.
+7. Rename the copied file to something unique. SAS recommends following the naming convention: `{{ .Values.POSTGRES_SERVER_NAME }}-dataserver-transformer.yaml`. For example, a copy of the transformer targeting Platform PostgreSQL might be called `platform-postgres-dataserver-transformer.yaml`, and if you have CDS PostgreSQL, then a copy of the transformer targeting CDS PostgreSQL might be called `cds-postgres-dataserver-transformer.yaml`.
 
    **Note:** Take note of the name and path of your copied file. This information will be used in step 9.
 
@@ -114,7 +114,7 @@ External PostgreSQL is configured by modifying the DataServer CustomResource to 
 
 By default, the SAS Viya platform uses a database named "SharedServices" in each PostgreSQL server.
 
-To set a custom database name, uncomment the surrounding block and replace the `{{ .VALUES.DB_NAME }}` variable in your copied `dataserver-transformer.yaml` file(s) with the custom database name.
+To set a custom database name, uncomment the surrounding block and replace the `{{ .Values.DB_NAME }}` variable in your copied `dataserver-transformer.yaml` file(s) with the custom database name.
 
 #### Security Considerations
 
@@ -132,7 +132,7 @@ If you are using Google Cloud SQL for PostgreSQL, the following steps are requir
    chmod +w $deploy/site-config/postgres/cloud-sql-proxy.yaml
    ```
 
-2. Rename the copied file to something unique. SAS recommends following the naming convention: `{{ .values.POSTGRES_SERVER_NAME }}-cloud-sql-proxy.yaml`. For example, a copy of the transformer targeting Platform PostgreSQL might be called `platform-postgres-cloud-sql-proxy.yaml`, and if you have CDS PostgreSQL, then a copy of the transformer targeting CDS PostgreSQL might be called `cds-postgres-cloud-sql-proxy.yaml`.
+2. Rename the copied file to something unique. SAS recommends following the naming convention: `{{ .Values.POSTGRES_SERVER_NAME }}-cloud-sql-proxy.yaml`. For example, a copy of the transformer targeting Platform PostgreSQL might be called `platform-postgres-cloud-sql-proxy.yaml`, and if you have CDS PostgreSQL, then a copy of the transformer targeting CDS PostgreSQL might be called `cds-postgres-cloud-sql-proxy.yaml`.
 
    **Note:** Take note of the name and path of your copied file. This information will be used in step 4.
 
@@ -173,5 +173,5 @@ You can add PostgreSQL servers to the SAS Viya platform via the DataServer.webin
 To view the DataServer CustomResources in your SAS Viya platform deployment, run the following command.
 
 ```bash
-kubectl get dataservers.webinfdsvr.sas.com -n {{ .values.NAME_OF_NAMESPACE }}
+kubectl get dataservers.webinfdsvr.sas.com -n {{ .Values.NAME_OF_NAMESPACE }}
 ```

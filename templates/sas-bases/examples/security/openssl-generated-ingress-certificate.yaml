@@ -4,7 +4,7 @@
 ## hyphenated name set off by curly braces and a space at each end. You should replace this token with the
 ## actual value.
 ## Replace the curly braces, interior spaces, and the variable name.
-## For instance, "{{ .values.OPTIONAL_ADDITIONAL_SAN_DNS_ALIAS_VALUES }}"
+## For instance, "{{ .Values.OPTIONAL_ADDITIONAL_SAN_DNS_ALIAS_VALUES }}"
 ## should be replaced by a space separated list of DNS aliases for your ingress controller.
 ## Note that the outermost quotes are required and must remain in the file.
 ##
@@ -39,9 +39,9 @@ spec:
               fieldPath: metadata.name
 # The following lines are optional and should only be set if you want to exclude SAN DNS or IP entries from the ingress controller certificate that are included on back-end server certificates
 #        - name: SAS_CERTIFICATE_ADDITIONAL_SAN_DNS
-#          value: "{{ .values.OPTIONAL_ADDITIONAL_SAN_DNS_ALIAS_VALUES }}"
+#          value: "{{ .Values.OPTIONAL_ADDITIONAL_SAN_DNS_ALIAS_VALUES }}"
 #        - name: SAS_CERTIFICATE_ADDITIONAL_SAN_IP
-#          value: "{{ .values.OPTIONAL_ADDITIONAL_SAN_IP_VALUES }}"
+#          value: "{{ .Values.OPTIONAL_ADDITIONAL_SAN_IP_VALUES }}"
         - name: SAS_CERTIFICATE_COMMON_NAME
           value: sas-viya-openssl-ingress-certificate
         - name: SAS_CERTFRAME_TOKEN_DIR

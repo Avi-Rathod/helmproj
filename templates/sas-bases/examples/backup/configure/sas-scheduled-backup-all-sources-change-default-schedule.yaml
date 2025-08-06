@@ -1,5 +1,5 @@
 #   # NOTE:
-#   # {{ .VALUES.SCHEDULE_BACKUP_CRON_EXPRESSION }} should be the cron expression to replace default schedule backup cronjob.
+#   # {{ .Values.SCHEDULE_BACKUP_CRON_EXPRESSION }} should be the cron expression to replace default schedule backup cronjob.
 apiVersion: builtin
 kind: PatchTransformer
 metadata:
@@ -7,7 +7,7 @@ metadata:
 patch: |-
   - op: replace
     path: /spec/schedule
-    value: "{{ .VALUES.SCHEDULE_BACKUP_CRON_EXPRESSION }}"
+    value: "{{ .Values.SCHEDULE_BACKUP_CRON_EXPRESSION }}"
 target:
   kind: CronJob
   name: sas-scheduled-backup-all-sources

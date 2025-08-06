@@ -21,7 +21,7 @@ If you decide to add a transformer, copy the example file that you have
 selected and save it in your site-config directory.
 
 Each file contains information about its content. The variables in the file are set
-off by curly braces and spaces, such as {{ .values.PRIMARY_COUNT }}. Replace the
+off by curly braces and spaces, such as {{ .Values.PRIMARY_COUNT }}. Replace the
 entire variable string, including the braces, with the value you want to use.
 
 After you have edited the file, add a reference to it in the transformers block

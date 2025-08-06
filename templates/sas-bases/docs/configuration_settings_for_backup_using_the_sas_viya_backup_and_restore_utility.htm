@@ -75,7 +75,7 @@ the following instructions to schedule a backup more suited to your resources.</
 to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
 </li>
 <li>
-<p>Replace {{ .VALUES.SCHEDULE_BACKUP_CRON_EXPRESSION }} with the cron expression for the desired schedule in the copied sas-scheduled-backup-job-change-default-backup-transformer.yaml.</p>
+<p>Replace {{ .Values.SCHEDULE_BACKUP_CRON_EXPRESSION }} with the cron expression for the desired schedule in the copied sas-scheduled-backup-job-change-default-backup-transformer.yaml.</p>
 </li>
 <li>
 <p>Add the full path of the copied file to the transformers block of the base
@@ -102,7 +102,7 @@ transformers:
 to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
 </li>
 <li>
-<p>In the copied file, replace {{ .VALUES.SCHEDULE_BACKUP_CRON_EXPRESSION }} with the cron expression for the desired schedule.</p>
+<p>In the copied file, replace {{ .Values.SCHEDULE_BACKUP_CRON_EXPRESSION }} with the cron expression for the desired schedule.</p>
 </li>
 <li>
 <p>Add the full path of the copied file to the transformers block of the base
@@ -131,7 +131,7 @@ This job should not be scheduled at the same time as <code>sas-scheduled-backup-
 to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
 </li>
 <li>
-<p>In the copied file, Replace {{ .VALUES.SCHEDULE_BACKUP_CRON_EXPRESSION }} with the cron expression for the desired schedule in the copied sas-scheduled-backup-all-sources-change-default-schedule.yaml.</p>
+<p>In the copied file, Replace {{ .Values.SCHEDULE_BACKUP_CRON_EXPRESSION }} with the cron expression for the desired schedule in the copied sas-scheduled-backup-all-sources-change-default-schedule.yaml.</p>
 </li>
 <li>
 <p>Add the full path of the copied file to the transformers block of the base
@@ -158,13 +158,13 @@ transformers:
 to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
 </li>
 <li>
-<p>In the copied file, replace {{ .values.CPU_LIMIT }}with the desired value of CPU.
-{{ .values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
+<p>In the copied file, replace {{ .Values.CPU_LIMIT }}with the desired value of CPU.
+{{ .Values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
 You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
 </li>
 <li>
-<p>In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
-{{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
+<p>In the same file, replace {{ .Values.MEMORY_LIMIT }} with the desired value of memory.
+{{ .Values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
 </li>
 <li>
 <p>Add the full path of the copied file to the transformers block of the base
@@ -191,13 +191,13 @@ transformers:
 to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
 </li>
 <li>
-<p>In the copied file, replace {{ .values.CPU_LIMIT }}with the desired value of CPU.
-{{ .values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
+<p>In the copied file, replace {{ .Values.CPU_LIMIT }}with the desired value of CPU.
+{{ .Values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
 You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
 </li>
 <li>
-<p>In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
-{{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
+<p>In the same file, replace {{ .Values.MEMORY_LIMIT }} with the desired value of memory.
+{{ .Values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
 </li>
 <li>
 <p>Add the full path of the copied file to the transformers block of the base
@@ -225,17 +225,17 @@ modify the resources of backup agent container of CAS controller pod to the valu
 to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
 </li>
 <li>
-<p>In the copied file, replace {{ .values.CPU_LIMIT }}with the desired value of CPU.
-{{ .values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
+<p>In the copied file, replace {{ .Values.CPU_LIMIT }}with the desired value of CPU.
+{{ .Values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
 You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
 </li>
 <li>
-<p>In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
-{{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
+<p>In the same file, replace {{ .Values.MEMORY_LIMIT }} with the desired value of memory.
+{{ .Values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
 </li>
 <li>
 <p>By default the patch will be applied to all of the CAS servers. If the patch transformer is being applied to a single CAS server,
-replace {{ .values.NAME_OF_CAS_SERVER }} with the named CAS server in the same file and comment out the lines &lsquo;name: .*&rsquo; and &lsquo;labelSelector: &ldquo;sas.com/cas-server-default&rdquo;&rsquo; with a hashtag (#).</p>
+replace {{ .Values.NAME_OF_CAS_SERVER }} with the named CAS server in the same file and comment out the lines &lsquo;name: .*&rsquo; and &lsquo;labelSelector: &ldquo;sas.com/cas-server-default&rdquo;&rsquo; with a hashtag (#).</p>
 </li>
 <li>
 <p>Add the full path of the copied file to the transformers block of the base
@@ -300,9 +300,9 @@ If the sas-backup-agent-parameters configMap is already included in your base ku
 - name: sas-backup-agent-parameters
   behavior: merge
   literals:
-  - BACKUP_ADDITIONAL_GENERIC_PROPERTIES="{{ .values.CONSUL_KEY_LIST }}"</code></pre>
+  - BACKUP_ADDITIONAL_GENERIC_PROPERTIES="{{ .Values.CONSUL_KEY_LIST }}"</code></pre>
 
-<p>The {{ .values.CONSUL_KEY_LIST }} should be a comma-separated list of properties to be backed up. Here is an example:</p>
+<p>The {{ .Values.CONSUL_KEY_LIST }} should be a comma-separated list of properties to be backed up. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">configMapGenerator:
 - name: sas-backup-agent-parameters
   behavior: merge
@@ -324,9 +324,9 @@ If the sas-backup-job-parameters configMap is already included in your base kust
 - name: sas-backup-job-parameters
   behavior: merge
   literals:
-  - FILESYSTEM_BACKUP_EXCLUDELIST="{{ .values.EXCLUDE_PATTERN }}"</code></pre>
+  - FILESYSTEM_BACKUP_EXCLUDELIST="{{ .Values.EXCLUDE_PATTERN }}"</code></pre>
 
-<p>The {{ .values.EXCLUDE_PATTERN }} should be a comma-separated list of patterns for files or folders to be excluded from the backup.
+<p>The {{ .Values.EXCLUDE_PATTERN }} should be a comma-separated list of patterns for files or folders to be excluded from the backup.
  Here is an example that excludes all the files with extensions &ldquo;.tmp&rdquo; or &ldquo;.log&rdquo;:</p>
 <pre class="highlight"><code class="language-yaml">configMapGenerator:
 - name: sas-backup-job-parameters
@@ -351,9 +351,9 @@ If the sas-backup-job-parameters configMap is already included in your base kust
 - name: sas-backup-job-parameters
   behavior: merge
   literals:
-  - FILESYSTEM_BACKUP_OVERRIDE_EXCLUDELIST="{{ .values.EXCLUDE_PATTERN }}"</code></pre>
+  - FILESYSTEM_BACKUP_OVERRIDE_EXCLUDELIST="{{ .Values.EXCLUDE_PATTERN }}"</code></pre>
 
-<p>The {{ .values.EXCLUDE_PATTERN }} should be a comma-separated list of patterns for files or folders to be excluded from the backup.
+<p>The {{ .Values.EXCLUDE_PATTERN }} should be a comma-separated list of patterns for files or folders to be excluded from the backup.
  Here is an example that excludes all the files with extensions &ldquo;.tmp&rdquo; or &ldquo;.log&rdquo;:</p>
 <pre class="highlight"><code class="language-yaml">configMapGenerator:
 - name: sas-backup-job-parameters
@@ -371,15 +371,15 @@ If the sas-backup-job-parameters configMap is already included in your base kust
 <ol>
 <li>
 <p>By default, you are notified if the backup job fails. To disable backup job failure notification, add an entry to the sas-backup-job-parameters configMap in the configMapGenerator block of the base
-kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). Replace {{ .values.ENABLE_NOTIFICATIONS }} with the string &ldquo;false&rdquo;.</p>
+kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). Replace {{ .Values.ENABLE_NOTIFICATIONS }} with the string &ldquo;false&rdquo;.</p>
 <pre class="highlight"><code class="language-yaml">configMapGenerator:
 - name: sas-backup-job-parameters
   behavior: merge
   literals:
-  - ENABLE_NOTIFICATIONS={{ .values.ENABLE_NOTIFICATIONS }}</code></pre>
+  - ENABLE_NOTIFICATIONS={{ .Values.ENABLE_NOTIFICATIONS }}</code></pre>
 
 <p>If the sas-backup-job-parameters configMap is already present in the base kustomization.yaml file, add the last line only. If the configMap is not present, add the entire example.</p>
-<p>To restore the default, change the value of {{ .values.ENABLE_NOTIFICATIONS }} from &ldquo;false&rdquo; to &ldquo;true&rdquo;.</p>
+<p>To restore the default, change the value of {{ .Values.ENABLE_NOTIFICATIONS }} from &ldquo;false&rdquo; to &ldquo;true&rdquo;.</p>
 </li>
 <li>
 <p>Build and Apply the Manifest</p>

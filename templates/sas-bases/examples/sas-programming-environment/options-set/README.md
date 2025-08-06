@@ -29,7 +29,7 @@ can be modified by using the transformer in the example file located at
 file to the site-config directory.
 
 2. To add variables that users should be prevented from changing, replace the
-{{ .values.OPTIONS_SET_DENY_LIST }} variable in the copied file with the list of
+{{ .Values.OPTIONS_SET_DENY_LIST }} variable in the copied file with the list of
 environment variables to be protected. Here is an example:
 
    **NOTE**: The environment variables _JAVA_OPTIONS, JAVA_TOOL_OPTIONS, JDK_JAVA_OPTIONS, ODBCINST, ODBCINI are blocked out of the box as they pose potential security risks if left unblocked. The transformer in the example overwrites this list, so you must include these environment variables along with additional environment variables that you wish to block in the list.

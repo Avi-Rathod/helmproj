@@ -49,19 +49,19 @@ If you are running the restore job with this configuration frequently, then add 
 If you change the name of the PostgreSQL service during migration, you must map the new name to the old name. Edit the sas-restore-job-parameters configMap using the following command:
 
    ```bash
-   kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/data-service-{{ .values.NEW_SERVICE_NAME }}", "value":"{{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }}" }]'
+   kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/data-service-{{ .Values.NEW_SERVICE_NAME }}", "value":"{{ .Values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }}" }]'
    ```
 
-To get the value for {{ .values.NEW_SERVICE_NAME }}:
+To get the value for {{ .Values.NEW_SERVICE_NAME }}:
 
    ```bash
    kubectl -n <name-of-namespace> get dataserver -o=custom-columns=SERVICE_NAME:.spec.registrations[].serviceName --no-headers
    ```
 
-The command lists all the PostgreSQL clusters in your deployment. Choose the appropriate one from the list. {{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is the name of the directory in backup where the
+The command lists all the PostgreSQL clusters in your deployment. Choose the appropriate one from the list. {{ .Values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is the name of the directory in backup where the
 PostgreSQL backup is stored (for example, `2022-03-02T09_04_11_611_0700/acme/**postgres**`).
 
-In the following example, {{ .values.NEW_SERVICE_NAME }} is sas-cdspostgres, and {{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is cpspostgres:
+In the following example, {{ .Values.NEW_SERVICE_NAME }} is sas-cdspostgres, and {{ .Values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is cpspostgres:
 
    ```bash
       kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/data-service-sas-cdspostgres", "value":"cpspostgres" }]'
@@ -72,10 +72,10 @@ If you are running the restore job with this configuration frequently, then add 
 1. Edit `$deploy/kustomization.yaml` and add an entry to the restore_job_parameters configMap in the configMapGenerator section. The entry uses the following format:
 
    ```yaml
-   data-service-{{ .values.NEW_SERVICE_NAME }}={{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }}
+   data-service-{{ .Values.NEW_SERVICE_NAME }}={{ .Values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }}
    ```
 
-   To get the value for {{ .values.NEW_SERVICE_NAME }}:
+   To get the value for {{ .Values.NEW_SERVICE_NAME }}:
 
    ```bash
    kubectl -n <name-of-namespace> get dataserver -o=custom-columns=SERVICE_NAME:.spec.registrations[].serviceName --no-headers
@@ -83,9 +83,9 @@ If you are running the restore job with this configuration frequently, then add 
 
    The command lists all the PostgreSQL clusters in your deployment. Choose the appropriate one from the list.
 
-   {{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is the name of the directory in backup where the PostgreSQL backup is stored (for example, `2022-03-02T09_04_11_611_0700/acme/**postgres**`).
+   {{ .Values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is the name of the directory in backup where the PostgreSQL backup is stored (for example, `2022-03-02T09_04_11_611_0700/acme/**postgres**`).
 
-   In the following example, {{ .values.NEW_SERVICE_NAME }} is sas-cdspostgres, and {{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is cpspostgres:
+   In the following example, {{ .Values.NEW_SERVICE_NAME }} is sas-cdspostgres, and {{ .Values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is cpspostgres:
 
    ```yaml
    configMapGenerator:
@@ -184,7 +184,7 @@ Refer to the [--jobs](https://www.postgresql.org/docs/12/app-pgrestore.html "pg_
 You can specify the number of parallel jobs once using the following environment variable, which should be specified in the sas-restore-job-parameters configMap.
 
    ```bash
-   kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/SAS_DATA_SERVER_RESTORE_PARALLEL_JOB_COUNT", "value":"{{ .values.number_of_jobs }}" }]'
+   kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/SAS_DATA_SERVER_RESTORE_PARALLEL_JOB_COUNT", "value":"{{ .Values.number_of_jobs }}" }]'
    ```
 
 If you are running the restore job with this configuration frequently, then add this configuration permanently using the following method.

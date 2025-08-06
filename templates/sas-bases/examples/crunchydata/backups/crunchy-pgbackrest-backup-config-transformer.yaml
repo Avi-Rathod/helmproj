@@ -4,13 +4,13 @@
 # Uncomment the sections you want to update.
 #
 # The variables to replace:
-# - {{ .values.CLUSTER_NAME }} is the name of the PostgresCluster. Valid values are:
+# - {{ .Values.CLUSTER_NAME }} is the name of the PostgresCluster. Valid values are:
 #    - sas-crunchy-platform-postgres for platform Postgres cluster
 #    - sas-crunchy-cds-postgres for CDS Postgres cluster
 #    - .* for both clusters. In this case, use a unique name like 'both-clusters' for the transformer metadata name
 #    - If different settings are needed for each cluster, then separate transformers must be created:
 #        one for Platform Postgres, and the other for CDS Postgres.
-# - {{ .values.FULL_BACKUP_CRONJOB }} is the schedule for full backups in Cron syntax
+# - {{ .Values.FULL_BACKUP_CRONJOB }} is the schedule for full backups in Cron syntax
 #    - The default is every Sunday morning at 06:00 UTC ('0 6 * * 0')
 # - {{ INCR-BACKUP-CRONJOB }} is the schedule for incremental backups in Cron syntax
 #    - The default is every morning at 06:00 UTC except Sundays ('0 6 * * 1-6')
@@ -31,11 +31,11 @@
 apiVersion: builtin
 kind: PatchTransformer
 metadata:
-  name: {{ .values.CLUSTER_NAME }}-crunchy-pgbackrest-backup-config-transformer
+  name: {{ .Values.CLUSTER_NAME }}-crunchy-pgbackrest-backup-config-transformer
 patch: |-
   #- op: replace
   #  path: /spec/backups/pgbackrest/repos/0/schedules/full
-  #  value: {{ .values.FULL_BACKUP_CRONJOB }}
+  #  value: {{ .Values.FULL_BACKUP_CRONJOB }}
   #- op: replace
   #  path: /spec/backups/pgbackrest/repos/0/schedules/incremental
   #  value: {{ INCR-BACKUP-CRONJOB }}
@@ -52,5 +52,5 @@ target:
   group: postgres-operator.crunchydata.com
   kind: PostgresCluster
   version: v1beta1
-  name: {{ .values.CLUSTER_NAME }}
+  name: {{ .Values.CLUSTER_NAME }}
 

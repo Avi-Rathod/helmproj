@@ -8,7 +8,7 @@ patch: |-
     path: /spec/template/spec/containers/-
     value:
       name: viya4-mas-python-runner
-      image: {{ .values.PYTHON_DOCKER_IMAGE_URL }}
+      image: {{ .Values.PYTHON_DOCKER_IMAGE_URL }}
       imagePullPolicy: IfNotPresent
       securityContext:
         runAsUser: 1001
@@ -105,7 +105,7 @@ patch: |-
   # Add python volume
   - op: add
     path: /spec/controllerTemplate/spec/volumes/-
-    value: { name: python-volume, {{ .values.VOLUME_ATTRIBUTES }} }
+    value: { name: python-volume, {{ .Values.VOLUME_ATTRIBUTES }} }
 
   # Add mount path for python
   - op: add
@@ -136,7 +136,7 @@ patch: |-
   # Add python volume
   - op: add
     path: /template/spec/volumes/-
-    value: { name: python-volume, {{ .values.VOLUME_ATTRIBUTES }} }
+    value: { name: python-volume, {{ .Values.VOLUME_ATTRIBUTES }} }
 
   # Add mount path for python
   - op: add
@@ -166,7 +166,7 @@ patch: |-
   # Add python volume
   - op: add
     path: /template/spec/volumes/-
-    value: { name: python-volume, {{ .values.VOLUME_ATTRIBUTES }} }
+    value: { name: python-volume, {{ .Values.VOLUME_ATTRIBUTES }} }
 
   # Add mount path for python
   - op: add
@@ -195,7 +195,7 @@ metadata:
 patch: |-
   - op: add
     path: /data/SAS_JAVA_POLICY_ALLOW_DM_PYPATH
-    value: /python/{{ .values.PYTHON_EXE_DIR }}/{{ .values.PYTHON_EXECUTABLE }}
+    value: /python/{{ .Values.PYTHON_EXE_DIR }}/{{ .Values.PYTHON_EXECUTABLE }}
 target:
   kind: ConfigMap
   name: sas-programming-environment-java-policy-config

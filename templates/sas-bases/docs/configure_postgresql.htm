@@ -44,7 +44,7 @@ For information about moving from an internal PostgreSQL server to an external o
 
 </li>
 <li>
-<p>Rename the copied file to something unique. SAS recommends following the naming convention: <code>{{ .values.POSTGRES_SERVER_NAME }}-user.env</code>. For example, a copy of the file for Platform PostgreSQL might be called <code>platform-postgres-user.env</code>.</p>
+<p>Rename the copied file to something unique. SAS recommends following the naming convention: <code>{{ .Values.POSTGRES_SERVER_NAME }}-user.env</code>. For example, a copy of the file for Platform PostgreSQL might be called <code>platform-postgres-user.env</code>.</p>
 <p><strong>Note:</strong> Take note of the name and path of your copied file. This information will be used in a later step.</p>
 </li>
 <li>
@@ -53,19 +53,19 @@ For information about moving from an internal PostgreSQL server to an external o
 <li>
 <p>Go to the base kustomization file (<code>$deploy/kustomization.yaml</code>). In the secretGenerator block of that file, add the following content, including adding the block if it doesn&rsquo;t already exist:</p>
 <pre class="highlight"><code class="language-yaml">secretGenerator:
-- name: {{ .values.POSTGRES_USER_SECRET_NAME }}
+- name: {{ .Values.POSTGRES_USER_SECRET_NAME }}
   envs:
-  - {{ .values.POSTGRES_USER_FILE }}</code></pre>
+  - {{ .Values.POSTGRES_USER_FILE }}</code></pre>
 
 </li>
 <li>
 <p>In the added secretGenerator, fill out the user-defined values as follows:</p>
 <ol>
 <li>
-<p>Replace <code>{{ .values.POSTGRES_USER_SECRET_NAME }}</code> with a unique name for the secret. For example, you might use <code>platform-postgres-user</code> if specifying the user for Platform PostgreSQL.</p>
+<p>Replace <code>{{ .Values.POSTGRES_USER_SECRET_NAME }}</code> with a unique name for the secret. For example, you might use <code>platform-postgres-user</code> if specifying the user for Platform PostgreSQL.</p>
 </li>
 <li>
-<p>Replace <code>{{ .values.POSTGRES_USER_FILE }}</code> with the path of the file you copied in Step 2. For example, this may be something like <code>site-config/postgres/platform-postgres-user.env</code>.</p>
+<p>Replace <code>{{ .Values.POSTGRES_USER_FILE }}</code> with the path of the file you copied in Step 2. For example, this may be something like <code>site-config/postgres/platform-postgres-user.env</code>.</p>
 </li>
 </ol>
 <p><strong>Note:</strong> Take note of the name you give this secretGenerator. This information will be used in a later step.</p>
@@ -76,7 +76,7 @@ For information about moving from an internal PostgreSQL server to an external o
 
 </li>
 <li>
-<p>Rename the copied file to something unique. SAS recommends following the naming convention: <code>{{ .values.POSTGRES_SERVER_NAME }}-dataserver-transformer.yaml</code>. For example, a copy of the transformer targeting Platform PostgreSQL might be called <code>platform-postgres-dataserver-transformer.yaml</code>, and if you have CDS PostgreSQL, then a copy of the transformer targeting CDS PostgreSQL might be called <code>cds-postgres-dataserver-transformer.yaml</code>.</p>
+<p>Rename the copied file to something unique. SAS recommends following the naming convention: <code>{{ .Values.POSTGRES_SERVER_NAME }}-dataserver-transformer.yaml</code>. For example, a copy of the transformer targeting Platform PostgreSQL might be called <code>platform-postgres-dataserver-transformer.yaml</code>, and if you have CDS PostgreSQL, then a copy of the transformer targeting CDS PostgreSQL might be called <code>cds-postgres-dataserver-transformer.yaml</code>.</p>
 <p><strong>Note:</strong> Take note of the name and path of your copied file. This information will be used in step 9.</p>
 </li>
 <li>
@@ -91,7 +91,7 @@ For information about moving from an internal PostgreSQL server to an external o
 </ol>
 <h4 id="140345099727152setting-a-custom-database-name">Setting a Custom Database Name</h4>
 <p>By default, the SAS Viya platform uses a database named &ldquo;SharedServices&rdquo; in each PostgreSQL server.</p>
-<p>To set a custom database name, uncomment the surrounding block and replace the <code>{{ .VALUES.DB_NAME }}</code> variable in your copied <code>dataserver-transformer.yaml</code> file(s) with the custom database name.</p>
+<p>To set a custom database name, uncomment the surrounding block and replace the <code>{{ .Values.DB_NAME }}</code> variable in your copied <code>dataserver-transformer.yaml</code> file(s) with the custom database name.</p>
 <h4 id="140345099727152security-considerations">Security Considerations</h4>
 <p>SAS strongly recommends the use of SSL/TLS to secure data in transit. You should follow the documented best practices provided by your cloud platform provider for securing access to your database using SSL/TLS. Securing your database server with SSL/TLS entails the use of certificates. Upon securing your database server, your cloud platform provider may provide you with a server CA certificate. In order for the SAS Viya platform to connect directly to a secure database server, you must provide the server CA certificate to the SAS Viya platform prior to deployment. Failing to configure the SAS Viya platform to trust the database server CA certificate results in &ldquo;Connection refused&rdquo; errors or in communications falling back to insecure modes. For instructions on how to provide CA certificates to the SAS Viya platform, see the section labeled &ldquo;Incorporating Additional CA Certificates into the SAS Viya Platform Deployment&rdquo; in the README file at <code>$deploy/sas-bases/examples/security/README.md</code> (for Markdown format) or at <code>$deploy/sas-bases/docs/configure_network_security_and_encryption_using_sas_security_certificate_framework.htm</code> (for HTML format).</p>
 <p>When using an SQL proxy for database communication, it might be possible to secure database communication in accordance with the cloud platform vendor&rsquo;s best practices without the need to import your database server CA certificate. Some cloud platforms, such as the Google Cloud Platform, allow the use of a proxy server to connect to the database server indirectly in a manner similar to a VPN tunnel. These platform-provided SQL proxy servers obtain certificates directly from the cloud platform. In this case, a database server CA certificate is obtained automatically by the proxy and you do not need to provide it during deployment. To find out more about SQL proxy connections to the database server, consult your cloud provider&rsquo;s documentation.</p>
@@ -104,7 +104,7 @@ For information about moving from an internal PostgreSQL server to an external o
 
 </li>
 <li>
-<p>Rename the copied file to something unique. SAS recommends following the naming convention: <code>{{ .values.POSTGRES_SERVER_NAME }}-cloud-sql-proxy.yaml</code>. For example, a copy of the transformer targeting Platform PostgreSQL might be called <code>platform-postgres-cloud-sql-proxy.yaml</code>, and if you have CDS PostgreSQL, then a copy of the transformer targeting CDS PostgreSQL might be called <code>cds-postgres-cloud-sql-proxy.yaml</code>.</p>
+<p>Rename the copied file to something unique. SAS recommends following the naming convention: <code>{{ .Values.POSTGRES_SERVER_NAME }}-cloud-sql-proxy.yaml</code>. For example, a copy of the transformer targeting Platform PostgreSQL might be called <code>platform-postgres-cloud-sql-proxy.yaml</code>, and if you have CDS PostgreSQL, then a copy of the transformer targeting CDS PostgreSQL might be called <code>cds-postgres-cloud-sql-proxy.yaml</code>.</p>
 <p><strong>Note:</strong> Take note of the name and path of your copied file. This information will be used in step 4.</p>
 </li>
 <li>
@@ -139,6 +139,6 @@ For information about moving from an internal PostgreSQL server to an external o
 <p>You can add PostgreSQL servers to the SAS Viya platform via the DataServer.webinfdsvr.sas.com <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">CustomResource</a>. This CustomResource is used to inform the SAS Viya platform of the location and credentials for PostgreSQL servers. DataServers can be configured to reference either internally managed Crunchy Data PostgreSQL clusters or externally managed PostgreSQL servers.</p>
 <p><strong>Note</strong>: DataServer CustomResources will not provision PostgreSQL servers on your behalf.</p>
 <p>To view the DataServer CustomResources in your SAS Viya platform deployment, run the following command.</p>
-<pre class="highlight"><code class="language-bash">kubectl get dataservers.webinfdsvr.sas.com -n {{ .values.NAME_OF_NAMESPACE }}</code></pre>
+<pre class="highlight"><code class="language-bash">kubectl get dataservers.webinfdsvr.sas.com -n {{ .Values.NAME_OF_NAMESPACE }}</code></pre>
     </body>
 </html>

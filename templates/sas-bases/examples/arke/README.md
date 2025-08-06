@@ -17,7 +17,7 @@ want to use any example file in your deployment. If you do, copy the example
 file and place it in your site-config directory.
 
 Each file has information about its content. The variables in the file are set
-off by curly braces and spaces, such as {{ .values.MEMORY_LIMIT }}. Replace the
+off by curly braces and spaces, such as {{ .Values.MEMORY_LIMIT }}. Replace the
 entire variable string, including the braces, with the value you want to use.
 
 After you have edited the file, add a reference to it in the transformers block

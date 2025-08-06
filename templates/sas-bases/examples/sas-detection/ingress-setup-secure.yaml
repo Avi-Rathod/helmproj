@@ -8,8 +8,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
-  namespace: {{ .values.NAMESPACE }}
+  name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
+  namespace: {{ .Values.NAMESPACE }}
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
 
@@ -18,28 +18,28 @@ metadata:
 
     # {{ .Values.SECURITY }} Note that these 3 annotations enable two-way front door TLS. Without them, the ingress only has one-way TLS enabled
     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
-    nginx.ingress.kubernetes.io/auth-tls-secret: "{{ .values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ .values.ORGANIZATION }}   # Used to enable TLS"
+    nginx.ingress.kubernetes.io/auth-tls-secret: "{{ .Values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ .Values.ORGANIZATION }}   # Used to enable TLS"
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    # used to enable mTLS
 
     nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
     nginx.ingress.kubernetes.io/use-regex: "true"
   labels:
-    app.kubernetes.io/name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
+    app.kubernetes.io/name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - "{{ .values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}"
-      secretName: detection-ingress-tls-config-{{ .values.ORGANIZATION }}
+        - "{{ .Values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}"
+      secretName: detection-ingress-tls-config-{{ .Values.ORGANIZATION }}
   rules:
-    - host: "{{ .values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}"
+    - host: "{{ .Values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}"
       http:
         paths:
           - path: "/detection(/|$)(.*)"
             pathType: Prefix
             backend:
               service:
-                name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
+                name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
                 port:
                   number: 8777

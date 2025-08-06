@@ -71,7 +71,7 @@ the following instructions to schedule a backup more suited to your resources.
 1. Copy the file `$deploy/sas-bases/examples/backup/configure/sas-scheduled-backup-job-change-default-backup-transformer.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/backup`.
 
-2. Replace {{ .VALUES.SCHEDULE_BACKUP_CRON_EXPRESSION }} with the cron expression for the desired schedule in the copied sas-scheduled-backup-job-change-default-backup-transformer.yaml.
+2. Replace {{ .Values.SCHEDULE_BACKUP_CRON_EXPRESSION }} with the cron expression for the desired schedule in the copied sas-scheduled-backup-job-change-default-backup-transformer.yaml.
 
 3. Add the full path of the copied file to the transformers block of the base
 kustomization.yaml file (`$deploy/kustomization.yaml`). For example, if you
@@ -97,7 +97,7 @@ By default, the incremental backup is run daily at 6:00 a.m. Use the following i
 1. Copy the file `$deploy/sas-bases/examples/backup/configure/sas-scheduled-backup-incr-job-change-default-schedule.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/backup`.
 
-2. In the copied file, replace {{ .VALUES.SCHEDULE_BACKUP_CRON_EXPRESSION }} with the cron expression for the desired schedule.
+2. In the copied file, replace {{ .Values.SCHEDULE_BACKUP_CRON_EXPRESSION }} with the cron expression for the desired schedule.
 
 3. Add the full path of the copied file to the transformers block of the base
 kustomization.yaml file (`$deploy/kustomization.yaml`). For example, if you
@@ -125,7 +125,7 @@ This job should not be scheduled at the same time as `sas-scheduled-backup-job` 
 1. Copy the file `$deploy/sas-bases/examples/backup/configure/sas-scheduled-backup-all-sources-change-default-schedule.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/backup`.
 
-2. In the copied file, Replace {{ .VALUES.SCHEDULE_BACKUP_CRON_EXPRESSION }} with the cron expression for the desired schedule in the copied sas-scheduled-backup-all-sources-change-default-schedule.yaml.
+2. In the copied file, Replace {{ .Values.SCHEDULE_BACKUP_CRON_EXPRESSION }} with the cron expression for the desired schedule in the copied sas-scheduled-backup-all-sources-change-default-schedule.yaml.
 
 3. Add the full path of the copied file to the transformers block of the base
 kustomization.yaml file (`$deploy/kustomization.yaml`). For example, if you
@@ -151,12 +151,12 @@ If the default resources are not sufficient for the completion or successful exe
 1. Copy the file `$deploy/sas-bases/examples/backup/configure/sas-backup-job-modify-resources-transformer.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/backup`.
 
-2. In the copied file, replace {{ .values.CPU_LIMIT }}with the desired value of CPU.
-{{ .values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
+2. In the copied file, replace {{ .Values.CPU_LIMIT }}with the desired value of CPU.
+{{ .Values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
-3. In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
-{{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
+3. In the same file, replace {{ .Values.MEMORY_LIMIT }} with the desired value of memory.
+{{ .Values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
 
 4. Add the full path of the copied file to the transformers block of the base
 kustomization.yaml file (`$deploy/kustomization.yaml`). For example, if you
@@ -182,12 +182,12 @@ If the default resources are not sufficient for the completion or successful exe
 1. Copy the file `$deploy/sas-bases/examples/backup/configure/sas-backup-pv-copy-cleanup-job-modify-resources-transformer.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/backup`.
 
-2. In the copied file, replace {{ .values.CPU_LIMIT }}with the desired value of CPU.
-{{ .values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
+2. In the copied file, replace {{ .Values.CPU_LIMIT }}with the desired value of CPU.
+{{ .Values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
-3. In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
-{{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
+3. In the same file, replace {{ .Values.MEMORY_LIMIT }} with the desired value of memory.
+{{ .Values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
 
 4. Add the full path of the copied file to the transformers block of the base
 kustomization.yaml file (`$deploy/kustomization.yaml`). For example, if you
@@ -214,15 +214,15 @@ modify the resources of backup agent container of CAS controller pod to the valu
 1. Copy the file `$deploy/sas-bases/examples/backup/configure/sas-cas-server-backup-agent-modify-resources-transformer.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/backup`.
 
-2. In the copied file, replace {{ .values.CPU_LIMIT }}with the desired value of CPU.
-{{ .values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
+2. In the copied file, replace {{ .Values.CPU_LIMIT }}with the desired value of CPU.
+{{ .Values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
-3. In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
-{{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
+3. In the same file, replace {{ .Values.MEMORY_LIMIT }} with the desired value of memory.
+{{ .Values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
 
 4. By default the patch will be applied to all of the CAS servers. If the patch transformer is being applied to a single CAS server,
-replace {{ .values.NAME_OF_CAS_SERVER }} with the named CAS server in the same file and comment out the lines 'name: .*' and 'labelSelector: "sas.com/cas-server-default"' with a hashtag (#).
+replace {{ .Values.NAME_OF_CAS_SERVER }} with the named CAS server in the same file and comment out the lines 'name: .*' and 'labelSelector: "sas.com/cas-server-default"' with a hashtag (#).
 
 5. Add the full path of the copied file to the transformers block of the base
 kustomization.yaml file (`$deploy/kustomization.yaml`). For example, if you
@@ -290,10 +290,10 @@ If the sas-backup-agent-parameters configMap is already included in your base ku
    - name: sas-backup-agent-parameters
      behavior: merge
      literals:
-     - BACKUP_ADDITIONAL_GENERIC_PROPERTIES="{{ .values.CONSUL_KEY_LIST }}"
+     - BACKUP_ADDITIONAL_GENERIC_PROPERTIES="{{ .Values.CONSUL_KEY_LIST }}"
    ```
 
-   The {{ .values.CONSUL_KEY_LIST }} should be a comma-separated list of properties to be backed up. Here is an example:
+   The {{ .Values.CONSUL_KEY_LIST }} should be a comma-separated list of properties to be backed up. Here is an example:
 
    ```yaml
    configMapGenerator:
@@ -317,10 +317,10 @@ If the sas-backup-job-parameters configMap is already included in your base kust
    - name: sas-backup-job-parameters
      behavior: merge
      literals:
-     - FILESYSTEM_BACKUP_EXCLUDELIST="{{ .values.EXCLUDE_PATTERN }}"
+     - FILESYSTEM_BACKUP_EXCLUDELIST="{{ .Values.EXCLUDE_PATTERN }}"
    ```
 
-   The {{ .values.EXCLUDE_PATTERN }} should be a comma-separated list of patterns for files or folders to be excluded from the backup.
+   The {{ .Values.EXCLUDE_PATTERN }} should be a comma-separated list of patterns for files or folders to be excluded from the backup.
    Here is an example that excludes all the files with extensions ".tmp" or ".log":
 
    ```yaml
@@ -347,10 +347,10 @@ If the sas-backup-job-parameters configMap is already included in your base kust
    - name: sas-backup-job-parameters
      behavior: merge
      literals:
-     - FILESYSTEM_BACKUP_OVERRIDE_EXCLUDELIST="{{ .values.EXCLUDE_PATTERN }}"
+     - FILESYSTEM_BACKUP_OVERRIDE_EXCLUDELIST="{{ .Values.EXCLUDE_PATTERN }}"
    ```
 
-   The {{ .values.EXCLUDE_PATTERN }} should be a comma-separated list of patterns for files or folders to be excluded from the backup.
+   The {{ .Values.EXCLUDE_PATTERN }} should be a comma-separated list of patterns for files or folders to be excluded from the backup.
    Here is an example that excludes all the files with extensions ".tmp" or ".log":
 
    ```yaml
@@ -368,19 +368,19 @@ If the sas-backup-job-parameters configMap is already included in your base kust
 ## Disable Backup Job Failure Notification
 
 1. By default, you are notified if the backup job fails. To disable backup job failure notification, add an entry to the sas-backup-job-parameters configMap in the configMapGenerator block of the base
-kustomization.yaml file (`$deploy/kustomization.yaml`). Replace {{ .values.ENABLE_NOTIFICATIONS }} with the string "false".
+kustomization.yaml file (`$deploy/kustomization.yaml`). Replace {{ .Values.ENABLE_NOTIFICATIONS }} with the string "false".
 
    ```yaml
    configMapGenerator:
    - name: sas-backup-job-parameters
      behavior: merge
      literals:
-     - ENABLE_NOTIFICATIONS={{ .values.ENABLE_NOTIFICATIONS }}
+     - ENABLE_NOTIFICATIONS={{ .Values.ENABLE_NOTIFICATIONS }}
    ```
 
    If the sas-backup-job-parameters configMap is already present in the base kustomization.yaml file, add the last line only. If the configMap is not present, add the entire example.
 
-   To restore the default, change the value of {{ .values.ENABLE_NOTIFICATIONS }} from "false" to "true".
+   To restore the default, change the value of {{ .Values.ENABLE_NOTIFICATIONS }} from "false" to "true".
 
 2. Build and Apply the Manifest
 

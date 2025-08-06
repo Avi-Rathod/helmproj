@@ -134,29 +134,29 @@ If you are running the restore job with this configuration frequently, then add 
 ## Disable Restore Job Failure Notification
 
 By default, you are notified if the restore job fails. To disable the restore job failure notification once,
-add an entry to the sas-restore-job-parameters configMap with the following command. Replace {{ .values.ENABLE_NOTIFICATIONS }} with the string "false".
+add an entry to the sas-restore-job-parameters configMap with the following command. Replace {{ .Values.ENABLE_NOTIFICATIONS }} with the string "false".
 
 ```bash
-kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/ENABLE_NOTIFICATIONS", "value":"{{ .values.ENABLE_NOTIFICATIONS }}" }]'
+kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/ENABLE_NOTIFICATIONS", "value":"{{ .Values.ENABLE_NOTIFICATIONS }}" }]'
 ```
 
-To restore the default, change the value of {{ .values.ENABLE_NOTIFICATIONS }} from "false" to "true".
+To restore the default, change the value of {{ .Values.ENABLE_NOTIFICATIONS }} from "false" to "true".
 
 If you are running the restore job with this configuration frequently, then add this configuration permanently using the following method.
 
-1. Add an entry to the sas-restore-job-parameters configMap in the configMapGenerator block of the base kustomization.yaml file. Replace {{ .values.ENABLE_NOTIFICATIONS }} with the string "false".
+1. Add an entry to the sas-restore-job-parameters configMap in the configMapGenerator block of the base kustomization.yaml file. Replace {{ .Values.ENABLE_NOTIFICATIONS }} with the string "false".
 
    ```yaml
    configMapGenerator:
    - name: sas-restore-job-parameters
      behavior: merge
      literals:
-     - ENABLE_NOTIFICATIONS={{ .values.ENABLE_NOTIFICATIONS }}
+     - ENABLE_NOTIFICATIONS={{ .Values.ENABLE_NOTIFICATIONS }}
    ```
 
    If the sas-restore-job-parameters configMap is already present in the base kustomization.yaml file, add the last line only. If the configMap is not present, add the entire example.
 
-   To restore the default, change the value of {{ .values.ENABLE_NOTIFICATIONS }} from "false" to "true".
+   To restore the default, change the value of {{ .Values.ENABLE_NOTIFICATIONS }} from "false" to "true".
 
 2. Build and Apply the Manifest
 
@@ -167,17 +167,17 @@ If you are running the restore job with this configuration frequently, then add 
 In some cases, the default resources may not be sufficient for completion or successful execution of the restore job,
 resulting in the pod status being marked as OOMKilled. In this case, modify the resources to the values you desire.
 
-Replace {{ .values.CPU_LIMIT }}with the desired value of CPU. {{ .values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
+Replace {{ .Values.CPU_LIMIT }}with the desired value of CPU. {{ .Values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
 ```bash
-   kubectl patch cronjob sas-restore-job -n name-of-namespace --type json -p '[{"op": "replace", "path": "/spec/jobTemplate/spec/template/spec/containers/0/resources/limits/cpu", "value":"{{ .values.CPU_LIMIT }}" }]'
+   kubectl patch cronjob sas-restore-job -n name-of-namespace --type json -p '[{"op": "replace", "path": "/spec/jobTemplate/spec/template/spec/containers/0/resources/limits/cpu", "value":"{{ .Values.CPU_LIMIT }}" }]'
 ```
 
-Replace {{ .values.MEMORY_LIMIT }} with the desired value for memory. {{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
+Replace {{ .Values.MEMORY_LIMIT }} with the desired value for memory. {{ .Values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
 
    ```bash
-      kubectl patch cronjob sas-restore-job -n name-of-namespace --type json -p '[{"op": "replace", "path": "/spec/jobTemplate/spec/template/spec/containers/0/resources/limits/memory", "value":"{{ .values.MEMORY_LIMIT }}" }]'
+      kubectl patch cronjob sas-restore-job -n name-of-namespace --type json -p '[{"op": "replace", "path": "/spec/jobTemplate/spec/template/spec/containers/0/resources/limits/memory", "value":"{{ .Values.MEMORY_LIMIT }}" }]'
    ```
 
 If you are running the restore job with this configuration frequently, then add this configuration permanently using the following method.
@@ -185,12 +185,12 @@ If you are running the restore job with this configuration frequently, then add 
 1. Copy the file `$deploy/sas-bases/examples/restore/configure/sas-restore-job-modify-resources-transformer.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/restore`.
 
-2. In the copied file, replace {{ .values.CPU_LIMIT }}with the desired value of CPU.
-{{ .values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
+2. In the copied file, replace {{ .Values.CPU_LIMIT }}with the desired value of CPU.
+{{ .Values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
-3. In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
-{{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
+3. In the same file, replace {{ .Values.MEMORY_LIMIT }} with the desired value of memory.
+{{ .Values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
 
 4. Add the full path of the copied file to the transformers block of the base
 kustomization.yaml file (`$deploy/kustomization.yaml`). For example, if you
@@ -217,9 +217,9 @@ update the sas-restore-job-parameters config map with the following parameters b
 
 * AUTO_SWITCH_POSTGRES: "true"
 
-* DATASERVER_HOST_MAP: "{{ .values.DATASERVER_HOST_MAP }}"
+* DATASERVER_HOST_MAP: "{{ .Values.DATASERVER_HOST_MAP }}"
 
-   {{ .values.DATASERVER_HOST_MAP }} is comma-separated list of key value pairs that describes the mapping of dataserver custom resource to updated host names.
+   {{ .Values.DATASERVER_HOST_MAP }} is comma-separated list of key value pairs that describes the mapping of dataserver custom resource to updated host names.
    The key and value within each KV pair is separated by colon (:).
    Here is an example that switches the host names for SAS platform PostgreSQL and SAS CDS PostgreSQL servers with the new host names:
 
@@ -240,9 +240,9 @@ update the sas-restore-job-parameters config map with the following parameters b
 
 * AUTO_SWITCH_POSTGRES: "true"
 
-* SQL_PROXY_POSTGRES_CONNECTION_MAP: "{{ .VALUES.SQL_PROXY_POSTGRES_CONNECTION_MAP }}"
+* SQL_PROXY_POSTGRES_CONNECTION_MAP: "{{ .Values.SQL_PROXY_POSTGRES_CONNECTION_MAP }}"
 
-   {{ .VALUES.SQL_PROXY_POSTGRES_CONNECTION_MAP }} is comma-separated list of key value pairs that describes the mapping of the SQL proxy Kubernetes deployment name to new PostgreSQL connection string.
+   {{ .Values.SQL_PROXY_POSTGRES_CONNECTION_MAP }} is comma-separated list of key value pairs that describes the mapping of the SQL proxy Kubernetes deployment name to new PostgreSQL connection string.
    The key and value within each KV pair is separated by the first colon (:).
    Here is an example that switches the host names for SAS platform PostgreSQL and SAS CDS PostgreSQL servers with the new connection strings:
 

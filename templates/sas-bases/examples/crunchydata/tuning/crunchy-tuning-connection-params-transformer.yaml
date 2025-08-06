@@ -1,13 +1,13 @@
 # This is an example transformer to customize PostgreSQL configurations for max_connections and its related parameter.
 # The variables to replace:
-# - {{ .values.CLUSTER_NAME }} is the name of the PostgresCluster. Valid values are:
+# - {{ .Values.CLUSTER_NAME }} is the name of the PostgresCluster. Valid values are:
 #    - sas-crunchy-platform-postgres for platform Postgres cluster
 #    - sas-crunchy-cds-postgres for CDS Postgres cluster
 #    - .* for both clusters. In this case, use a unique name like 'both-clusters' for the transformer metadata name
 #    - If different settings are needed for each cluster, then separate transformers must be created:
 #        one for Platform Postgres, and the other for CDS Postgres.
-# - {{ .values.MAX_CONNECTIONS }} is the calculated numeric value as shown by SAS Viya Platform Deployment Guide at http://documentation.sas.com/?cdcId=itopscdc&cdcVersion=default&docsetId=dplyml0phy0dkr&docsetTarget=titlepage.htm&locale=en.
-# - {{ .values.MAX_PREPARED_TRANSACTIONS }} is the same value as {{ .values.MAX_CONNECTIONS }}
+# - {{ .Values.MAX_CONNECTIONS }} is the calculated numeric value as shown by SAS Viya Platform Deployment Guide at http://documentation.sas.com/?cdcId=itopscdc&cdcVersion=default&docsetId=dplyml0phy0dkr&docsetTarget=titlepage.htm&locale=en.
+# - {{ .Values.MAX_PREPARED_TRANSACTIONS }} is the same value as {{ .Values.MAX_CONNECTIONS }}
 #
 # NOTE: max_connections and max_prepared_transactions must go together.
 #
@@ -19,16 +19,16 @@
 apiVersion: builtin
 kind: PatchTransformer
 metadata:
-  name: {{ .values.CLUSTER_NAME }}-crunchy-tuning-connection-transformer
+  name: {{ .Values.CLUSTER_NAME }}-crunchy-tuning-connection-transformer
 patch: |-
   - op: replace
     path: /spec/patroni/dynamicConfiguration/postgresql/parameters/max_connections
-    value: {{ .values.MAX_CONNECTIONS }}
+    value: {{ .Values.MAX_CONNECTIONS }}
   - op: replace
     path: /spec/patroni/dynamicConfiguration/postgresql/parameters/max_prepared_transactions
-    value: {{ .values.MAX_PREPARED_TRANSACTIONS }}
+    value: {{ .Values.MAX_PREPARED_TRANSACTIONS }}
 target:
   group: postgres-operator.crunchydata.com
   kind: PostgresCluster
   version: v1beta1
-  name: {{ .values.CLUSTER_NAME }}
+  name: {{ .Values.CLUSTER_NAME }}

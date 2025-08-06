@@ -5,7 +5,7 @@ metadata:
 patch: |-
   - op: add
     path: /data/SAS_OPTIONS_SET_DENY_LIST
-    value: "{{ .values.OPTIONS_SETDENY_LIST }}"
+    value: "{{ .Values.OPTIONS_SETDENY_LIST }}"
 target:
   kind: ConfigMap
   name: sas-programming-environment-path-config

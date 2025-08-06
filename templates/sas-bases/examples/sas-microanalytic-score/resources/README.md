@@ -24,10 +24,10 @@ Determine the minimum and maximum value of memory and CPU required for your depl
 
 2. Modify the resources-transformer.yaml in `$deploy/site-config/sas-microanalytic-score/resources` to specify your resource settings. For more information about Kubernetes resources, see [Additional Resources](#additional-resources).
 
-   * Replace {{ .values.MEMORY_REQUIRED }} with the minimum amount of memory required for SAS Micro Analytic Service.
-   * Replace {{ .values.MEMORY_LIMIT }} with the maximum amount of memory that can be claimed for SAS Micro Analytic Service.
-   * Replace {{ .values.CPU_REQUIRED }} with the minimum number of cores required for SAS Micro Analytic Service.
-   * Replace {{ .values.CPU_LIMIT }}with the maximum number of cores that can be claimed for SAS Micro Analytic Service.
+   * Replace {{ .Values.MEMORY_REQUIRED }} with the minimum amount of memory required for SAS Micro Analytic Service.
+   * Replace {{ .Values.MEMORY_LIMIT }} with the maximum amount of memory that can be claimed for SAS Micro Analytic Service.
+   * Replace {{ .Values.CPU_REQUIRED }} with the minimum number of cores required for SAS Micro Analytic Service.
+   * Replace {{ .Values.CPU_LIMIT }}with the maximum number of cores that can be claimed for SAS Micro Analytic Service.
  
    **Note:** Kubernetes uses units of measurement that are different from the standard. For memory, use Gi for gigabytes and Ti for terabytes. For cores, Kubernetes uses millicores as its standard, and there are 1000 millicores to a core. Therefore, if you want to use 4 cores, use 4000m as your value. 500m is equivalent to half a core.
 

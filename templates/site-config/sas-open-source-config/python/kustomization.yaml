@@ -1,13 +1,13 @@
 configMapGenerator:
 - name: sas-open-source-config-python
   literals:
-  - MAS_PYPATH=/python/{{ .values.PYTHON_EXE_DIR }}/{{ .values.PYTHON_EXECUTABLE }}
+  - MAS_PYPATH=/python/{{ .Values.PYTHON_EXE_DIR }}/{{ .Values.PYTHON_EXECUTABLE }}
   - MAS_M2PATH=/opt/sas/viya/home/SASFoundation/misc/embscoreeng/mas2py.py
-  - PROC_PYPATH=/python/{{ .values.PYTHON_EXE_DIR }}/{{ .values.PYTHON_EXECUTABLE }}
+  - PROC_PYPATH=/python/{{ .Values.PYTHON_EXE_DIR }}/{{ .Values.PYTHON_EXECUTABLE }}
   - PROC_M2PATH=/opt/sas/viya/home/SASFoundation/misc/tk
-  - DM_PYPATH=/python/{{ .values.PYTHON_EXE_DIR }}/{{ .values.PYTHON_EXECUTABLE }}
-  - SAS_EXTLANG_SETTINGS={{ .values.SAS_EXTLANG_SETTINGS_XML_FILE }}
-  - SAS_EXT_LLP_PYTHON={{ .values.SAS_EXT_LLP_PYTHON_PATH }}
+  - DM_PYPATH=/python/{{ .Values.PYTHON_EXE_DIR }}/{{ .Values.PYTHON_EXECUTABLE }}
+  - SAS_EXTLANG_SETTINGS={{ .Values.SAS_EXTLANG_SETTINGS_XML_FILE }}
+  - SAS_EXT_LLP_PYTHON={{ .Values.SAS_EXT_LLP_PYTHON_PATH }}
 - name: sas-open-source-config-python-mas
   literals:
   - MAS_PYPORT= 31100

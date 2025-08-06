@@ -41,7 +41,7 @@ transformers in the example file located at
 file to the site-config directory.</p>
 </li>
 <li>
-<p>To change the StorageClass replace the {{ .values.VOLUME_STORAGE_CLASS }} variable
+<p>To change the StorageClass replace the {{ .Values.VOLUME_STORAGE_CLASS }} variable
 in the copied file with a different volume storage class.
 The example file provided looks like the following:</p>
 <pre class="highlight"><code class="language-yaml">- op: add
@@ -57,7 +57,7 @@ The example file provided looks like the following:</p>
   path: /path/to/my/location</code></pre>
 
 <p>To use this in the transformer, substitute in the volume definition in the
- {{ .values.STORAGE_CLASS_NAME }} location.  The result would look like this:</p>
+ {{ .Values.STORAGE_CLASS_NAME }} location.  The result would look like this:</p>
 <pre class="highlight"><code class="language-yaml">- op: add
   path: /template/spec/volumes/-
   value:

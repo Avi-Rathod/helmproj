@@ -3,13 +3,13 @@
 # curly braces, interior spaces, and the variable name.
 #
 # The variables are as follows:
-# - {{ .values.POSTGRES_STORAGE_SIZE }} is the PostgreSQL PVCs' storage size
-# - {{ .values.BACKREST_STORAGE_SIZE }} is the pgBackrest PVC storage size
-# - {{ .values.POSTGRES_ACCESS_MODE }} is the access mode for the PostgreSQL PVCs
-# - {{ .values.BACKREST_ACCESS_MODE }} is the access mode for the pgBackRest PVCs
-# - {{ .values.POSTGRES_STORAGE_CLASS }} is the storage class for the PostgreSQL PVCs
-# - {{ .values.BACKREST_STORAGE_CLASS }} is the storage class for all pgBackRest PVCs
-# - {{ .values.CLUSTER_NAME }} is the name of the PostgresCluster resource you are targeting:
+# - {{ .Values.POSTGRES_STORAGE_SIZE }} is the PostgreSQL PVCs' storage size
+# - {{ .Values.BACKREST_STORAGE_SIZE }} is the pgBackrest PVC storage size
+# - {{ .Values.POSTGRES_ACCESS_MODE }} is the access mode for the PostgreSQL PVCs
+# - {{ .Values.BACKREST_ACCESS_MODE }} is the access mode for the pgBackRest PVCs
+# - {{ .Values.POSTGRES_STORAGE_CLASS }} is the storage class for the PostgreSQL PVCs
+# - {{ .Values.BACKREST_STORAGE_CLASS }} is the storage class for all pgBackRest PVCs
+# - {{ .Values.CLUSTER_NAME }} is the name of the PostgresCluster resource you are targeting:
 #   - For Platform PostgreSQL, use "sas-crunchy-platform-postgres"
 #   - For CDS PostgreSQL, use "sas-crunchy-cds-postgres"
 #
@@ -28,42 +28,42 @@ patch: |-
   # - op: replace
   #   path: /spec/instances/0/dataVolumeClaimSpec/resources/requests
   #   value:
-  #     storage: {{ .values.POSTGRES_STORAGE_SIZE }}
+  #     storage: {{ .Values.POSTGRES_STORAGE_SIZE }}
 
   # # Uncomment this section to change the size of pgBackRest PVCs.
   # # This value can be changed but not decreased after the initial deployment
   # - op: replace
   #   path: /spec/backups/pgbackrest/repos/0/volume/volumeClaimSpec/resources/requests
   #   value:
-  #     storage: {{ .values.BACKREST_STORAGE_SIZE }}
+  #     storage: {{ .Values.BACKREST_STORAGE_SIZE }}
 
   # # Uncomment this section to change the access mode of PostgreSQL PVCs.
   # # This value cannot be changed after the initial deployment
   # - op: replace
   #   path: /spec/instances/0/dataVolumeClaimSpec/accessModes
   #   value:
-  #     - {{ .values.POSTGRES_ACCESS_MODE }}
+  #     - {{ .Values.POSTGRES_ACCESS_MODE }}
 
   # # Uncomment this section to change the access mode of pgBackRest PVCs.
   # # This value cannot be changed after the initial deployment
   # - op: replace
   #   path: /spec/backups/pgbackrest/repos/0/volume/volumeClaimSpec/accessModes
   #   value:
-  #     - {{ .values.BACKREST_ACCESS_MODE }}
+  #     - {{ .Values.BACKREST_ACCESS_MODE }}
 
   # # Uncomment this section to change the storage class for PostgreSQL PVCs.
   # # This value cannot be changed after the initial deployment
   # - op: replace
   #   path: /spec/instances/0/dataVolumeClaimSpec/storageClassName
-  #   value: {{ .values.POSTGRES_STORAGE_CLASS }}
+  #   value: {{ .Values.POSTGRES_STORAGE_CLASS }}
 
   # # Uncomment this section to change the storage class for pgBackRest PVCs.
   # # This value cannot be changed after the initial deployment
   # - op: replace
   #   path: /spec/backups/pgbackrest/repos/0/volume/volumeClaimSpec/storageClassName
-  #   value: {{ .values.BACKREST_STORAGE_CLASS }}
+  #   value: {{ .Values.BACKREST_STORAGE_CLASS }}
 target:
   group: postgres-operator.crunchydata.com
   kind: PostgresCluster
-  name: {{ .values.CLUSTER_NAME }}
+  name: {{ .Values.CLUSTER_NAME }}
   version: v1beta1

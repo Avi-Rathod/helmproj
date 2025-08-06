@@ -23,7 +23,7 @@ the location of the output file for the converted custom resource. By default,
 if no output option is specified, the YAML file is created in the current
 directory.</p>
 <p>When you run the conversion script, a file with the custom resource is created
-in the format of {{ .values.CAS_SERVER_NAME }}-migration-cr.yaml.</p>
+in the format of {{ .Values.CAS_SERVER_NAME }}-migration-cr.yaml.</p>
 <h2 id="140345100760400restore-from-a-backup-location">Restore from a Backup Location</h2>
 <p>If you have data and permstore content to restore, use the <code>cas-migration.yaml</code>
 patch in <code>\$deploy/sas-bases/examples/migration/cas/cas-components</code> to specify
@@ -39,7 +39,7 @@ patch:</p>
    with the mounted path to your backup location and the NFS server where it
    lives:</p>
 <pre class="highlight"><code class="language-yaml">nfs:
-  path: {{ .values.NFS_MOUNT_PATH}}
+  path: {{ .Values.NFS_MOUNT_PATH}}
   server: {{NFS-SERVER}}</code></pre>
 
 </li>

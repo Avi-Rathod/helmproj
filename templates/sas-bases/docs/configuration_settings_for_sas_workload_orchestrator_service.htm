@@ -72,7 +72,7 @@ file and place it in your site-config directory.</p>
 <h3 id="140345099667824statefulset-pods-requests-and-limits">StatefulSet Pods Requests and Limits</h3>
 <p>The values for memory and CPU resources for the SAS Workload Orchestrator Service manager pods
 are specified in <code>sas-workload-orchestrator-statefulset-resources.yaml</code>.</p>
-<p>To update the defaults, replace the <code>{{ .values.MEM_REQUIRED }}</code> and <code>{{ .values.CPU_REQUIRED }}</code> variables
+<p>To update the defaults, replace the <code>{{ .Values.MEM_REQUIRED }}</code> and <code>{{ .Values.CPU_REQUIRED }}</code> variables
 with the values you want to use.</p>
 <p><strong>Note:</strong> It is important that the values for the requests and limits
 be identical to get Guaranteed Quality of Service for the SAS Workload Orchestrator Service pods.</p>
@@ -101,7 +101,7 @@ block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</cod
 <h3 id="140345099667824daemonset-pods-requests-and-limits">DaemonSet Pods Requests and Limits</h3>
 <p>The values for memory and CPU resources for the SAS Workload Orchestrator Service server pods
 are specified in <code>sas-workload-orchestrator-daemonset-resources.yaml</code>.</p>
-<p>To update the defaults, replace the <code>{{ .values.MEM_REQUIRED }}</code> and <code>{{ .values.CPU_REQUIRED }}</code> variables
+<p>To update the defaults, replace the <code>{{ .Values.MEM_REQUIRED }}</code> and <code>{{ .Values.CPU_REQUIRED }}</code> variables
 with the values you want to use.</p>
 <p><strong>Note:</strong> It is important that the values for the requests and limits
 be identical to get Guaranteed Quality of Service for the SAS Workload Orchestrator Service pods.</p>
@@ -130,8 +130,8 @@ block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</cod
 <h3 id="140345099667824user-defined-scripts-volume-for-manager-pods">User-Defined Scripts Volume for Manager Pods</h3>
 <p>The example file <code>sas-workload-orchestrator-global-user-defined-resources-script-storage.yaml</code>
 mounts an NFS volume as the &lsquo;scripts&rsquo; volume.</p>
-<p>To update the volume, replace the <code>{{ .values.NFS_SERVER_ADDR }}</code> variable with the fully-qualified
-domain name of the server and replace the <code>{{ .values.NFS_SERVER_PATH }}</code> variable with the path to
+<p>To update the volume, replace the <code>{{ .Values.NFS_SERVER_ADDR }}</code> variable with the fully-qualified
+domain name of the server and replace the <code>{{ .Values.NFS_SERVER_PATH }}</code> variable with the path to
 the volume on the server. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">  - op: replace
     path: /spec/template/spec/volumes/0
@@ -163,8 +163,8 @@ block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</cod
 <h3 id="140345099667824daemonset-pods-user-defined-script-volume">DaemonSet Pods User-Defined Script Volume</h3>
 <p>The example file <code>sas-workload-orchestrator-host-user-defined-resources-script-storage.yaml</code>
 mounts an NFS volume as the &lsquo;scripts&rsquo; volume.</p>
-<p>To update the volume, replace the <code>{{ .values.NFS_SERVER_ADDR }}</code> variable with the fully-qualified
-domain name of the server and replace the <code>{{ .values.NFS_SERVER_PATH }}</code> variable with the path to
+<p>To update the volume, replace the <code>{{ .Values.NFS_SERVER_ADDR }}</code> variable with the fully-qualified
+domain name of the server and replace the <code>{{ .Values.NFS_SERVER_PATH }}</code> variable with the path to
 the volume on the server. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">  - op: replace
     path: /spec/template/spec/volumes/0
@@ -197,7 +197,7 @@ block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</cod
 <p>The example file <code>sas-workload-orchestrator-initial-configuration-change.yaml</code>
 changes the initial SAS Workload Orchestrator configuration to add
 additional administrators.</p>
-<p>To update the initial configuration, replace the <code>{{ .values.NEW_CONFIG_JSON }}</code> variable with the
+<p>To update the initial configuration, replace the <code>{{ .Values.NEW_CONFIG_JSON }}</code> variable with the
 JSON representation of the updated configuration. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">  - op: replace
     path: /data/SGMG_CONFIG_JSON
@@ -229,7 +229,7 @@ plugin to the sas-viya CLI.</p>
 <p>The example file <code>sas-workload-orchestrator-prometheus-gateway-url.yaml</code> changes the
 Prometheus Pushgateway URL from the default of <code>http://prometheus-pushgateway:9091</code>
 to the value specified by the <code>SGMG_PROMETHEUS_PUSHGATEWAY_URL</code> environment variable.</p>
-<p>To update the URL, replace the <code>{{ .values.PROMETHEUS_PUSHGATEWAY_URL }}</code> variable with the
+<p>To update the URL, replace the <code>{{ .Values.PROMETHEUS_PUSHGATEWAY_URL }}</code> variable with the
 URL where SAS Workload Orchestrator should push its metrics. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">  - op: add
     path: /spec/template/spec/containers/0/env/-

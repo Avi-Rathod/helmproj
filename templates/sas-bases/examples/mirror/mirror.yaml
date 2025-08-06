@@ -11,7 +11,7 @@ metadata:
   name: image-transformer-sas-admin-content-loader-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-admin-content-loader
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-admin-content-loader
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-admin-content-loader
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -19,7 +19,7 @@ metadata:
   name: image-transformer-sas-admin-content-loader-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-admin-content-loader
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-admin-content-loader
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-admin-content-loader
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -38,7 +38,7 @@ metadata:
   name: image-transformer-sas-alerts-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-alerts
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-alerts
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-alerts
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -46,7 +46,7 @@ metadata:
   name: image-transformer-sas-alerts-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-alerts
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-alerts
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-alerts
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -65,7 +65,7 @@ metadata:
   name: image-transformer-sas-alerts-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-alerts-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-alerts-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-alerts-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -73,7 +73,7 @@ metadata:
   name: image-transformer-sas-alerts-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-alerts-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-alerts-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-alerts-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -92,7 +92,7 @@ metadata:
   name: image-transformer-sas-alerts-transaction-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-alerts-transaction
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-alerts-transaction
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-alerts-transaction
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -100,7 +100,7 @@ metadata:
   name: image-transformer-sas-alerts-transaction-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-alerts-transaction
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-alerts-transaction
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-alerts-transaction
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -119,7 +119,7 @@ metadata:
   name: image-transformer-sas-analytics-events-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-analytics-events
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-analytics-events
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-analytics-events
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -127,7 +127,7 @@ metadata:
   name: image-transformer-sas-analytics-events-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-analytics-events
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-analytics-events
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-analytics-events
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -146,7 +146,7 @@ metadata:
   name: image-transformer-sas-analytics-execution-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-analytics-execution
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-analytics-execution
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-analytics-execution
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -154,7 +154,7 @@ metadata:
   name: image-transformer-sas-analytics-execution-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-analytics-execution
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-analytics-execution
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-analytics-execution
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -173,7 +173,7 @@ metadata:
   name: image-transformer-sas-analytics-gateway-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-analytics-gateway
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-analytics-gateway
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-analytics-gateway
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -181,7 +181,7 @@ metadata:
   name: image-transformer-sas-analytics-gateway-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-analytics-gateway
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-analytics-gateway
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-analytics-gateway
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -200,7 +200,7 @@ metadata:
   name: image-transformer-sas-analytics-resources-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-analytics-resources
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-analytics-resources
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-analytics-resources
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -208,7 +208,7 @@ metadata:
   name: image-transformer-sas-analytics-resources-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-analytics-resources
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-analytics-resources
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-analytics-resources
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -227,7 +227,7 @@ metadata:
   name: image-transformer-sas-annotations-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-annotations
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-annotations
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-annotations
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -235,7 +235,7 @@ metadata:
   name: image-transformer-sas-annotations-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-annotations
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-annotations
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-annotations
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -254,7 +254,7 @@ metadata:
   name: image-transformer-sas-app-registry-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-app-registry
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-app-registry
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-app-registry
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -262,7 +262,7 @@ metadata:
   name: image-transformer-sas-app-registry-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-app-registry
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-app-registry
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-app-registry
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -281,7 +281,7 @@ metadata:
   name: image-transformer-sas-arke-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-arke
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-arke
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-arke
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -289,7 +289,7 @@ metadata:
   name: image-transformer-sas-arke-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-arke
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-arke
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-arke
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -308,7 +308,7 @@ metadata:
   name: image-transformer-sas-audit-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-audit
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-audit
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-audit
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -316,7 +316,7 @@ metadata:
   name: image-transformer-sas-audit-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-audit
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-audit
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-audit
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -335,7 +335,7 @@ metadata:
   name: image-transformer-sas-authorization-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-authorization
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-authorization
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-authorization
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -343,7 +343,7 @@ metadata:
   name: image-transformer-sas-authorization-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-authorization
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-authorization
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-authorization
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -362,7 +362,7 @@ metadata:
   name: image-transformer-sas-backup-agent-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-backup-agent
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-backup-agent
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-backup-agent
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -370,7 +370,7 @@ metadata:
   name: image-transformer-sas-backup-agent-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-backup-agent
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-backup-agent
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-backup-agent
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -389,7 +389,7 @@ metadata:
   name: image-transformer-sas-backup-job-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-backup-job
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-backup-job
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-backup-job
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -397,7 +397,7 @@ metadata:
   name: image-transformer-sas-backup-job-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-backup-job
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-backup-job
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-backup-job
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -416,7 +416,7 @@ metadata:
   name: image-transformer-sas-batch-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-batch
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-batch
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-batch
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -424,7 +424,7 @@ metadata:
   name: image-transformer-sas-batch-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-batch
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-batch
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-batch
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -443,7 +443,7 @@ metadata:
   name: image-transformer-sas-batch-cmd-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-batch-cmd
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-batch-cmd
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-batch-cmd
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -451,7 +451,7 @@ metadata:
   name: image-transformer-sas-batch-cmd-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-batch-cmd
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-batch-cmd
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-batch-cmd
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -470,7 +470,7 @@ metadata:
   name: image-transformer-sas-buildkit-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-buildkit
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-buildkit
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-buildkit
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -478,7 +478,7 @@ metadata:
   name: image-transformer-sas-buildkit-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-buildkit
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-buildkit
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-buildkit
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -497,7 +497,7 @@ metadata:
   name: image-transformer-sas-business-orchestration-worker-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-business-orchestration-worker
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-business-orchestration-worker
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-business-orchestration-worker
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -505,7 +505,7 @@ metadata:
   name: image-transformer-sas-business-orchestration-worker-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-business-orchestration-worker
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-business-orchestration-worker
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-business-orchestration-worker
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -524,7 +524,7 @@ metadata:
   name: image-transformer-sas-business-rules-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-business-rules
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-business-rules
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-business-rules
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -532,7 +532,7 @@ metadata:
   name: image-transformer-sas-business-rules-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-business-rules
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-business-rules
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-business-rules
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -551,7 +551,7 @@ metadata:
   name: image-transformer-sas-cas-control-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-cas-control
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-cas-control
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-cas-control
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -559,7 +559,7 @@ metadata:
   name: image-transformer-sas-cas-control-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-cas-control
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-cas-control
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-cas-control
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -578,7 +578,7 @@ metadata:
   name: image-transformer-sas-cas-operator-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-cas-operator
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-cas-operator
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-cas-operator
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -586,7 +586,7 @@ metadata:
   name: image-transformer-sas-cas-operator-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-cas-operator
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-cas-operator
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-cas-operator
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -605,7 +605,7 @@ metadata:
   name: image-transformer-sas-cas-server-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-cas-server
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-cas-server
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-cas-server
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -613,7 +613,7 @@ metadata:
   name: image-transformer-sas-cas-server-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-cas-server
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-cas-server
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-cas-server
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -632,7 +632,7 @@ metadata:
   name: image-transformer-sas-catalog-services-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-catalog-services
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-catalog-services
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-catalog-services
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -640,7 +640,7 @@ metadata:
   name: image-transformer-sas-catalog-services-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-catalog-services
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-catalog-services
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-catalog-services
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -659,7 +659,7 @@ metadata:
   name: image-transformer-sas-certframe-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-certframe
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-certframe
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-certframe
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -667,7 +667,7 @@ metadata:
   name: image-transformer-sas-certframe-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-certframe
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-certframe
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-certframe
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -686,7 +686,7 @@ metadata:
   name: image-transformer-sas-chromium-server-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-chromium-server
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-chromium-server
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-chromium-server
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -694,7 +694,7 @@ metadata:
   name: image-transformer-sas-chromium-server-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-chromium-server
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-chromium-server
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-chromium-server
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -713,7 +713,7 @@ metadata:
   name: image-transformer-sas-code-debugger-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-code-debugger
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-code-debugger
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-code-debugger
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -721,7 +721,7 @@ metadata:
   name: image-transformer-sas-code-debugger-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-code-debugger
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-code-debugger
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-code-debugger
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -740,7 +740,7 @@ metadata:
   name: image-transformer-sas-code-debugger-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-code-debugger-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-code-debugger-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-code-debugger-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -748,7 +748,7 @@ metadata:
   name: image-transformer-sas-code-debugger-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-code-debugger-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-code-debugger-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-code-debugger-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -767,7 +767,7 @@ metadata:
   name: image-transformer-sas-collaboration-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-collaboration
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-collaboration
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-collaboration
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -775,7 +775,7 @@ metadata:
   name: image-transformer-sas-collaboration-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-collaboration
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-collaboration
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-collaboration
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -794,7 +794,7 @@ metadata:
   name: image-transformer-sas-commonfiles-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-commonfiles
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-commonfiles
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-commonfiles
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -802,7 +802,7 @@ metadata:
   name: image-transformer-sas-commonfiles-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-commonfiles
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-commonfiles
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-commonfiles
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -821,7 +821,7 @@ metadata:
   name: image-transformer-sas-compute-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-compute
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-compute
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-compute
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -829,7 +829,7 @@ metadata:
   name: image-transformer-sas-compute-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-compute
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-compute
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-compute
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -848,7 +848,7 @@ metadata:
   name: image-transformer-sas-config-init-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-config-init
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-config-init
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-config-init
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -856,7 +856,7 @@ metadata:
   name: image-transformer-sas-config-init-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-config-init
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-config-init
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-config-init
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -875,7 +875,7 @@ metadata:
   name: image-transformer-sas-config-reconciler-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-config-reconciler
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-config-reconciler
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-config-reconciler
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -883,7 +883,7 @@ metadata:
   name: image-transformer-sas-config-reconciler-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-config-reconciler
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-config-reconciler
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-config-reconciler
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -902,7 +902,7 @@ metadata:
   name: image-transformer-sas-configuration-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-configuration
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-configuration
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-configuration
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -910,7 +910,7 @@ metadata:
   name: image-transformer-sas-configuration-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-configuration
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-configuration
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-configuration
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -929,7 +929,7 @@ metadata:
   name: image-transformer-sas-connect-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-connect
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-connect
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-connect
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -937,7 +937,7 @@ metadata:
   name: image-transformer-sas-connect-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-connect
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-connect
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-connect
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -956,7 +956,7 @@ metadata:
   name: image-transformer-sas-connect-spawner-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-connect-spawner
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-connect-spawner
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-connect-spawner
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -964,7 +964,7 @@ metadata:
   name: image-transformer-sas-connect-spawner-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-connect-spawner
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-connect-spawner
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-connect-spawner
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -983,7 +983,7 @@ metadata:
   name: image-transformer-sas-consul-server-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-consul-server
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-consul-server
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-consul-server
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -991,7 +991,7 @@ metadata:
   name: image-transformer-sas-consul-server-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-consul-server
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-consul-server
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-consul-server
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1010,7 +1010,7 @@ metadata:
   name: image-transformer-sas-content-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-content
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-content
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-content
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1018,7 +1018,7 @@ metadata:
   name: image-transformer-sas-content-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-content
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-content
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-content
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1037,7 +1037,7 @@ metadata:
   name: image-transformer-sas-credentials-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-credentials
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-credentials
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-credentials
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1045,7 +1045,7 @@ metadata:
   name: image-transformer-sas-credentials-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-credentials
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-credentials
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-credentials
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1064,7 +1064,7 @@ metadata:
   name: image-transformer-sas-crunchy5-pgbackrest-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-crunchy5-pgbackrest
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-pgbackrest
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-pgbackrest
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1072,7 +1072,7 @@ metadata:
   name: image-transformer-sas-crunchy5-pgbackrest-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-crunchy5-pgbackrest
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-pgbackrest
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-pgbackrest
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1091,7 +1091,7 @@ metadata:
   name: image-transformer-sas-crunchy5-postgres-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1099,7 +1099,7 @@ metadata:
   name: image-transformer-sas-crunchy5-postgres-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1118,7 +1118,7 @@ metadata:
   name: image-transformer-sas-crunchy5-postgres-exporter-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres-exporter
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres-exporter
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres-exporter
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1126,7 +1126,7 @@ metadata:
   name: image-transformer-sas-crunchy5-postgres-exporter-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres-exporter
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres-exporter
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres-exporter
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1145,7 +1145,7 @@ metadata:
   name: image-transformer-sas-crunchy5-postgres-operator-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres-operator
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres-operator
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres-operator
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1153,7 +1153,7 @@ metadata:
   name: image-transformer-sas-crunchy5-postgres-operator-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres-operator
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres-operator
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres-operator
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1172,7 +1172,7 @@ metadata:
   name: image-transformer-sas-crunchy5-upgrade-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-crunchy5-upgrade
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-upgrade
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-upgrade
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1180,7 +1180,7 @@ metadata:
   name: image-transformer-sas-crunchy5-upgrade-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-crunchy5-upgrade
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-upgrade
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-crunchy5-upgrade
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1199,7 +1199,7 @@ metadata:
   name: image-transformer-sas-data-agent-server-colocated-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-agent-server-colocated
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-agent-server-colocated
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-agent-server-colocated
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1207,7 +1207,7 @@ metadata:
   name: image-transformer-sas-data-agent-server-colocated-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-agent-server-colocated
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-agent-server-colocated
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-agent-server-colocated
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1226,7 +1226,7 @@ metadata:
   name: image-transformer-sas-data-agent-server-remote-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-agent-server-remote
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-agent-server-remote
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-agent-server-remote
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1234,7 +1234,7 @@ metadata:
   name: image-transformer-sas-data-agent-server-remote-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-agent-server-remote
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-agent-server-remote
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-agent-server-remote
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1253,7 +1253,7 @@ metadata:
   name: image-transformer-sas-data-agent-services-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-agent-services
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-agent-services
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-agent-services
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1261,7 +1261,7 @@ metadata:
   name: image-transformer-sas-data-agent-services-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-agent-services
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-agent-services
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-agent-services
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1280,7 +1280,7 @@ metadata:
   name: image-transformer-sas-data-explorer-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-explorer-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-explorer-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-explorer-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1288,7 +1288,7 @@ metadata:
   name: image-transformer-sas-data-explorer-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-explorer-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-explorer-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-explorer-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1307,7 +1307,7 @@ metadata:
   name: image-transformer-sas-data-flows-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-flows
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-flows
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-flows
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1315,7 +1315,7 @@ metadata:
   name: image-transformer-sas-data-flows-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-flows
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-flows
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-flows
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1334,7 +1334,7 @@ metadata:
   name: image-transformer-sas-data-mining-models-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-mining-models
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-mining-models
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-mining-models
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1342,7 +1342,7 @@ metadata:
   name: image-transformer-sas-data-mining-models-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-mining-models
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-mining-models
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-mining-models
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1361,7 +1361,7 @@ metadata:
   name: image-transformer-sas-data-mining-project-resources-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-mining-project-resources
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-mining-project-resources
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-mining-project-resources
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1369,7 +1369,7 @@ metadata:
   name: image-transformer-sas-data-mining-project-resources-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-mining-project-resources
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-mining-project-resources
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-mining-project-resources
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1388,7 +1388,7 @@ metadata:
   name: image-transformer-sas-data-mining-results-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-mining-results
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-mining-results
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-mining-results
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1396,7 +1396,7 @@ metadata:
   name: image-transformer-sas-data-mining-results-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-mining-results
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-mining-results
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-mining-results
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1415,7 +1415,7 @@ metadata:
   name: image-transformer-sas-data-mining-risk-models-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-mining-risk-models
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-mining-risk-models
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-mining-risk-models
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1423,7 +1423,7 @@ metadata:
   name: image-transformer-sas-data-mining-risk-models-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-mining-risk-models
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-mining-risk-models
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-mining-risk-models
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1442,7 +1442,7 @@ metadata:
   name: image-transformer-sas-data-plans-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-plans
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-plans
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-plans
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1450,7 +1450,7 @@ metadata:
   name: image-transformer-sas-data-plans-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-plans
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-plans
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-plans
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1469,7 +1469,7 @@ metadata:
   name: image-transformer-sas-data-quality-services-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-quality-services
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-quality-services
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-quality-services
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1477,7 +1477,7 @@ metadata:
   name: image-transformer-sas-data-quality-services-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-quality-services
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-quality-services
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-quality-services
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1496,7 +1496,7 @@ metadata:
   name: image-transformer-sas-data-server-operator-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-server-operator
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-server-operator
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-server-operator
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1504,7 +1504,7 @@ metadata:
   name: image-transformer-sas-data-server-operator-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-server-operator
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-server-operator
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-server-operator
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1523,7 +1523,7 @@ metadata:
   name: image-transformer-sas-data-sources-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-sources
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-sources
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-sources
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1531,7 +1531,7 @@ metadata:
   name: image-transformer-sas-data-sources-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-sources
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-sources
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-sources
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1550,7 +1550,7 @@ metadata:
   name: image-transformer-sas-data-studio-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-studio-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-studio-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-studio-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1558,7 +1558,7 @@ metadata:
   name: image-transformer-sas-data-studio-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-data-studio-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-studio-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-data-studio-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1577,7 +1577,7 @@ metadata:
   name: image-transformer-sas-db-migrator-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-db-migrator
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-db-migrator
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-db-migrator
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1585,7 +1585,7 @@ metadata:
   name: image-transformer-sas-db-migrator-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-db-migrator
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-db-migrator
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-db-migrator
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1604,7 +1604,7 @@ metadata:
   name: image-transformer-sas-decision-manager-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-decision-manager-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decision-manager-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decision-manager-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1612,7 +1612,7 @@ metadata:
   name: image-transformer-sas-decision-manager-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-decision-manager-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decision-manager-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decision-manager-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1631,7 +1631,7 @@ metadata:
   name: image-transformer-sas-decisions-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-decisions
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decisions
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decisions
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1639,7 +1639,7 @@ metadata:
   name: image-transformer-sas-decisions-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-decisions
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decisions
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decisions
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1658,7 +1658,7 @@ metadata:
   name: image-transformer-sas-decisions-runtime-base-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-decisions-runtime-base
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decisions-runtime-base
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decisions-runtime-base
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1666,7 +1666,7 @@ metadata:
   name: image-transformer-sas-decisions-runtime-base-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-decisions-runtime-base
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decisions-runtime-base
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decisions-runtime-base
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1685,7 +1685,7 @@ metadata:
   name: image-transformer-sas-decisions-runtime-builder-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-decisions-runtime-builder
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decisions-runtime-builder
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decisions-runtime-builder
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1693,7 +1693,7 @@ metadata:
   name: image-transformer-sas-decisions-runtime-builder-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-decisions-runtime-builder
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decisions-runtime-builder
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decisions-runtime-builder
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1712,7 +1712,7 @@ metadata:
   name: image-transformer-sas-decisions-runtime-components-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-decisions-runtime-components
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decisions-runtime-components
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decisions-runtime-components
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1720,7 +1720,7 @@ metadata:
   name: image-transformer-sas-decisions-runtime-components-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-decisions-runtime-components
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decisions-runtime-components
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-decisions-runtime-components
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1739,7 +1739,7 @@ metadata:
   name: image-transformer-sas-deployment-data-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-deployment-data
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-deployment-data
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-deployment-data
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1747,7 +1747,7 @@ metadata:
   name: image-transformer-sas-deployment-data-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-deployment-data
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-deployment-data
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-deployment-data
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1766,7 +1766,7 @@ metadata:
   name: image-transformer-sas-deployment-operator-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-deployment-operator
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-deployment-operator
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-deployment-operator
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1774,7 +1774,7 @@ metadata:
   name: image-transformer-sas-deployment-operator-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-deployment-operator
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-deployment-operator
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-deployment-operator
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1793,7 +1793,7 @@ metadata:
   name: image-transformer-sas-detection-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-detection
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1801,7 +1801,7 @@ metadata:
   name: image-transformer-sas-detection-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-detection
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1820,7 +1820,7 @@ metadata:
   name: image-transformer-sas-detection-analysis-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-detection-analysis
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection-analysis
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection-analysis
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1828,7 +1828,7 @@ metadata:
   name: image-transformer-sas-detection-analysis-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-detection-analysis
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection-analysis
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection-analysis
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1847,7 +1847,7 @@ metadata:
   name: image-transformer-sas-detection-definition-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-detection-definition
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection-definition
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection-definition
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1855,7 +1855,7 @@ metadata:
   name: image-transformer-sas-detection-definition-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-detection-definition
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection-definition
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection-definition
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1874,7 +1874,7 @@ metadata:
   name: image-transformer-sas-detection-definition-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-detection-definition-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection-definition-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection-definition-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1882,7 +1882,7 @@ metadata:
   name: image-transformer-sas-detection-definition-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-detection-definition-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection-definition-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection-definition-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1901,7 +1901,7 @@ metadata:
   name: image-transformer-sas-detection-message-schema-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-detection-message-schema
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection-message-schema
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection-message-schema
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1909,7 +1909,7 @@ metadata:
   name: image-transformer-sas-detection-message-schema-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-detection-message-schema
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection-message-schema
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-detection-message-schema
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1928,7 +1928,7 @@ metadata:
   name: image-transformer-sas-device-management-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-device-management
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-device-management
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-device-management
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1936,7 +1936,7 @@ metadata:
   name: image-transformer-sas-device-management-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-device-management
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-device-management
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-device-management
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1955,7 +1955,7 @@ metadata:
   name: image-transformer-sas-discovery-services-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-discovery-services
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-discovery-services
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-discovery-services
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1963,7 +1963,7 @@ metadata:
   name: image-transformer-sas-discovery-services-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-discovery-services
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-discovery-services
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-discovery-services
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -1982,7 +1982,7 @@ metadata:
   name: image-transformer-sas-document-generator-adapter-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-document-generator-adapter
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-document-generator-adapter
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-document-generator-adapter
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -1990,7 +1990,7 @@ metadata:
   name: image-transformer-sas-document-generator-adapter-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-document-generator-adapter
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-document-generator-adapter
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-document-generator-adapter
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2009,7 +2009,7 @@ metadata:
   name: image-transformer-sas-drive-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-drive-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-drive-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-drive-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2017,7 +2017,7 @@ metadata:
   name: image-transformer-sas-drive-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-drive-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-drive-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-drive-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2036,7 +2036,7 @@ metadata:
   name: image-transformer-sas-environment-manager-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-environment-manager-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-environment-manager-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-environment-manager-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2044,7 +2044,7 @@ metadata:
   name: image-transformer-sas-environment-manager-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-environment-manager-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-environment-manager-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-environment-manager-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2063,7 +2063,7 @@ metadata:
   name: image-transformer-sas-event-monitor-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-event-monitor
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-event-monitor
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-event-monitor
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2071,7 +2071,7 @@ metadata:
   name: image-transformer-sas-event-monitor-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-event-monitor
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-event-monitor
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-event-monitor
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2090,7 +2090,7 @@ metadata:
   name: image-transformer-sas-feature-flags-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-feature-flags
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-feature-flags
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-feature-flags
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2098,7 +2098,7 @@ metadata:
   name: image-transformer-sas-feature-flags-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-feature-flags
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-feature-flags
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-feature-flags
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2117,7 +2117,7 @@ metadata:
   name: image-transformer-sas-file-store-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-file-store
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-file-store
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-file-store
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2125,7 +2125,7 @@ metadata:
   name: image-transformer-sas-file-store-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-file-store
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-file-store
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-file-store
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2144,7 +2144,7 @@ metadata:
   name: image-transformer-sas-files-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-files
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-files
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-files
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2152,7 +2152,7 @@ metadata:
   name: image-transformer-sas-files-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-files
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-files
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-files
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2171,7 +2171,7 @@ metadata:
   name: image-transformer-sas-flow-orchestrator-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-flow-orchestrator
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-flow-orchestrator
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-flow-orchestrator
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2179,7 +2179,7 @@ metadata:
   name: image-transformer-sas-flow-orchestrator-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-flow-orchestrator
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-flow-orchestrator
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-flow-orchestrator
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2198,7 +2198,7 @@ metadata:
   name: image-transformer-sas-formats-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-formats
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-formats
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-formats
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2206,7 +2206,7 @@ metadata:
   name: image-transformer-sas-formats-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-formats
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-formats
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-formats
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2225,7 +2225,7 @@ metadata:
   name: image-transformer-sas-geography-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-geography
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-geography
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-geography
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2233,7 +2233,7 @@ metadata:
   name: image-transformer-sas-geography-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-geography
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-geography
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-geography
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2252,7 +2252,7 @@ metadata:
   name: image-transformer-sas-graph-builder-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-graph-builder-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-graph-builder-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-graph-builder-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2260,7 +2260,7 @@ metadata:
   name: image-transformer-sas-graph-builder-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-graph-builder-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-graph-builder-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-graph-builder-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2279,7 +2279,7 @@ metadata:
   name: image-transformer-sas-graph-templates-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-graph-templates
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-graph-templates
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-graph-templates
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2287,7 +2287,7 @@ metadata:
   name: image-transformer-sas-graph-templates-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-graph-templates
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-graph-templates
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-graph-templates
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2306,7 +2306,7 @@ metadata:
   name: image-transformer-sas-identities-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-identities
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-identities
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-identities
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2314,7 +2314,7 @@ metadata:
   name: image-transformer-sas-identities-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-identities
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-identities
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-identities
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2333,7 +2333,7 @@ metadata:
   name: image-transformer-sas-import-9-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-import-9
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-import-9
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-import-9
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2341,7 +2341,7 @@ metadata:
   name: image-transformer-sas-import-9-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-import-9
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-import-9
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-import-9
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2360,7 +2360,7 @@ metadata:
   name: image-transformer-sas-import-data-loader-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-import-data-loader
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-import-data-loader
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-import-data-loader
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2368,7 +2368,7 @@ metadata:
   name: image-transformer-sas-import-data-loader-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-import-data-loader
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-import-data-loader
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-import-data-loader
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2387,7 +2387,7 @@ metadata:
   name: image-transformer-sas-information-catalog-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-information-catalog-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-information-catalog-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-information-catalog-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2395,7 +2395,7 @@ metadata:
   name: image-transformer-sas-information-catalog-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-information-catalog-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-information-catalog-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-information-catalog-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2414,7 +2414,7 @@ metadata:
   name: image-transformer-sas-insights-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-insights
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-insights
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-insights
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2422,7 +2422,7 @@ metadata:
   name: image-transformer-sas-insights-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-insights
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-insights
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-insights
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2441,7 +2441,7 @@ metadata:
   name: image-transformer-sas-inventory-collector-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-inventory-collector
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-inventory-collector
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-inventory-collector
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2449,7 +2449,7 @@ metadata:
   name: image-transformer-sas-inventory-collector-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-inventory-collector
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-inventory-collector
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-inventory-collector
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2468,7 +2468,7 @@ metadata:
   name: image-transformer-sas-job-execution-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-job-execution
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-job-execution
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-job-execution
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2476,7 +2476,7 @@ metadata:
   name: image-transformer-sas-job-execution-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-job-execution
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-job-execution
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-job-execution
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2495,7 +2495,7 @@ metadata:
   name: image-transformer-sas-job-execution-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-job-execution-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-job-execution-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-job-execution-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2503,7 +2503,7 @@ metadata:
   name: image-transformer-sas-job-execution-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-job-execution-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-job-execution-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-job-execution-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2522,7 +2522,7 @@ metadata:
   name: image-transformer-sas-job-flow-scheduling-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-job-flow-scheduling
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-job-flow-scheduling
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-job-flow-scheduling
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2530,7 +2530,7 @@ metadata:
   name: image-transformer-sas-job-flow-scheduling-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-job-flow-scheduling
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-job-flow-scheduling
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-job-flow-scheduling
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2549,7 +2549,7 @@ metadata:
   name: image-transformer-sas-kaniko-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-kaniko
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-kaniko
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-kaniko
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2557,7 +2557,7 @@ metadata:
   name: image-transformer-sas-kaniko-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-kaniko
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-kaniko
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-kaniko
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2576,7 +2576,7 @@ metadata:
   name: image-transformer-sas-krb5-proxy-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-krb5-proxy
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-krb5-proxy
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-krb5-proxy
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2584,7 +2584,7 @@ metadata:
   name: image-transformer-sas-krb5-proxy-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-krb5-proxy
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-krb5-proxy
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-krb5-proxy
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2603,7 +2603,7 @@ metadata:
   name: image-transformer-sas-launcher-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-launcher
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-launcher
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-launcher
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2611,7 +2611,7 @@ metadata:
   name: image-transformer-sas-launcher-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-launcher
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-launcher
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-launcher
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2630,7 +2630,7 @@ metadata:
   name: image-transformer-sas-lineage-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-lineage-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-lineage-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-lineage-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2638,7 +2638,7 @@ metadata:
   name: image-transformer-sas-lineage-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-lineage-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-lineage-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-lineage-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2657,7 +2657,7 @@ metadata:
   name: image-transformer-sas-links-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-links
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-links
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-links
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2665,7 +2665,7 @@ metadata:
   name: image-transformer-sas-links-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-links
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-links
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-links
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2684,7 +2684,7 @@ metadata:
   name: image-transformer-sas-list-data-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-list-data
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-list-data
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-list-data
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2692,7 +2692,7 @@ metadata:
   name: image-transformer-sas-list-data-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-list-data
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-list-data
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-list-data
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2711,7 +2711,7 @@ metadata:
   name: image-transformer-sas-localization-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-localization
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-localization
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-localization
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2719,7 +2719,7 @@ metadata:
   name: image-transformer-sas-localization-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-localization
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-localization
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-localization
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2738,7 +2738,7 @@ metadata:
   name: image-transformer-sas-logon-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-logon-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-logon-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-logon-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2746,7 +2746,7 @@ metadata:
   name: image-transformer-sas-logon-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-logon-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-logon-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-logon-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2765,7 +2765,7 @@ metadata:
   name: image-transformer-sas-maspy-base-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-maspy-base
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-maspy-base
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-maspy-base
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2773,7 +2773,7 @@ metadata:
   name: image-transformer-sas-maspy-base-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-maspy-base
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-maspy-base
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-maspy-base
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2792,7 +2792,7 @@ metadata:
   name: image-transformer-sas-microanalytic-score-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-microanalytic-score
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-microanalytic-score
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-microanalytic-score
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2800,7 +2800,7 @@ metadata:
   name: image-transformer-sas-microanalytic-score-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-microanalytic-score
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-microanalytic-score
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-microanalytic-score
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2819,7 +2819,7 @@ metadata:
   name: image-transformer-sas-migration-manager-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-migration-manager
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-migration-manager
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-migration-manager
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2827,7 +2827,7 @@ metadata:
   name: image-transformer-sas-migration-manager-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-migration-manager
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-migration-manager
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-migration-manager
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2846,7 +2846,7 @@ metadata:
   name: image-transformer-sas-ml-pipeline-automation-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-ml-pipeline-automation
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-ml-pipeline-automation
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-ml-pipeline-automation
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2854,7 +2854,7 @@ metadata:
   name: image-transformer-sas-ml-pipeline-automation-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-ml-pipeline-automation
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-ml-pipeline-automation
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-ml-pipeline-automation
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2873,7 +2873,7 @@ metadata:
   name: image-transformer-sas-mobile-investigator-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-mobile-investigator-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-mobile-investigator-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-mobile-investigator-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2881,7 +2881,7 @@ metadata:
   name: image-transformer-sas-mobile-investigator-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-mobile-investigator-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-mobile-investigator-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-mobile-investigator-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2900,7 +2900,7 @@ metadata:
   name: image-transformer-sas-model-management-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-model-management
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-management
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-management
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2908,7 +2908,7 @@ metadata:
   name: image-transformer-sas-model-management-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-model-management
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-management
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-management
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2927,7 +2927,7 @@ metadata:
   name: image-transformer-sas-model-manager-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-model-manager-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-manager-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-manager-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2935,7 +2935,7 @@ metadata:
   name: image-transformer-sas-model-manager-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-model-manager-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-manager-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-manager-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2954,7 +2954,7 @@ metadata:
   name: image-transformer-sas-model-publish-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-model-publish
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-publish
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-publish
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2962,7 +2962,7 @@ metadata:
   name: image-transformer-sas-model-publish-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-model-publish
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-publish
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-publish
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -2981,7 +2981,7 @@ metadata:
   name: image-transformer-sas-model-repository-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-model-repository
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-repository
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-repository
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -2989,7 +2989,7 @@ metadata:
   name: image-transformer-sas-model-repository-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-model-repository
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-repository
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-repository
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3008,7 +3008,7 @@ metadata:
   name: image-transformer-sas-model-studio-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-model-studio-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-studio-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-studio-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3016,7 +3016,7 @@ metadata:
   name: image-transformer-sas-model-studio-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-model-studio-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-studio-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-model-studio-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3035,7 +3035,7 @@ metadata:
   name: image-transformer-sas-natural-language-generation-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-natural-language-generation
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-natural-language-generation
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-natural-language-generation
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3043,7 +3043,7 @@ metadata:
   name: image-transformer-sas-natural-language-generation-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-natural-language-generation
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-natural-language-generation
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-natural-language-generation
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3062,7 +3062,7 @@ metadata:
   name: image-transformer-sas-office-addin-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-office-addin-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-office-addin-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-office-addin-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3070,7 +3070,7 @@ metadata:
   name: image-transformer-sas-office-addin-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-office-addin-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-office-addin-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-office-addin-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3089,7 +3089,7 @@ metadata:
   name: image-transformer-sas-opendistro-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-opendistro
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-opendistro
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-opendistro
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3097,7 +3097,7 @@ metadata:
   name: image-transformer-sas-opendistro-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-opendistro
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-opendistro
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-opendistro
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3116,7 +3116,7 @@ metadata:
   name: image-transformer-sas-opendistro-operator-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-opendistro-operator
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-opendistro-operator
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-opendistro-operator
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3124,7 +3124,7 @@ metadata:
   name: image-transformer-sas-opendistro-operator-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-opendistro-operator
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-opendistro-operator
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-opendistro-operator
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3143,7 +3143,7 @@ metadata:
   name: image-transformer-sas-opendistro-sysctl-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-opendistro-sysctl
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-opendistro-sysctl
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-opendistro-sysctl
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3151,7 +3151,7 @@ metadata:
   name: image-transformer-sas-opendistro-sysctl-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-opendistro-sysctl
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-opendistro-sysctl
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-opendistro-sysctl
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3170,7 +3170,7 @@ metadata:
   name: image-transformer-sas-operational-qualification-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-operational-qualification
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-operational-qualification
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-operational-qualification
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3178,7 +3178,7 @@ metadata:
   name: image-transformer-sas-operational-qualification-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-operational-qualification
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-operational-qualification
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-operational-qualification
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3197,7 +3197,7 @@ metadata:
   name: image-transformer-sas-orchestration-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-orchestration
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-orchestration
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-orchestration
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3205,7 +3205,7 @@ metadata:
   name: image-transformer-sas-orchestration-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-orchestration
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-orchestration
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-orchestration
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3225,10 +3225,10 @@ metadata:
 patch: |-
   - op: replace
     path: /data/image
-    value: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-orchestration:1.128.2-20241002.1727879835425
+    value: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-orchestration:1.128.2-20241002.1727879835425
   - op: replace
     path: /data/registry
-    value: {{ .values.MIRROR_HOST }}
+    value: {{ .Values.MIRROR_HOST }}
 target:
   kind: ConfigMap
   labelSelector: orchestration.sas.com/lifecycle=image
@@ -3239,7 +3239,7 @@ metadata:
   name: image-transformer-sas-portable-formats-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-portable-formats
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-portable-formats
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-portable-formats
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3247,7 +3247,7 @@ metadata:
   name: image-transformer-sas-portable-formats-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-portable-formats
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-portable-formats
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-portable-formats
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3266,7 +3266,7 @@ metadata:
   name: image-transformer-sas-postgres-data-transfer-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-postgres-data-transfer
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-postgres-data-transfer
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-postgres-data-transfer
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3274,7 +3274,7 @@ metadata:
   name: image-transformer-sas-postgres-data-transfer-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-postgres-data-transfer
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-postgres-data-transfer
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-postgres-data-transfer
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3293,7 +3293,7 @@ metadata:
   name: image-transformer-sas-preferences-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-preferences
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-preferences
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-preferences
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3301,7 +3301,7 @@ metadata:
   name: image-transformer-sas-preferences-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-preferences
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-preferences
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-preferences
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3320,7 +3320,7 @@ metadata:
   name: image-transformer-sas-prepull-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-prepull
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-prepull
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-prepull
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3328,7 +3328,7 @@ metadata:
   name: image-transformer-sas-prepull-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-prepull
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-prepull
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-prepull
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3347,7 +3347,7 @@ metadata:
   name: image-transformer-sas-process-exporter-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-process-exporter
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-process-exporter
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-process-exporter
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3355,7 +3355,7 @@ metadata:
   name: image-transformer-sas-process-exporter-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-process-exporter
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-process-exporter
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-process-exporter
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3374,7 +3374,7 @@ metadata:
   name: image-transformer-sas-programming-environment-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-programming-environment
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-programming-environment
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-programming-environment
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3382,7 +3382,7 @@ metadata:
   name: image-transformer-sas-programming-environment-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-programming-environment
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-programming-environment
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-programming-environment
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3401,7 +3401,7 @@ metadata:
   name: image-transformer-sas-pyconfig-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-pyconfig
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-pyconfig
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-pyconfig
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3409,7 +3409,7 @@ metadata:
   name: image-transformer-sas-pyconfig-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-pyconfig
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-pyconfig
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-pyconfig
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3428,7 +3428,7 @@ metadata:
   name: image-transformer-sas-quality-knowledge-base-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-quality-knowledge-base
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-quality-knowledge-base
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-quality-knowledge-base
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3436,7 +3436,7 @@ metadata:
   name: image-transformer-sas-quality-knowledge-base-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-quality-knowledge-base
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-quality-knowledge-base
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-quality-knowledge-base
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3455,7 +3455,7 @@ metadata:
   name: image-transformer-sas-rabbitmq-server-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-rabbitmq-server
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-rabbitmq-server
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-rabbitmq-server
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3463,7 +3463,7 @@ metadata:
   name: image-transformer-sas-rabbitmq-server-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-rabbitmq-server
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-rabbitmq-server
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-rabbitmq-server
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3482,7 +3482,7 @@ metadata:
   name: image-transformer-sas-readiness-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-readiness
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-readiness
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-readiness
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3490,7 +3490,7 @@ metadata:
   name: image-transformer-sas-readiness-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-readiness
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-readiness
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-readiness
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3509,7 +3509,7 @@ metadata:
   name: image-transformer-sas-redis-operator-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-redis-operator
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-redis-operator
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-redis-operator
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3517,7 +3517,7 @@ metadata:
   name: image-transformer-sas-redis-operator-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-redis-operator
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-redis-operator
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-redis-operator
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3536,7 +3536,7 @@ metadata:
   name: image-transformer-sas-redis-server-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-redis-server
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-redis-server
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-redis-server
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3544,7 +3544,7 @@ metadata:
   name: image-transformer-sas-redis-server-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-redis-server
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-redis-server
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-redis-server
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3563,7 +3563,7 @@ metadata:
   name: image-transformer-sas-reference-data-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-reference-data
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-reference-data
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-reference-data
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3571,7 +3571,7 @@ metadata:
   name: image-transformer-sas-reference-data-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-reference-data
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-reference-data
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-reference-data
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3590,7 +3590,7 @@ metadata:
   name: image-transformer-sas-report-alerts-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-report-alerts
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-alerts
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-alerts
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3598,7 +3598,7 @@ metadata:
   name: image-transformer-sas-report-alerts-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-report-alerts
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-alerts
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-alerts
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3617,7 +3617,7 @@ metadata:
   name: image-transformer-sas-report-distribution-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-report-distribution
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-distribution
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-distribution
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3625,7 +3625,7 @@ metadata:
   name: image-transformer-sas-report-distribution-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-report-distribution
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-distribution
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-distribution
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3644,7 +3644,7 @@ metadata:
   name: image-transformer-sas-report-execution-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-report-execution
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-execution
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-execution
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3652,7 +3652,7 @@ metadata:
   name: image-transformer-sas-report-execution-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-report-execution
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-execution
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-execution
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3671,7 +3671,7 @@ metadata:
   name: image-transformer-sas-report-operations-core-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-report-operations-core
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-operations-core
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-operations-core
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3679,7 +3679,7 @@ metadata:
   name: image-transformer-sas-report-operations-core-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-report-operations-core
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-operations-core
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-operations-core
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3698,7 +3698,7 @@ metadata:
   name: image-transformer-sas-report-renderers-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-report-renderers
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-renderers
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-renderers
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3706,7 +3706,7 @@ metadata:
   name: image-transformer-sas-report-renderers-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-report-renderers
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-renderers
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-renderers
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3725,7 +3725,7 @@ metadata:
   name: image-transformer-sas-report-services-group-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-report-services-group
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-services-group
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-services-group
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3733,7 +3733,7 @@ metadata:
   name: image-transformer-sas-report-services-group-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-report-services-group
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-services-group
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-report-services-group
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3752,7 +3752,7 @@ metadata:
   name: image-transformer-sas-restore-job-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-restore-job
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-restore-job
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-restore-job
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3760,7 +3760,7 @@ metadata:
   name: image-transformer-sas-restore-job-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-restore-job
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-restore-job
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-restore-job
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3779,7 +3779,7 @@ metadata:
   name: image-transformer-sas-rfc-solution-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-rfc-solution-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-rfc-solution-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-rfc-solution-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3787,7 +3787,7 @@ metadata:
   name: image-transformer-sas-rfc-solution-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-rfc-solution-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-rfc-solution-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-rfc-solution-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3806,7 +3806,7 @@ metadata:
   name: image-transformer-sas-rfc-solution-config-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-rfc-solution-config
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-rfc-solution-config
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-rfc-solution-config
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3814,7 +3814,7 @@ metadata:
   name: image-transformer-sas-rfc-solution-config-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-rfc-solution-config
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-rfc-solution-config
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-rfc-solution-config
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3833,7 +3833,7 @@ metadata:
   name: image-transformer-sas-scheduler-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-scheduler
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-scheduler
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-scheduler
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3841,7 +3841,7 @@ metadata:
   name: image-transformer-sas-scheduler-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-scheduler
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-scheduler
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-scheduler
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3860,7 +3860,7 @@ metadata:
   name: image-transformer-sas-score-definitions-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-score-definitions
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-score-definitions
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-score-definitions
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3868,7 +3868,7 @@ metadata:
   name: image-transformer-sas-score-definitions-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-score-definitions
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-score-definitions
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-score-definitions
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3887,7 +3887,7 @@ metadata:
   name: image-transformer-sas-score-execution-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-score-execution
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-score-execution
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-score-execution
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3895,7 +3895,7 @@ metadata:
   name: image-transformer-sas-score-execution-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-score-execution
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-score-execution
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-score-execution
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3914,7 +3914,7 @@ metadata:
   name: image-transformer-sas-score-python3-base-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-score-python3-base
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-score-python3-base
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-score-python3-base
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3922,7 +3922,7 @@ metadata:
   name: image-transformer-sas-score-python3-base-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-score-python3-base
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-score-python3-base
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-score-python3-base
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3941,7 +3941,7 @@ metadata:
   name: image-transformer-sas-score-r4-base-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-score-r4-base
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-score-r4-base
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-score-r4-base
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3949,7 +3949,7 @@ metadata:
   name: image-transformer-sas-score-r4-base-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-score-r4-base
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-score-r4-base
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-score-r4-base
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3968,7 +3968,7 @@ metadata:
   name: image-transformer-sas-search-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-search
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-search
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-search
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -3976,7 +3976,7 @@ metadata:
   name: image-transformer-sas-search-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-search
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-search
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-search
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -3995,7 +3995,7 @@ metadata:
   name: image-transformer-sas-sssd-server-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-sssd-server
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-sssd-server
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-sssd-server
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4003,7 +4003,7 @@ metadata:
   name: image-transformer-sas-sssd-server-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-sssd-server
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-sssd-server
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-sssd-server
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4022,7 +4022,7 @@ metadata:
   name: image-transformer-sas-start-sequencer-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-start-sequencer
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-start-sequencer
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-start-sequencer
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4030,7 +4030,7 @@ metadata:
   name: image-transformer-sas-start-sequencer-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-start-sequencer
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-start-sequencer
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-start-sequencer
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4049,7 +4049,7 @@ metadata:
   name: image-transformer-sas-studio-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-studio
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-studio
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-studio
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4057,7 +4057,7 @@ metadata:
   name: image-transformer-sas-studio-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-studio
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-studio
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-studio
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4076,7 +4076,7 @@ metadata:
   name: image-transformer-sas-studio-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-studio-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-studio-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-studio-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4084,7 +4084,7 @@ metadata:
   name: image-transformer-sas-studio-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-studio-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-studio-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-studio-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4103,7 +4103,7 @@ metadata:
   name: image-transformer-sas-studio-development-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-studio-development
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-studio-development
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-studio-development
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4111,7 +4111,7 @@ metadata:
   name: image-transformer-sas-studio-development-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-studio-development
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-studio-development
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-studio-development
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4130,7 +4130,7 @@ metadata:
   name: image-transformer-sas-studio-steps-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-studio-steps
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-studio-steps
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-studio-steps
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4138,7 +4138,7 @@ metadata:
   name: image-transformer-sas-studio-steps-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-studio-steps
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-studio-steps
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-studio-steps
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4157,7 +4157,7 @@ metadata:
   name: image-transformer-sas-subject-contacts-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-subject-contacts
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-subject-contacts
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-subject-contacts
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4165,7 +4165,7 @@ metadata:
   name: image-transformer-sas-subject-contacts-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-subject-contacts
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-subject-contacts
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-subject-contacts
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4184,7 +4184,7 @@ metadata:
   name: image-transformer-sas-svi-alert-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-alert
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-alert
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-alert
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4192,7 +4192,7 @@ metadata:
   name: image-transformer-sas-svi-alert-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-alert
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-alert
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-alert
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4211,7 +4211,7 @@ metadata:
   name: image-transformer-sas-svi-data-export-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-data-export
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-data-export
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-data-export
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4219,7 +4219,7 @@ metadata:
   name: image-transformer-sas-svi-data-export-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-data-export
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-data-export
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-data-export
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4238,7 +4238,7 @@ metadata:
   name: image-transformer-sas-svi-datahub-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-datahub
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-datahub
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-datahub
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4246,7 +4246,7 @@ metadata:
   name: image-transformer-sas-svi-datahub-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-datahub
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-datahub
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-datahub
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4265,7 +4265,7 @@ metadata:
   name: image-transformer-sas-svi-feature-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-feature
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-feature
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-feature
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4273,7 +4273,7 @@ metadata:
   name: image-transformer-sas-svi-feature-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-feature
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-feature
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-feature
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4292,7 +4292,7 @@ metadata:
   name: image-transformer-sas-svi-indexer-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-indexer
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-indexer
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-indexer
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4300,7 +4300,7 @@ metadata:
   name: image-transformer-sas-svi-indexer-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-indexer
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-indexer
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-indexer
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4319,7 +4319,7 @@ metadata:
   name: image-transformer-sas-svi-intelligence-management-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-intelligence-management
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-intelligence-management
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-intelligence-management
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4327,7 +4327,7 @@ metadata:
   name: image-transformer-sas-svi-intelligence-management-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-intelligence-management
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-intelligence-management
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-intelligence-management
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4346,7 +4346,7 @@ metadata:
   name: image-transformer-sas-svi-network-analytics-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-network-analytics
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-network-analytics
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-network-analytics
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4354,7 +4354,7 @@ metadata:
   name: image-transformer-sas-svi-network-analytics-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-network-analytics
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-network-analytics
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-network-analytics
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4373,7 +4373,7 @@ metadata:
   name: image-transformer-sas-svi-sand-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-sand
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-sand
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-sand
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4381,7 +4381,7 @@ metadata:
   name: image-transformer-sas-svi-sand-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-sand
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-sand
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-sand
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4400,7 +4400,7 @@ metadata:
   name: image-transformer-sas-svi-scorecard-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-scorecard
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-scorecard
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-scorecard
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4408,7 +4408,7 @@ metadata:
   name: image-transformer-sas-svi-scorecard-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-scorecard
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-scorecard
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-scorecard
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4427,7 +4427,7 @@ metadata:
   name: image-transformer-sas-svi-transport-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-transport
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-transport
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-transport
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4435,7 +4435,7 @@ metadata:
   name: image-transformer-sas-svi-transport-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-transport
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-transport
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-transport
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4454,7 +4454,7 @@ metadata:
   name: image-transformer-sas-svi-vsd-service-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-vsd-service
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-vsd-service
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-vsd-service
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4462,7 +4462,7 @@ metadata:
   name: image-transformer-sas-svi-vsd-service-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-svi-vsd-service
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-vsd-service
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-svi-vsd-service
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4481,7 +4481,7 @@ metadata:
   name: image-transformer-sas-tenant-job-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-tenant-job
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-tenant-job
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-tenant-job
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4489,7 +4489,7 @@ metadata:
   name: image-transformer-sas-tenant-job-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-tenant-job
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-tenant-job
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-tenant-job
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4508,7 +4508,7 @@ metadata:
   name: image-transformer-sas-text-analytics-data-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-text-analytics-data
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-text-analytics-data
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-text-analytics-data
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4516,7 +4516,7 @@ metadata:
   name: image-transformer-sas-text-analytics-data-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-text-analytics-data
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-text-analytics-data
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-text-analytics-data
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4535,7 +4535,7 @@ metadata:
   name: image-transformer-sas-text-analytics-execution-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-text-analytics-execution
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-text-analytics-execution
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-text-analytics-execution
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4543,7 +4543,7 @@ metadata:
   name: image-transformer-sas-text-analytics-execution-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-text-analytics-execution
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-text-analytics-execution
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-text-analytics-execution
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4562,7 +4562,7 @@ metadata:
   name: image-transformer-sas-text-analytics-provider-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-text-analytics-provider
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-text-analytics-provider
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-text-analytics-provider
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4570,7 +4570,7 @@ metadata:
   name: image-transformer-sas-text-analytics-provider-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-text-analytics-provider
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-text-analytics-provider
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-text-analytics-provider
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4589,7 +4589,7 @@ metadata:
   name: image-transformer-sas-text-analytics-taxonomies-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-text-analytics-taxonomies
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-text-analytics-taxonomies
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-text-analytics-taxonomies
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4597,7 +4597,7 @@ metadata:
   name: image-transformer-sas-text-analytics-taxonomies-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-text-analytics-taxonomies
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-text-analytics-taxonomies
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-text-analytics-taxonomies
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4616,7 +4616,7 @@ metadata:
   name: image-transformer-sas-theme-designer-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-theme-designer-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-theme-designer-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-theme-designer-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4624,7 +4624,7 @@ metadata:
   name: image-transformer-sas-theme-designer-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-theme-designer-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-theme-designer-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-theme-designer-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4643,7 +4643,7 @@ metadata:
   name: image-transformer-sas-transfer-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-transfer
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-transfer
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-transfer
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4651,7 +4651,7 @@ metadata:
   name: image-transformer-sas-transfer-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-transfer
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-transfer
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-transfer
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4670,7 +4670,7 @@ metadata:
   name: image-transformer-sas-transformations-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-transformations
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-transformations
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-transformations
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4678,7 +4678,7 @@ metadata:
   name: image-transformer-sas-transformations-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-transformations
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-transformations
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-transformations
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4697,7 +4697,7 @@ metadata:
   name: image-transformer-sas-treatment-definitions-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-treatment-definitions
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-treatment-definitions
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-treatment-definitions
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4705,7 +4705,7 @@ metadata:
   name: image-transformer-sas-treatment-definitions-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-treatment-definitions
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-treatment-definitions
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-treatment-definitions
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4724,7 +4724,7 @@ metadata:
   name: image-transformer-sas-visual-analytics-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-visual-analytics
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-visual-analytics
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-visual-analytics
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4732,7 +4732,7 @@ metadata:
   name: image-transformer-sas-visual-analytics-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-visual-analytics
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-visual-analytics
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-visual-analytics
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4751,7 +4751,7 @@ metadata:
   name: image-transformer-sas-visual-analytics-administration-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-visual-analytics-administration
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-visual-analytics-administration
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-visual-analytics-administration
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4759,7 +4759,7 @@ metadata:
   name: image-transformer-sas-visual-analytics-administration-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-visual-analytics-administration
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-visual-analytics-administration
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-visual-analytics-administration
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4778,7 +4778,7 @@ metadata:
   name: image-transformer-sas-visual-analytics-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-visual-analytics-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-visual-analytics-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-visual-analytics-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4786,7 +4786,7 @@ metadata:
   name: image-transformer-sas-visual-analytics-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-visual-analytics-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-visual-analytics-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-visual-analytics-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4805,7 +4805,7 @@ metadata:
   name: image-transformer-sas-visual-investigator-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-visual-investigator-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-visual-investigator-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-visual-investigator-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4813,7 +4813,7 @@ metadata:
   name: image-transformer-sas-visual-investigator-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-visual-investigator-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-visual-investigator-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-visual-investigator-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4832,7 +4832,7 @@ metadata:
   name: image-transformer-sas-viya-cli-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-viya-cli
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-viya-cli
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-viya-cli
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4840,7 +4840,7 @@ metadata:
   name: image-transformer-sas-viya-cli-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-viya-cli
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-viya-cli
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-viya-cli
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4859,7 +4859,7 @@ metadata:
   name: image-transformer-sas-web-assets-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-web-assets
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-web-assets
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-web-assets
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4867,7 +4867,7 @@ metadata:
   name: image-transformer-sas-web-assets-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-web-assets
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-web-assets
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-web-assets
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4886,7 +4886,7 @@ metadata:
   name: image-transformer-sas-web-renderer-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-web-renderer
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-web-renderer
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-web-renderer
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4894,7 +4894,7 @@ metadata:
   name: image-transformer-sas-web-renderer-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-web-renderer
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-web-renderer
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-web-renderer
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4913,7 +4913,7 @@ metadata:
   name: image-transformer-sas-webhooks-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-webhooks
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-webhooks
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-webhooks
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4921,7 +4921,7 @@ metadata:
   name: image-transformer-sas-webhooks-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-webhooks
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-webhooks
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-webhooks
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4940,7 +4940,7 @@ metadata:
   name: image-transformer-sas-workflow-engine-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-workflow-engine
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-workflow-engine
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-workflow-engine
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4948,7 +4948,7 @@ metadata:
   name: image-transformer-sas-workflow-engine-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-workflow-engine
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-workflow-engine
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-workflow-engine
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4967,7 +4967,7 @@ metadata:
   name: image-transformer-sas-workflow-history-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-workflow-history
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-workflow-history
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-workflow-history
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -4975,7 +4975,7 @@ metadata:
   name: image-transformer-sas-workflow-history-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-workflow-history
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-workflow-history
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-workflow-history
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -4994,7 +4994,7 @@ metadata:
   name: image-transformer-sas-workflow-manager-app-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-workflow-manager-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-workflow-manager-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-workflow-manager-app
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -5002,7 +5002,7 @@ metadata:
   name: image-transformer-sas-workflow-manager-app-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-workflow-manager-app
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-workflow-manager-app
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-workflow-manager-app
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image
@@ -5021,7 +5021,7 @@ metadata:
   name: image-transformer-sas-workload-orchestrator-mirror
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-workload-orchestrator
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-workload-orchestrator
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-workload-orchestrator
 ---
 apiVersion: builtin
 kind: ImageTagTransformer
@@ -5029,7 +5029,7 @@ metadata:
   name: image-transformer-sas-workload-orchestrator-mirror-configured
 imageTag:
   name: cr.sas.com/viya-4-x64_oci_linux_2-docker/sas-workload-orchestrator
-  newName: {{ .values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-workload-orchestrator
+  newName: {{ .Values.MIRROR_HOST }}/viya-4-x64_oci_linux_2-docker/sas-workload-orchestrator
 fieldSpecs:
 - kind: PostgresCluster
   path: spec/image

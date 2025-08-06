@@ -12,7 +12,7 @@ patch: |-
   - op: add
     path: /spec/template/spec/hostAliases
     value:
-      - ip: {{ .values.DB2_DATABASE_IP }}         #for example, "192.0.2.0"
+      - ip: {{ .Values.DB2_DATABASE_IP }}         #for example, "192.0.2.0"
         hostnames:
-          - {{ .VALUES.DB2_DATABASE_HOSTNAME }}   #for example, "MyDBHost"
+          - {{ .Values.DB2_DATABASE_HOSTNAME }}   #for example, "MyDBHost"
 ---

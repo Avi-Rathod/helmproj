@@ -4,36 +4,36 @@
 ## hyphenated name set off by curly braces and a space at each end. You should replace this token with the
 ## actual value.
 ## Replace the curly braces, interior spaces, and the variable name.
-## For instance, "{{ .values.CLOUD_SQL_PROXY_IMAGE_NAME }}"
+## For instance, "{{ .Values.CLOUD_SQL_PROXY_IMAGE_NAME }}"
 ## If you use the suggested example, the correct, final syntax would be:
 ##   image: "gcr.io/cloudsql-docker/gce-proxy:1.20.2"
 ## 
-## For {{ .values.POSTGRES_SERVER_NAME }}, use "platform-postgres" or "cds-postgres".
+## For {{ .Values.POSTGRES_SERVER_NAME }}, use "platform-postgres" or "cds-postgres".
 ## A separate proxy file is needed for each when both platform and cds postgres are used.
 ## Customize the credential variables similarly if different for each.
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .values.POSTGRES_SERVER_NAME }}-sql-proxy
+  name: {{ .Values.POSTGRES_SERVER_NAME }}-sql-proxy
   labels:
-    app: {{ .values.POSTGRES_SERVER_NAME }}-sql-proxy
+    app: {{ .Values.POSTGRES_SERVER_NAME }}-sql-proxy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .values.POSTGRES_SERVER_NAME }}-sql-proxy
+      app: {{ .Values.POSTGRES_SERVER_NAME }}-sql-proxy
   template:
     metadata:
       labels:
-        app: {{ .values.POSTGRES_SERVER_NAME }}-sql-proxy
+        app: {{ .Values.POSTGRES_SERVER_NAME }}-sql-proxy
     spec:
       containers:
-        - name: {{ .values.POSTGRES_SERVER_NAME }}-sql-proxy
-          image: "{{ .values.CLOUD_SQL_PROXY_IMAGE_NAME }}" # For example: "gcr.io/cloudsql-docker/gce-proxy:1.20.2"
+        - name: {{ .Values.POSTGRES_SERVER_NAME }}-sql-proxy
+          image: "{{ .Values.CLOUD_SQL_PROXY_IMAGE_NAME }}" # For example: "gcr.io/cloudsql-docker/gce-proxy:1.20.2"
           env:
             - name: POSTGRES_CONNECTION_NAME
-              value: "{{ .values.CLOUD_SQL_PROXY_INSTANCE_NAME }}" # For example: "my_project:us-east1:my_sql-proxy-instance-name-f6983407"
+              value: "{{ .Values.CLOUD_SQL_PROXY_INSTANCE_NAME }}" # For example: "my_project:us-east1:my_sql-proxy-instance-name-f6983407"
           command:
             - "/cloud_sql_proxy"
           args:
@@ -53,9 +53,9 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: {{ .values.POSTGRES_SERVER_NAME }}-sql-proxy
+  name: {{ .Values.POSTGRES_SERVER_NAME }}-sql-proxy
   labels:
-    app: {{ .values.POSTGRES_SERVER_NAME }}-sql-proxy
+    app: {{ .Values.POSTGRES_SERVER_NAME }}-sql-proxy
 spec:
   ports:
     - name: sql
@@ -63,5 +63,5 @@ spec:
       port: 5432
       targetPort: 5432
   selector:
-    app: {{ .values.POSTGRES_SERVER_NAME }}-sql-proxy
+    app: {{ .Values.POSTGRES_SERVER_NAME }}-sql-proxy
   type: ClusterIP

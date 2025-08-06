@@ -28,7 +28,7 @@ oc -n {{.Values.NAME_OF_NAMESPACE }} adm policy add-scc-to-user anyuid -z sas-de
 2. Modify the parameters in the $deploy/site-config/sas-decisions-runtime-builder/kaniko/storage.yaml file. For more information about PersistentVolume Claims (PVCs), see [Persistent Volume Claims on Kubernetes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims).
 
    - Replace {{ .Values.STORAGE_CAPACITY }} with the amount of storage required.
-   - Replace {{ .VALUES.STORAGE_CLASS_NAME }} with the appropriate storage class from the cloud provider that supports ReadWriteMany access mode.
+   - Replace {{ .Values.STORAGE_CLASS_NAME }} with the appropriate storage class from the cloud provider that supports ReadWriteMany access mode.
 
 3. Make the following changes to the base kustomization.yaml file in the $deploy directory.
 

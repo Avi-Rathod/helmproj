@@ -19,7 +19,7 @@ for the example files in the examples section. Follow these steps to use transfo
 1. Copy the example transformer file in `$deploy/sas-bases/examples/sas-microanalytic-score/config` to the `$deploy/site-config/sas-microanalytic-score/config` directory. Create the destination directory if it does not exist.
 
 2. Each file has information about its content. The variables in the file are set
-off by curly braces and spaces, such as {{ .values.VARIABLE_NAME }}. Replace the
+off by curly braces and spaces, such as {{ .Values.VARIABLE_NAME }}. Replace the
 entire variable string, including the braces, with the value you want to use.
 
 3. In the base kustomization.yaml in $deploy directory, add site-config/sas-microanalytic-score/config/<example-transformer-file> to the transformers block.

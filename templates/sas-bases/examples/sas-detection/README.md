@@ -13,7 +13,7 @@ This README file describes the configuration settings available for deploying an
 
 Create a copy of the example template in `/$deploy/sas-bases/examples/sas-detection/detection-engine-deployment.yaml`. Save this copy in `/$deploy/site-config/sas-detection/detection-engine-deployment.yaml`.
 
-Placeholders are indicated by curly brackets, such as {{ .VALUES.DECISION }}. Find and replace the placeholders with the values you want for your deployment. After all placeholders have been filled in, directly apply your deployment yaml via kubectl apply, indicating the file you've just filled in.
+Placeholders are indicated by curly brackets, such as {{ .Values.DECISION }}. Find and replace the placeholders with the values you want for your deployment. After all placeholders have been filled in, directly apply your deployment yaml via kubectl apply, indicating the file you've just filled in.
 
 ```sh
 kubectl apply -f detection-engine-deployment.yaml
@@ -44,7 +44,7 @@ The SAS Container Runtime (SCR) container requires an image to be specified. Thi
 containers:
 - name: sas-sda-scr
     # Image from your docker registry
-    image: {{ .VALUES.DECISION }}
+    image: {{ .Values.DECISION }}
 ```
 
 Other than the image, the only required properties for the sas-sda-scr container are SAS_REDIS_HOST and SAS_REDIS_PORT. The other properties are optional security properties covered in detail in the security section. See the container-configuration.yaml file for the minimal required configuration.
@@ -131,7 +131,7 @@ More information on readiness probes is available here: https://kubernetes.io/do
 
 There are optional, commented out sections that may be used to create the secrets containing TLS certificates and keys. The data must be base64 encoded and included in these definitions. These secrets could optionally be created manually via kubectl, or managed via cert-manager. If the secrets are created via some other method, the secret names must still match those referenced in the volumes and ingress definitions. 
 
-An alternative is using the selfsigned-certificates.yaml example file. Placeholders in this file are indicated by curly brackets, such as {{ .VALUES.DNS_NAME }}. Find and replace the placeholders with the values you want for your certificates. This file is optional and may be edited as needed to fit your purposes. As with the detection-engine deployment file, you create these resources directly using kubectl apply. This file must be applied once, and it will generate secrets containing your certificates and keys. 
+An alternative is using the selfsigned-certificates.yaml example file. Placeholders in this file are indicated by curly brackets, such as {{ .Values.DNS_NAME }}. Find and replace the placeholders with the values you want for your certificates. This file is optional and may be edited as needed to fit your purposes. As with the detection-engine deployment file, you create these resources directly using kubectl apply. This file must be applied once, and it will generate secrets containing your certificates and keys. 
 
 #### Secure Ingress Definition 
 
@@ -142,7 +142,7 @@ To secure your ingress, the following annotations can be used to add one-way TLS
 ```yaml
 annotations:
     # Used to enable TLS
-    nginx.ingress.kubernetes.io/auth-tls-secret: {{ .values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ .values.ORGANIZATION }}   
+    nginx.ingress.kubernetes.io/auth-tls-secret: {{ .Values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ .Values.ORGANIZATION }}   
     # used to enable mTLS
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    
 ```
@@ -152,8 +152,8 @@ For one-way TLS, fill in the tls field under the spec field. This also includes 
 ```yaml
 tls:
     - hosts:
-        - {{ .values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}
-    secretName: detection-ingress-tls-config-{{ .values.ORGANIZATION }}
+        - {{ .Values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}
+    secretName: detection-ingress-tls-config-{{ .Values.ORGANIZATION }}
 ```
 
 See the ingress-setup-secure.yaml file for an example of where to add these fields to your deployment yaml.

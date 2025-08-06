@@ -82,7 +82,7 @@ configMapGenerator:
   behavior: merge
   literals:
   - SAS_SERVICES_URL=https://sasviuat.hdfcbankuat.com:443 
-  # - SAS_URL_EXTERNAL_VIYA={{ .values.EXTERNAL_PROXY_URL }}
+  # - SAS_URL_EXTERNAL_VIYA={{ .Values.EXTERNAL_PROXY_URL }}
 - name: input 
   behavior: merge
   literals:

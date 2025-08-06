@@ -15,7 +15,7 @@ The SAS Viya platform can use a customer-prepared environment consisting of a Py
 
 Because Python can be used from a Docker image only by the Micro Analytic Score service, until the Docker image is available to other pods, make sure that the Python environment in the Docker image is available in the mounted volume for other pods. The SAS Viya platform provides YAML files that the Kustomize tool uses to configure Python. Before you use those files, you must perform the following tasks:
 
-1. Prepare the Python Docker image with all the necessary Python packages that you will be using. Make note of the Python image URL  in the Docker registry ( {{ .values.PYTHON_DOCKER_IMAGE_URL }} parameter in python-transformer.yaml) and the configuration settings for accessing the registry with the Python image ({{ .values.DOCKER_REGISTRY_CONFIG }} parameter in kustomization.yaml).
+1. Prepare the Python Docker image with all the necessary Python packages that you will be using. Make note of the Python image URL  in the Docker registry ( {{ .Values.PYTHON_DOCKER_IMAGE_URL }} parameter in python-transformer.yaml) and the configuration settings for accessing the registry with the Python image ({{ .Values.DOCKER_REGISTRY_CONFIG }} parameter in kustomization.yaml).
 
    Here is a sample Docker registry configuration setting:
 
@@ -32,12 +32,12 @@ Because Python can be used from a Docker image only by the Micro Analytic Score 
 
 4. In addition to the volume attributes, you must have the following information:
 
-   * {{ .values.PYTHON_IMAGE_EXECUTABLE }} - the name of the Python executable file (for example, python or python3.8) in the Python image.
-   * {{ .values.PYTHON_IMAGE_EXE_DIR }} - the directory (relative to the root) that contains the executable (for example, /bin).
-   * {{ .values.PYTHON_EXECUTABLE }} - the name of the Python executable file (for example, python or python3.8) in the Python mount.
-   * {{ .values.PYTHON_EXE_DIR }} - the directory or partial path (relative to the mount) that contains the executable (for example, /bin or /virt_environs/envron_dm1/bin). Note that the mount point for your Python deployment should be its top-level directory.
-   * {{ .values.SAS_EXTLANG_SETTINGS_XML_FILE }} - the configuration file used to enable Python and R integration in CAS. This is required only if you are using Python with CMP or the EXTLANG package.
-   * {{ .values.SAS_EXT_LLP_PYTHON_PATH }} - the list of directories to look for when searching for run-time shared libraries (similar to LD_LIBRARY_PATH).
+   * {{ .Values.PYTHON_IMAGE_EXECUTABLE }} - the name of the Python executable file (for example, python or python3.8) in the Python image.
+   * {{ .Values.PYTHON_IMAGE_EXE_DIR }} - the directory (relative to the root) that contains the executable (for example, /bin).
+   * {{ .Values.PYTHON_EXECUTABLE }} - the name of the Python executable file (for example, python or python3.8) in the Python mount.
+   * {{ .Values.PYTHON_EXE_DIR }} - the directory or partial path (relative to the mount) that contains the executable (for example, /bin or /virt_environs/envron_dm1/bin). Note that the mount point for your Python deployment should be its top-level directory.
+   * {{ .Values.SAS_EXTLANG_SETTINGS_XML_FILE }} - the configuration file used to enable Python and R integration in CAS. This is required only if you are using Python with CMP or the EXTLANG package.
+   * {{ .Values.SAS_EXT_LLP_PYTHON_PATH }} - the list of directories to look for when searching for run-time shared libraries (similar to LD_LIBRARY_PATH).
 
 ## Installation
 
@@ -47,7 +47,7 @@ Because Python can be used from a Docker image only by the Micro Analytic Score 
    **Note:** If the destination directory already exists, [verify that the overlay](#verify-the-overlay-for-the-python-docker-image) has been applied.
    If the output contains the `/mas2py` mount directory path, you do not need to take any further action unless you want to change the overlay parameters to use a different Python environment.
 
-2. Use the kustomization.yaml file to define the necessary environment variables. Replace all tags, such as {{ .values.PYTHON_EXE_DIR }}, with the values that you gathered in the [Prerequisites](#prerequisites) step.
+2. Use the kustomization.yaml file to define the necessary environment variables. Replace all tags, such as {{ .Values.PYTHON_EXE_DIR }}, with the values that you gathered in the [Prerequisites](#prerequisites) step.
    Then set the following parameters according to the SAS products that you will be using:
 
    * MAS_PYPATH and MAS_M2PATH are used by SAS Micro Analytic Service.
@@ -66,9 +66,9 @@ Because Python can be used from a Docker image only by the Micro Analytic Score 
    ```<LANGUAGE name="PYTHON3" interpreter="$MAS_PYPATH"></LANGUAGE>```
 
 3. Attach storage to your SAS Viya platform deployment. The python-image-transformer.yaml file uses PatchTransformers in Kustomize to attach the Python installation volume to the SAS Viya platform.
-   Replace {{ .values.VOLUME_ATTRIBUTES }} with the appropriate volume specification.
+   Replace {{ .Values.VOLUME_ATTRIBUTES }} with the appropriate volume specification.
 
-   For example, when using an NFS mount, the {{ .values.VOLUME_ATTRIBUTES }} tag should be replaced with `nfs: {path: /vol/python, server: myserver.sas.com}`
+   For example, when using an NFS mount, the {{ .Values.VOLUME_ATTRIBUTES }} tag should be replaced with `nfs: {path: /vol/python, server: myserver.sas.com}`
    where `myserver.sas.com` is the NFS server and `/vol/python` is the NFS path that you recorded in the Prerequisites step.
 
    Here is the relevant code excerpt from the python-image-transformer.yaml file before the change:
@@ -80,7 +80,7 @@ Because Python can be used from a Docker image only by the Micro Analytic Score 
        path: /spec/template/spec/containers/-
        value:
          name: viya4-mas-python-runner
-         image: {{ .values.PYTHON_DOCKER_IMAGE_URL }}
+         image: {{ .Values.PYTHON_DOCKER_IMAGE_URL }}
    ```
 
    ```yaml
@@ -88,7 +88,7 @@ Because Python can be used from a Docker image only by the Micro Analytic Score 
    # Add Python Volume
      - op: add
        path: /spec/template/spec/volumes/-
-       value: { name: python-volume, {{ .values.VOLUME_ATTRIBUTES }} }
+       value: { name: python-volume, {{ .Values.VOLUME_ATTRIBUTES }} }
    ```
 
    Here is the relevant code excerpt from the python-image-transformer.yaml file after the change:
@@ -118,7 +118,7 @@ Because Python can be used from a Docker image only by the Micro Analytic Score 
    - name: python-regcred
      type: kubernetes.io/dockerconfigjson
      literals:
-     - '.dockerconfigjson={{ .values.DOCKER_REGISTRY_CONFIG }}'
+     - '.dockerconfigjson={{ .Values.DOCKER_REGISTRY_CONFIG }}'
    ```
 
    The relevant code excerpt from the kustomization.yaml file after the change:
@@ -132,7 +132,7 @@ Because Python can be used from a Docker image only by the Micro Analytic Score 
     ```
 
 4. The python-image-transformer.yaml file contains a PatchTransformer called sas-python-sas-java-policy-allow-list.  This PatchTransformer sets paths to the Python executable so that the SAS runtime
-   allows execution of the Python code.  Replace the {{ .values.PYTHON_EXE_DIR }} and {{ .values.PYTHON_EXECUTABLE }} tags with the appropriate values.  If you are specifying multiple Python
+   allows execution of the Python code.  Replace the {{ .Values.PYTHON_EXE_DIR }} and {{ .Values.PYTHON_EXECUTABLE }} tags with the appropriate values.  If you are specifying multiple Python
    environments, each need to be set here.   Here is an example:
 
    ```yaml

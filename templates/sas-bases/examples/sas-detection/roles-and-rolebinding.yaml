@@ -5,7 +5,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: reader
-  namespace: {{ .values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACE }}
 rules:
   - apiGroups: [""]
     resources: ["deployments", "deployments/scale", "pods"]
@@ -18,7 +18,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: scaler
-  namespace: {{ .values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACE }}
 rules:
   - apiGroups: [""]
     resources: ["deployments", "deployments/scale"]
@@ -31,7 +31,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: secretReader
-  namespace: {{ .values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACE }}
 rules:
   - apiGroups: [""]
     resources: ["secrets"]
@@ -44,7 +44,7 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: reader-role-binding-default
-  namespace: {{ .values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACE }}
 subjects:
   - kind: ServiceAccount
     name: default
@@ -58,7 +58,7 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: scaler-role-binding-default
-  namespace: {{ .values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACE }}
 subjects:
   - kind: ServiceAccount
     name: default
@@ -72,7 +72,7 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: secretReader-role-binding-default
-  namespace: {{ .values.NAMESPACE }}
+  namespace: {{ .Values.NAMESPACE }}
 subjects:
   - kind: ServiceAccount
     name: default

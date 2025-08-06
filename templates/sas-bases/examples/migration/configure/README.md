@@ -122,12 +122,12 @@ If the default resources are not sufficient for the completion or successful exe
 1. Copy the file `$deploy/sas-bases/examples/migration/configure/sas-migration-job-modify-resources-transformer.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/migration`.
 
-2. In the copied file, replace {{ .values.CPU_LIMIT }}with the desired value of CPU.
-{{ .values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
+2. In the copied file, replace {{ .Values.CPU_LIMIT }}with the desired value of CPU.
+{{ .Values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
-3. In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
-{{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
+3. In the same file, replace {{ .Values.MEMORY_LIMIT }} with the desired value of memory.
+{{ .Values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
 
 4. Add the full path of the copied file to the transformers block of the base
 kustomization.yaml file (`$deploy/kustomization.yaml`). For example, if you

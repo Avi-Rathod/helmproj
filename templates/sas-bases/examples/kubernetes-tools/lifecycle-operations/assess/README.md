@@ -28,7 +28,7 @@ The following example assumes:
 * The orchestration image has been pulled and has the local tag 'sas-orchestration'
 * The `$deploy` directory is the current working directory.
   `cd` to $deploy and use `$(pwd)` to mount the current directory into the container.
-* `{{ .values.NAME_OF_NAMESPACE }}` is the namespace where the SAS Viya platform deployment described by the manifest file being assessed will be located.
+* `{{ .Values.NAME_OF_NAMESPACE }}` is the namespace where the SAS Viya platform deployment described by the manifest file being assessed will be located.
 
 ## Example
 

@@ -13,7 +13,7 @@ patch: |-
   - op: replace
     path: /data/SGMG_CONFIG_JSON
     value: |
-        {{ .values.NEW_CONFIG_JSON }}
+        {{ .Values.NEW_CONFIG_JSON }}
 target:
   kind: ConfigMap
   name: sas-workload-orchestrator-initial-configuration

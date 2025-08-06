@@ -6,7 +6,7 @@ literals:
   - KRB5_KTNAME=/opt/kerberos/keytab
 
   # Used to specify the principal name in the keytab used by cas
-  - CAS_SERVER_PRINCIPAL={{ .VALUES.SPN }} # SPN from keytab file
+  - CAS_SERVER_PRINCIPAL={{ .Values.SPN }} # SPN from keytab file
 
   # HTTP SPN used for the krb5 proxy sidecar container. It is recommended
   # in Viya 4 to use the same keytab and SPN for both the CAS Server and the krb5

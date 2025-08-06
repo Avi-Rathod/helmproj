@@ -97,7 +97,7 @@ When the volume claim's storage capacity is not specified in the node spec, the 
 
 Similarly, when the volume claim's storage class is not specified in the node spec, the operator creates a PersistentVolumeClaim using either the default StorageClass for that OpenSearch cluster (if specified) or the default storage class for the Kubernetes cluster (see `sas-bases/examples/configure-elasticsearch/internal/storage/README.md` for instructions for configuring a default storage class for the OpenSearch cluster).
 
-To define your own volume claim template with your desired storage capacity and the Kubernetes storage class that is associated with the persistent volume, see the example file located at `sas-bases/examples/configure-elasticsearch/internal/topology/custom-topology-with-custom-volume-claim.yaml` . Replace {{ .values.STORAGE_CLASS }} with the name of the StorageClass and {{ .values.STORAGE_CAPACITY }} with the desired storage capacity for this volume claim.
+To define your own volume claim template with your desired storage capacity and the Kubernetes storage class that is associated with the persistent volume, see the example file located at `sas-bases/examples/configure-elasticsearch/internal/topology/custom-topology-with-custom-volume-claim.yaml` . Replace {{ .Values.STORAGE_CLASS }} with the name of the StorageClass and {{ .Values.STORAGE_CAPACITY }} with the desired storage capacity for this volume claim.
 
 ### Configuring the Heap Size
 
@@ -107,7 +107,7 @@ Generally, the heap size value should be up to half of the available physical RA
 
 The maximum heap size also affects the maximum number of shards that can be safely stored on the node without suffering from oversharding and circuit breaker events. As a rule of thumb you should aim for 25 shards or fewer per GB of heap memory with each shard not exceeding 50 GB. 
 
-See `sas-bases/examples/configure-elasticsearch/internal/topology/custom-topology-with-custom-heap-size.yaml` for an example of how to configure the amount of heap memory dedicated to OpenSearch nodes. Replace {{ .values.HEAP_SIZE }} with the appropriate heap size for your needs. 
+See `sas-bases/examples/configure-elasticsearch/internal/topology/custom-topology-with-custom-heap-size.yaml` for an example of how to configure the amount of heap memory dedicated to OpenSearch nodes. Replace {{ .Values.HEAP_SIZE }} with the appropriate heap size for your needs. 
 
 ## Installing a Custom Topology
 

@@ -29,7 +29,7 @@ file to the site-config directory.</p>
 </li>
 <li>
 <p>To add variables that users should be prevented from changing, replace the
-{{ .values.OPTIONS_SET_DENY_LIST }} variable in the copied file with the list of
+{{ .Values.OPTIONS_SET_DENY_LIST }} variable in the copied file with the list of
 environment variables to be protected. Here is an example:</p>
 <p><strong>NOTE</strong>: The environment variables _JAVA_OPTIONS, JAVA_TOOL_OPTIONS, JDK_JAVA_OPTIONS, ODBCINST, ODBCINI are blocked out of the box as they pose potential security risks if left unblocked. The transformer in the example overwrites this list, so you must include these environment variables along with additional environment variables that you wish to block in the list.</p>
 <pre class="highlight"><code class="language-yaml">...

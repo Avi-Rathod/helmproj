@@ -6,7 +6,7 @@ patch: |-
   # Add R volume
   - op: add
     path: /template/spec/volumes/-
-    value: { name: r-volume, {{ .values.VOLUME_ATTRIBUTES }} }
+    value: { name: r-volume, {{ .Values.VOLUME_ATTRIBUTES }} }
 
   # Add mount path for R
   - op: add
@@ -36,7 +36,7 @@ patch: |-
   # Add R volume
   - op: add
     path: /template/spec/volumes/-
-    value: { name: r-volume, {{ .values.VOLUME_ATTRIBUTES }} }
+    value: { name: r-volume, {{ .Values.VOLUME_ATTRIBUTES }} }
 
   # Add mount path for R
   - op: add
@@ -66,7 +66,7 @@ patch: |-
   # Add R volume
   - op: add
     path: /spec/controllerTemplate/spec/volumes/-
-    value: { name: r-volume, {{ .values.VOLUME_ATTRIBUTES }} }
+    value: { name: r-volume, {{ .Values.VOLUME_ATTRIBUTES }} }
 
   # Add mount path for R
   - op: add
