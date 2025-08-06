@@ -1,7 +1,7 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
   labels:
     app.kubernetes.io/name: sas-detection-sda-{{ ORGANIZATION }}
     sas.com/admin: namespace

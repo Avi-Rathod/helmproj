@@ -131,7 +131,7 @@ block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</cod
 <p>The example file <code>sas-workload-orchestrator-global-user-defined-resources-script-storage.yaml</code>
 mounts an NFS volume as the &lsquo;scripts&rsquo; volume.</p>
 <p>To update the volume, replace the <code>{{ .values.NFS_SERVER_ADDR }}</code> variable with the fully-qualified
-domain name of the server and replace the <code>{{ NFS-SERVER-PATH }}</code> variable with the path to
+domain name of the server and replace the <code>{{ .values.NFS_SERVER_PATH }}</code> variable with the path to
 the volume on the server. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">  - op: replace
     path: /spec/template/spec/volumes/0
@@ -164,7 +164,7 @@ block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</cod
 <p>The example file <code>sas-workload-orchestrator-host-user-defined-resources-script-storage.yaml</code>
 mounts an NFS volume as the &lsquo;scripts&rsquo; volume.</p>
 <p>To update the volume, replace the <code>{{ .values.NFS_SERVER_ADDR }}</code> variable with the fully-qualified
-domain name of the server and replace the <code>{{ NFS-SERVER-PATH }}</code> variable with the path to
+domain name of the server and replace the <code>{{ .values.NFS_SERVER_PATH }}</code> variable with the path to
 the volume on the server. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">  - op: replace
     path: /spec/template/spec/volumes/0
@@ -197,7 +197,7 @@ block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</cod
 <p>The example file <code>sas-workload-orchestrator-initial-configuration-change.yaml</code>
 changes the initial SAS Workload Orchestrator configuration to add
 additional administrators.</p>
-<p>To update the initial configuration, replace the <code>{{ NEW_CONFIG_JSON }}</code> variable with the
+<p>To update the initial configuration, replace the <code>{{ .values.NEW_CONFIG_JSON }}</code> variable with the
 JSON representation of the updated configuration. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">  - op: replace
     path: /data/SGMG_CONFIG_JSON

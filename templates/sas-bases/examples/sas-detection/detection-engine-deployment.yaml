@@ -4,7 +4,7 @@
 # Fill out the template by finding placeholders enclosed in '{{  }}' characters.
 # Recommended practices for each placeholder:
 #
-# {{ NAMESPACE }}: This must be the namespace to which you are deploying
+# {{ .values.NAMESPACE }}: This must be the namespace to which you are deploying
 #
 # {{ .VALUES.DECISION }}: This is the decision image you are pulling for the SCR container, found in your Docker registry. 
 #
@@ -25,7 +25,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: sas-sda-scr-{{ ORGANIZATION }}
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
   labels:
     app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
 spec:
@@ -44,7 +44,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: sas-sda-scr-detection-{{ ORGANIZATION }}
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
   labels:
     app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
 spec:
@@ -65,7 +65,7 @@ spec:
 # kind: Secret
 # metadata:
 #   name: detection-ingress-tls-config-{{ ORGANIZATION }}
-#   namespace: {{ NAMESPACE }}
+#   namespace: {{ .values.NAMESPACE }}
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
 #   tls.crt: |+
@@ -80,7 +80,7 @@ spec:
 # kind: Secret
 # metadata:
 #   name: detection-ingress-tls-ca-config-{{ ORGANIZATION }}
-#   namespace: {{ NAMESPACE }}
+#   namespace: {{ .values.NAMESPACE }}
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
 #   ca.crt: |+
@@ -95,7 +95,7 @@ spec:
 # kind: Secret
 # metadata:
 #   name: detection-redis-tls-config-{{ ORGANIZATION }}
-#   namespace: {{ NAMESPACE }}
+#   namespace: {{ .values.NAMESPACE }}
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
 #   ca.crt: |+
@@ -110,7 +110,7 @@ spec:
 # kind: Secret
 # metadata:
 #   name: detection-kafka-tls-config-{{ ORGANIZATION }}
-#   namespace: {{ NAMESPACE }}
+#   namespace: {{ .values.NAMESPACE }}
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
 #   # add additional certs for brokers as needed
@@ -126,7 +126,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sas-sda-scr-{{ ORGANIZATION }}
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
   labels:
     app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
 spec:
@@ -342,7 +342,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: sas-sda-scr-{{ ORGANIZATION }}
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
@@ -378,7 +378,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: sas-sda-scr-detection-{{ ORGANIZATION }}
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
@@ -415,7 +415,7 @@ spec:
 # kind: Ingress
 # metadata:
 #   name: sas-sda-scr-detection-{{ ORGANIZATION }}
-#   namespace: {{ NAMESPACE }}
+#   namespace: {{ .values.NAMESPACE }}
 #   annotations:
 #     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
 
@@ -424,7 +424,7 @@ spec:
 
 #     # {{ .Values.SECURITY }} Note that these 3 annotations enable two-way front door TLS. Without them, the ingress only has one-way TLS enabled
 #     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
-#     nginx.ingress.kubernetes.io/auth-tls-secret: {{ NAMESPACE }}/detection-ingress-tls-ca-config-{{ ORGANIZATION }}   # Used to enable TLS
+#     nginx.ingress.kubernetes.io/auth-tls-secret: {{ .values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ ORGANIZATION }}   # Used to enable TLS
 #     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    # used to enable mTLS
 
 #     nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
@@ -457,7 +457,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: reader
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
 rules:
   - apiGroups: [""]
     resources: ["deployments", "deployments/scale", "pods"]
@@ -470,7 +470,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: scaler
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
 rules:
   - apiGroups: [""]
     resources: ["deployments", "deployments/scale"]
@@ -483,7 +483,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: secretReader
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
 rules:
   - apiGroups: [""]
     resources: ["secrets"]
@@ -496,7 +496,7 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: reader-role-binding-default
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
 subjects:
   - kind: ServiceAccount
     name: default
@@ -510,7 +510,7 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: scaler-role-binding-default
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
 subjects:
   - kind: ServiceAccount
     name: default
@@ -524,7 +524,7 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: secretReader-role-binding-default
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
 subjects:
   - kind: ServiceAccount
     name: default

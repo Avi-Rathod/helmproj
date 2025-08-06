@@ -42,7 +42,7 @@ file to the site-config directory.</p>
 <p>To add classes with an <code>exec</code> permission to this generated policy file,
 replace the following in the copied file.</p>
 <ul>
-<li>Replace {{ NAME }} with an unique name for the class.   This is for
+<li>Replace {{ .values.NAME }} with an unique name for the class.   This is for
  internal identification.</li>
 <li>Replace {{ .values.CLASS_NAME }} with the Java class name that is to be allowed.</li>
 </ul>

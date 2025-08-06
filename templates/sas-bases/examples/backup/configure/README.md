@@ -222,7 +222,7 @@ You can specify fractional values for the CPUs by using decimals, such as "1.5" 
 {{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
 
 4. By default the patch will be applied to all of the CAS servers. If the patch transformer is being applied to a single CAS server,
-replace {{ NAME-OF-CAS-SERVER }} with the named CAS server in the same file and comment out the lines 'name: .*' and 'labelSelector: "sas.com/cas-server-default"' with a hashtag (#).
+replace {{ .values.NAME_OF_CAS_SERVER }} with the named CAS server in the same file and comment out the lines 'name: .*' and 'labelSelector: "sas.com/cas-server-default"' with a hashtag (#).
 
 5. Add the full path of the copied file to the transformers block of the base
 kustomization.yaml file (`$deploy/kustomization.yaml`). For example, if you

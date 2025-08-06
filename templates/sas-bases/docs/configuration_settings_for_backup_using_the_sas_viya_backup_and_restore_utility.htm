@@ -235,7 +235,7 @@ You can specify fractional values for the CPUs by using decimals, such as &ldquo
 </li>
 <li>
 <p>By default the patch will be applied to all of the CAS servers. If the patch transformer is being applied to a single CAS server,
-replace {{ NAME-OF-CAS-SERVER }} with the named CAS server in the same file and comment out the lines &lsquo;name: .*&rsquo; and &lsquo;labelSelector: &ldquo;sas.com/cas-server-default&rdquo;&rsquo; with a hashtag (#).</p>
+replace {{ .values.NAME_OF_CAS_SERVER }} with the named CAS server in the same file and comment out the lines &lsquo;name: .*&rsquo; and &lsquo;labelSelector: &ldquo;sas.com/cas-server-default&rdquo;&rsquo; with a hashtag (#).</p>
 </li>
 <li>
 <p>Add the full path of the copied file to the transformers block of the base

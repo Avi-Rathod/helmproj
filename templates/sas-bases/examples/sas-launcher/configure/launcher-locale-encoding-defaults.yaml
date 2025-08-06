@@ -12,7 +12,7 @@ metadata:
 patch: |-
   - op: replace
     path: /data/SAS_LAUNCHER_INIT_LOCALE_DEFAULT
-    value: {{ LOCALE-DEFAULT }}
+    value: {{ .values.LOCALE_DEFAULT }}
   - op: replace
     path: /data/SAS_LAUNCHER_INIT_ENCODING_DEFAULT
     value: {{ .values.ENCODING_DEFAULT }}

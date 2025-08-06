@@ -63,7 +63,7 @@ Identities service.
 
 2. Copy the sas-bases/examples/sas-launcher/configure/launcher-nfs-mount.yaml file to the site-config/sas-launcher/configure/ location.
 
-3. In the file, replace {{ N.Values.NFS_SERVER_LOCATION }} with the location of the NFS server. Here is an example: 
+3. In the file, replace {{ .values.N.Values.NFS_SERVER_LOCATION }} with the location of the NFS server. Here is an example: 
 
    ```yaml
    patch: |-
@@ -134,7 +134,7 @@ The launcher-locale-encoding-defaults.yaml file allows you to modify the SAS LOC
 The defaults are stored in a Kubernetes ConfigMap called sas-launcher-init-nls-config, which the Launcher service will 
 use to determine which default values are needed to be set. The LOCALE and ENCODING defaults specified here will affect 
 all consumers of SAS Launcher (SAS Compute Server, SAS/CONNECT, and SAS Batch Server) unless overridden (see below). 
-To update the defaults, replace {{ LOCALE-DEFAULT }} and {{ .values.ENCODING_DEFAULT }}. Here is an example:
+To update the defaults, replace {{ .values.LOCALE_DEFAULT }} and {{ .values.ENCODING_DEFAULT }}. Here is an example:
 
 ```yaml
 patch: |-

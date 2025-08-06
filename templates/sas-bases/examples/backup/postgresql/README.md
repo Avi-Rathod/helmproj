@@ -20,10 +20,10 @@ add an entry to the sas-backup-job-parameters configMap in the configMapGenerato
    - name: sas-backup-job-parameters
      behavior: merge
      literals:
-     - SAS_DATA_SERVER_BACKUP_ADDITIONAL_OPTIONS={{ OPTION-1-NAME OPTION-1-VALUE }},{{ FLAG-1 }},{{ OPTION-2-NAME OPTION-2-VALUE }}
+     - SAS_DATA_SERVER_BACKUP_ADDITIONAL_OPTIONS={{ .values.OPTION_1_NAME OPTION_1_VALUE }},{{ .values.FLAG_1 }},{{ .values.OPTION_2_NAME OPTION_2_VALUE }}
    ```
 
-   The {{ OPTION-NAME OPTION-VALUE }} and {{ FLAG }} variables should be a comma-separated list of options to be added, such as `-Z 0,--version`.
+   The {{ .values.OPTION_NAME OPTION_VALUE }} and {{ .values.FLAG }} variables should be a comma-separated list of options to be added, such as `-Z 0,--version`.
 
    If the sas-backup-job-parameters configMap is already present in the (`$deploy/kustomization.yaml`) file, you should add the last line only. If the configMap is not present, add the entire example.
 

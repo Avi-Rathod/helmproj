@@ -8,7 +8,7 @@
 # unique and easily identifiable. You can use any alphanumeric, twenty characters or less, but we recommend using your
 # user-id or something meaningful to the purpose of the deployment.
 #
-# {{ NAMESPACE }}: This must be the namespace to which you are deploying
+# {{ .values.NAMESPACE }}: This must be the namespace to which you are deploying
 #
 # {{ .Values.ROUTE_HOST }}: This is used for the Openshift ingress.  If on Openshift do not specify other ingresses.
 #
@@ -31,7 +31,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
 data:
   project.yaml: |-
     id: helloWorld
@@ -423,7 +423,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: sas-image-pull-secrets
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
 data:
   .dockerconfigjson: {{ IMAGE_PULL_SECRET }}
 type: kubernetes.io/dockerconfigjson
@@ -453,7 +453,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
   labels:
     app.kubernetes.io/name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
 spec:
@@ -471,7 +471,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
   labels:
     app.kubernetes.io/name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
 spec:
@@ -654,7 +654,7 @@ spec:
 # apiVersion: route.openshift.io/v1
 # kind: Route
 # metadata:
-#   namespace: {{ NAMESPACE }}
+#   namespace: {{ .values.NAMESPACE }}
 #   annotations:
 #     haproxy.router.openshift.io/rewrite-target: /
 #   labels:
@@ -678,13 +678,13 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
     nginx.ingress.kubernetes.io/use-regex: "true"
     ## {{ .Values.SECURITY }} Note that these 3 annotations enable two-way front door TLS. Without them, the ingress only has one-way TLS enabled
     # nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
-    # nginx.ingress.kubernetes.io/auth-tls-secret: {{ NAMESPACE }}/business-orchestration-worker-ingress-tls-ca-config-{{ .VALUES.SUFFIX }}   # Used to enable TLS
+    # nginx.ingress.kubernetes.io/auth-tls-secret: {{ .values.NAMESPACE }}/business-orchestration-worker-ingress-tls-ca-config-{{ .VALUES.SUFFIX }}   # Used to enable TLS
     # nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    # used to enable mTLS
   labels:
     app.kubernetes.io/name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
@@ -710,7 +710,7 @@ spec:
 # kind: Ingress
 # metadata:
 #   name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
-#   namespace: {{ NAMESPACE }}
+#   namespace: {{ .values.NAMESPACE }}
 #   annotations:
 #     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
 
@@ -719,7 +719,7 @@ spec:
 
 #     # {{ .Values.SECURITY }} Note that these 3 annotations enable two-way front door TLS. Without them, the ingress only has one-way TLS enabled
 #     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
-#     nginx.ingress.kubernetes.io/auth-tls-secret: {{ NAMESPACE }}/business-orchestration-worker-ingress-tls-ca-config-{{ .VALUES.SUFFIX }}   # Used to enable TLS
+#     nginx.ingress.kubernetes.io/auth-tls-secret: {{ .values.NAMESPACE }}/business-orchestration-worker-ingress-tls-ca-config-{{ .VALUES.SUFFIX }}   # Used to enable TLS
 #     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    # used to enable mTLS
 
 #     nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
@@ -754,7 +754,7 @@ spec:
 # kind: Secret
 # metadata:
 #   name: business-orchestration-worker-ingress-tls-config-{{ .VALUES.SUFFIX }}
-#   namespace: {{ NAMESPACE }}
+#   namespace: {{ .values.NAMESPACE }}
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
 #   tls.crt: |+
@@ -769,7 +769,7 @@ spec:
 # kind: Secret
 # metadata:
 #   name: business-orchestration-worker-ingress-tls-ca-config-{{ .VALUES.SUFFIX }}
-#   namespace: {{ NAMESPACE }}
+#   namespace: {{ .values.NAMESPACE }}
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
 #   ca.crt: |+
@@ -784,7 +784,7 @@ spec:
 # kind: Secret
 # metadata:
 #   name: business-orchestration-worker-{{ .values.EXTERNAL_SERVICE }}-tls-config-{{ .VALUES.SUFFIX }}
-#   namespace: {{ NAMESPACE }}
+#   namespace: {{ .values.NAMESPACE }}
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
 #   ca.crt: |+

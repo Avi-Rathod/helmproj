@@ -15,10 +15,10 @@ This README contains information for customizations potentially required for mig
 and add an entry to the restore_job_parameters configMap in configMapGenerator section. The entry uses the following format:
 
    ```yaml
-   data-service-{{ NEW-SERVICE-NAME }}={{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }}
+   data-service-{{ .values.NEW_SERVICE_NAME }}={{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }}
    ```
 
-   To get the value for {{ NEW-SERVICE-NAME }}:
+   To get the value for {{ .values.NEW_SERVICE_NAME }}:
 
    ```bash
    kubectl -n <name-of-namespace> get dataserver -o=custom-columns=SERVICE_NAME:.spec.registrations[].serviceName --no-headers
@@ -28,7 +28,7 @@ and add an entry to the restore_job_parameters configMap in configMapGenerator s
 
    {{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is the name of the directory in backup where the PostgreSQL backup is stored (for example, `2022-03-02T09_04_11_611_0700/acme/**postgres**`).
 
-   In the following example, {{ NEW-SERVICE-NAME }} is sas-cdspostgres, and {{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is cpspostgres:
+   In the following example, {{ .values.NEW_SERVICE_NAME }} is sas-cdspostgres, and {{ .values.DIRECTORY_NAME_OF_POSTGRES_IN_BACKUP }} is cpspostgres:
 
    ```yaml
    configMapGenerator:

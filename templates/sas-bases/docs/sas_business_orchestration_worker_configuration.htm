@@ -13,7 +13,7 @@
 <h2 id="140345100038928installation">Installation</h2>
 <h3 id="140345100038928configure-with-initial-sas-viya-platform-deployment">Configure with Initial SAS Viya Platform Deployment</h3>
 <p>Create a copy of the example template in <code>$deploy/sas-bases/examples/sas-business-orchestration-worker/business-orchestration-worker-deployment.yaml</code>. Save this copy in <code>$deploy/site-config/sas-business-orchestration-worker/business-orchestration-worker-deployment.yaml</code>.</p>
-<p>Placeholders are indicated by curly brackets, such as {{ NAMESPACE }}. Find and replace the placeholders with the values you want for your deployment. After all placeholders have been filled in, directly apply your deployment yaml via SAS Viya platform Kustomize or direct kubectl apply commands.</p>
+<p>Placeholders are indicated by curly brackets, such as {{ .values.NAMESPACE }}. Find and replace the placeholders with the values you want for your deployment. After all placeholders have been filled in, directly apply your deployment yaml via SAS Viya platform Kustomize or direct kubectl apply commands.</p>
 <p>If you are using the SAS Viya platform Kustomize process, add the resource <code>$deploy/site-config/sas-business-orchestration-worker/business-orchestration-worker-deployment.yaml</code> to the
 resources block of the base kustomization.yaml file.  The use case here is to deploy a SAS Business Orchestration Worker project with SAS Viya platform. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">resources:
@@ -40,7 +40,7 @@ grep '.dockerconfigjson:' site.yaml
     .dockerconfigjson: &lt;SECRET&gt;</code></pre>
 
 <p>Alternatively, if SAS Viya platform has already been deployed the image pull secret can be queried:</p>
-<pre class="highlight"><code class="language-shell">kubectl -n {{ NAMESPACE }} get secret --field-selector=type=kubernetes.io/dockerconfigjson -o yaml | grep '.dockerconfigjson:'
+<pre class="highlight"><code class="language-shell">kubectl -n {{ .values.NAMESPACE }} get secret --field-selector=type=kubernetes.io/dockerconfigjson -o yaml | grep '.dockerconfigjson:'
     .dockerconfigjson: &lt;SECRET&gt;</code></pre>
 
 <p>Replace the namespace and image pull secret values in the example.</p>
@@ -134,13 +134,13 @@ $ kustomize apply -f site.yaml </code></pre>
 
 <p>Perform the following commands to get the required information from a running SAS Viya platform deployment.</p>
 <pre class="highlight"><code class="language-shell">
-# get the registry server, kubectl needs to point to the SAS Viya platform deployment namespace, and replace {{ NAMESPACE }} with the namespace value 
-$ kubectl -n {{ NAMESPACE }} get deployment sas-readiness -o yaml | grep -e "image:.*sas-readiness" | sed -e 's/image: //g' -e 's/\/.*//g'  -e 's/^[ \t]*//'
+# get the registry server, kubectl needs to point to the SAS Viya platform deployment namespace, and replace {{ .values.NAMESPACE }} with the namespace value 
+$ kubectl -n {{ .values.NAMESPACE }} get deployment sas-readiness -o yaml | grep -e "image:.*sas-readiness" | sed -e 's/image: //g' -e 's/\/.*//g'  -e 's/^[ \t]*//'
     &lt;container registry&gt; 
 
-# get registry relative path and tag, kubectl needs to point to the SAS Viya platform deployment namespace, and replace {{ NAMESPACE }} with the namespace value
-$ CONFIGMAP="$(kubectl -n {{ NAMESPACE }} get cm | grep sas-components | tr -s '' | cut -d ' ' -f1)"
-$ kubectl -n {{ NAMESPACE }} get cm "$CONFIGMAP" -o yaml | grep 'sas-business-orchestration-worker:' | grep -v "VERSION"
+# get registry relative path and tag, kubectl needs to point to the SAS Viya platform deployment namespace, and replace {{ .values.NAMESPACE }} with the namespace value
+$ CONFIGMAP="$(kubectl -n {{ .values.NAMESPACE }} get cm | grep sas-components | tr -s '' | cut -d ' ' -f1)"
+$ kubectl -n {{ .values.NAMESPACE }} get cm "$CONFIGMAP" -o yaml | grep 'sas-business-orchestration-worker:' | grep -v "VERSION"
     SAS_COMPONENT_RELPATH_sas-business-orchestration-worker: &lt;container relative path&gt;/sas-business-orchestration-worker
     SAS_COMPONENT_TAG_sas-business-orchestration-worker: &lt;container tag&gt;</code></pre>
 
@@ -186,7 +186,7 @@ $ kubectl -n {{ NAMESPACE }} get cm "$CONFIGMAP" -o yaml | grep 'sas-business-or
 <p>To secure your ingress, the following annotations can be used to add one-way TLS, two-way TLS (mTLS), or both.</p>
 <pre class="highlight"><code class="language-yaml">annotations:
     # Used to enable TLS
-    nginx.ingress.kubernetes.io/auth-tls-secret: {{ NAMESPACE }}/business-orchestration-worker-ingress-tls-ca-config-{{ .VALUES.SUFFIX }}   
+    nginx.ingress.kubernetes.io/auth-tls-secret: {{ .values.NAMESPACE }}/business-orchestration-worker-ingress-tls-ca-config-{{ .VALUES.SUFFIX }}   
     # used to enable mTLS
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    </code></pre>
 

@@ -139,6 +139,6 @@ For information about moving from an internal PostgreSQL server to an external o
 <p>You can add PostgreSQL servers to the SAS Viya platform via the DataServer.webinfdsvr.sas.com <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">CustomResource</a>. This CustomResource is used to inform the SAS Viya platform of the location and credentials for PostgreSQL servers. DataServers can be configured to reference either internally managed Crunchy Data PostgreSQL clusters or externally managed PostgreSQL servers.</p>
 <p><strong>Note</strong>: DataServer CustomResources will not provision PostgreSQL servers on your behalf.</p>
 <p>To view the DataServer CustomResources in your SAS Viya platform deployment, run the following command.</p>
-<pre class="highlight"><code class="language-bash">kubectl get dataservers.webinfdsvr.sas.com -n {{ NAME-OF-NAMESPACE }}</code></pre>
+<pre class="highlight"><code class="language-bash">kubectl get dataservers.webinfdsvr.sas.com -n {{ .values.NAME_OF_NAMESPACE }}</code></pre>
     </body>
 </html>

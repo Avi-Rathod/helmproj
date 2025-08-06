@@ -5,7 +5,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sas-sda-scr-{{ ORGANIZATION }}
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
   labels:
     app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
 spec:

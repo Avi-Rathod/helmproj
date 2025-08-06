@@ -2,7 +2,7 @@
 # **********INSTRUCTIONS**********
 #
 # Fill out the template by finding placeholders enclosed in '{{}}' characters.
-# For example, fill out all of the {{ NAMESPACE }} placeholders with your deployment's namespace.
+# For example, fill out all of the {{ .values.NAMESPACE }} placeholders with your deployment's namespace.
 # Some placeholders are included in lists, in which case you may add as many as you require. For instance, 
 # each {{ .VALUES. DNS_NAME }}placeholder just indicates the first item in that list of DNS names.
 #
@@ -17,7 +17,7 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: detection-ca-bootstrap-issuer
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
 spec:
   selfSigned: {}
 ---
@@ -29,7 +29,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: detection-root-ca-certificate
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
 spec:
   isCA: true
   secretName: detection-ca-secret
@@ -50,7 +50,7 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: detection-ca-issuer
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
 spec:
   ca:
     secretName: detection-ca-secret
@@ -62,7 +62,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: detection-ingress-tls-certificate
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
 spec:
   secretName: detection-ingress-tls-secret
   duration: 2160h # 90d
@@ -92,7 +92,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: detection-client-certificate
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
 spec:
   secretName: detection-client-secret
   duration: 2160h # 90d
@@ -122,7 +122,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: detection-redis-tls-certificate
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
 spec:
   secretName: detection-redis-tls-secret
   duration: 2160h # 90d
@@ -152,7 +152,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: detection-kafka-tls-certificate
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
 spec:
   secretName: detection-kafka-tls-secret
   duration: 2160h # 90d

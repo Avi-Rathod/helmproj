@@ -17,7 +17,7 @@ SAS Business Orchestration Services has two versions. The first is the one that 
 
 Create a copy of the example template in `$deploy/sas-bases/examples/sas-business-orchestration-worker/business-orchestration-worker-deployment.yaml`. Save this copy in `$deploy/site-config/sas-business-orchestration-worker/business-orchestration-worker-deployment.yaml`.
 
-Placeholders are indicated by curly brackets, such as {{ NAMESPACE }}. Find and replace the placeholders with the values you want for your deployment. After all placeholders have been filled in, directly apply your deployment yaml via SAS Viya platform Kustomize or direct kubectl apply commands.
+Placeholders are indicated by curly brackets, such as {{ .values.NAMESPACE }}. Find and replace the placeholders with the values you want for your deployment. After all placeholders have been filled in, directly apply your deployment yaml via SAS Viya platform Kustomize or direct kubectl apply commands.
 
 If you are using the SAS Viya platform Kustomize process, add the resource `$deploy/site-config/sas-business-orchestration-worker/business-orchestration-worker-deployment.yaml` to the
 resources block of the base kustomization.yaml file.  The use case here is to deploy a SAS Business Orchestration Worker project with SAS Viya platform. Here is an example:
@@ -60,7 +60,7 @@ grep '.dockerconfigjson:' site.yaml
 Alternatively, if SAS Viya platform has already been deployed the image pull secret can be queried:
 
 ```shell
-kubectl -n {{ NAMESPACE }} get secret --field-selector=type=kubernetes.io/dockerconfigjson -o yaml | grep '.dockerconfigjson:'
+kubectl -n {{ .values.NAMESPACE }} get secret --field-selector=type=kubernetes.io/dockerconfigjson -o yaml | grep '.dockerconfigjson:'
     .dockerconfigjson: <SECRET>
 ```
 
@@ -183,13 +183,13 @@ Perform the following commands to get the required information from a running SA
     
 ```shell
     
-# get the registry server, kubectl needs to point to the SAS Viya platform deployment namespace, and replace {{ NAMESPACE }} with the namespace value 
-$ kubectl -n {{ NAMESPACE }} get deployment sas-readiness -o yaml | grep -e "image:.*sas-readiness" | sed -e 's/image: //g' -e 's/\/.*//g'  -e 's/^[ \t]*//'
+# get the registry server, kubectl needs to point to the SAS Viya platform deployment namespace, and replace {{ .values.NAMESPACE }} with the namespace value 
+$ kubectl -n {{ .values.NAMESPACE }} get deployment sas-readiness -o yaml | grep -e "image:.*sas-readiness" | sed -e 's/image: //g' -e 's/\/.*//g'  -e 's/^[ \t]*//'
     <container registry> 
     
-# get registry relative path and tag, kubectl needs to point to the SAS Viya platform deployment namespace, and replace {{ NAMESPACE }} with the namespace value
-$ CONFIGMAP="$(kubectl -n {{ NAMESPACE }} get cm | grep sas-components | tr -s '' | cut -d ' ' -f1)"
-$ kubectl -n {{ NAMESPACE }} get cm "$CONFIGMAP" -o yaml | grep 'sas-business-orchestration-worker:' | grep -v "VERSION"
+# get registry relative path and tag, kubectl needs to point to the SAS Viya platform deployment namespace, and replace {{ .values.NAMESPACE }} with the namespace value
+$ CONFIGMAP="$(kubectl -n {{ .values.NAMESPACE }} get cm | grep sas-components | tr -s '' | cut -d ' ' -f1)"
+$ kubectl -n {{ .values.NAMESPACE }} get cm "$CONFIGMAP" -o yaml | grep 'sas-business-orchestration-worker:' | grep -v "VERSION"
     SAS_COMPONENT_RELPATH_sas-business-orchestration-worker: <container relative path>/sas-business-orchestration-worker
     SAS_COMPONENT_TAG_sas-business-orchestration-worker: <container tag>
 ```
@@ -277,7 +277,7 @@ To secure your ingress, the following annotations can be used to add one-way TLS
 ```yaml
 annotations:
     # Used to enable TLS
-    nginx.ingress.kubernetes.io/auth-tls-secret: {{ NAMESPACE }}/business-orchestration-worker-ingress-tls-ca-config-{{ .VALUES.SUFFIX }}   
+    nginx.ingress.kubernetes.io/auth-tls-secret: {{ .values.NAMESPACE }}/business-orchestration-worker-ingress-tls-ca-config-{{ .VALUES.SUFFIX }}   
     # used to enable mTLS
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    
 ```

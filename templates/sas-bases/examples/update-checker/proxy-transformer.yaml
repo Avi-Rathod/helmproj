@@ -17,7 +17,7 @@ patch: |-
     path: /spec/jobTemplate/spec/template/spec/containers/0/env/-
     value:
       name: NO_PROXY
-      value: {{ NO-PROXY-FQDN-COMMA-SEPARATED-LIST }}
+      value: {{ .values.NO_PROXY_FQDN_COMMA_SEPARATED_LIST }}
 target:
   name: sas-update-checker
   kind: CronJob

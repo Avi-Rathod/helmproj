@@ -115,7 +115,7 @@ to the site-config directory.</p>
 <pre class="highlight"><code class="language-yaml">target:
   group: viya.sas.com
   kind: CASDeployment
-  name: {{ NAME-OF-SERVER }}
+  name: {{ .values.NAME_OF_SERVER }}
   version: v1alpha1</code></pre>
 
 </li>

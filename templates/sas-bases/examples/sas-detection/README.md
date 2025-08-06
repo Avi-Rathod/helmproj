@@ -142,7 +142,7 @@ To secure your ingress, the following annotations can be used to add one-way TLS
 ```yaml
 annotations:
     # Used to enable TLS
-    nginx.ingress.kubernetes.io/auth-tls-secret: {{ NAMESPACE }}/detection-ingress-tls-ca-config-{{ ORGANIZATION }}   
+    nginx.ingress.kubernetes.io/auth-tls-secret: {{ .values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ ORGANIZATION }}   
     # used to enable mTLS
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    
 ```

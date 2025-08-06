@@ -157,7 +157,7 @@ to the site-config directory.
    target:
      group: viya.sas.com
      kind: CASDeployment
-     name: {{ NAME-OF-SERVER }}
+     name: {{ .values.NAME_OF_SERVER }}
      version: v1alpha1
    ```
 

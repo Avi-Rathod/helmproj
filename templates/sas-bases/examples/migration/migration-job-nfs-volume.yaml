@@ -8,8 +8,8 @@ patch: |-
     value:
       name: migration
       nfs:
-        path: {{ NFS-PATH }}
-        server: {{ NFS-SERVER }}
+        path: {{ .values.NFS_PATH }}
+        server: {{ .values.NFS_SERVER }}
 target:
   apiVersion: v1
   group: batch

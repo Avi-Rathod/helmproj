@@ -133,14 +133,14 @@ namespace used for the SAS Viya platform.</p>
 <li>
 <p>As an administrator with namespace permissions, scale down the existing internal
    OpenSearch Operator deployment:</p>
-<pre class="highlight"><code class="language-bash">kubectl scale deployment --replicas=0 sas-opendistro-operator -n {{ NAME-OF-NAMESPACE }}</code></pre>
+<pre class="highlight"><code class="language-bash">kubectl scale deployment --replicas=0 sas-opendistro-operator -n {{ .values.NAME_OF_NAMESPACE }}</code></pre>
 
 </li>
 <li>
 <p>As an administrator with namespace permissions, run the following command.
    The command ensures that there are no pods running the internal OpenSearch
    operator.</p>
-<pre class="highlight"><code class="language-bash">kubectl get po -l name=sas-opendistro-operator -n {{ NAME-OF-NAMESPACE }}</code></pre>
+<pre class="highlight"><code class="language-bash">kubectl get po -l name=sas-opendistro-operator -n {{ .values.NAME_OF_NAMESPACE }}</code></pre>
 
 </li>
 </ol>

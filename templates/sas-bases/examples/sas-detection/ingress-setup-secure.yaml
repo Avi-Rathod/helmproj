@@ -9,7 +9,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: sas-sda-scr-detection-{{ ORGANIZATION }}
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
 
@@ -18,7 +18,7 @@ metadata:
 
     # {{ .Values.SECURITY }} Note that these 3 annotations enable two-way front door TLS. Without them, the ingress only has one-way TLS enabled
     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
-    nginx.ingress.kubernetes.io/auth-tls-secret: "{{ NAMESPACE }}/detection-ingress-tls-ca-config-{{ ORGANIZATION }}   # Used to enable TLS"
+    nginx.ingress.kubernetes.io/auth-tls-secret: "{{ .values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ ORGANIZATION }}   # Used to enable TLS"
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    # used to enable mTLS
 
     nginx.ingress.kubernetes.io/session-cookie-expires: "172800"

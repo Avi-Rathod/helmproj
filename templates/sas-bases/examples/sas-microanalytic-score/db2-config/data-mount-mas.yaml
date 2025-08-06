@@ -22,7 +22,7 @@ patch: |-
     path: /spec/template/spec/containers/0/volumeMounts/-
     value:
       name: {{ .values.DB2_CONFIGURED_DIR_NAME }}   #for example, db2
-      mountPath: {{DB2_CONFIGURED_DIR_MOUNT_PATH}}   #for example, "/db2"
+      mountPath: {{ .values.DB2_CONFIGURED_DIR_MOUNT_PATH }}   #for example, "/db2"
   - op: add
     path: /spec/template/spec/volumes/-
     value:

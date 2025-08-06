@@ -56,7 +56,7 @@ target:
   # Uncomment this to apply to all CAS servers:
   name: .*
   # Uncomment this to apply to one particular named CAS server:
-  #name: {{ NAME-OF-SERVER }}
+  #name: {{ .values.NAME_OF_SERVER }}
   # Uncomment this to apply to the default CAS server:
   #labelSelector: "sas.com/cas-server-default"
   version: v1alpha1

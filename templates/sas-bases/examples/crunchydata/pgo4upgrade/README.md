@@ -12,7 +12,7 @@ Beginning with version 2022.10, the SAS Viya platform uses version 5 of the Crun
 **Note:** The PostgreSQL Operator is specific to internal PostgreSQL. If the SAS Viya platform is configured to use external PostgreSQL, skip the contents of this README. You should also skip the contents of this README if the deployment is managed by the SAS Viya Platform Deployment Operator or you have already deployed the correct PostgreSQL Operator version. To check the version that is deployed, run the following command. If it returns an error or a message "No resources found in <your-namespace> namespace", you are at version 5 of the operator.
 
 ```bash
-kubectl get pgclusters.crunchydata.com -n {{ NAME-OF-NAMESPACE }}
+kubectl get pgclusters.crunchydata.com -n {{ .values.NAME_OF_NAMESPACE }}
 ```
 
 ## Instructions

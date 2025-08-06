@@ -173,5 +173,5 @@ You can add PostgreSQL servers to the SAS Viya platform via the DataServer.webin
 To view the DataServer CustomResources in your SAS Viya platform deployment, run the following command.
 
 ```bash
-kubectl get dataservers.webinfdsvr.sas.com -n {{ NAME-OF-NAMESPACE }}
+kubectl get dataservers.webinfdsvr.sas.com -n {{ .values.NAME_OF_NAMESPACE }}
 ```

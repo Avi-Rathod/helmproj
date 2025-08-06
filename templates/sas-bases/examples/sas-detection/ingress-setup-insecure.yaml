@@ -6,7 +6,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: sas-sda-scr-{{ ORGANIZATION }}
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
   labels:
     app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
 spec:
@@ -25,7 +25,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: sas-sda-scr-detection-{{ ORGANIZATION }}
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
   labels:
     app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
 spec:
@@ -44,7 +44,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: sas-sda-scr-{{ ORGANIZATION }}
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
@@ -80,7 +80,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: sas-sda-scr-detection-{{ ORGANIZATION }}
-  namespace: {{ NAMESPACE }}
+  namespace: {{ .values.NAMESPACE }}
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"

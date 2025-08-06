@@ -10,7 +10,7 @@
 #    - .* for both clusters. In this case, use a unique name like 'both-clusters' for the transformer metadata name
 #    - If different settings are needed for each cluster, then separate transformers must be created:
 #        one for Platform Postgres, and the other for CDS Postgres.
-# - {{ FULL-BACKUP-CRONJOB }} is the schedule for full backups in Cron syntax
+# - {{ .values.FULL_BACKUP_CRONJOB }} is the schedule for full backups in Cron syntax
 #    - The default is every Sunday morning at 06:00 UTC ('0 6 * * 0')
 # - {{ INCR-BACKUP-CRONJOB }} is the schedule for incremental backups in Cron syntax
 #    - The default is every morning at 06:00 UTC except Sundays ('0 6 * * 1-6')
@@ -35,7 +35,7 @@ metadata:
 patch: |-
   #- op: replace
   #  path: /spec/backups/pgbackrest/repos/0/schedules/full
-  #  value: {{ FULL-BACKUP-CRONJOB }}
+  #  value: {{ .values.FULL_BACKUP_CRONJOB }}
   #- op: replace
   #  path: /spec/backups/pgbackrest/repos/0/schedules/incremental
   #  value: {{ INCR-BACKUP-CRONJOB }}

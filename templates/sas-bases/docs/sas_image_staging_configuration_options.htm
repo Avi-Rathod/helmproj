@@ -88,7 +88,7 @@ the namespaced sas-prepull service account.</p>
 <code>$deploy/site-config/sas-prepull/add-prepull-cr-crb.yaml</code>.</p>
 </li>
 <li>
-<p>Modify add-prepull-cr-crb.yaml by replacing all instances of &lsquo;{{ NAMESPACE }}&rsquo; with the
+<p>Modify add-prepull-cr-crb.yaml by replacing all instances of &lsquo;{{ .values.NAMESPACE }}&rsquo; with the
 namespace of the SAS Viya platform deployment where you want node and list access granted for the
 sas-prepull service account.</p>
 </li>
@@ -146,8 +146,8 @@ get applied in future Kustomize builds.</p>
 <p>If there are no other SAS Viya platform deployments in other namespaces in the cluster, execute
 <code>kubectl delete -f $deploy/site-config/sas-prepull/add-prepull-cr-crb.yaml</code> to remove the
 ClusterRole and ClusterRoleBinding from the cluster. If there are other SAS Viya platform deployments
-in other namespaces in the cluster, execute <code>kubectl delete clusterrolebinding sas-prepull-v2-{{ NAMESPACE }} -n {{ NAMESPACE }}</code>,
-where {{ NAMESPACE }} is the namespace of the deployment in which you want the ClusterRoleBinding
+in other namespaces in the cluster, execute <code>kubectl delete clusterrolebinding sas-prepull-v2-{{ .values.NAMESPACE }} -n {{ .values.NAMESPACE }}</code>,
+where {{ .values.NAMESPACE }} is the namespace of the deployment in which you want the ClusterRoleBinding
 removed.</p>
 </li>
 </ol>
