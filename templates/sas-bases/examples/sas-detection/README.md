@@ -142,7 +142,7 @@ To secure your ingress, the following annotations can be used to add one-way TLS
 ```yaml
 annotations:
     # Used to enable TLS
-    nginx.ingress.kubernetes.io/auth-tls-secret: {{ .values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ ORGANIZATION }}   
+    nginx.ingress.kubernetes.io/auth-tls-secret: {{ .values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ .values.ORGANIZATION }}   
     # used to enable mTLS
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    
 ```
@@ -152,8 +152,8 @@ For one-way TLS, fill in the tls field under the spec field. This also includes 
 ```yaml
 tls:
     - hosts:
-        - {{ ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}
-    secretName: detection-ingress-tls-config-{{ ORGANIZATION }}
+        - {{ .values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}
+    secretName: detection-ingress-tls-config-{{ .values.ORGANIZATION }}
 ```
 
 See the ingress-setup-secure.yaml file for an example of where to add these fields to your deployment yaml.

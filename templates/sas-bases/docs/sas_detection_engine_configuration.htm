@@ -83,15 +83,15 @@
 <p>To secure your ingress, the following annotations can be used to add one-way TLS, mutual TLS, or both.</p>
 <pre class="highlight"><code class="language-yaml">annotations:
     # Used to enable TLS
-    nginx.ingress.kubernetes.io/auth-tls-secret: {{ .values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ ORGANIZATION }}   
+    nginx.ingress.kubernetes.io/auth-tls-secret: {{ .values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ .values.ORGANIZATION }}   
     # used to enable mTLS
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    </code></pre>
 
 <p>For one-way TLS, fill in the tls field under the spec field. This also includes a secretName, which includes your TLS certificate.</p>
 <pre class="highlight"><code class="language-yaml">tls:
     - hosts:
-        - {{ ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}
-    secretName: detection-ingress-tls-config-{{ ORGANIZATION }}</code></pre>
+        - {{ .values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}
+    secretName: detection-ingress-tls-config-{{ .values.ORGANIZATION }}</code></pre>
 
 <p>See the ingress-setup-secure.yaml file for an example of where to add these fields to your deployment yaml.</p>
 <h4 id="140345099398880volumes-and-volume-mounts">Volumes and Volume Mounts</h4>

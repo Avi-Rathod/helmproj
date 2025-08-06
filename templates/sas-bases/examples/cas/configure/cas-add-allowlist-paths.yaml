@@ -1,6 +1,6 @@
 # This block of code is for appending paths to the file system path
 # allowlist for the CAS server.  The {{ .values.PATH_OR_VOLUME }} and
-# {{ PATH-OR-VOLUME-2 }} values can be either the name of a
+# {{ .values.PATH_OR_VOLUME_2 }} values can be either the name of a
 # Volume or a direct path.  These two values are provided
 # as an example for appending multiple paths to the
 # appendCASAllowlistPaths array.
@@ -22,7 +22,7 @@ patch: |-
   - op: add
     path: /spec/appendCASAllowlistPaths/-
     value:
-      {{ PATH-OR-VOLUME-2 }}
+      {{ .values.PATH_OR_VOLUME_2 }}
 target:
   group: viya.sas.com
   kind: CASDeployment

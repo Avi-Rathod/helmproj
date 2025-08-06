@@ -8,9 +8,9 @@
 #
 # {{ .VALUES.DECISION }}: This is the decision image you are pulling for the SCR container, found in your Docker registry. 
 #
-# {{ ORGANIZATION }}: The name of your organization.  This is used to make your deployed resources unique and easily identifiable.
+# {{ .values.ORGANIZATION }}: The name of your organization.  This is used to make your deployed resources unique and easily identifiable.
 #
-# {{ INGRESS-TYPE }}/{{ HOST }}: These placeholders are used along with {{ ORGANIZATION }} for creating your deployment's ingresses.
+# {{ INGRESS-TYPE }}/{{ HOST }}: These placeholders are used along with {{ .values.ORGANIZATION }} for creating your deployment's ingresses.
 #
 # {{ .values.VALUE_NEEDED }}: Miscellaneous placeholder used for setting up environment variables and volume mounts for your containers.
 # Context and environment variable names will help you fill these out. 
@@ -24,10 +24,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: sas-sda-scr-{{ ORGANIZATION }}
+  name: sas-sda-scr-{{ .values.ORGANIZATION }}
   namespace: {{ .values.NAMESPACE }}
   labels:
-    app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
+    app.kubernetes.io/name: sas-sda-scr-{{ .values.ORGANIZATION }}
 spec:
   type: ClusterIP
   ports:
@@ -35,7 +35,7 @@ spec:
       targetPort: 8080 # port exposed by this service
       protocol: TCP # IP protoocl for this port. Supported values: TCP, UDP, SCTP. Default is TCP
   selector:
-    app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
+    app.kubernetes.io/name: sas-sda-scr-{{ .values.ORGANIZATION }}
 ---
 ########################################################################
 # Create Service for sas-detection
@@ -43,10 +43,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: sas-sda-scr-detection-{{ ORGANIZATION }}
+  name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
   namespace: {{ .values.NAMESPACE }}
   labels:
-    app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
+    app.kubernetes.io/name: sas-sda-scr-{{ .values.ORGANIZATION }}
 spec:
   type: ClusterIP
   ports:
@@ -54,7 +54,7 @@ spec:
       targetPort: 8777 # port exposed by this service
       protocol: TCP # IP protoocl for this port. Supported values: TCP, UDP, SCTP. Default is TCP
   selector:
-    app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
+    app.kubernetes.io/name: sas-sda-scr-{{ .values.ORGANIZATION }}
 ---
 # {{ .Values.SECURITY }} OPTIONAL: uncomment these secrets and add base64 encoded certificate and private key to each
 # if you are managing these manually
@@ -64,7 +64,7 @@ spec:
 # apiVersion: v1
 # kind: Secret
 # metadata:
-#   name: detection-ingress-tls-config-{{ ORGANIZATION }}
+#   name: detection-ingress-tls-config-{{ .values.ORGANIZATION }}
 #   namespace: {{ .values.NAMESPACE }}
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
@@ -79,7 +79,7 @@ spec:
 # apiVersion: v1
 # kind: Secret
 # metadata:
-#   name: detection-ingress-tls-ca-config-{{ ORGANIZATION }}
+#   name: detection-ingress-tls-ca-config-{{ .values.ORGANIZATION }}
 #   namespace: {{ .values.NAMESPACE }}
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
@@ -94,7 +94,7 @@ spec:
 # apiVersion: v1
 # kind: Secret
 # metadata:
-#   name: detection-redis-tls-config-{{ ORGANIZATION }}
+#   name: detection-redis-tls-config-{{ .values.ORGANIZATION }}
 #   namespace: {{ .values.NAMESPACE }}
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
@@ -109,7 +109,7 @@ spec:
 # apiVersion: v1
 # kind: Secret
 # metadata:
-#   name: detection-kafka-tls-config-{{ ORGANIZATION }}
+#   name: detection-kafka-tls-config-{{ .values.ORGANIZATION }}
 #   namespace: {{ .values.NAMESPACE }}
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
@@ -125,19 +125,19 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sas-sda-scr-{{ ORGANIZATION }}
+  name: sas-sda-scr-{{ .values.ORGANIZATION }}
   namespace: {{ .values.NAMESPACE }}
   labels:
-    app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
+    app.kubernetes.io/name: sas-sda-scr-{{ .values.ORGANIZATION }}
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
+      app.kubernetes.io/name: sas-sda-scr-{{ .values.ORGANIZATION }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
+        app.kubernetes.io/name: sas-sda-scr-{{ .values.ORGANIZATION }}
         sas.com/scr: "true"
     spec:
       # {{ .Values.SECURITY }} 
@@ -146,13 +146,13 @@ spec:
       # uncomment security volume for TLS from goODE <SECURITY>
       # - name: security
       #   secret:
-      #     secretName: detection-ingress-tls-config-{{ ORGANIZATION }}
+      #     secretName: detection-ingress-tls-config-{{ .values.ORGANIZATION }}
       # - name: redissecurity
       #   secret:
-      #     secretName: detection-redis-tls-config-{{ ORGANIZATION }}
+      #     secretName: detection-redis-tls-config-{{ .values.ORGANIZATION }}
       # - name: kafkasecurity
       #   secret:
-      #     secretName: detection-kafka-tls-config-{{ ORGANIZATION }}
+      #     secretName: detection-kafka-tls-config-{{ .values.ORGANIZATION }}
       containers:
         - name: sas-sda-scr
           # Image from your docker registry
@@ -247,11 +247,11 @@ spec:
             - name: SAS_DETECTION_KAFKA_SERVER
               value: {{ .values.VALUE_NEEDED }}   # Bootstrap server, host:port
             - name: SAS_DETECTION_KAFKA_TDR_TOPIC
-              value: tdr-{{ ORGANIZATION }}
+              value: tdr-{{ .values.ORGANIZATION }}
             - name: SAS_DETECTION_KAFKA_REJECTTOPIC
-              value: reject-{{ ORGANIZATION }}
+              value: reject-{{ .values.ORGANIZATION }}
             - name: SAS_DETECTION_KAFKA_TOPIC
-              value: input-{{ ORGANIZATION }}
+              value: input-{{ .values.ORGANIZATION }}
             - name: SAS_DETECTION_KAFKA_CONSUMER_ENABLED
               value: {{ .values.VALUE_NEEDED }}
             # {{ .Values.SECURITY }}
@@ -298,7 +298,7 @@ spec:
 
             # PROCESSING CONFIGURATION PROPERTIES
             - name: SAS_DETECTION_DEPLOYMENT_NAME
-              value: sas-sda-scr-{{ ORGANIZATION }}
+              value: sas-sda-scr-{{ .values.ORGANIZATION }}
             - name: SAS_DETECTION_PROCESSING_DISABLEMETRICS
               value: {{ .values.VALUE_NEEDED }}   
             - name: SAS_DETECTION_PROCESSING_SLA
@@ -341,7 +341,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: sas-sda-scr-{{ ORGANIZATION }}
+  name: sas-sda-scr-{{ .values.ORGANIZATION }}
   namespace: {{ .values.NAMESPACE }}
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
@@ -350,24 +350,24 @@ metadata:
     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
   labels:
-    app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
+    app.kubernetes.io/name: sas-sda-scr-{{ .values.ORGANIZATION }}
 spec:
   ingressClassName: nginx
   defaultBackend:
     service:
-      name: sas-sda-scr-{{ ORGANIZATION }}
+      name: sas-sda-scr-{{ .values.ORGANIZATION }}
       port:
         number: 8080
   rules:
     # example: user.ingress-nginx.example.sas.com
-    - host: "{{ ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}"
+    - host: "{{ .values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}"
       http:
         paths:
           - path: "/decisionModule(/|$)(.*)"
             pathType: Prefix
             backend:
               service:
-                name: sas-sda-scr-{{ ORGANIZATION }}
+                name: sas-sda-scr-{{ .values.ORGANIZATION }}
                 port:
                   number: 8080
 ---
@@ -377,7 +377,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: sas-sda-scr-detection-{{ ORGANIZATION }}
+  name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
   namespace: {{ .values.NAMESPACE }}
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
@@ -386,24 +386,24 @@ metadata:
     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
     nginx.ingress.kubernetes.io/use-regex: "true"
   labels:
-    app.kubernetes.io/name: sas-sda-scr-detection-{{ ORGANIZATION }}
+    app.kubernetes.io/name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
 spec:
   ingressClassName: nginx
   defaultBackend:
     service:
-      name: sas-sda-scr-detection-{{ ORGANIZATION }}
+      name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
       port:
         number: 8777
   rules:
     # example: user.ingress-nginx.example.sas.com
-    - host: "{{ ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}"
+    - host: "{{ .values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}"
       http:
         paths:
             - path: "/detection(/|$)(.*)"
               pathType: Prefix
               backend:
                 service:
-                  name: sas-sda-scr-detection-{{ ORGANIZATION }}
+                  name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
                   port:
                     number: 8777
 ---
@@ -414,7 +414,7 @@ spec:
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
 # metadata:
-#   name: sas-sda-scr-detection-{{ ORGANIZATION }}
+#   name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
 #   namespace: {{ .values.NAMESPACE }}
 #   annotations:
 #     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
@@ -424,29 +424,29 @@ spec:
 
 #     # {{ .Values.SECURITY }} Note that these 3 annotations enable two-way front door TLS. Without them, the ingress only has one-way TLS enabled
 #     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
-#     nginx.ingress.kubernetes.io/auth-tls-secret: {{ .values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ ORGANIZATION }}   # Used to enable TLS
+#     nginx.ingress.kubernetes.io/auth-tls-secret: {{ .values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ .values.ORGANIZATION }}   # Used to enable TLS
 #     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    # used to enable mTLS
 
 #     nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
 #     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
 #     nginx.ingress.kubernetes.io/use-regex: "true"
 #   labels:
-#     app.kubernetes.io/name: sas-sda-scr-detection-{{ ORGANIZATION }}
+#     app.kubernetes.io/name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
 # spec:
 #   ingressClassName: nginx
 #   tls:
 #     - hosts:
-#         - {{ ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}
-#       secretName: detection-ingress-tls-config-{{ ORGANIZATION }}
+#         - {{ .values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}
+#       secretName: detection-ingress-tls-config-{{ .values.ORGANIZATION }}
 #   rules:
-#     - host: {{ ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}
+#     - host: {{ .values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}
 #       http:
 #         paths:
 #           - path: "/detection(/|$)(.*)"
 #             pathType: Prefix
 #             backend:
 #               service:
-#                 name: sas-sda-scr-detection-{{ ORGANIZATION }}
+#                 name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
 #                 port:
 #                   number: 8777
 ---

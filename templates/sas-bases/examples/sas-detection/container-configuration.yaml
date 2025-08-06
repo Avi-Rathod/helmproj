@@ -4,19 +4,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sas-sda-scr-{{ ORGANIZATION }}
+  name: sas-sda-scr-{{ .values.ORGANIZATION }}
   namespace: {{ .values.NAMESPACE }}
   labels:
-    app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
+    app.kubernetes.io/name: sas-sda-scr-{{ .values.ORGANIZATION }}
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
+      app.kubernetes.io/name: sas-sda-scr-{{ .values.ORGANIZATION }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
+        app.kubernetes.io/name: sas-sda-scr-{{ .values.ORGANIZATION }}
         sas.com/scr: "true"
     spec:
       containers:
@@ -74,11 +74,11 @@ spec:
             - name: SAS_DETECTION_KAFKA_SERVER
               value: {{ .values.VALUE_NEEDED }}   # Bootstrap server, host:port
             - name: SAS_DETECTION_KAFKA_TDR_TOPIC
-              value: tdr-{{ ORGANIZATION }}
+              value: tdr-{{ .values.ORGANIZATION }}
             - name: SAS_DETECTION_KAFKA_REJECTTOPIC
-              value: reject-{{ ORGANIZATION }}
+              value: reject-{{ .values.ORGANIZATION }}
             - name: SAS_DETECTION_KAFKA_TOPIC
-              value: input-{{ ORGANIZATION }}
+              value: input-{{ .values.ORGANIZATION }}
             - name: SAS_DETECTION_KAFKA_CONSUMER_ENABLED
               value: {{ .values.VALUE_NEEDED }}
 
@@ -92,7 +92,7 @@ spec:
 
             # PROCESSING CONFIGURATION PROPERTIES
             - name: SAS_DETECTION_DEPLOYMENT_NAME
-              value: sas-sda-scr-{{ ORGANIZATION }}
+              value: sas-sda-scr-{{ .values.ORGANIZATION }}
             - name: SAS_DETECTION_PROCESSING_DISABLEMETRICS
               value: {{ .values.VALUE_NEEDED }}   
             - name: SAS_DETECTION_PROCESSING_SLA

@@ -4,7 +4,7 @@
 # Fill out the template by finding placeholders enclosed in '{{  }}' characters.
 # Recommended practices for each placeholder:
 #
-# {{ PREFIX }}/{{ .VALUES.SUFFIX }}: Try to keep these the same and consistent throughout. This will make your deployed resources
+# {{ .values.PREFIX }}/{{ .VALUES.SUFFIX }}: Try to keep these the same and consistent throughout. This will make your deployed resources
 # unique and easily identifiable. You can use any alphanumeric, twenty characters or less, but we recommend using your
 # user-id or something meaningful to the purpose of the deployment.
 #
@@ -12,7 +12,7 @@
 #
 # {{ .Values.ROUTE_HOST }}: This is used for the Openshift ingress.  If on Openshift do not specify other ingresses.
 #
-# {{ INGRESS_TYPE }}/{{ HOST }}: These placeholders are used along with {{ PREFIX }} for creating your deployment's ingresses.
+# {{ INGRESS_TYPE }}/{{ HOST }}: These placeholders are used along with {{ .values.PREFIX }} for creating your deployment's ingresses.
 #
 # {{ .values.VALUE_NEEDED }}
 : Miscellaneous placeholder used for setting up environment variables, pull secrets, and volume mounts for your containers.
@@ -662,7 +662,7 @@ spec:
 #     sas.com/admin: namespace
 #   name: sas-business-orchestration-worker-{{ .VALUES.SUFFIX }}
 # spec:
-#   host: "{{ PREFIX }}.{{ .Values.ROUTE_HOST }}"
+#   host: "{{ .values.PREFIX }}.{{ .Values.ROUTE_HOST }}"
 #   path: /sas-business-orchestration-worker
 #   port:
 #     targetPort: http
@@ -691,7 +691,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: "{{ PREFIX }}.{{ INGRESS_TYPE }}.{{ HOST }}"
+    - host: "{{ .values.PREFIX }}.{{ INGRESS_TYPE }}.{{ HOST }}"
       http:
         paths:
           - path: /
@@ -731,10 +731,10 @@ spec:
 #   ingressClassName: nginx
 #   tls:
 #     - hosts:
-#         - {{ PREFIX }}.{{ INGRESS-TYPE }}.{{ HOST }}
+#         - {{ .values.PREFIX }}.{{ INGRESS-TYPE }}.{{ HOST }}
 #       secretName: business-orchestration-worker-ingress-tls-config-{{ .VALUES.SUFFIX }}
 #   rules:
-#     - host: {{ PREFIX }}.{{ INGRESS-TYPE }}.{{ HOST }}
+#     - host: {{ .values.PREFIX }}.{{ INGRESS-TYPE }}.{{ HOST }}
 #       http:
 #         paths:
 #           - path: "/sas-business-orchestration-worker(/|$)(.*)"

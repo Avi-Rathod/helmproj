@@ -8,7 +8,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: sas-sda-scr-detection-{{ ORGANIZATION }}
+  name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
   namespace: {{ .values.NAMESPACE }}
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
@@ -18,28 +18,28 @@ metadata:
 
     # {{ .Values.SECURITY }} Note that these 3 annotations enable two-way front door TLS. Without them, the ingress only has one-way TLS enabled
     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
-    nginx.ingress.kubernetes.io/auth-tls-secret: "{{ .values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ ORGANIZATION }}   # Used to enable TLS"
+    nginx.ingress.kubernetes.io/auth-tls-secret: "{{ .values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ .values.ORGANIZATION }}   # Used to enable TLS"
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    # used to enable mTLS
 
     nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
     nginx.ingress.kubernetes.io/use-regex: "true"
   labels:
-    app.kubernetes.io/name: sas-sda-scr-detection-{{ ORGANIZATION }}
+    app.kubernetes.io/name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - "{{ ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}"
-      secretName: detection-ingress-tls-config-{{ ORGANIZATION }}
+        - "{{ .values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}"
+      secretName: detection-ingress-tls-config-{{ .values.ORGANIZATION }}
   rules:
-    - host: "{{ ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}"
+    - host: "{{ .values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}"
       http:
         paths:
           - path: "/detection(/|$)(.*)"
             pathType: Prefix
             backend:
               service:
-                name: sas-sda-scr-detection-{{ ORGANIZATION }}
+                name: sas-sda-scr-detection-{{ .values.ORGANIZATION }}
                 port:
                   number: 8777

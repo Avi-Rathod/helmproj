@@ -3,15 +3,15 @@ kind: Route
 metadata:
   namespace: {{ .values.NAMESPACE }}
   labels:
-    app.kubernetes.io/name: sas-detection-sda-{{ ORGANIZATION }}
+    app.kubernetes.io/name: sas-detection-sda-{{ .values.ORGANIZATION }}
     sas.com/admin: namespace
-  name: sas-detection-sda-{{ ORGANIZATION }}
+  name: sas-detection-sda-{{ .values.ORGANIZATION }}
 spec:
-  host: "{{ ORGANIZATION }}.{{ HOST }}"
+  host: "{{ .values.ORGANIZATION }}.{{ HOST }}"
   path: /detection
   port:
     targetPort: 8777
   to:
     kind: Service
-    name: sas-detection-sda-{{ ORGANIZATION }}
+    name: sas-detection-sda-{{ .values.ORGANIZATION }}
   wildcardPolicy: None
