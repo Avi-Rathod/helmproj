@@ -4,14 +4,14 @@
 ## hyphenated name set off by curly braces and a space at each end. You should replace this token with the
 ## actual value.
 ## Replace the curly braces, interior spaces, and the variable name.
-## For instance, "{{ CAS_CERTIFICATE_FILE_NAME }}"
+## For instance, "{{ .values.CAS_CERTIFICATE_FILE_NAME }}"
 ## should be replaced by the path to a .pem file containing your CAS certificate.
 ## If you use the suggested example, the correct, final syntax would be:
 ## - tls.crt=site-config/security/cas.crt
 ## - tls.key=site-config/security/cas.key
 ##
 ##
-## For instance, "{{ CONNECT_CERTIFICATE_FILE_NAME }}"
+## For instance, "{{ .values.CONNECT_CERTIFICATE_FILE_NAME }}"
 ## should be replaced by the path to a .pem file containing your CAS certificate.
 ## If you use the suggested example, the correct, final syntax would be:
 ## - tls.crt=site-config/security/connect.crt
@@ -33,8 +33,8 @@ metadata:
 #the key will be copied into the secret generator
 #the files can be deleted subsequent to running kustomize
 files:
-  - tls.crt={{ CAS_CERTIFICATE_FILE_NAME }} # For example: site-config/security/cas.crt
-  - tls.key={{ CAS_KEY_FILE_NAME }} # For example: site-config/security/cas.key
+  - tls.crt={{ .values.CAS_CERTIFICATE_FILE_NAME }} # For example: site-config/security/cas.crt
+  - tls.key={{ .values.CAS_KEY_FILE_NAME }} # For example: site-config/security/cas.key
 type: "kubernetes.io/tls"
 ---
 apiVersion: builtin
@@ -47,6 +47,6 @@ metadata:
 #the key will be copied into the secret generator
 #the files can be deleted subsequent to running kustomize
 files:
-  - tls.crt={{ CONNECT_CERTIFICATE_FILE_NAME }} # For example: site-config/security/connect.crt
-  - tls.key={{ CONNECT_KEY_FILE_NAME }} # For example: site-config/security/connect.key
+  - tls.crt={{ .values.CONNECT_CERTIFICATE_FILE_NAME }} # For example: site-config/security/connect.crt
+  - tls.key={{ .values.CONNECT_KEY_FILE_NAME }} # For example: site-config/security/connect.key
 type: "kubernetes.io/tls"

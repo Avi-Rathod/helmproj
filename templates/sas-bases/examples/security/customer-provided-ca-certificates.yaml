@@ -4,7 +4,7 @@
 ## hyphenated name set off by curly braces and a space at each end. You should replace this token with the
 ## actual value.
 ## Replace the curly braces, interior spaces, and the variable name.
-## For instance, "{{ CA-CERTIFICATE-FILE-NAME }}"
+## For instance, "{{ .values.CA_CERTIFICATE_FILE_NAME }}"
 ## should be replaced by the path to a .pem file containing your ca certificate(s).
 ## If you use the suggested example, the correct, final syntax would be:
 ## - site-config/security/cacerts/trustedcerts.pem
