@@ -4,7 +4,7 @@
 ## hyphenated name set off by curly braces and a space at each end. You should replace this token with the
 ## actual value.
 ## Replace the curly braces, interior spaces, and the variable name.
-## For instance, "{{ CLOUD-SQL-PROXY-IMAGE-NAME }}"
+## For instance, "{{ .values.CLOUD_SQL_PROXY_IMAGE_NAME }}"
 ## If you use the suggested example, the correct, final syntax would be:
 ##   image: "gcr.io/cloudsql-docker/gce-proxy:1.20.2"
 ## 
@@ -30,10 +30,10 @@ spec:
     spec:
       containers:
         - name: {{ .values.POSTGRES_SERVER_NAME }}-sql-proxy
-          image: "{{ CLOUD-SQL-PROXY-IMAGE-NAME }}" # For example: "gcr.io/cloudsql-docker/gce-proxy:1.20.2"
+          image: "{{ .values.CLOUD_SQL_PROXY_IMAGE_NAME }}" # For example: "gcr.io/cloudsql-docker/gce-proxy:1.20.2"
           env:
             - name: POSTGRES_CONNECTION_NAME
-              value: "{{ CLOUD-SQL-PROXY-INSTANCE-NAME }}" # For example: "my_project:us-east1:my_sql-proxy-instance-name-f6983407"
+              value: "{{ .values.CLOUD_SQL_PROXY_INSTANCE_NAME }}" # For example: "my_project:us-east1:my_sql-proxy-instance-name-f6983407"
           command:
             - "/cloud_sql_proxy"
           args:

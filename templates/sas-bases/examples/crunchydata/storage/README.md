@@ -15,7 +15,7 @@ PostgreSQL data is stored inside Kubernetes PersistentVolumeClaims (PVCs). This 
 
 1. Copy the file `$deploy/sas-bases/examples/crunchydata/storage/crunchy-storage-transformer.yaml` into your `$deploy/site-config/crunchydata/` directory.
 
-2. Rename the copied file to something unique. SAS recommends following the naming convention `{{ CLUSTER-NAME }}-crunchy-storage-transformer.yaml`. For example, a copy of the transformer targeting Platform PostgreSQL could be named `platform-postgres-crunchy-storage-transformer.yaml`.
+2. Rename the copied file to something unique. SAS recommends following the naming convention `{{ .values.CLUSTER_NAME }}-crunchy-storage-transformer.yaml`. For example, a copy of the transformer targeting Platform PostgreSQL could be named `platform-postgres-crunchy-storage-transformer.yaml`.
 
 3. Adjust the values in your copied file following the in-line comments.
 

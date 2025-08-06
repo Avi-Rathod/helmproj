@@ -12,7 +12,7 @@ patch: |-
     value:
       name: {{ .values.MOUNT_NAME }}
       configMap:
-        name: {{ CONFIGMAP-NAME }}
+        name: {{ .values.CONFIGMAP_NAME }}
         defaultMode: {{ .values.DEFAULT_PERMISSIONS}}
         items:
         - key: {{ KEY-REPRESENTING-DATA-FILE-SOURCE }}

@@ -122,8 +122,8 @@ If the default resources are not sufficient for the completion or successful exe
 1. Copy the file `$deploy/sas-bases/examples/migration/configure/sas-migration-job-modify-resources-transformer.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/migration`.
 
-2. In the copied file, replace {{ CPU-LIMIT }} with the desired value of CPU.
-{{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as "3" or "5".
+2. In the copied file, replace {{ .values. CPU_LIMIT }}with the desired value of CPU.
+{{ .values. CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
 3. In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.

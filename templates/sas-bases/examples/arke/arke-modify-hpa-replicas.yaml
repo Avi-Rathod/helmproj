@@ -19,7 +19,7 @@ patch: |-
   - op: replace
     path: /spec/metrics/0/resource/target/averageUtilization
     value:
-      {{ CPU-UTILIZATION }}
+      {{ .values.CPU_UTILIZATION }}
 target:
   kind: HorizontalPodAutoscaler
   name: sas-arke

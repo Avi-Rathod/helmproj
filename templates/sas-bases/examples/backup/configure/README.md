@@ -151,8 +151,8 @@ If the default resources are not sufficient for the completion or successful exe
 1. Copy the file `$deploy/sas-bases/examples/backup/configure/sas-backup-job-modify-resources-transformer.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/backup`.
 
-2. In the copied file, replace {{ CPU-LIMIT }} with the desired value of CPU.
-{{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as "3" or "5".
+2. In the copied file, replace {{ .values. CPU_LIMIT }}with the desired value of CPU.
+{{ .values. CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
 3. In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
@@ -182,8 +182,8 @@ If the default resources are not sufficient for the completion or successful exe
 1. Copy the file `$deploy/sas-bases/examples/backup/configure/sas-backup-pv-copy-cleanup-job-modify-resources-transformer.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/backup`.
 
-2. In the copied file, replace {{ CPU-LIMIT }} with the desired value of CPU.
-{{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as "3" or "5".
+2. In the copied file, replace {{ .values. CPU_LIMIT }}with the desired value of CPU.
+{{ .values. CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
 3. In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
@@ -214,8 +214,8 @@ modify the resources of backup agent container of CAS controller pod to the valu
 1. Copy the file `$deploy/sas-bases/examples/backup/configure/sas-cas-server-backup-agent-modify-resources-transformer.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/backup`.
 
-2. In the copied file, replace {{ CPU-LIMIT }} with the desired value of CPU.
-{{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as "3" or "5".
+2. In the copied file, replace {{ .values. CPU_LIMIT }}with the desired value of CPU.
+{{ .values. CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
 3. In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
@@ -290,10 +290,10 @@ If the sas-backup-agent-parameters configMap is already included in your base ku
    - name: sas-backup-agent-parameters
      behavior: merge
      literals:
-     - BACKUP_ADDITIONAL_GENERIC_PROPERTIES="{{ CONSUL-KEY-LIST }}"
+     - BACKUP_ADDITIONAL_GENERIC_PROPERTIES="{{ .values.CONSUL_KEY_LIST }}"
    ```
 
-   The {{ CONSUL-KEY-LIST }} should be a comma-separated list of properties to be backed up. Here is an example:
+   The {{ .values.CONSUL_KEY_LIST }} should be a comma-separated list of properties to be backed up. Here is an example:
 
    ```yaml
    configMapGenerator:

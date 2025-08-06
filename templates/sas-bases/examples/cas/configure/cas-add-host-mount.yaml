@@ -16,7 +16,7 @@ patch: |-
       path: /spec/controllerTemplate/spec/containers/0/volumeMounts/-
       value:
         name: {{ .values.MOUNT_NAME }}
-        mountPath: {{ CONTAINER-MOUNT-PATH }}
+        mountPath: {{ .values.CONTAINER_MOUNT_PATH }}
         readOnly: true
 target:
   group: viya.sas.com

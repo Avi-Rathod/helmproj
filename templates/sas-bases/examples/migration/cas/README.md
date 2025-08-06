@@ -26,7 +26,7 @@ if no output option is specified, the YAML file is created in the current
 directory.
 
 When you run the conversion script, a file with the custom resource is created
-in the format of {{ CAS-SERVER-NAME }}-migration-cr.yaml.
+in the format of {{ .values.CAS_SERVER_NAME }}-migration-cr.yaml.
 
 ## Restore from a Backup Location
 

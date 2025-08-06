@@ -8,11 +8,11 @@ patch: |-
   - op: replace
     path: /spec/template/spec/containers/0/resources/requests/cpu
     value:
-      {{ CPU_REQUIRED }}
+      {{ .values.CPU_REQUIRED }}
   - op: replace
     path: /spec/template/spec/containers/0/resources/limits/cpu
     value:
-      {{ CPU_LIMIT }}
+     {{ .values.CPU_LIMIT }}
 target:
   group: apps
   kind: StatefulSet

@@ -131,9 +131,9 @@ add an entry to the sas-restore-job-parameters configMap with the following comm
 <h2 id="140345100760064modify-the-resources-of-the-restore-job">Modify the Resources of the Restore Job</h2>
 <p>In some cases, the default resources may not be sufficient for completion or successful execution of the restore job,
 resulting in the pod status being marked as OOMKilled. In this case, modify the resources to the values you desire.</p>
-<p>Replace {{ CPU-LIMIT }} with the desired value of CPU. {{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
+<p>Replace {{ .values.CPU_LIMIT }} with the desired value of CPU. {{ .values.CPU_LIMIT }} must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
 You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
-<pre class="highlight"><code class="language-bash">   kubectl patch cronjob sas-restore-job -n name-of-namespace --type json -p '[{"op": "replace", "path": "/spec/jobTemplate/spec/template/spec/containers/0/resources/limits/cpu", "value":"{{ CPU-LIMIT }}" }]'</code></pre>
+<pre class="highlight"><code class="language-bash">   kubectl patch cronjob sas-restore-job -n name-of-namespace --type json -p '[{"op": "replace", "path": "/spec/jobTemplate/spec/template/spec/containers/0/resources/limits/cpu", "value":"{{ .values.CPU_LIMIT }}" }]'</code></pre>
 
 <p>Replace {{ .values.MEMORY_LIMIT }} with the desired value for memory. {{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
 <pre><code> ```bash
@@ -147,8 +147,8 @@ You can specify fractional values for the CPUs by using decimals, such as &ldquo
 to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/restore</code>.</p>
 </li>
 <li>
-<p>In the copied file, replace {{ CPU-LIMIT }} with the desired value of CPU.
-{{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
+<p>In the copied file, replace {{ .values.CPU_LIMIT }} with the desired value of CPU.
+{{ .values.CPU_LIMIT }} must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
 You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
 </li>
 <li>

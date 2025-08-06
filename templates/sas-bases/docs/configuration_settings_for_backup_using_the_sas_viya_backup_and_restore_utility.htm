@@ -158,8 +158,8 @@ transformers:
 to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
 </li>
 <li>
-<p>In the copied file, replace {{ CPU-LIMIT }} with the desired value of CPU.
-{{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
+<p>In the copied file, replace {{ .values. CPU_LIMIT }}with the desired value of CPU.
+{{ .values. CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
 You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
 </li>
 <li>
@@ -191,8 +191,8 @@ transformers:
 to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
 </li>
 <li>
-<p>In the copied file, replace {{ CPU-LIMIT }} with the desired value of CPU.
-{{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
+<p>In the copied file, replace {{ .values. CPU_LIMIT }}with the desired value of CPU.
+{{ .values. CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
 You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
 </li>
 <li>
@@ -225,8 +225,8 @@ modify the resources of backup agent container of CAS controller pod to the valu
 to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
 </li>
 <li>
-<p>In the copied file, replace {{ CPU-LIMIT }} with the desired value of CPU.
-{{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
+<p>In the copied file, replace {{ .values. CPU_LIMIT }}with the desired value of CPU.
+{{ .values. CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
 You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
 </li>
 <li>
@@ -300,9 +300,9 @@ If the sas-backup-agent-parameters configMap is already included in your base ku
 - name: sas-backup-agent-parameters
   behavior: merge
   literals:
-  - BACKUP_ADDITIONAL_GENERIC_PROPERTIES="{{ CONSUL-KEY-LIST }}"</code></pre>
+  - BACKUP_ADDITIONAL_GENERIC_PROPERTIES="{{ .values.CONSUL_KEY_LIST }}"</code></pre>
 
-<p>The {{ CONSUL-KEY-LIST }} should be a comma-separated list of properties to be backed up. Here is an example:</p>
+<p>The {{ .values.CONSUL_KEY_LIST }} should be a comma-separated list of properties to be backed up. Here is an example:</p>
 <pre class="highlight"><code class="language-yaml">configMapGenerator:
 - name: sas-backup-agent-parameters
   behavior: merge

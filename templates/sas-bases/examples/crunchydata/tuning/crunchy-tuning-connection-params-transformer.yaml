@@ -1,6 +1,6 @@
 # This is an example transformer to customize PostgreSQL configurations for max_connections and its related parameter.
 # The variables to replace:
-# - {{ CLUSTER-NAME }} is the name of the PostgresCluster. Valid values are:
+# - {{ .values.CLUSTER_NAME }} is the name of the PostgresCluster. Valid values are:
 #    - sas-crunchy-platform-postgres for platform Postgres cluster
 #    - sas-crunchy-cds-postgres for CDS Postgres cluster
 #    - .* for both clusters. In this case, use a unique name like 'both-clusters' for the transformer metadata name
@@ -19,7 +19,7 @@
 apiVersion: builtin
 kind: PatchTransformer
 metadata:
-  name: {{ CLUSTER-NAME }}-crunchy-tuning-connection-transformer
+  name: {{ .values.CLUSTER_NAME }}-crunchy-tuning-connection-transformer
 patch: |-
   - op: replace
     path: /spec/patroni/dynamicConfiguration/postgresql/parameters/max_connections
@@ -31,4 +31,4 @@ target:
   group: postgres-operator.crunchydata.com
   kind: PostgresCluster
   version: v1beta1
-  name: {{ CLUSTER-NAME }}
+  name: {{ .values.CLUSTER_NAME }}

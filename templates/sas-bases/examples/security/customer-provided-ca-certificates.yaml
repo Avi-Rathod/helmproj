@@ -23,4 +23,4 @@ files:
 ##   * the path to the files should be relative to the directory that contains the kustomization.yaml file
 ##   * one file per line.  The files themselves can contain multiple certificates in pem file syntax
 ##
-- {{ CA_CERTIFICATE_FILE_NAME }} # For example, site-config/security/cacerts/trustedcerts.pem
+- {{ .values.CA_CERTIFICATE_FILE_NAME }} # For example, site-config/security/cacerts/trustedcerts.pem

@@ -12,11 +12,11 @@ patch: |-
   - op: replace
     path: /spec/template/spec/containers/0/resources/requests/cpu
     value:
-      {{ CPU-REQUIRED }}
+      {{ .values.CPU-_REQUIRED }}
   - op: replace
     path: /spec/template/spec/containers/0/resources/limits/cpu
     value:
-      {{ CPU-LIMIT }}
+      {{ .values.CPU_LIMIT }}
 target:
   kind: Deployment
   name: sas-arke

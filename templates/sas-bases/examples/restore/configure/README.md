@@ -167,11 +167,11 @@ If you are running the restore job with this configuration frequently, then add 
 In some cases, the default resources may not be sufficient for completion or successful execution of the restore job,
 resulting in the pod status being marked as OOMKilled. In this case, modify the resources to the values you desire.
 
-Replace {{ CPU-LIMIT }} with the desired value of CPU. {{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as "3" or "5".
+Replace {{ .values. CPU_LIMIT }}with the desired value of CPU. {{ .values. CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
 ```bash
-   kubectl patch cronjob sas-restore-job -n name-of-namespace --type json -p '[{"op": "replace", "path": "/spec/jobTemplate/spec/template/spec/containers/0/resources/limits/cpu", "value":"{{ CPU-LIMIT }}" }]'
+   kubectl patch cronjob sas-restore-job -n name-of-namespace --type json -p '[{"op": "replace", "path": "/spec/jobTemplate/spec/template/spec/containers/0/resources/limits/cpu", "value":"{{ .values.CPU_LIMIT }}" }]'
 ```
 
 Replace {{ .values.MEMORY_LIMIT }} with the desired value for memory. {{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by "Gi". For example, "8Gi" for 8 gigabytes.
@@ -185,8 +185,8 @@ If you are running the restore job with this configuration frequently, then add 
 1. Copy the file `$deploy/sas-bases/examples/restore/configure/sas-restore-job-modify-resources-transformer.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/restore`.
 
-2. In the copied file, replace {{ CPU-LIMIT }} with the desired value of CPU.
-{{ CPU-LIMIT }} must be a non-zero and non-negative numeric value, such as "3" or "5".
+2. In the copied file, replace {{ .values. CPU_LIMIT }}with the desired value of CPU.
+{{ .values. CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
 3. In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.

@@ -1,5 +1,5 @@
 #   # NOTE:
-#   # {{ CPU-LIMIT }} must be a non-negative numeric value, such as "3" or "5".
+#   # {{ .values. CPU_LIMIT }}must be a non-negative numeric value, such as "3" or "5".
 #   # {{ .values.MEMORY_LIMIT }} must be a non-zero and non-negative value followed by "Gi". For example, "8Gi" for 8 gigabytes.
 apiVersion: builtin
 kind: PatchTransformer
@@ -8,7 +8,7 @@ metadata:
 patch: |-
   - op: replace
     path: /spec/template/spec/containers/0/resources/limits/cpu
-    value: "{{ CPU-LIMIT }}"
+    value: "{{ .values.CPU_LIMIT }}"
   - op: replace
     path: /spec/template/spec/containers/0/resources/limits/memory
     value: "{{ .values.MEMORY_LIMIT }}"

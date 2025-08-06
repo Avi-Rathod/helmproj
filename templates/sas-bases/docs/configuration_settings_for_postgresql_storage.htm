@@ -16,7 +16,7 @@
 <p>Copy the file <code>$deploy/sas-bases/examples/crunchydata/storage/crunchy-storage-transformer.yaml</code> into your <code>$deploy/site-config/crunchydata/</code> directory.</p>
 </li>
 <li>
-<p>Rename the copied file to something unique. SAS recommends following the naming convention <code>{{ CLUSTER-NAME }}-crunchy-storage-transformer.yaml</code>. For example, a copy of the transformer targeting Platform PostgreSQL could be named <code>platform-postgres-crunchy-storage-transformer.yaml</code>.</p>
+<p>Rename the copied file to something unique. SAS recommends following the naming convention <code>{{ .values.CLUSTER_NAME }}-crunchy-storage-transformer.yaml</code>. For example, a copy of the transformer targeting Platform PostgreSQL could be named <code>platform-postgres-crunchy-storage-transformer.yaml</code>.</p>
 </li>
 <li>
 <p>Adjust the values in your copied file following the in-line comments.</p>

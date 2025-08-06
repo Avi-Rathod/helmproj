@@ -14,11 +14,11 @@ patch: |-
   #Change required cpu 
   - op: replace
     path: /spec/template/spec/containers/0/resources/requests/cpu
-    value: {{ CPU-REQUIRED }}
+    value: {{ .values.CPU-_REQUIRED }}
   #Change cpu upper limit
   - op: replace
     path: /spec/template/spec/containers/0/resources/limits/cpu
-    value: {{ CPU-LIMIT }}                                                            
+    value: {{ .values. CPU_LIMIT }}                                                           
 target:
   group: apps
   kind: Deployment
