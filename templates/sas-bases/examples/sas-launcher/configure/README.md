@@ -134,7 +134,7 @@ The launcher-locale-encoding-defaults.yaml file allows you to modify the SAS LOC
 The defaults are stored in a Kubernetes ConfigMap called sas-launcher-init-nls-config, which the Launcher service will 
 use to determine which default values are needed to be set. The LOCALE and ENCODING defaults specified here will affect 
 all consumers of SAS Launcher (SAS Compute Server, SAS/CONNECT, and SAS Batch Server) unless overridden (see below). 
-To update the defaults, replace {{ LOCALE-DEFAULT }} and {{ ENCODING-DEFAULT }}. Here is an example:
+To update the defaults, replace {{ LOCALE-DEFAULT }} and {{ .values.ENCODING_DEFAULT }}. Here is an example:
 
 ```yaml
 patch: |-

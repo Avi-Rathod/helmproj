@@ -151,8 +151,8 @@ If the default resources are not sufficient for the completion or successful exe
 1. Copy the file `$deploy/sas-bases/examples/backup/configure/sas-backup-job-modify-resources-transformer.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/backup`.
 
-2. In the copied file, replace {{ .values. CPU_LIMIT }}with the desired value of CPU.
-{{ .values. CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
+2. In the copied file, replace {{ .values.CPU_LIMIT }}with the desired value of CPU.
+{{ .values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
 3. In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
@@ -182,8 +182,8 @@ If the default resources are not sufficient for the completion or successful exe
 1. Copy the file `$deploy/sas-bases/examples/backup/configure/sas-backup-pv-copy-cleanup-job-modify-resources-transformer.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/backup`.
 
-2. In the copied file, replace {{ .values. CPU_LIMIT }}with the desired value of CPU.
-{{ .values. CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
+2. In the copied file, replace {{ .values.CPU_LIMIT }}with the desired value of CPU.
+{{ .values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
 3. In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
@@ -214,8 +214,8 @@ modify the resources of backup agent container of CAS controller pod to the valu
 1. Copy the file `$deploy/sas-bases/examples/backup/configure/sas-cas-server-backup-agent-modify-resources-transformer.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/backup`.
 
-2. In the copied file, replace {{ .values. CPU_LIMIT }}with the desired value of CPU.
-{{ .values. CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
+2. In the copied file, replace {{ .values.CPU_LIMIT }}with the desired value of CPU.
+{{ .values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
 3. In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.
@@ -317,10 +317,10 @@ If the sas-backup-job-parameters configMap is already included in your base kust
    - name: sas-backup-job-parameters
      behavior: merge
      literals:
-     - FILESYSTEM_BACKUP_EXCLUDELIST="{{ EXCLUDE_PATTERN }}"
+     - FILESYSTEM_BACKUP_EXCLUDELIST="{{ .values.EXCLUDE_PATTERN }}"
    ```
 
-   The {{ EXCLUDE_PATTERN }} should be a comma-separated list of patterns for files or folders to be excluded from the backup.
+   The {{ .values.EXCLUDE_PATTERN }} should be a comma-separated list of patterns for files or folders to be excluded from the backup.
    Here is an example that excludes all the files with extensions ".tmp" or ".log":
 
    ```yaml
@@ -347,10 +347,10 @@ If the sas-backup-job-parameters configMap is already included in your base kust
    - name: sas-backup-job-parameters
      behavior: merge
      literals:
-     - FILESYSTEM_BACKUP_OVERRIDE_EXCLUDELIST="{{ EXCLUDE_PATTERN }}"
+     - FILESYSTEM_BACKUP_OVERRIDE_EXCLUDELIST="{{ .values.EXCLUDE_PATTERN }}"
    ```
 
-   The {{ EXCLUDE_PATTERN }} should be a comma-separated list of patterns for files or folders to be excluded from the backup.
+   The {{ .values.EXCLUDE_PATTERN }} should be a comma-separated list of patterns for files or folders to be excluded from the backup.
    Here is an example that excludes all the files with extensions ".tmp" or ".log":
 
    ```yaml
@@ -368,19 +368,19 @@ If the sas-backup-job-parameters configMap is already included in your base kust
 ## Disable Backup Job Failure Notification
 
 1. By default, you are notified if the backup job fails. To disable backup job failure notification, add an entry to the sas-backup-job-parameters configMap in the configMapGenerator block of the base
-kustomization.yaml file (`$deploy/kustomization.yaml`). Replace {{ ENABLE-NOTIFICATIONS }} with the string "false".
+kustomization.yaml file (`$deploy/kustomization.yaml`). Replace {{ .values.ENABLE_NOTIFICATIONS }} with the string "false".
 
    ```yaml
    configMapGenerator:
    - name: sas-backup-job-parameters
      behavior: merge
      literals:
-     - ENABLE_NOTIFICATIONS={{ ENABLE-NOTIFICATIONS }}
+     - ENABLE_NOTIFICATIONS={{ .values.ENABLE_NOTIFICATIONS }}
    ```
 
    If the sas-backup-job-parameters configMap is already present in the base kustomization.yaml file, add the last line only. If the configMap is not present, add the entire example.
 
-   To restore the default, change the value of {{ ENABLE-NOTIFICATIONS }} from "false" to "true".
+   To restore the default, change the value of {{ .values.ENABLE_NOTIFICATIONS }} from "false" to "true".
 
 2. Build and Apply the Manifest
 

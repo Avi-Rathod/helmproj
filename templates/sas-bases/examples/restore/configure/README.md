@@ -134,29 +134,29 @@ If you are running the restore job with this configuration frequently, then add 
 ## Disable Restore Job Failure Notification
 
 By default, you are notified if the restore job fails. To disable the restore job failure notification once,
-add an entry to the sas-restore-job-parameters configMap with the following command. Replace {{ ENABLE-NOTIFICATIONS }} with the string "false".
+add an entry to the sas-restore-job-parameters configMap with the following command. Replace {{ .values.ENABLE_NOTIFICATIONS }} with the string "false".
 
 ```bash
-kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/ENABLE_NOTIFICATIONS", "value":"{{ ENABLE-NOTIFICATIONS }}" }]'
+kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/ENABLE_NOTIFICATIONS", "value":"{{ .values.ENABLE_NOTIFICATIONS }}" }]'
 ```
 
-To restore the default, change the value of {{ ENABLE-NOTIFICATIONS }} from "false" to "true".
+To restore the default, change the value of {{ .values.ENABLE_NOTIFICATIONS }} from "false" to "true".
 
 If you are running the restore job with this configuration frequently, then add this configuration permanently using the following method.
 
-1. Add an entry to the sas-restore-job-parameters configMap in the configMapGenerator block of the base kustomization.yaml file. Replace {{ ENABLE-NOTIFICATIONS }} with the string "false".
+1. Add an entry to the sas-restore-job-parameters configMap in the configMapGenerator block of the base kustomization.yaml file. Replace {{ .values.ENABLE_NOTIFICATIONS }} with the string "false".
 
    ```yaml
    configMapGenerator:
    - name: sas-restore-job-parameters
      behavior: merge
      literals:
-     - ENABLE_NOTIFICATIONS={{ ENABLE-NOTIFICATIONS }}
+     - ENABLE_NOTIFICATIONS={{ .values.ENABLE_NOTIFICATIONS }}
    ```
 
    If the sas-restore-job-parameters configMap is already present in the base kustomization.yaml file, add the last line only. If the configMap is not present, add the entire example.
 
-   To restore the default, change the value of {{ ENABLE-NOTIFICATIONS }} from "false" to "true".
+   To restore the default, change the value of {{ .values.ENABLE_NOTIFICATIONS }} from "false" to "true".
 
 2. Build and Apply the Manifest
 
@@ -167,7 +167,7 @@ If you are running the restore job with this configuration frequently, then add 
 In some cases, the default resources may not be sufficient for completion or successful execution of the restore job,
 resulting in the pod status being marked as OOMKilled. In this case, modify the resources to the values you desire.
 
-Replace {{ .values. CPU_LIMIT }}with the desired value of CPU. {{ .values. CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
+Replace {{ .values.CPU_LIMIT }}with the desired value of CPU. {{ .values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
 ```bash
@@ -185,8 +185,8 @@ If you are running the restore job with this configuration frequently, then add 
 1. Copy the file `$deploy/sas-bases/examples/restore/configure/sas-restore-job-modify-resources-transformer.yaml`
 to a location of your choice under `$deploy/site-config`, such as `$deploy/site-config/restore`.
 
-2. In the copied file, replace {{ .values. CPU_LIMIT }}with the desired value of CPU.
-{{ .values. CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
+2. In the copied file, replace {{ .values.CPU_LIMIT }}with the desired value of CPU.
+{{ .values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
 You can specify fractional values for the CPUs by using decimals, such as "1.5" or "0.5".
 
 3. In the same file, replace {{ .values.MEMORY_LIMIT }} with the desired value of memory.

@@ -14,7 +14,7 @@ patch: |-
   #Change required cpu 
   - op: replace
     path: /spec/template/spec/containers/0/resources/requests/cpu
-    value: {{ .values.CPU-_REQUIRED }}
+    value: {{ .values.CPU_REQUIRED }}
   #Change cpu upper limit
   - op: replace
     path: /spec/template/spec/containers/0/resources/limits/cpu

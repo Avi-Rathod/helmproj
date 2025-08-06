@@ -158,8 +158,8 @@ transformers:
 to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
 </li>
 <li>
-<p>In the copied file, replace {{ .values. CPU_LIMIT }}with the desired value of CPU.
-{{ .values. CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
+<p>In the copied file, replace {{ .values.CPU_LIMIT }}with the desired value of CPU.
+{{ .values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
 You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
 </li>
 <li>
@@ -191,8 +191,8 @@ transformers:
 to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
 </li>
 <li>
-<p>In the copied file, replace {{ .values. CPU_LIMIT }}with the desired value of CPU.
-{{ .values. CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
+<p>In the copied file, replace {{ .values.CPU_LIMIT }}with the desired value of CPU.
+{{ .values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
 You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
 </li>
 <li>
@@ -225,8 +225,8 @@ modify the resources of backup agent container of CAS controller pod to the valu
 to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/backup</code>.</p>
 </li>
 <li>
-<p>In the copied file, replace {{ .values. CPU_LIMIT }}with the desired value of CPU.
-{{ .values. CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
+<p>In the copied file, replace {{ .values.CPU_LIMIT }}with the desired value of CPU.
+{{ .values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
 You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
 </li>
 <li>
@@ -324,9 +324,9 @@ If the sas-backup-job-parameters configMap is already included in your base kust
 - name: sas-backup-job-parameters
   behavior: merge
   literals:
-  - FILESYSTEM_BACKUP_EXCLUDELIST="{{ EXCLUDE_PATTERN }}"</code></pre>
+  - FILESYSTEM_BACKUP_EXCLUDELIST="{{ .values.EXCLUDE_PATTERN }}"</code></pre>
 
-<p>The {{ EXCLUDE_PATTERN }} should be a comma-separated list of patterns for files or folders to be excluded from the backup.
+<p>The {{ .values.EXCLUDE_PATTERN }} should be a comma-separated list of patterns for files or folders to be excluded from the backup.
  Here is an example that excludes all the files with extensions &ldquo;.tmp&rdquo; or &ldquo;.log&rdquo;:</p>
 <pre class="highlight"><code class="language-yaml">configMapGenerator:
 - name: sas-backup-job-parameters
@@ -351,9 +351,9 @@ If the sas-backup-job-parameters configMap is already included in your base kust
 - name: sas-backup-job-parameters
   behavior: merge
   literals:
-  - FILESYSTEM_BACKUP_OVERRIDE_EXCLUDELIST="{{ EXCLUDE_PATTERN }}"</code></pre>
+  - FILESYSTEM_BACKUP_OVERRIDE_EXCLUDELIST="{{ .values.EXCLUDE_PATTERN }}"</code></pre>
 
-<p>The {{ EXCLUDE_PATTERN }} should be a comma-separated list of patterns for files or folders to be excluded from the backup.
+<p>The {{ .values.EXCLUDE_PATTERN }} should be a comma-separated list of patterns for files or folders to be excluded from the backup.
  Here is an example that excludes all the files with extensions &ldquo;.tmp&rdquo; or &ldquo;.log&rdquo;:</p>
 <pre class="highlight"><code class="language-yaml">configMapGenerator:
 - name: sas-backup-job-parameters
@@ -371,15 +371,15 @@ If the sas-backup-job-parameters configMap is already included in your base kust
 <ol>
 <li>
 <p>By default, you are notified if the backup job fails. To disable backup job failure notification, add an entry to the sas-backup-job-parameters configMap in the configMapGenerator block of the base
-kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). Replace {{ ENABLE-NOTIFICATIONS }} with the string &ldquo;false&rdquo;.</p>
+kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). Replace {{ .values.ENABLE_NOTIFICATIONS }} with the string &ldquo;false&rdquo;.</p>
 <pre class="highlight"><code class="language-yaml">configMapGenerator:
 - name: sas-backup-job-parameters
   behavior: merge
   literals:
-  - ENABLE_NOTIFICATIONS={{ ENABLE-NOTIFICATIONS }}</code></pre>
+  - ENABLE_NOTIFICATIONS={{ .values.ENABLE_NOTIFICATIONS }}</code></pre>
 
 <p>If the sas-backup-job-parameters configMap is already present in the base kustomization.yaml file, add the last line only. If the configMap is not present, add the entire example.</p>
-<p>To restore the default, change the value of {{ ENABLE-NOTIFICATIONS }} from &ldquo;false&rdquo; to &ldquo;true&rdquo;.</p>
+<p>To restore the default, change the value of {{ .values.ENABLE_NOTIFICATIONS }} from &ldquo;false&rdquo; to &ldquo;true&rdquo;.</p>
 </li>
 <li>
 <p>Build and Apply the Manifest</p>

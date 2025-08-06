@@ -15,7 +15,7 @@ patch: |-
     value: {{ LOCALE-DEFAULT }}
   - op: replace
     path: /data/SAS_LAUNCHER_INIT_ENCODING_DEFAULT
-    value: {{ ENCODING-DEFAULT }}
+    value: {{ .values.ENCODING_DEFAULT }}
 target:
   version: v1
   kind: ConfigMap

@@ -783,7 +783,7 @@ spec:
 # apiVersion: v1
 # kind: Secret
 # metadata:
-#   name: business-orchestration-worker-{{ EXTERNAL_SERVICE }}-tls-config-{{ .VALUES.SUFFIX }}
+#   name: business-orchestration-worker-{{ .values.EXTERNAL_SERVICE }}-tls-config-{{ .VALUES.SUFFIX }}
 #   namespace: {{ NAMESPACE }}
 # data:
 #   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS

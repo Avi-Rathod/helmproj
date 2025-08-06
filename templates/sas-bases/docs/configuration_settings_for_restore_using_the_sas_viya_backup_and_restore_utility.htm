@@ -106,22 +106,22 @@ If the service name is not present in the configuration, then use the media type
 </ol>
 <h2 id="140345100760064disable-restore-job-failure-notification">Disable Restore Job Failure Notification</h2>
 <p>By default, you are notified if the restore job fails. To disable the restore job failure notification once,
-add an entry to the sas-restore-job-parameters configMap with the following command. Replace {{ ENABLE-NOTIFICATIONS }} with the string &ldquo;false&rdquo;.</p>
-<pre class="highlight"><code class="language-bash">kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/ENABLE_NOTIFICATIONS", "value":"{{ ENABLE-NOTIFICATIONS }}" }]'</code></pre>
+add an entry to the sas-restore-job-parameters configMap with the following command. Replace {{ .values.ENABLE_NOTIFICATIONS }} with the string &ldquo;false&rdquo;.</p>
+<pre class="highlight"><code class="language-bash">kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/ENABLE_NOTIFICATIONS", "value":"{{ .values.ENABLE_NOTIFICATIONS }}" }]'</code></pre>
 
-<p>To restore the default, change the value of {{ ENABLE-NOTIFICATIONS }} from &ldquo;false&rdquo; to &ldquo;true&rdquo;.</p>
+<p>To restore the default, change the value of {{ .values.ENABLE_NOTIFICATIONS }} from &ldquo;false&rdquo; to &ldquo;true&rdquo;.</p>
 <p>If you are running the restore job with this configuration frequently, then add this configuration permanently using the following method.</p>
 <ol>
 <li>
-<p>Add an entry to the sas-restore-job-parameters configMap in the configMapGenerator block of the base kustomization.yaml file. Replace {{ ENABLE-NOTIFICATIONS }} with the string &ldquo;false&rdquo;.</p>
+<p>Add an entry to the sas-restore-job-parameters configMap in the configMapGenerator block of the base kustomization.yaml file. Replace {{ .values.ENABLE_NOTIFICATIONS }} with the string &ldquo;false&rdquo;.</p>
 <pre class="highlight"><code class="language-yaml">configMapGenerator:
 - name: sas-restore-job-parameters
   behavior: merge
   literals:
-  - ENABLE_NOTIFICATIONS={{ ENABLE-NOTIFICATIONS }}</code></pre>
+  - ENABLE_NOTIFICATIONS={{ .values.ENABLE_NOTIFICATIONS }}</code></pre>
 
 <p>If the sas-restore-job-parameters configMap is already present in the base kustomization.yaml file, add the last line only. If the configMap is not present, add the entire example.</p>
-<p>To restore the default, change the value of {{ ENABLE-NOTIFICATIONS }} from &ldquo;false&rdquo; to &ldquo;true&rdquo;.</p>
+<p>To restore the default, change the value of {{ .values.ENABLE_NOTIFICATIONS }} from &ldquo;false&rdquo; to &ldquo;true&rdquo;.</p>
 </li>
 <li>
 <p>Build and Apply the Manifest</p>
