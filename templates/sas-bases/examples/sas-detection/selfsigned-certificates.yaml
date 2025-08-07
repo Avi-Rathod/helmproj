@@ -4,8 +4,9 @@
 # Fill out the template by finding placeholders enclosed in '{{}}' characters.
 
 # For example, fill out all of the {{ .Values.NAMESPACE }} placeholders with your deployment's namespace.
-# Some placeholders are included in lists, in which case you may add as many as you require. For instance, 
-# each {{ .Values. DNS_NAME }}placeholder just indicates the first item in that list of DNS names.
+# Some placeholders are included in lists, in which case you may add as many as you require. For instance,
+# each {{ .Values.DNS_NAME }} placeholder just indicates the first item in that list of DNS names.
+
 #
 # This is just an example for creating several self signed certificates and may be copied and edited to serve
 # your purposes, or not used at all if you have separate certificates already available. 
