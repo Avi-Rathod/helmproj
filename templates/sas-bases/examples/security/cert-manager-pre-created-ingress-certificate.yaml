@@ -45,7 +45,7 @@ spec:
   # IP Addresses are optional, you can delete this entire ipAddresses: stanza (up to the line containing issuerRef:)
   # if you do not want to include IP addresses in your ingress certificate
   #ipAddresses:
-  #  - {{ .Values.INGRESS_IP ADDRESS }}
+  #  - {{ .Values.INGRESS_IP_ADDRESS }}
   #  - {{ .Values.ANOTHER_INGRESS_DNS_ALIAS }}
   secretName: sas-ingress-certificate
   # Issuer references are always required.  Do not delete the lines below.
