@@ -42,7 +42,9 @@ kubectl wait --for=delete --selector="app.kubernetes.io/name=sas-data-server-ope
 <li>
 <p>List the PostgreSQL clusters included in your deployment using the command below.</p>
 <pre><code>```bash
-kubectl get pgclusters.crunchydata.com -n {{ .Values.NAME-OF-NAMESPACE }}
+kubectl get pgclusters.crunchydata.com -n 
+{{ .Values.NAME_OF_NAMESPACE }}
+
 ```
 
 The remaining steps in this section should be performed for *each* PostgreSQL cluster listed by the command. Replace the variable `{{ .Values.PGCLUSTER_NAME }}` in any later commands with the PostgreSQL cluster resource you are targeting.
