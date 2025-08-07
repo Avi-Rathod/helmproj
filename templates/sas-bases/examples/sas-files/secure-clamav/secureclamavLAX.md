@@ -89,7 +89,8 @@ Following example shows five steps for securing the communication.
    - kustomize build . | kubectl apply -f –
 5. **Configuring SAS Viya file service for secure antivirus communication**
    - In SASEnvironmentManager set following properties in “sas.files.scan.tenant” section
-     - antiVirusHost: 10.120.143.84 {{IP address machine where CLAMAV and Stunnel is installed}}
+     - antiVirusHost: 10.120.143.84 {{.Values.IP address machine where CLAMAV and Stunnel is installed}}
+
      - antiVirusSSLPort: 3311 {{Secure SSL port where stunnel/nginx is listening}}
    - Save and close the configuration window.
 6. Done.
