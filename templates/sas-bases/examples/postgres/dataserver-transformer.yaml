@@ -52,10 +52,14 @@ patch: |-
 {{ .Values.DB_HOST }}
 
 
-  # Replace {{ .Values. DB_PORT }} with the port number for the PostgreSQL server.
+  # Replace 
+{{ .Values.DB_PORT }}
+ with the port number for the PostgreSQL server.
   - op: replace
     path: /spec/registrations/0/port
-    value: {{ .Values. DB_PORT }}
+    value: 
+{{ .Values.DB_PORT }}
+
 
   - op: replace
     path: /spec/ssl
