@@ -1,7 +1,7 @@
 ########################################################################
 # **********INSTRUCTIONS**********
 #
-# Fill out the template by finding placeholders enclosed in '{{  }}' characters.
+command: ["{{ .Values.customCommand }}"]
 # Recommended practices for each placeholder:
 #
 # {{ .Values.NAMESPACE }}: This must be the namespace to which you are deploying
