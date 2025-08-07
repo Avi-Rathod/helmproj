@@ -20,7 +20,8 @@ add an entry to the sas-backup-job-parameters configMap in the configMapGenerato
    - name: sas-backup-job-parameters
      behavior: merge
      literals:
-     - SAS_DATA_SERVER_BACKUP_ADDITIONAL_OPTIONS={{ .Values.OPTION_1_NAME OPTION_1_VALUE }},{{ .Values.FLAG_1 }},{{ .Values.OPTION_2_NAME OPTION_2_VALUE }}
+     - SAS_DATA_SERVER_BACKUP_ADDITIONAL_OPTIONS={{ .Values.OPTION_1_NAME }} {{ .Values.OPTION_1_VALUE }},{{ .Values.FLAG_1 }},{{ .Values.OPTION_2_NAME }} {{ .Values.OPTION_2_VALUE }}
+
    ```
 
    The {{ .Values.OPTION_NAME OPTION_VALUE }} and {{ .Values.FLAG }} variables should be a comma-separated list of options to be added, such as `-Z 0,--version`.
