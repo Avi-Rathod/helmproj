@@ -207,7 +207,8 @@ transformers:
 The default values and maximum values for memory requests and memory limits can be specified
 in a Launcher service pod template. The launcher-memory-requests-limits.yaml allows
 you to change these default and maximum values for the memory resource. To update the defaults, replace the
-{{ .Values.DEFAULT_MEMORY_REQUEST}}, {{ .Values.MAX_MEMORY_REQUEST }}, {{ .Values. DEFAULT_MEMORY_LIMIT }}, and {{ .Values.MAX_MEMORY_LIMIT }} variables with the value you want to use. Here is an example:
+{{ .Values.DEFAULT_MEMORY_REQUEST}}, {{ .Values.MAX_MEMORY_REQUEST }}, {{ .Values.memoryLimit }}
+, and {{ .Values.MAX_MEMORY_LIMIT }} variables with the value you want to use. Here is an example:
 
 ```yaml
 patch: |-
