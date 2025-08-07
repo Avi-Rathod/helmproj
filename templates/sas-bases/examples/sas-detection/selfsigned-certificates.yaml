@@ -1,7 +1,7 @@
 ########################################################################
 # **********INSTRUCTIONS**********
 #
-# 1. `R_HOME` must point to `{{"{{"}} .Values.rParentDirectory {{}}"}}/lib/R` within your mounted R directory.
+# Fill out the template by finding placeholders enclosed in '{{}}' characters.
 
 # For example, fill out all of the {{ .Values.NAMESPACE }} placeholders with your deployment's namespace.
 # Some placeholders are included in lists, in which case you may add as many as you require. For instance, 
