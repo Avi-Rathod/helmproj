@@ -29,6 +29,7 @@ target:
   # #    To target only the default CAS server (cas-shared-default) :
   labelSelector: "sas.com/cas-server-default"
   # #    To target only a single CAS server (e.g. MyCAS) other than default:
-  # name: {{MyCAS}}
+  # name: {{`{{ .Values.MyCAS }}`}}
+
   # #    To target all CAS Servers
   # name: .*
