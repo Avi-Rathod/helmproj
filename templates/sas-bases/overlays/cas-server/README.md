@@ -45,7 +45,7 @@ also be added to the transformers block of the base kustomization.yaml file:
 
 ```yaml
 transformers:
-- {{ .Values. PATCH_FILE_1 }}
+- {{ .Values.PATCH_FILE_1 }}
 - {{ .Values.PATCH_FILE_2 }}
 ```
 
