@@ -62,7 +62,8 @@ spec:
         number: 8080
   rules:
     # example: user.ingress-nginx.example.sas.com
-    - host: "{{ .Values.ORGANIZATION} }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}"
+    host: "{{ .Values.ORGANIZATION }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}"
+
       http:
         paths:
           - path: "/decisionModule(/|$)(.*)"
