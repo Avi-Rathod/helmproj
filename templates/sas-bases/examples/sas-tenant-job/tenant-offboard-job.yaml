@@ -4,7 +4,7 @@ kind: Job
 metadata:
   labels:
     run: sas-tenant-offboard-job
-  name: sas-tenant-offboard-job-{{ JOB-TAG }}
+  name: sas-tenant-offboard-job-{{ .Values.JOB-TAG }}
 spec:
   template:
     spec:

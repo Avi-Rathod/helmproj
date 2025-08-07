@@ -10,7 +10,7 @@
 
     JOB_NAME=sas-adhoc-backup-$SUFFIX
     JOB_TEMPLATE_FILE_NAME=sas-adhoc-backup-job-template.yaml
-    sed -e "s%{{ JOB_NAME }}%${JOB_NAME}%" ${JOB_TEMPLATE_FILE_NAME} > "${JOB_NAME}".yaml
+    sed -e "s%{{ .Values.JOB_NAME }}%${JOB_NAME}%" ${JOB_TEMPLATE_FILE_NAME} > "${JOB_NAME}".yaml
 
   elif [[ ${TYPE_SCHEDULED} == "${JOB_TYPE}" ]]; then
 
@@ -27,7 +27,7 @@
     JOB_NAME=sas-scheduled-backup-$SUFFIX
     JOB_TEMPLATE_FILE_NAME=sas-scheduled-backup-job-template.yaml
 
-    sed -e "s%{{ JOB_NAME }}%${JOB_NAME}%" -e "s%{{ .Values.SCHEDULE_CRON_EXPR }}%${CRON_EXPRESSION}%" ${JOB_TEMPLATE_FILE_NAME} > "${JOB_NAME}".yaml
+    sed -e "s%{{ .Values.JOB_NAME }}%${JOB_NAME}%" -e "s%{{ .Values.SCHEDULE_CRON_EXPR }}%${CRON_EXPRESSION}%" ${JOB_TEMPLATE_FILE_NAME} > "${JOB_NAME}".yaml
 
   else
 

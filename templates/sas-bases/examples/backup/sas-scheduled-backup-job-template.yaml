@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/name: sas-scheduled-backup-job
     sas.com/backup-job-type: "scheduled-backup"
     workload.sas.com/class: stateless
-  name: "{{ JOB_NAME }}"
+  name: "{{ .Values.JOB_NAME }}"
 spec:
   jobTemplate:
     metadata:
