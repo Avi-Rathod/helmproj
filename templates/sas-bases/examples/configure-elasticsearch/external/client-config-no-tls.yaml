@@ -5,6 +5,7 @@ metadata:
   name: sas-opendistro-client-config
 data:
   # Replace {{ .Values.URL }} with the URL and the port of your external OpenSearch instance
-  SAS_URL_ELASTICSEARCH: "{{URL}}"
+  SAS_URL_ELASTICSEARCH: "{{.Values.URL}}
+"
   ELASTICSEARCH_CLIENT_SSL_ENABLED: "false"
   ELASTICSEARCH_SECURITY: OPENSEARCH
