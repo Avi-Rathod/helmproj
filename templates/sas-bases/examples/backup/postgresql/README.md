@@ -24,7 +24,8 @@ add an entry to the sas-backup-job-parameters configMap in the configMapGenerato
 
    ```
 
-   The {{ .Values.OPTION_NAME OPTION_VALUE }} and {{ .Values.FLAG }} variables should be a comma-separated list of options to be added, such as `-Z 0,--version`.
+   The {{ .Values.OPTION_NAME }} {{ .Values.OPTION_VALUE }} {{ .Values.FLAG }}
+ variables should be a comma-separated list of options to be added, such as `-Z 0,--version`.
 
    If the sas-backup-job-parameters configMap is already present in the (`$deploy/kustomization.yaml`) file, you should add the last line only. If the configMap is not present, add the entire example.
 
