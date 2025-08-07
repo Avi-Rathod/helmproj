@@ -12,14 +12,14 @@ This README describes how to revise and apply the settings for configuring migra
 ## Change Migration Job Timeout
 
 1. To change the migration job timeout value, edit the `$deploy/kustomization.yaml` file by adding an entry for the sas-restore-job-parameters configMap in the configMapGenerator block.
-The entry uses the following format, where {{ TIMEOUT-IN-MINUTES }} is an integer.
+The entry uses the following format, where {{ .Values.TIMEOUT_IN_MINUTES }} is an integer.
 
    ```yaml
    configMapGenerator:
    - name: sas-restore-job-parameters
      behavior: merge
      literals:
-     - JOB_TIME_OUT={{ TIMEOUT-IN-MINUTES }}
+     - JOB_TIME_OUT={{ .Values.TIMEOUT_IN_MINUTES }}
    ```
 
    If the sas-restore-job-parameters configMap is already present in the base kustomization.yaml file, you should add the last line only. If the configMap is not present, add the entire example.

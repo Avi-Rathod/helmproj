@@ -205,7 +205,7 @@ the target directory, if it does not already exist.
 `cas-server-kerberos-config` stanza with the name of the service
 principal as it appears in the keytab file without the @DOMAIN.COM.
 
-4. Replace {{ HTTP_SPN }} with the HTTP SPN used for the krb5 proxy sidecar
+4. Replace {{ .Values.HTTP_SPN }} with the HTTP SPN used for the krb5 proxy sidecar
 container without the @DOMAIN.COM.
 SAS recommends that you use the same keytab file and SPN for both the CAS
 Server and the krb5 proxy sidecar for consistency and to allow REST port direct

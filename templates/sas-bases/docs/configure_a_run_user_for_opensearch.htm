@@ -17,7 +17,7 @@
 <p>Copy the Run User transformer from <code>$deploy/sas-bases/examples/configure-elasticsearch/internal/run-user/run-user-transformer.yaml</code> into the <code>$deploy/site-config</code> directory.</p>
 </li>
 <li>
-<p>Open the run-user-transformer.yaml file for editing. Replace <code>{{ USER-ID }}</code> with the UID under which the OpenSearch processes should run.</p>
+<p>Open the run-user-transformer.yaml file for editing. Replace <code>{{ .Values.USER_ID }}</code> with the UID under which the OpenSearch processes should run.</p>
 </li>
 <li>
 <p>Add the run-user-transformer.yaml file to the transformers block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). Here is an example:</p>

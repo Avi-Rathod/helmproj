@@ -244,14 +244,14 @@ base kustomization.yaml file like this:
 ## Change Backup Job Timeout
 
 1. If you need to change the backup job timeout value, add an entry to the sas-backup-job-parameters configMap in the configMapGenerator block of the base kustomization.yaml file (`$deploy/kustomization.yaml`).
-The entry uses the following format, where {{ TIMEOUT-IN-MINUTES }} is an integer
+The entry uses the following format, where {{ .Values.TIMEOUT_IN_MINUTES }} is an integer
 
    ```yaml
    configMapGenerator:
    - name: sas-backup-job-parameters
      behavior: merge
      literals:
-     - JOB_TIME_OUT={{ TIMEOUT-IN-MINUTES }}
+     - JOB_TIME_OUT={{ .Values.TIMEOUT_IN_MINUTES }}
    ```
 
    If the sas-backup-job-parameters configMap is already present in the base kustomization.yaml file, you should add the last line only. If the configMap is not present, add the entire example.
@@ -397,11 +397,11 @@ If the configMap is not present, add the entire example.
    - name: sas-backup-job-parameters
      behavior: merge
      literals:
-     - INCLUDE_POSTGRES="{{ INCLUDE-POSTGRES }}"
+     - INCLUDE_POSTGRES="{{ .Values.INCLUDE_POSTGRES }}"
    ```
 
-2. To include all the registered PostgreSQL servers, replace {{ INCLUDE-POSTGRES }} in the code with a value 'true'.
-To exclude all the registered PostgreSQL servers, replace {{ INCLUDE-POSTGRES }} in the code with a value 'false'.
+2. To include all the registered PostgreSQL servers, replace {{ .Values.INCLUDE_POSTGRES }} in the code with a value 'true'.
+To exclude all the registered PostgreSQL servers, replace {{ .Values.INCLUDE_POSTGRES }} in the code with a value 'false'.
 
 3. Build and Apply the Manifest
 

@@ -13,7 +13,7 @@ patch: |-
   - op: replace
     path: /spec/accessModes
     value:
-      - {{ ACCESS-MODE }}
+      - {{ .Values.ACCESS_MODE }}
 target:
   kind: PersistentVolumeClaim
   labelSelector: sas.com/cas-pvc in (permstore, data)

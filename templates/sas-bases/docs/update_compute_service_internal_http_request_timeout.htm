@@ -23,8 +23,8 @@ change-sas-compute-http-request-timeout.yaml file.</p>
 file to the site-config directory.</p>
 </li>
 <li>
-<p>In the copied file, replace {{ TIMEOUT }} with the number of seconds to use for
-the timeout.  Note that the trailing &ldquo;s&rdquo; after {{ TIMEOUT }} should be kept.</p>
+<p>In the copied file, replace {{ .Values.TIMEOUT }} with the number of seconds to use for
+the timeout.  Note that the trailing &ldquo;s&rdquo; after {{ .Values.TIMEOUT }} should be kept.</p>
 </li>
 </ol>
 <p>Here is an example:</p>

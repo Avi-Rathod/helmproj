@@ -18,7 +18,7 @@ SAS Programming Environment.</p>
 want to use an example file to simplify customizing your deployment, copy
 the file to your <code>$deploy/site-config</code> directory.</p>
 <p>Each file has information about its content. The variables in the file are set
-off by curly braces and spaces, such as {{ AMOUNT-OF-STORAGE }}. Replace the
+off by curly braces and spaces, such as {{ .Values.AMOUNT_OF_STORAGE }}. Replace the
 entire variable string, including the braces, with the value you want to use.</p>
 <p>After you edit a file, add a reference to it in the transformers block of the
 base <code>kustomization.yaml</code> file.</p>
@@ -46,7 +46,7 @@ The example files are located at
  `$deploy/sas-bases/examples/sas-programming-environment/lockdown`.
 
 - To enable access methods not included in the list above, such as PYTHON or
-PYTHON_EMBED, replace {{ ACCESS-METHOD-LIST }}
+PYTHON_EMBED, replace {{ .Values.ACCESS_METHOD_LIST }}
 in `enable-lockdown-access-methods.yaml`. For example,
 
 ```yaml
@@ -60,7 +60,7 @@ patch : |-
 <p><strong>NOTE:</strong> The names of the access methods are case-insensitive.</p>
 <ul>
 <li>To disable access methods from the default list, such as JAVA, replace
-the {{ ACCESS-METHOD-LIST }} in <code>disable-lockdown-access-methods.yaml</code> with a list
+the {{ .Values.ACCESS_METHOD_LIST }} in <code>disable-lockdown-access-methods.yaml</code> with a list
 of values to remove.  For example,</li>
 </ul>
 <pre class="highlight"><code class="language-yaml">...

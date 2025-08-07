@@ -258,12 +258,12 @@ transformers:
 <ol>
 <li>
 <p>If you need to change the backup job timeout value, add an entry to the sas-backup-job-parameters configMap in the configMapGenerator block of the base kustomization.yaml file (<code>$deploy/kustomization.yaml</code>).
-The entry uses the following format, where {{ TIMEOUT-IN-MINUTES }} is an integer</p>
+The entry uses the following format, where {{ .Values.TIMEOUT_IN_MINUTES }} is an integer</p>
 <pre class="highlight"><code class="language-yaml">configMapGenerator:
 - name: sas-backup-job-parameters
   behavior: merge
   literals:
-  - JOB_TIME_OUT={{ TIMEOUT-IN-MINUTES }}</code></pre>
+  - JOB_TIME_OUT={{ .Values.TIMEOUT_IN_MINUTES }}</code></pre>
 
 <p>If the sas-backup-job-parameters configMap is already present in the base kustomization.yaml file, you should add the last line only. If the configMap is not present, add the entire example.</p>
 </li>
@@ -396,12 +396,12 @@ If the configMap is not present, add the entire example.</p>
 - name: sas-backup-job-parameters
   behavior: merge
   literals:
-  - INCLUDE_POSTGRES="{{ INCLUDE-POSTGRES }}"</code></pre>
+  - INCLUDE_POSTGRES="{{ .Values.INCLUDE_POSTGRES }}"</code></pre>
 
 </li>
 <li>
-<p>To include all the registered PostgreSQL servers, replace {{ INCLUDE-POSTGRES }} in the code with a value &lsquo;true&rsquo;.
-To exclude all the registered PostgreSQL servers, replace {{ INCLUDE-POSTGRES }} in the code with a value &lsquo;false&rsquo;.</p>
+<p>To include all the registered PostgreSQL servers, replace {{ .Values.INCLUDE_POSTGRES }} in the code with a value &lsquo;true&rsquo;.
+To exclude all the registered PostgreSQL servers, replace {{ .Values.INCLUDE_POSTGRES }} in the code with a value &lsquo;false&rsquo;.</p>
 </li>
 <li>
 <p>Build and Apply the Manifest</p>

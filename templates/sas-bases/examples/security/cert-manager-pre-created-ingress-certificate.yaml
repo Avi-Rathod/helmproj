@@ -4,7 +4,7 @@
 ## hyphenated name set off by curly braces and a space at each end. You should replace this token with the
 ## actual value.
 ## Replace the curly braces, interior spaces, and the variable name.
-## For instance, "{{ INGRESS_DNS_ALIAS }}" should be replaced with the DNS alias used to reach the ingress controller
+## For instance, "{{ .Values.INGRESS_DNS_ALIAS }}" should be replaced with the DNS alias used to reach the ingress controller
 ## of your cluster.   Typically your IT organization will provide you with this value.
 ## At least one DNS Name or IP address is required.  If your ingress controller has only one alias, as is typical, you
 ## should delete the line that shows a second dnsNames: placeholder value.
@@ -38,15 +38,15 @@ spec:
   usages:
     - server auth
     - client auth
-  # If you have only one DNS Name, delete the line that contains "- {{ ANOTHER_INGRESS_DNS_ALIAS }}"
+  # If you have only one DNS Name, delete the line that contains "- {{ .Values.ANOTHER_INGRESS_DNS_ALIAS }}"
   dnsNames:
-    - {{ INGRESS_DNS_ALIAS }} # The DNS alias (or hostname) value used to reach the ingress controller in your cluster
-    - {{ ANOTHER_INGRESS_DNS_ALIAS }}
+    - {{ .Values.INGRESS_DNS_ALIAS }} # The DNS alias (or hostname) value used to reach the ingress controller in your cluster
+    - {{ .Values.ANOTHER_INGRESS_DNS_ALIAS }}
   # IP Addresses are optional, you can delete this entire ipAddresses: stanza (up to the line containing issuerRef:)
   # if you do not want to include IP addresses in your ingress certificate
   #ipAddresses:
-  #  - {{ INGRESS_IP ADDRESS }}
-  #  - {{ ANOTHER_INGRESS_IP ADDRESS }}
+  #  - {{ .Values.INGRESS_IP ADDRESS }}
+  #  - {{ .Values.ANOTHER_INGRESS_DNS_ALIAS }}
   secretName: sas-ingress-certificate
   # Issuer references are always required.  Do not delete the lines below.
   issuerRef:

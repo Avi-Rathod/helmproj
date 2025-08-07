@@ -11,23 +11,23 @@ This README describes how to revise and apply the settings for configuring resto
 
 ## Change Restore Job Timeout
 
-To change the restore job timeout value temporarily, edit the sas-restore-job-parameters configMap using the following command, where {{ TIMEOUT-IN-MINUTES }} is an integer.
+To change the restore job timeout value temporarily, edit the sas-restore-job-parameters configMap using the following command, where {{ .Values.TIMEOUT_IN_MINUTES }} is an integer.
 
 ```bash
-kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[ {"op": "replace", "path": "/data/JOB_TIME_OUT", "value":"{{ TIMEOUT-IN-MINUTES }}" }]'
+kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[ {"op": "replace", "path": "/data/JOB_TIME_OUT", "value":"{{ .Values.TIMEOUT_IN_MINUTES }}" }]'
 ```
 
 If you are running the restore job with this configuration frequently, then add this configuration permanently using the following method.
 
 1. To change the restore job timeout value, edit the `$deploy/kustomization.yaml` file by adding an entry for the sas-restore-job-parameters configMap in the configMapGenerator block.
-The entry uses the following format, where {{ TIMEOUT-IN-MINUTES }} is an integer.
+The entry uses the following format, where {{ .Values.TIMEOUT_IN_MINUTES }} is an integer.
 
    ```yaml
    configMapGenerator:
    - name: sas-restore-job-parameters
      behavior: merge
      literals:
-     - JOB_TIME_OUT={{ TIMEOUT-IN-MINUTES }}
+     - JOB_TIME_OUT={{ .Values.TIMEOUT_IN_MINUTES }}
    ```
 
    If the sas-restore-job-parameters configMap is already present in the base kustomization.yaml file, you should add the last line only. If the configMap is not present,

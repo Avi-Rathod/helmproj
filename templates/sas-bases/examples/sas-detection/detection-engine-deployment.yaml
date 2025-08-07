@@ -10,7 +10,7 @@
 #
 # {{ .Values.ORGANIZATION }}: The name of your organization.  This is used to make your deployed resources unique and easily identifiable.
 #
-# {{ INGRESS-TYPE }}/{{ HOST }}: These placeholders are used along with {{ .Values.ORGANIZATION }} for creating your deployment's ingresses.
+# {{ .Values.INGRESS_TYPE }}/{{ .Values.HOST }}: These placeholders are used along with {{ .Values.ORGANIZATION }} for creating your deployment's ingresses.
 #
 # {{ .Values.VALUE_NEEDED }}: Miscellaneous placeholder used for setting up environment variables and volume mounts for your containers.
 # Context and environment variable names will help you fill these out. 
@@ -360,7 +360,7 @@ spec:
         number: 8080
   rules:
     # example: user.ingress-nginx.example.sas.com
-    - host: "{{ .Values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}"
+    - host: "{{ .Values.ORGANIZATION }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}"
       http:
         paths:
           - path: "/decisionModule(/|$)(.*)"
@@ -396,7 +396,7 @@ spec:
         number: 8777
   rules:
     # example: user.ingress-nginx.example.sas.com
-    - host: "{{ .Values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}"
+    - host: "{{ .Values.ORGANIZATION }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}"
       http:
         paths:
             - path: "/detection(/|$)(.*)"
@@ -436,10 +436,10 @@ spec:
 #   ingressClassName: nginx
 #   tls:
 #     - hosts:
-#         - {{ .Values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}
+#         - {{ .Values.ORGANIZATION }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}
 #       secretName: detection-ingress-tls-config-{{ .Values.ORGANIZATION }}
 #   rules:
-#     - host: {{ .Values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}
+#     - host: {{ .Values.ORGANIZATION }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}
 #       http:
 #         paths:
 #           - path: "/detection(/|$)(.*)"

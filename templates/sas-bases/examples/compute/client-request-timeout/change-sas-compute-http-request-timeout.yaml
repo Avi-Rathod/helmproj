@@ -5,7 +5,7 @@ metadata:
 patch: |-
   - op: replace
     path: /data/SAS_HTTP_CLIENT_TIMEOUT_REQUEST
-    value: {{ TIMEOUT }}s
+    value: {{ .Values.TIMEOUT }}s
 target:
   kind: ConfigMap
   name: sas-compute-config

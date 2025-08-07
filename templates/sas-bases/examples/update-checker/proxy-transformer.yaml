@@ -7,12 +7,12 @@ patch: |-
     path: /spec/jobTemplate/spec/template/spec/containers/0/env/-
     value:
       name: HTTP_PROXY
-      value: {{ HTTP-PROXY-FQDN-AND-PORT }}
+      value: {{ .Values.HTTP_PROXY_FQDN_AND_PORT }}
   - op: add
     path: /spec/jobTemplate/spec/template/spec/containers/0/env/-
     value:
       name: HTTPS_PROXY
-      value: {{ HTTPS-PROXY-FQDN-AND-PORT }}
+      value: {{ .Values.HTTPS_PROXY_FQDN_AND_PORT }}
   - op: add
     path: /spec/jobTemplate/spec/template/spec/containers/0/env/-
     value:

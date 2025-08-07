@@ -152,7 +152,7 @@ For one-way TLS, fill in the tls field under the spec field. This also includes 
 ```yaml
 tls:
     - hosts:
-        - {{ .Values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}
+        - {{ .Values.ORGANIZATION }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}
     secretName: detection-ingress-tls-config-{{ .Values.ORGANIZATION }}
 ```
 

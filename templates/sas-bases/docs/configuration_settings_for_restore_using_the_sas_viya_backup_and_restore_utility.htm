@@ -10,19 +10,19 @@
 <h2 id="140345100760064overview">Overview</h2>
 <p>This README describes how to revise and apply the settings for configuring restore jobs.</p>
 <h2 id="140345100760064change-restore-job-timeout">Change Restore Job Timeout</h2>
-<p>To change the restore job timeout value temporarily, edit the sas-restore-job-parameters configMap using the following command, where {{ TIMEOUT-IN-MINUTES }} is an integer.</p>
-<pre class="highlight"><code class="language-bash">kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[ {"op": "replace", "path": "/data/JOB_TIME_OUT", "value":"{{ TIMEOUT-IN-MINUTES }}" }]'</code></pre>
+<p>To change the restore job timeout value temporarily, edit the sas-restore-job-parameters configMap using the following command, where {{ .Values.TIMEOUT_IN_MINUTES }} is an integer.</p>
+<pre class="highlight"><code class="language-bash">kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[ {"op": "replace", "path": "/data/JOB_TIME_OUT", "value":"{{ .Values.TIMEOUT_IN_MINUTES }}" }]'</code></pre>
 
 <p>If you are running the restore job with this configuration frequently, then add this configuration permanently using the following method.</p>
 <ol>
 <li>
 <p>To change the restore job timeout value, edit the <code>$deploy/kustomization.yaml</code> file by adding an entry for the sas-restore-job-parameters configMap in the configMapGenerator block.
-The entry uses the following format, where {{ TIMEOUT-IN-MINUTES }} is an integer.</p>
+The entry uses the following format, where {{ .Values.TIMEOUT_IN_MINUTES }} is an integer.</p>
 <pre class="highlight"><code class="language-yaml">configMapGenerator:
 - name: sas-restore-job-parameters
   behavior: merge
   literals:
-  - JOB_TIME_OUT={{ TIMEOUT-IN-MINUTES }}</code></pre>
+  - JOB_TIME_OUT={{ .Values.TIMEOUT_IN_MINUTES }}</code></pre>
 
 <p>If the sas-restore-job-parameters configMap is already present in the base kustomization.yaml file, you should add the last line only. If the configMap is not present,
  add the entire example.</p>

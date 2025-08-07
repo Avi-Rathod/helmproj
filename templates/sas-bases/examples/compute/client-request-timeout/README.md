@@ -22,8 +22,8 @@ change-sas-compute-http-request-timeout.yaml file.
 `$deploy/sas-bases/examples/compute/client-request-timeout/change-sas-compute-http-request-timeout.yaml`
 file to the site-config directory.
 
-2. In the copied file, replace {{ TIMEOUT }} with the number of seconds to use for
-the timeout.  Note that the trailing "s" after {{ TIMEOUT }} should be kept.
+2. In the copied file, replace {{ .Values.TIMEOUT }} with the number of seconds to use for
+the timeout.  Note that the trailing "s" after {{ .Values.TIMEOUT }} should be kept.
 
 Here is an example:
 

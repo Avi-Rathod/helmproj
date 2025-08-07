@@ -11,7 +11,7 @@ patch: |-
       value:
         name: {{ .Values.MOUNT_NAME }}
         hostPath:
-          path: {{ HOST-PATH-TO-BE-MOUNTED }}
+          path: {{ .Values.HOST_PATH_TO_BE_MOUNTED }}
     - op: add
       path: /spec/controllerTemplate/spec/containers/0/volumeMounts/-
       value:

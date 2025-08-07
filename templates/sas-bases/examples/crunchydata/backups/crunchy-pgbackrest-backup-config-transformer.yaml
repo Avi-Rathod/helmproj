@@ -12,7 +12,7 @@
 #        one for Platform Postgres, and the other for CDS Postgres.
 # - {{ .Values.FULL_BACKUP_CRONJOB }} is the schedule for full backups in Cron syntax
 #    - The default is every Sunday morning at 06:00 UTC ('0 6 * * 0')
-# - {{ INCR-BACKUP-CRONJOB }} is the schedule for incremental backups in Cron syntax
+# - {{ .Values.INCR_BACKUP_CRONJOB }} is the schedule for incremental backups in Cron syntax
 #    - The default is every morning at 06:00 UTC except Sundays ('0 6 * * 1-6')
 # - {{ .Values.RETENTION_FULL_BACKUP }} is the number of full backups to retain. It must be a string, so quote the number as '2'.
 #    - By default, it is "1" to retain only one full backup
@@ -38,7 +38,7 @@ patch: |-
   #  value: {{ .Values.FULL_BACKUP_CRONJOB }}
   #- op: replace
   #  path: /spec/backups/pgbackrest/repos/0/schedules/incremental
-  #  value: {{ INCR-BACKUP-CRONJOB }}
+  #  value: {{ .Values.INCR_BACKUP_CRONJOB }}
   - op: replace
     path: /spec/backups/pgbackrest/global/repo1-retention-full
     value: {{ .Values.RETENTION_FULL_BACKUP }}

@@ -62,7 +62,7 @@ spec:
         number: 8080
   rules:
     # example: user.ingress-nginx.example.sas.com
-    - host: "{{ .Values.ORGANIZATION} }}.{{ INGRESS-TYPE }}.{{ HOST }}"
+    - host: "{{ .Values.ORGANIZATION} }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}"
       http:
         paths:
           - path: "/decisionModule(/|$)(.*)"
@@ -98,7 +98,7 @@ spec:
         number: 8777
   rules:
     # example: user.ingress-nginx.example.sas.com
-    - host: "{{ .Values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}"
+    - host: "{{ .Values.ORGANIZATION }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}"
       http:
         paths:
             - path: "/detection(/|$)(.*)"

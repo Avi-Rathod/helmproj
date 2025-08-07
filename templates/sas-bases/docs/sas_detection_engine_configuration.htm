@@ -90,7 +90,7 @@
 <p>For one-way TLS, fill in the tls field under the spec field. This also includes a secretName, which includes your TLS certificate.</p>
 <pre class="highlight"><code class="language-yaml">tls:
     - hosts:
-        - {{ .Values.ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}
+        - {{ .Values.ORGANIZATION }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}
     secretName: detection-ingress-tls-config-{{ .Values.ORGANIZATION }}</code></pre>
 
 <p>See the ingress-setup-secure.yaml file for an example of where to add these fields to your deployment yaml.</p>

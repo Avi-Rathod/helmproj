@@ -27,10 +27,10 @@ that you can apply to your Kubernetes cluster to add a CAS server.
    your deployment.
 
    ```bash
-   ./create-cas-server.sh -i {{ INSTANCE }}
+   ./create-cas-server.sh -i {{ .Values.INSTANCE }}
    ```
 
-   The sample command creates a top-level directory `cas-{{ TENANT }}-{{ INSTANCE }}`
+   The sample command creates a top-level directory `cas-{{ .Values.TENANT }}-{{ .Values.INSTANCE }}`
    that contains everything that is required for a new CAS server instance. For
    example, the directory contains the CR, PVC definitions for the permstore and
    data PVs, and so on.
@@ -56,20 +56,20 @@ that you can apply to your Kubernetes cluster to add a CAS server.
 
    ```yaml
    resources:
-     - site-config/cas-{{ TENANT }}-{{ INSTANCE }}
+     - site-config/cas-{{ .Values.TENANT }}-{{ .Values.INSTANCE }}
    ```
 
 3. Deploy your software using the steps in [Deploy the Software](http://documentation.sas.com/?cdcId=itopscdc&cdcVersion=default&docsetId=dplyml0phy0dkr&docsetTarget=p127f6y30iimr6n17x2xe9vlt54q.htm)
    according to the method you are using.
 
    ```bash
-   kubectl get pods -l casoperator.sas.com/server={{ TENANT }}-{{ INSTANCE }}
-   cas-{{ TENANT }}-{{ INSTANCE }}-controller     3/3     Running     0          1m
+   kubectl get pods -l casoperator.sas.com/server={{ .Values.TENANT }}-{{ .Values.INSTANCE }}
+   cas-{{ .Values.TENANT }}-{{ .Values.INSTANCE }}-controller     3/3     Running     0          1m
 
-   kubectl get pvc -l sas.com/cas-instance: {{ TENANT }}-{{ INSTANCE }}
+   kubectl get pvc -l sas.com/cas-instance: {{ .Values.TENANT }}-{{ .Values.INSTANCE }}
    NAME                                                  STATUS  ...
-   cas-{{ TENANT }}-{{ INSTANCE }}-data                   Bound  ...
-   cas-{{ TENANT }}-{{ INSTANCE }}-permstore              Bound  ...
+   cas-{{ .Values.TENANT }}-{{ .Values.INSTANCE }}-data                   Bound  ...
+   cas-{{ .Values.TENANT }}-{{ .Values.INSTANCE }}-permstore              Bound  ...
    ```
 
 ## Example

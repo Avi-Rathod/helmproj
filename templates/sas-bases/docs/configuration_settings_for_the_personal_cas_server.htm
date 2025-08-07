@@ -16,7 +16,7 @@ for the example files in the following list. If you want to use an example file
 to simplify customizing your deployment, copy the file to your
 <code>$deploy/site-config</code> directory.</p>
 <p>Each file has information about its content. The variables in the file are set
-off by curly braces and spaces, such as {{ AMOUNT-OF-STORAGE }}. Replace the
+off by curly braces and spaces, such as {{ .Values.AMOUNT_OF_STORAGE }}. Replace the
 entire variable string, including the braces, with the value you want to use.</p>
 <p>After you edit a file, add a reference to it in the transformers block of the
 base <code>kustomization.yaml</code> file.</p>

@@ -4,7 +4,7 @@
 ## hyphenated name set off by curly braces and a space at each end. You should replace this token with the
 ## actual value.
 ## Replace the curly braces, interior spaces, and the variable name.
-## For instance, "{{ INGRESS_CERTIFICATE_FILE_NAME }}"
+## For instance, "{{ .Values.INGRESS_CERTIFICATE_FILE_NAME }}"
 ## should be replaced by the path to a .pem file containing your ingress certificate.
 ## If you use the suggested example directory structure, the correct, final syntax would resemble the following:
 ## - tls.crt=site-config/security/sas-ingress-certificate.pem
@@ -36,7 +36,7 @@ metadata:
 ## The certificates and key will be copied into the Kubernetes secret named above.
 ## The files can be deleted after you run the 'kustomize build' command with the modified kustomization files in place.
 files:
-  - tls.crt={{ INGRESS_CERTIFICATE_FILE_NAME }} # For example: site-config/security/sas-ingress-certificate.pem
-  - tls.key={{ INGRESS_KEY_FILE_NAME }} # For example: site-config/security/sas-ingress-key.pem
-  - ca.crt={{ INGRESS_CA_CERTIFICATE_FILE_NAME }} # For example: site-config/security/sas-ingress-ca-certificate.pem
+  - tls.crt={{ .Values.INGRESS_CERTIFICATE_FILE_NAME }} # For example: site-config/security/sas-ingress-certificate.pem
+  - tls.key={{ .Values.INGRESS_KEY_FILE_NAME }} # For example: site-config/security/sas-ingress-key.pem
+  - ca.crt={{ .Values.INGRESS_CA_CERTIFICATE_FILE_NAME }} # For example: site-config/security/sas-ingress-ca-certificate.pem
 type: "kubernetes.io/tls"

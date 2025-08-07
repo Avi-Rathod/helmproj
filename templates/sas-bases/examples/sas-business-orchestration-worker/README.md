@@ -287,7 +287,7 @@ For one-way TLS, fill in the tls field under the spec field. This also includes 
 ```yaml
 tls:
     - hosts:
-        - {{ .Values.PREFIX }}.{{ INGRESS-TYPE }}.{{ HOST }}
+        - {{ .Values.PREFIX }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}
     secretName: business-orchestration-worker-ingress-tls-config-{{ .Values.SUFFIX }}
 ```
 

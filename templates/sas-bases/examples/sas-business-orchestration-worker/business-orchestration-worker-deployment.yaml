@@ -12,7 +12,7 @@
 #
 # {{ .Values.ROUTE_HOST }}: This is used for the Openshift ingress.  If on Openshift do not specify other ingresses.
 #
-# {{ INGRESS_TYPE }}/{{ HOST }}: These placeholders are used along with {{ .Values.PREFIX }} for creating your deployment's ingresses.
+# {{ .Values.INGRESS_TYPE }}/{{ .Values.HOST }}: These placeholders are used along with {{ .Values.PREFIX }} for creating your deployment's ingresses.
 #
 # {{ .Values.VALUE_NEEDED }}
 : Miscellaneous placeholder used for setting up environment variables, pull secrets, and volume mounts for your containers.
@@ -425,7 +425,7 @@ metadata:
   name: sas-image-pull-secrets
   namespace: {{ .Values.NAMESPACE }}
 data:
-  .dockerconfigjson: {{ IMAGE_PULL_SECRET }}
+  .dockerconfigjson: {{ .Values.IMAGE_PULL_SECRET }}
 type: kubernetes.io/dockerconfigjson
 ---
 ########################################################################
@@ -691,7 +691,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: "{{ .Values.PREFIX }}.{{ INGRESS_TYPE }}.{{ HOST }}"
+    - host: "{{ .Values.PREFIX }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}"
       http:
         paths:
           - path: /
@@ -731,10 +731,10 @@ spec:
 #   ingressClassName: nginx
 #   tls:
 #     - hosts:
-#         - {{ .Values.PREFIX }}.{{ INGRESS-TYPE }}.{{ HOST }}
+#         - {{ .Values.PREFIX }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}
 #       secretName: business-orchestration-worker-ingress-tls-config-{{ .Values.SUFFIX }}
 #   rules:
-#     - host: {{ .Values.PREFIX }}.{{ INGRESS-TYPE }}.{{ HOST }}
+#     - host: {{ .Values.PREFIX }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}
 #       http:
 #         paths:
 #           - path: "/sas-business-orchestration-worker(/|$)(.*)"

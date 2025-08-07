@@ -12,7 +12,7 @@ patch: |-
         name: {{ .Values.MOUNT_NAME }}
         nfs:
           path: {{ .Values.NFS_PATH_TO_BE_MOUNTED }}
-          server: {{ HOST }}
+          server: {{ .Values.HOST }}
     - op: add
       path: /spec/controllerTemplate/spec/containers/0/volumeMounts/-
       value:

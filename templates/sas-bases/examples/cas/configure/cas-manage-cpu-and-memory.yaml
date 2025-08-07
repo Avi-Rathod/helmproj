@@ -21,11 +21,11 @@ patch: |-
   - op: add
     path: /spec/controllerTemplate/spec/containers/0/resources/limits
     value:
-      memory: {{ AMOUNT-OF-RAM }}
+      memory: {{ .Values.AMOUNTOF_RAM }}
   - op: replace
     path: /spec/controllerTemplate/spec/containers/0/resources/requests/memory
     value:
-      {{ AMOUNT-OF-RAM }}
+      {{ .Values.AMOUNTOF_RAM }}
   - op: add
     path: /spec/controllerTemplate/spec/containers/0/resources/limits/cpu
     value:
