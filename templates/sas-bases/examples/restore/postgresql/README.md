@@ -142,7 +142,8 @@ If you are running the restore job with this configuration frequently, then add 
 If you need to exclude some of the PostgreSQL instances during restore once, edit the sas-restore-job-parameters configMap using the following command:
 
    ```bash
-   kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/EXCLUDE_SOURCES", "value":"{{ .Values.instance1, instance2,... }}" }]'
+   kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/EXCLUDE_SOURCES", "value: "{{ .Values.instance1 }} {{ .Values.instance2 }}"
+
    ```
 
 In the following example, "sas-cdspostgres" are PostgreSQL instances that will not be restored.
