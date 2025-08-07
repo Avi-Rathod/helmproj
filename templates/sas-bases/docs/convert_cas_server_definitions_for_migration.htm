@@ -40,7 +40,8 @@ patch:</p>
    lives:</p>
 <pre class="highlight"><code class="language-yaml">nfs:
   path: {{ .Values.NFS_MOUNT_PATH}}
-  server: {{NFS-SERVER}}</code></pre>
+  server: {{.Values.NFS_SERVER}}
+</code></pre>
 
 </li>
 <li>

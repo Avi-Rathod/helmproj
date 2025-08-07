@@ -45,7 +45,8 @@ patch:
    ```yaml
    nfs:
      path: {{.Values.NFS_MOUNT_PATH}}
-     server: {{NFS-SERVER}}
+     server: {{.Values.NFS_SERVER}}
+
    ```
 
 3. To include the newly created CAS custom resource in the manifest, add a
