@@ -91,7 +91,7 @@ These steps tell the SAS Viya platform how to connect to your Python and R binar
 Following the steps in these two READMEs, you will update the Python- and R-specific `kustomization.yaml` files (in their respective folders within `$deploy/site-config/sas-open-source-config`) to replace the `{{` and `}}` placeholders with your installation's details (for example, `RHOME` path pointing to the parent directory where R is mounted). These `kustomization` files create environment variables that are made available in the SAS Viya platform pods. These new environment variables tell the SAS Viya platform where to look for the Python and R executables and associated libraries.
 If you have licensed SAS/IML, you also need to create two new environment variables to enable R to be called by PROC IML in a SAS Program (for details, see [SAS Documentation on the RLANG system option](https://documentation.sas.com/?cdcId=pgmsascdc&cdcVersion=default&docsetId=lesysoptsref&docsetTarget=p0bn69osmt5vogn1x07dth3als71.htm)):
 
-1. `R_HOME` must point to `{{` `.Values.r-parent-directory` `}}/lib/R` within your mounted R directory (for example, `/r-mount/lib/R` if R is mounted to `/r-mount`).
+1. `R_HOME` must point to {{`"{{ .Values.r-parent-directory }}/lib/R"`}} within your mounted R directory (for example, `/r-mount/lib/R` if R is mounted to `/r-mount`).
 
 2. The `SASV9_OPTIONS` environment variable must be set to `=-RLANG`
 
