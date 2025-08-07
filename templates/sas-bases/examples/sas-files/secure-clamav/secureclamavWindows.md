@@ -133,7 +133,8 @@ Following example shows four steps for securing the communication.
    - In SASEnvironmentManager set following properties in "sas.files.scan.tenant" section
         - antiVirusHost: 10.120.143.84 {{ index .Values "IP address machine where CLAMAV and Stunnel is installed" }}
 
-        - antiVirusSSLPort: 3311 {{Secure SSL port where stunnel/nginx is listening}}
+        - antiVirusSSLPort: 3311 {{ index .Values "Secure SSL port where stunnel/nginx is listening" }}
+
    - Save and close the configuration window.
 
 4. **Done**.
