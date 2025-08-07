@@ -53,7 +53,7 @@ The remaining steps in this section should be performed for *each* PostgreSQL cl
 <li>
 <p>Scale down the replica deployments. Scaling down fails back the primary if it was failed over to a replica.</p>
 <pre><code>```bash
-kubectl scale --replicas=0 deployment --selector=crunchy-pgha-scope={{ .Values.PGCLUSTER_NAME }},name!={{ .Values.PGCLUSTER_NAME }} -n {{}}
+kubectl scale --replicas=0 deployment --selector=crunchy-pgha-scope={{ .Values.PGCLUSTER_NAME }},name!={{ .Values.PGCLUSTER_NAME }} -n {{ .Values.NAMESPACE }}
  NAME-OF-NAMESPACE 
 kubectl wait --for=delete --selector=crunchy-pgha-scope={{.Values.PGCLUSTER_NAME}},name!={{ .Values.PGCLUSTER_NAME }} pods --timeout=300s -n {{ .Values.NAME_OF_NAMESPACE  }}
 ```
