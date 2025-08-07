@@ -33,7 +33,7 @@ server resource allocation, and changing the default PVC access modes.</p>
 <p>To be included in the manifest, any yaml files containing Patch Transformers must
 also be added to the transformers block of the base kustomization.yaml file:</p>
 <pre class="highlight"><code class="language-yaml">transformers:
-- {{ .Values. PATCH_FILE_1 }}
+- {{ .Values.PATCH_FILE_1 }}
 - {{ .Values.PATCH_FILE_2 }}</code></pre>
 
 <h3 id="140345099255040optional-cas-server-placement-configuration">Optional CAS Server Placement Configuration</h3>
