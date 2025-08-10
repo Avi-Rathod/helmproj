@@ -1,4 +1,0 @@
-resources:
-  - storage.yaml
-  - updateJobtemplate.yaml
-  - sa.yaml

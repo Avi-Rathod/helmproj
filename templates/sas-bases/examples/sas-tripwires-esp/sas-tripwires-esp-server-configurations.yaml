@@ -1,9 +1,0 @@
-nameReference:
-  - kind: ConfigMap
-    fieldSpecs:
-      - kind: ESPServer
-        path: spec/projectTemplate/deployment/spec/template/spec/containers/envFrom/configMapRef/name
-      - kind: ESPServer
-        path: spec/projectTemplate/deployment/spec/template/spec/containers/env/valueFrom/configMapKeyRef/name
-      - kind: ESPServer
-        path: spec/projectTemplate/deployment/spec/template/spec/volumes/configMap/name
