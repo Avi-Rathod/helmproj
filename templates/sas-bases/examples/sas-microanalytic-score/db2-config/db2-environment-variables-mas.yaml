@@ -1,0 +1,87 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: mas-db2-environment-variables
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: DB2DIR
+      value: {{ .Values.VALUE_1 }}   #for example, "/db2client/sqllib"
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: DB2INSTANCE
+      value: {{ .Values.VALUE_2 }}   #for example, "sas"
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: DB2LIB
+      value: {{ .Values.VALUE_3 }}   #for example, "/db2client/sqllib/lib"
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: DB2_HOME
+      value: {{ .Values.VALUE_4 }}   #for example, "/db2client/sqllib"
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: DB2_NET_CLIENT_PATH
+      value: {{ .Values.VALUE_5 }} #for example, "/db2client/sqllib"
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: IBM_DB_DIR
+      value: {{ .Values.VALUE_6 }}   #for example, "/db2client/sqllib"
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: IBM_DB_HOME
+      value: {{ .Values.VALUE_7}}   #for example, "/db2client/sqllib"
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: IBM_DB_INCLUDE
+      value: {{ .Values.VALUE_8}}   #for example, "/db2client/sqllib/"
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: IBM_DB_LIB
+      value: {{ .Values.VALUE_9}}   #for example, "/db2client/sqllib/lib"
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: INSTHOME
+      value: {{ .Values.VALUE_10}}   #for example, "/db2"
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: INST_DIR
+      value: {{ .Values.VALUE_11}}   #for example, "/db2client/sqllib"
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: DB2
+      value: {{ .Values.VALUE_12}}   #for example, "/db2client/sqllib/lib64:/db2client/sqllib/lib64/gskit:/db2client/sqllib/lib32"
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: DB2_BIN
+      value: {{ .Values.VALUE_13 }}   #for example, "/db2client/sqllib/bin:/db2client/sqllib/adm:/db2client/sqllib/misc"
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: SAS_EXT_LLP_ACCESS
+      value: {{ .Values.VALUE_14 }}   #for example, "/db2client/sqllib/lib64:/db2client/sqllib/lib64/gskit:/db2client/sqllib/lib32"
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: SAS_EXT_PATH_ACCESS
+      value: {{ .Values.VALUE_15 }}   #for example, "/db2client/sqllib/bin:/db2client/sqllib/adm:/db2client/sqllib/misc"
+target:
+  group: apps
+  kind: Deployment
+  name: sas-microanalytic-score
+  version: v1
+---

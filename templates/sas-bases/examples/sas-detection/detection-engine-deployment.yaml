@@ -1,0 +1,535 @@
+########################################################################
+# **********INSTRUCTIONS**********
+#
+command: ["{{ .Values.customCommand }}"]
+# Recommended practices for each placeholder:
+#
+# {{ .Values.NAMESPACE }}: This must be the namespace to which you are deploying
+#
+# {{ .Values.DECISION }}: This is the decision image you are pulling for the SCR container, found in your Docker registry. 
+#
+# {{ .Values.ORGANIZATION }}: The name of your organization.  This is used to make your deployed resources unique and easily identifiable.
+#
+# {{ .Values.INGRESS_TYPE }}/{{ .Values.HOST }}: These placeholders are used along with {{ .Values.ORGANIZATION }} for creating your deployment's ingresses.
+#
+# {{ .Values.VALUE_NEEDED }}: Miscellaneous placeholder used for setting up environment variables and volume mounts for your containers.
+# Context and environment variable names will help you fill these out. 
+#
+# {{ .Values.SECURITY }}: blocks tagged with this should be uncommented in order to enable Front Door TLS. Further instructions are located around each occurance of the tag
+########################################################################
+
+########################################################################
+# Create Service for scr
+########################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: sas-sda-scr-{{ .Values.ORGANIZATION }}
+  namespace: {{ .Values.NAMESPACE }}
+  labels:
+    app.kubernetes.io/name: sas-sda-scr-{{ .Values.ORGANIZATION }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080 # port other services in the cluster use to communicate with this service
+      targetPort: 8080 # port exposed by this service
+      protocol: TCP # IP protoocl for this port. Supported values: TCP, UDP, SCTP. Default is TCP
+  selector:
+    app.kubernetes.io/name: sas-sda-scr-{{ .Values.ORGANIZATION }}
+---
+########################################################################
+# Create Service for sas-detection
+########################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
+  namespace: {{ .Values.NAMESPACE }}
+  labels:
+    app.kubernetes.io/name: sas-sda-scr-{{ .Values.ORGANIZATION }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8777 # port other services in the cluster use to communicate with this service
+      targetPort: 8777 # port exposed by this service
+      protocol: TCP # IP protoocl for this port. Supported values: TCP, UDP, SCTP. Default is TCP
+  selector:
+    app.kubernetes.io/name: sas-sda-scr-{{ .Values.ORGANIZATION }}
+---
+# {{ .Values.SECURITY }} OPTIONAL: uncomment these secrets and add base64 encoded certificate and private key to each
+# if you are managing these manually
+########################################################################
+# create secret for TLS certs and keys for ingress
+########################################################################
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: detection-ingress-tls-config-{{ .Values.ORGANIZATION }}
+#   namespace: {{ .Values.NAMESPACE }}
+# data:
+#   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
+#   tls.crt: |+
+#     {{ .Values.VALUE_NEEDED }}
+#   tls.key: |+
+#     {{ .Values.VALUE_NEEDED }}
+---
+########################################################################
+# create secret for a ca cert and key to make a request to sign a client cert for two-way TLS
+########################################################################
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: detection-ingress-tls-ca-config-{{ .Values.ORGANIZATION }}
+#   namespace: {{ .Values.NAMESPACE }}
+# data:
+#   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
+#   ca.crt: |+
+#     {{ .Values.VALUE_NEEDED }}
+#   ca.key: |+
+#     {{ .Values.VALUE_NEEDED }}
+---
+########################################################################
+# create separate cert and key for redis
+########################################################################
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: detection-redis-tls-config-{{ .Values.ORGANIZATION }}
+#   namespace: {{ .Values.NAMESPACE }}
+# data:
+#   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
+#   ca.crt: |+
+#     {{ .Values.VALUE_NEEDED }}
+#   ca.key: |+
+#     {{ .Values.VALUE_NEEDED }}
+---
+########################################################################
+# create separate cert and key for kafka
+########################################################################
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: detection-kafka-tls-config-{{ .Values.ORGANIZATION }}
+#   namespace: {{ .Values.NAMESPACE }}
+# data:
+#   # For each of these, input the base64 encoded certificate or key, if you want to enable TLS
+#   # add additional certs for brokers as needed
+#   ca.crt: |+
+#     {{ .Values.VALUE_NEEDED }}
+#   ca.key: |+
+#     {{ .Values.VALUE_NEEDED }}
+---
+########################################################################
+# Create Deployment
+########################################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sas-sda-scr-{{ .Values.ORGANIZATION }}
+  namespace: {{ .Values.NAMESPACE }}
+  labels:
+    app.kubernetes.io/name: sas-sda-scr-{{ .Values.ORGANIZATION }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-sda-scr-{{ .Values.ORGANIZATION }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sas-sda-scr-{{ .Values.ORGANIZATION }}
+        sas.com/scr: "true"
+    spec:
+      # {{ .Values.SECURITY }} 
+      # Uncomment for detection ingress, kafka, and/or redis security as needed
+      volumes:
+      # uncomment security volume for TLS from goODE <SECURITY>
+      # - name: security
+      #   secret:
+      #     secretName: detection-ingress-tls-config-{{ .Values.ORGANIZATION }}
+      # - name: redissecurity
+      #   secret:
+      #     secretName: detection-redis-tls-config-{{ .Values.ORGANIZATION }}
+      # - name: kafkasecurity
+      #   secret:
+      #     secretName: detection-kafka-tls-config-{{ .Values.ORGANIZATION }}
+      containers:
+        - name: sas-sda-scr
+          # Image from your docker registry
+          image: {{ .Values.DECISION }}
+          imagePullPolicy: "Always"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          # {{ .Values.SECURITY }}  uncomment if using TLS from goODE
+          # volumeMounts:
+          #   - name: security
+          #     readOnly: true
+          #     mountPath: /security
+          #   - name: redissecurity
+          #     readOnly: true 
+          #     mountPath: /security/redis
+          env:
+            - name: SAS_SCR_LOG_LEVEL_App.tk.Detection
+              value: INFO
+            - name: PORT
+              value: "8080"
+
+            # REDIS PROPERTIES FOR SIGNATURE STORAGE
+            - name: SAS_REDIS_HOST
+              value: {{ .Values.VALUE_NEEDED }}
+            - name: SAS_REDIS_PORT
+              value: {{ .Values.VALUE_NEEDED }}
+            - name: SAS_DETECTION_REDIS_POOL_SIZE # Default value is 10 if not specified
+              value: '10'
+            - name: SAS_REDIS_PROFILE_COMPRESS # Default value is false if not specified
+              value: false 
+
+            # {{ .Values.SECURITY }}
+            # - name: SAS_REDIS_AUTH_USER
+            #   value: {{ .Values.VALUE_NEEDED }}
+            # - name: SAS_REDIS_AUTH_PASS
+            #   value: {{ .Values.VALUE_NEEDED }}
+            # - name: SAS_REDIS_CA_CERT
+            #   value: {{ .Values.VALUE_NEEDED }}
+            # - name: SAS_REDIS_TRUST_CERT_PATH
+            #   value: {{ .Values.VALUE_NEEDED }}
+            # - name: SAS_REDIS_CLIENT_CERT_FILE
+            #   value: {{ .Values.VALUE_NEEDED }}
+            # - name: SAS_REDIS_CLIENT_PRIV_KEY_FILE
+            #   value: {{ .Values.VALUE_NEEDED }}
+            # - name: SAS_REDIS_SERVER_DOMAIN
+            #   value: {{ .Values.VALUE_NEEDED }}
+            # - name: SAS_REDIS_TLS # Setting to 0, N, or F will prohibit TLS. Setting to 1, Y, or T will allow TLS.
+            #   value: Y
+
+        - name: sas-detection
+          image: pulp.unx.sas.com/cdp-release-x64_oci_linux_2-docker-latest/sas-detection:latest
+          imagePullPolicy: "Always"
+          readinessProbe:
+              httpGet:
+                  path: /detection/ready
+                  port: http
+              initialDelaySeconds: 5
+              periodSeconds: 5
+          ports:
+            - name: http
+              containerPort: 8777
+              protocol: TCP
+          # {{ .Values.SECURITY }} uncomment if using TLS from goODE
+          # volumeMounts:
+          #   - name: security
+          #     readOnly: true
+          #     mountPath: /security
+          #   - name: kafkasecurity
+          #     readOnly: true
+          #     mountPath: /security/kafka
+          #   - name: redissecurity
+          #     readOnly: true 
+          #     mountPath: /security/redis
+          env:
+            # DON'T CHANGE THESE
+            - name: SAS_DETECTION_SERVICE_URL
+              value: "http://localhost:8777"
+            - name: PORT
+              value: "8777"
+            - name: SAS_DETECTION_PROCESSING_EXECUTION_URL
+              value: http://localhost:8080
+
+            # LOG LEVEL... DEBUG, INFO, WARN, ERROR
+            - name: SAS_LOG_LEVEL
+              value: {{ .Values.VALUE_NEEDED }} # Defaults to 'INFO' if removed
+            - name: SAS_LOG_LOCALE
+              value: {{ .Values.VALUE_NEEDED }} # Defaults to 'en' if removed
+              
+            # KAFKA PROPERTIES
+            - name: SAS_DETECTION_KAFKA_SERVER
+              value: {{ .Values.VALUE_NEEDED }}   # Bootstrap server, host:port
+            - name: SAS_DETECTION_KAFKA_TDR_TOPIC
+              value: tdr-{{ .Values.ORGANIZATION }}
+            - name: SAS_DETECTION_KAFKA_REJECTTOPIC
+              value: reject-{{ .Values.ORGANIZATION }}
+            - name: SAS_DETECTION_KAFKA_TOPIC
+              value: input-{{ .Values.ORGANIZATION }}
+            - name: SAS_DETECTION_KAFKA_CONSUMER_ENABLED
+              value: {{ .Values.VALUE_NEEDED }}
+            # {{ .Values.SECURITY }}
+            # - name: SAS_DETECTION_KAFKA_SECURITY_PROTOCOL
+            #   value: {{ .Values.VALUE_NEEDED }} # PLAINTEXT, SSL, SASL_PLAINTEXT, SASL_SSL. defaults to PLAINTEXT
+            # - name: SAS_DETECTION_KAFKA_TRUSTSTORE
+            #   value: {{ .Values.VALUE_NEEDED }} # Path to trusted ca cert for kafka. Optional 
+            # - name: SAS_DETECTION_KAFKA_ENABLE_HOSTNAME_VERIFICATION
+            #   value: {{ .Values.VALUE_NEEDED }} # true or false. Defaults to true. Disables DNS hostname verification for TLS. 
+            # - name: SAS_DETECTION_KAFKA_SASL_USERNAME
+            #   value: {{ .Values.VALUE_NEEDED }} 
+            #   # Optionally, store and get from a secret
+            #   # valueFrom:
+            #   #   secretKeyRef:
+            #   #     name: {{ .Values.VALUE_NEEDED }}
+            #   #     key: {{ .Values.VALUE_NEEDED }}
+            # - name: SAS_DETECTION_KAFKA_SASL_PASSWORD
+            #   value: {{ .Values.VALUE_NEEDED }} 
+            #   # Optionally, store and get from a secret
+            #   # valueFrom:
+            #   #   secretKeyRef:
+            #   #     name: {{ .Values.VALUE_NEEDED }}
+            #   #     key: {{ .Values.VALUE_NEEDED }}
+
+            # REDIS CONNECTION PROPERTY, FOR RULE METRICS
+            - name: SAS_DETECTION_REDIS_HOST
+              value: {{ .Values.VALUE_NEEDED }}
+            - name: SAS_DETECTION_REDIS_PORT
+              value: {{ .Values.VALUE_NEEDED }}
+            # {{ .Values.SECURITY }}
+            # - name: SAS_DETECTION_REDIS_AUTH_PASS
+            #   value: {{ .Values.VALUE_NEEDED }}
+            # # Optionally, store and get from a secret
+            # # valueFrom:
+            # #   secretKeyRef:
+            # #     name: {{ .Values.VALUE_NEEDED }}
+            # #     key: {{ .Values.VALUE_NEEDED }}
+            # - name: SAS_DETECTION_REDIS_TLS_ENABLED
+            #   value: {{ .Values.VALUE_NEEDED }}
+            # - name: SAS_DETECTION_REDIS_TLS_CACERT
+            #   value: /security/redis/tls.crt
+            # - name: SAS_DETECTION_REDIS_SERVER_DOMAIN 
+            #   value: {{ .Values.VALUE_NEEDED }}
+
+            # PROCESSING CONFIGURATION PROPERTIES
+            - name: SAS_DETECTION_DEPLOYMENT_NAME
+              value: sas-sda-scr-{{ .Values.ORGANIZATION }}
+            - name: SAS_DETECTION_PROCESSING_DISABLEMETRICS
+              value: {{ .Values.VALUE_NEEDED }}   
+            - name: SAS_DETECTION_PROCESSING_SLA
+              value: {{ .Values.VALUE_NEEDED }}   # In Milliseconds
+            - name: SAS_DETECTION_PROCESSING_SETVERBOSE
+              value: {{ .Values.VALUE_NEEDED }}   # 1-13, sets logging verbosity for SCR container logs
+            - name: SAS_DETECTION_PROCESSING_OUTPUT_FILTER
+              value: {{ .Values.VALUE_NEEDED }}   # comma separated list of variable set or variable paths to include... message.sas.system,message.request,message.sas.decision
+            - name: SAS_DETECTION_KAFKA_BYPASS
+              value: "false"
+
+            # WATCHER CONFIGURATION PROPERTIES
+            - name: SAS_DETECTION_WATCHER_INTERVAL_SEC
+              value: {{ .Values.VALUE_NEEDED }}   # How many seconds between each run of the watcher. Setting 0 disables the watcher.
+            - name: SAS_DETECTION_WATCHER_SSL_ENABLED
+              value: "true"               # True if the watcher should make requests to the Docker registry with SSL, false if not.  Default: true
+            # Optionally, store and get from a secret
+            # valueFrom:
+            #   secretKeyRef:
+            #     name: {{ .Values.VALUE_NEEDED }}
+            #     key: {{ .Values.VALUE_NEEDED }}
+
+      # Optional - uncomment below block for running python models
+      # - name: sas-sda-mlserver
+      #   image: {{ .Values.VALUE_NEEDED }} # The model to run
+      #   imagePullPolicy: "Always"
+      #   ports:
+      #     - name: http
+      #     containerPort: 50051
+      #     protocol: TCP
+      
+      # Example of imagePullSecrets.  These are needed if the container registry requires authentication.
+      # imagePullSecrets:
+      #   - name: {{ .Values.VALUE_NEEDED }}
+
+---
+########################################################################
+# create Ingress for SCR container
+########################################################################
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sas-sda-scr-{{ .Values.ORGANIZATION }}
+  namespace: {{ .Values.NAMESPACE }}
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
+    nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  labels:
+    app.kubernetes.io/name: sas-sda-scr-{{ .Values.ORGANIZATION }}
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: sas-sda-scr-{{ .Values.ORGANIZATION }}
+      port:
+        number: 8080
+  rules:
+    # example: user.ingress-nginx.example.sas.com
+    - host: "{{ .Values.ORGANIZATION }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}"
+      http:
+        paths:
+          - path: "/decisionModule(/|$)(.*)"
+            pathType: Prefix
+            backend:
+              service:
+                name: sas-sda-scr-{{ .Values.ORGANIZATION }}
+                port:
+                  number: 8080
+---
+########################################################################
+# create TLS Disabled Ingress for sas-detection container (Only uncomment a single sas-detection ingress)
+########################################################################
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
+  namespace: {{ .Values.NAMESPACE }}
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
+    nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  labels:
+    app.kubernetes.io/name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
+      port:
+        number: 8777
+  rules:
+    # example: user.ingress-nginx.example.sas.com
+    - host: "{{ .Values.ORGANIZATION }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}"
+      http:
+        paths:
+            - path: "/detection(/|$)(.*)"
+              pathType: Prefix
+              backend:
+                service:
+                  name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
+                  port:
+                    number: 8777
+---
+########################################################################
+# create TLS Enabled Ingress for sas-detection container
+########################################################################
+# {{ .Values.SECURITY }} Uncomment this and comment the above sas-detection ingress to enable Front Door TLS
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
+#   namespace: {{ .Values.NAMESPACE }}
+#   annotations:
+#     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+
+#     # backend-protocol is HTTP because this is only front-door TLS, we would use HTTPS for full-tls
+#     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+
+#     # {{ .Values.SECURITY }} Note that these 3 annotations enable two-way front door TLS. Without them, the ingress only has one-way TLS enabled
+#     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
+#     nginx.ingress.kubernetes.io/auth-tls-secret: {{ .Values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ .Values.ORGANIZATION }}   # Used to enable TLS
+#     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    # used to enable mTLS
+
+#     nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
+#     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+#     nginx.ingress.kubernetes.io/use-regex: "true"
+#   labels:
+#     app.kubernetes.io/name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
+# spec:
+#   ingressClassName: nginx
+#   tls:
+#     - hosts:
+#         - {{ .Values.ORGANIZATION }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}
+#       secretName: detection-ingress-tls-config-{{ .Values.ORGANIZATION }}
+#   rules:
+#     - host: {{ .Values.ORGANIZATION }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}
+#       http:
+#         paths:
+#           - path: "/detection(/|$)(.*)"
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
+#                 port:
+#                   number: 8777
+---
+### The following Roles and RoleBindings give your detection deployments
+### permissions required to retrieve metrics and restart their pods
+### Only the NAMESPACE must be specified
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: reader
+  namespace: {{ .Values.NAMESPACE }}
+rules:
+  - apiGroups: [""]
+    resources: ["deployments", "deployments/scale", "pods"]
+    verbs: ["get", "watch", "list"]
+  - apiGroups: ["apps"]
+    resources: ["deployments", "deployments/scale", "pods"]
+    verbs: ["get", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: scaler
+  namespace: {{ .Values.NAMESPACE }}
+rules:
+  - apiGroups: [""]
+    resources: ["deployments", "deployments/scale"]
+    verbs: ["update"]
+  - apiGroups: ["apps"]
+    resources: ["deployments", "deployments/scale"]
+    verbs: ["update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: secretReader
+  namespace: {{ .Values.NAMESPACE }}
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "watch", "list"]
+  - apiGroups: ["apps"]
+    resources: ["secrets"]
+    verbs: ["get", "watch", "list"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: reader-role-binding-default
+  namespace: {{ .Values.NAMESPACE }}
+subjects:
+  - kind: ServiceAccount
+    name: default
+    apiGroup: ""
+roleRef:
+  kind: Role
+  name: reader
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: scaler-role-binding-default
+  namespace: {{ .Values.NAMESPACE }}
+subjects:
+  - kind: ServiceAccount
+    name: default
+    apiGroup: ""
+roleRef:
+  kind: Role
+  name: scaler
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: secretReader-role-binding-default
+  namespace: {{ .Values.NAMESPACE }}
+subjects:
+  - kind: ServiceAccount
+    name: default
+    apiGroup: ""
+roleRef:
+  kind: Role
+  name: secretReader
+  apiGroup: rbac.authorization.k8s.io

@@ -1,0 +1,21 @@
+# This file is used to modify the Redis configuration. In this example,
+# the logging level is changed from the default of 'notice' to 'debug'.
+# Removing a config option does not set it to the default value.
+#
+# WARNING: Modifying the Redis configuration can cause Redis to
+# function in ways that are untested and unsupported by SAS. Do not
+# modify the configuration without some experience using Redis.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: redis-modify-server-config
+patch: |-
+  - op: add
+    path: /spec/config/loglevel
+    value: "debug"
+target:
+  kind: DistributedRedisCluster
+  name: sas-redis-server
+  version: v1alpha1
+  group: redis.kun

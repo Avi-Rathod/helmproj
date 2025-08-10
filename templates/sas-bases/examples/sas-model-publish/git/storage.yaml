@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sas-model-publish-git
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: "{{ .Values.STORAGE_CAPACITY }}" #change this to desired capacity
+  storageClassName: "{{ .Values.STORAGE_CLASS_NAME }}" # change this the desired storage class

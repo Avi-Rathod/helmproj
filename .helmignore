@@ -9,3 +9,4 @@ selectors.yaml
 *.ini
 *.properties
 *.jwt
+*.css

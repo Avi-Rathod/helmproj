@@ -1,0 +1,17 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  namespace: {{ .Values.NAMESPACE }}
+  labels:
+    app.kubernetes.io/name: sas-detection-sda-{{ .Values.ORGANIZATION }}
+    sas.com/admin: namespace
+  name: sas-detection-sda-{{ .Values.ORGANIZATION }}
+spec:
+  host: "{{ .Values.ORGANIZATION }}.{{ .Values.HOST }}"
+  path: /detection
+  port:
+    targetPort: 8777
+  to:
+    kind: Service
+    name: sas-detection-sda-{{ .Values.ORGANIZATION }}
+  wildcardPolicy: None

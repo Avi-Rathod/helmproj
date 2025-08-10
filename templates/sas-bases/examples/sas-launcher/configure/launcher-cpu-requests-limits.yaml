@@ -1,0 +1,27 @@
+###################################################################################
+# Kustomize patch configuration to set the default and max for
+# CPU requests and CPU limits. This PatchTransformer will target all PodTemplates
+# with the label sas.com/template-intent=sas-launcher
+# See README.md for more information.
+###############################################################################
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-launcher-cpu-requests-limits
+patch: |-
+  - op: add
+    path: /metadata/annotations/launcher.sas.com~1default-cpu-request
+    value:{{ .Values.DEFAULT_CPU_REQUEST  }}
+  - op: add
+    path: /metadata/annotations/launcher.sas.com~1max-cpu-request
+    value: {{ .Values.MAX_CPU_REQUEST }}
+  - op: add
+    path: /metadata/annotations/launcher.sas.com~1default-cpu-limit
+    value: {{ .Values.DEFAULT_CPU_LIMIT }}
+  - op: add
+    path: /metadata/annotations/launcher.sas.com~1max-cpu-limit
+    value: {{ .Values.MAX_CPU_LIMIT }}
+target:
+  kind: PodTemplate
+  labelSelector: sas.com/template-intent=sas-launcher

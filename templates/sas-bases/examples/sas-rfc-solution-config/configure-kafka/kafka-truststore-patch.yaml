@@ -1,0 +1,6 @@
+- op: replace
+  path: /data
+  value:
+    ca.crt: {{.Values.BASE64_ENCODED_CERTIFICATE}}
+    ca.p12: {{.Values.BASE64_ENCODED_P12_VALUE}}
+    ca.password: {{.Values.BASE64_ENCODED_PASSWORD}}

@@ -1,0 +1,78 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-pyconfig-custom-parameters
+patch: |-
+  - op: replace 
+    path: /data/global.enabled
+    value: "false"
+  - op: replace 
+    path: /data/global.python_enabled
+    value: "false"
+  - op: replace 
+    path: /data/global.r_enabled
+    value: "false"
+  - op: replace
+    path: /data/global.pvc
+    value: "/opt/sas/viya/home/sas-pyconfig"
+  - op: replace
+    path: /data/global.python_profiles
+    value: "default_py"
+  - op: replace
+    path: /data/global.r_profiles
+    value: "default_r"
+  - op: replace
+    path: /data/global.dry_run
+    value: "false"
+  - op: replace
+    path: /data/global.http_proxy
+    value: "none"
+  - op: replace
+    path: /data/global.https_proxy
+    value: "none"
+  - op: replace
+    path: /data/default_py.configure_opts
+    value: "--enable-optimizations"
+  - op: replace
+    path: /data/default_py.pip_install_opts
+    value: "--upgrade"
+  - op: replace
+    path: /data/default_r.configure_opts
+    value: "--enable-memory-profiling --enable-R-shlib --with-blas --with-lapack --with-readline=no --with-x=no --enable-BLAS-shlib"
+  - op: replace
+    path: /data/default_py.cflags
+    value: "-fPIC"
+  - op: replace
+    path: /data/default_r.cflags
+    value: "-fPIC"
+  - op: replace
+    path: /data/default_py.pip_install_packages
+    value: "Prophet sas_kernel matplotlib sasoptpy sas-esppy NeuralProphet scipy==1.10 Flask XGBoost TensorFlow pybase64 scikit-learn statsmodels sympy mlxtend Skl2onnx nbeats-pytorch ESRNN onnxruntime opencv-python zipfile38 json2 pyenchant nltk spacy gensim pyarrow hnswlib==0.7.0 sas-ipc-queue great-expectations pydantic"
+  - op: replace
+    path: /data/default_py.pip_r_packages
+    value: "rpy2"
+  - op: replace
+    path: /data/default_py.pip_r_profile
+    value: "default_r"
+  - op: replace
+    path: /data/default_py.python_signer
+    value: https://keybase.io/pablogsal/pgp_keys.asc
+  - op: replace
+    path: /data/default_py.python_signature
+    value: https://www.python.org/ftp/python/3.10.14/Python-3.10.14.tgz.asc
+  - op: replace
+    path: /data/default_py.python_tarball
+    value: https://www.python.org/ftp/python/3.10.14/Python-3.10.14.tgz
+  - op: replace
+    path: /data/default_r.r_tarball
+    value: https://cloud.r-project.org/src/base/R-4/R-4.3.3.tar.gz
+  - op: replace
+    path: /data/default_r.packages
+    value: "dplyr jsonlite httr tidyverse randomForest xgboost forecast"
+  - op: replace
+    path: /data/default_r.pkg_repos
+    value: "https://cran.rstudio.com/ http://cran.rstudio.com/ https://cloud.r-project.org/ http://cloud.r-project.org/"
+target:
+  version: v1
+  kind: ConfigMap
+  name: sas-pyconfig-parameters

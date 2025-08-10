@@ -1,0 +1,107 @@
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  name: sas-model-publish-buildkit-job-config
+template:
+  metadata:
+    annotations:
+      sidecar.istio.io/inject: "false"
+    labels:
+      workload.sas.com/class: stateless
+  spec:
+    tolerations:
+      - key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+        effect: NoSchedule
+      - key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+        effect: NoSchedule
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+                - key: workload.sas.com/class
+                  operator: In
+                  values:
+                    - stateless
+          - weight: 50
+            preference:
+              matchExpressions:
+                - key: workload.sas.com/class
+                  operator: NotIn
+                  values:
+                    - compute
+                    - cas
+                    - stateful
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.azure.com/mode
+                  operator: NotIn
+                  values:
+                    - system
+    imagePullSecrets: []
+    serviceAccount: sas-model-publish-buildkit
+    serviceAccountName: sas-model-publish-buildkit
+    containers:
+      - name: buildkit
+        args:
+          - --addr
+          - tcp://buildkitd:1234
+          - --tlscacert
+          - /certs/ca.pem
+          - --tlscert
+          - /certs/cert.pem
+          - --tlskey
+          - /certs/key.pem
+          - build
+          - --frontend
+          - dockerfile.v0
+          - --local
+          - context=/workspace
+          - --local
+          - dockerfile=/workspace
+        command:
+          - buildctl
+        env:
+          - name: BUILDKITD_FLAGS
+            value: --oci-worker-no-process-sandbox
+          - name: DOCKER_CONFIG
+            value: /workspace
+          - name: XDG_CACHE_HOME
+            value: /cache/.cache
+
+        image: moby/buildkit:v0.11.6-rootless
+        imagePullPolicy: IfNotPresent
+        resources: {}
+        securityContext:
+          procMount: unmasked
+          runAsGroup: 1001
+          runAsUser: 1001
+          seccompProfile:
+            type: Unconfined
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+          - mountPath: /certs
+            name: certs
+          - mountPath: /cache
+            name: cache
+
+    restartPolicy: Never
+    volumes:
+      - name: cache
+        persistentVolumeClaim:
+          claimName: sas-decisions-runtime-builder-buildkit
+      - name: certs
+        secret:
+          defaultMode: 420
+          secretName: buildkit-client-certs
+      - name: buildkit
+        persistentVolumeClaim:
+          claimName: sas-model-publish-buildkit
+          readOnly: true

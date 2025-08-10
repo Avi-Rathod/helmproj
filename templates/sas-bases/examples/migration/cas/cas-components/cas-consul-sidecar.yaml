@@ -1,0 +1,115 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-consul-sidecar
+patch: |-
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/-
+    value:
+      env:
+      - name: CONSUL_SERVER_LIST
+        value: sas-consul-server
+      - name: CONSUL_SERVER_FLAG
+        value: "false"
+      - name: CONSUL_CLIENT_ADDRESS
+        value: 127.0.0.1
+      - name: CONSUL_DATACENTER_NAME
+        value: viya
+      - name: CONSUL_TOKENS_ENCRYPTION
+        valueFrom:
+          secretKeyRef:
+            name: sas-consul-management
+            key: CONSUL_TOKENS_ENCRYPTION
+      - name: CONSUL_CAS_POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: CONSUL_NODE_NAME
+        value: $(CONSUL_CAS_POD_NAME)-agent
+      envFrom:
+      - configMapRef:
+          name: sas-shared-config
+      - configMapRef:
+          name: sas-go-config
+      - secretRef:
+          name: sas-consul-client
+      image: sas-consul-server
+      imagePullPolicy: IfNotPresent
+      command: [/bin/bash]
+      args:
+        - -c
+        - rm -f /tmp/sas-shutdown; while [ ! -f /tmp/sas-shutdown ]; do /opt/sas/viya/home/bin/sas-consul-server-entrypoint.sh; echo restarting_consul_script; sleep 3; done;
+      lifecycle:
+        preStop:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - PROTO="http";
+              [[ ! -z ${SAS_CERTIFICATE_FILE+x} ]] && export PROTO="https";
+              CONSUL_HTTP_ADDR=$PROTO://localhost:8500; touch /tmp/sas-shutdown;
+              /opt/sas/viya/home/bin/consul leave ; sleep 5; pkill consul
+      name: sas-consul-agent
+      ports:
+      - containerPort: 8300
+        name: server
+        protocol: TCP
+      - containerPort: 8301
+        name: serflan-tcp
+        protocol: TCP
+      - containerPort: 8301
+        name: serflan-udp
+        protocol: UDP
+      - containerPort: 8500
+        name: http
+        protocol: TCP
+      readinessProbe:
+        exec:
+          command:
+          - sh
+          - /opt/sas/viya/home/bin/consul-readiness-probe.sh
+        failureThreshold: 3
+        initialDelaySeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 60
+        periodSeconds: 20
+      volumeMounts:
+      - mountPath: /opt/sas/viya/config/etc/consul.d
+        name: consul-tmp-volume
+        subPath: consul.d
+      - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/tokens/consul/default
+        name: consul-tmp-volume
+        subPath: consul-tokens
+      - mountPath: /opt/sas/viya/config/tmp/sas-consul
+        name: consul-tmp-volume
+        subPath: sas-consul
+      - mountPath: /tmp
+        name: consul-tmp-volume
+        subPath: tmp
+      - mountPath: /consul/data/
+        name: consul-tmp-volume
+        subPath: data
+      resources:
+        requests:
+          memory: 500Mi
+          cpu: 500m
+        limits:
+          memory: 500Mi
+          cpu: 500m
+      securityContext:
+        allowPrivilegeEscalation: false
+        privileged: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop:
+          - ALL
+  - op: add
+    path: /spec/controllerTemplate/spec/volumes/-
+    value:
+      name: consul-tmp-volume
+      emptyDir: {}
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  name: .*
+  version: v1alpha1

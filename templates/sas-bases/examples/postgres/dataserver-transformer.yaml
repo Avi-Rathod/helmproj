@@ -1,0 +1,71 @@
+# Example dataserver-transformer to modify DataServer CustomResources.
+#   - In the following code, user-defined values are indicated by a capitalized
+#     and hyphenated name set off by curly braces and a space at each end. To
+#     replace the variable, replace the curly braces, interior spaces, and the
+#     variable name. For instance, {{ .Values.DB_NAME }} could be replaced by
+#     SharedServices.
+#   - Replace all instance of {{ .Values.DATASERVER_NAME }} with the name of the
+#     DataServer CustomResource you are targeting. Refer to the below list to
+#     find the correct name based on the PostgreSQL server you are modifying.
+#       - For Platform PostgreSQL, use "sas-platform-postgres"
+#       - For CDS PostgreSQL, use "sas-cds-postgres"
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: {{ .Values.DATASERVER_NAME }}-dataserver-transformer
+patch: |-
+  # DO NOT REMOVE. Identifies that the database server being used
+  # is external to the SAS deployment.
+  - op: add
+    path: "/metadata/annotations/sas.com~1database-server-location"
+    value: external
+
+  # # (Optional) Uncomment this section to change which database inside the
+  # # PostgreSQL server Viya will use by default. Defaults to "SharedServices"
+  # # if not specified. Replace {{ .Values.DB_NAME }} with the name of the database.
+  # - op: replace
+  #   path: /spec/databases/0/name
+  #   value: {{ .Values.DB_NAME }}
+
+  # Replace {{ .Values.POSTGRES_USER_SECRET_NAME }} with the name of the
+  # secretGenerator containing PostgreSQL user credentials.
+  # This name must match the value specified by {{ .Values.POSTGRES_USER_SECRET_NAME }}
+  # in the secretGenerator block within the kustomization.yaml.
+  - op: replace
+    path: /spec/users/0/credentials/input
+    value:
+      secretRef:
+        name: {{ .Values.POSTGRES_USER_SECRET_NAME }}
+      usernameKey: username # For internal use, do not modify
+      passwordKey: password # For internal use, do not modify
+
+  # Replace 
+{{ .Values.DB_HOST }}
+ with the host name for the PostgreSQL server.
+  # If you are using:
+  #  * Google Cloud SQL for PostgreSQL, this value must be the private IP Address of the Google SQL server instance.
+  #  * Amazon RDS, this value must be the database endpoint of RDS server.
+  #  * Azure Database for PostgreSQL, this value must be the server name of the PostgreSQL server.
+  - op: replace
+    path: /spec/registrations/0/host
+    value: 
+{{ .Values.DB_HOST }}
+
+
+  # Replace 
+{{ .Values.DB_PORT }}
+ with the port number for the PostgreSQL server.
+  - op: replace
+    path: /spec/registrations/0/port
+    value: 
+{{ .Values.DB_PORT }}
+
+
+  - op: replace
+    path: /spec/ssl
+    value: true
+target:
+  group: webinfdsvr.sas.com
+  kind: DataServer
+  version: v1beta1
+  name: {{ .Values.DATASERVER_NAME }}

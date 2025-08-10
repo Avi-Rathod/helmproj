@@ -1,0 +1,17 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-opendistro-disable-security-audit-transformer
+patch: |-
+  - op: add
+    path: /spec/config/env/-
+    value: 
+      name: plugins.security.audit.config.enable_rest
+      value: "false"
+  - op: add
+    path: /spec/config/env/-
+    value: 
+      name: plugins.security.audit.config.enable_transport
+      value: "false"
+target:
+  kind: OpenDistroCluster

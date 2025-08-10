@@ -1,0 +1,27 @@
+###############################################################################
+# Kustomize patch to add external SSSD configMap in sas-connect-spawner
+# deployment.
+# See README.md for more information.
+###############################################################################
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-sssd-config-connect-spawner-example
+patch: |-
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: sas-sssd-config
+      secret:
+        secretName: sas-sssd-config
+        defaultMode: 420
+        items:
+        - key: SSSD_CONF
+          mode: 384
+          path: sssd.conf
+target:
+  version: v1
+  group: apps
+  kind: Deployment
+  name: sas-connect-spawner

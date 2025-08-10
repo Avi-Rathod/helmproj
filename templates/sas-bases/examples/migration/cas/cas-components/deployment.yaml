@@ -1,0 +1,31 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: cas-$(CAS_INSTANCE)-permstore
+  labels:
+    sas.com/backup-role: provider
+    app.kubernetes.io/part-of: cas
+    sas.com/cas-instance: $(CAS_INSTANCE)
+    sas.com/cas-pvc: permstore
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Mi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: cas-$(CAS_INSTANCE)-data
+  labels:
+    sas.com/backup-role: provider
+    app.kubernetes.io/part-of: cas
+    sas.com/cas-instance: $(CAS_INSTANCE)
+    sas.com/cas-pvc: data
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 8Gi

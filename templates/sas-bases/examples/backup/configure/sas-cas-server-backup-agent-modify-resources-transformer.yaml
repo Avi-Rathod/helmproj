@@ -1,0 +1,24 @@
+#   # NOTE:
+#   # {{ .Values.CPU_LIMIT }}must be a non-zero and non-negative numeric value, such as "3" or "5".
+#   # {{ .Values.MEMORY_LIMIT }} must be a non-zero and non-negative value followed by "Gi". For example, "8Gi" for 8 gigabytes.
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-cas-server-backup-agent-modify-resources-transformer
+patch: |-
+  - op: replace
+    path: /spec/controllerTemplate/spec/containers/1/resources/limits/cpu
+    value: "{{ .Values.CPU_LIMIT }}"
+  - op: replace
+    path: /spec/controllerTemplate/spec/containers/1/resources/limits/memory
+    value: "{{ .Values.MEMORY_LIMIT }}"
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  # Uncomment this to apply to all CAS servers:
+  name: .*
+  # Uncomment this to apply to one particular named CAS server:
+  #name: {{ .Values.NAME_OF_CAS_SERVER }}
+  # Uncomment this to apply to the default CAS server:
+  #labelSelector: "sas.com/cas-server-default"
+  version: v1alpha1

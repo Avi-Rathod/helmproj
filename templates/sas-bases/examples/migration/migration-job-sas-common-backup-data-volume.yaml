@@ -1,0 +1,13 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: migration-job-sas-common-backup-data-volume-patch
+patch: |-
+  - op: replace
+    path: /spec/template/spec/containers/0/volumeMounts/0/name
+    value: backup
+target:
+  apiVersion: v1
+  group: batch
+  kind: Job
+  labelSelector: app.kubernetes.io/name=sas-migration-job

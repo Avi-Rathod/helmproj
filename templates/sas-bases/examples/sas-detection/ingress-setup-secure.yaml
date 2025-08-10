@@ -1,0 +1,45 @@
+---
+########################################################################
+# create TLS Enabled Ingress for sas-detection container
+# This uses the service defined in ingress-setup-insecure-example, but adds properties
+# to the insecure ingress to add front door TLS and/or mTLS as desired. 
+########################################################################
+# {{ .Values.SECURITY }} Uncomment this and comment the above sas-detection ingress to enable Front Door TLS
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
+  namespace: {{ .Values.NAMESPACE }}
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+
+    # backend-protocol is HTTP because this is only front-door TLS, we would use HTTPS for full-tls
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+
+    # {{ .Values.SECURITY }} Note that these 3 annotations enable two-way front door TLS. Without them, the ingress only has one-way TLS enabled
+    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "false"
+    nginx.ingress.kubernetes.io/auth-tls-secret: "{{ .Values.NAMESPACE }}/detection-ingress-tls-ca-config-{{ .Values.ORGANIZATION }}   # Used to enable TLS"
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"    # used to enable mTLS
+
+    nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
+    nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  labels:
+    app.kubernetes.io/name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "{{ .Values.ORGANIZATION }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}"
+      secretName: detection-ingress-tls-config-{{ .Values.ORGANIZATION }}
+  rules:
+    - host: "{{ .Values.ORGANIZATION }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}"
+      http:
+        paths:
+          - path: "/detection(/|$)(.*)"
+            pathType: Prefix
+            backend:
+              service:
+                name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
+                port:
+                  number: 8777

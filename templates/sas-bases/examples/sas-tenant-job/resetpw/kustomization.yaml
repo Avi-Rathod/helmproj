@@ -1,0 +1,8 @@
+---
+namespace: {{ .Values.VIYA_DEPLOYMENT_NAMESPACE }}
+resources:
+- tenant-resetpw-job.yaml
+
+transformers:
+- tenant-resetpw-job-tls-transformer.yaml   # Comment out, if Viya environment is TLS disable
+- ../../../sas-bases/overlays/required/transformers.yaml

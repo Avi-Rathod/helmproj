@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: sas-rabbitmq-server
+  name: sas-rabbitmq-management-ui
+spec:
+  ports:
+  - name: management
+    port: 15672
+    protocol: TCP
+    targetPort: 15672
+  selector:
+    app.kubernetes.io/name: sas-rabbitmq-server
+  #
+  # Comment out the following line if loadbalancer is preferred.
+  type: NodePort
+
+  # By default, the service is added as a NodePort.
+  # To configure them as a LoadBalancer, uncomment the following
+  # and optionally, set source ranges.
+  #
+  # type: LoadBalancer
+  # loadBalancerSourceRanges:
+  # - 192.168.0.0/16
+  # - 10.0.0.0/8
+  #
+  # Note: Some cloud providers may require additional settings, 
+  # consult your cloud provider's documentation for more information.
