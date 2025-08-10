@@ -16,8 +16,7 @@ spec:
 #   1. The selected port must fall within the nodePort range (default: 30000-32767).
 #   2. The selected port must be available on all nodes where the service will run.
 #
-# To use a specific port uncomment the following and replace {{.Values.nodePort}}
- with
+# To use a specific port uncomment the following and replace {{.Values.nodePort}} with
 # the desired port.
 #    nodePort: {{.Values.nodePort}}
 
