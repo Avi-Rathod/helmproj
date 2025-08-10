@@ -1,4 +1,6 @@
-- name: sas-consul-config
-  behavior: merge
-  files:
-    - SITEDEFAULT_CONF=/appdata/deploy/site-config/sitedefault.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sas-consul-config
+data:
+  SITEDEFAULT_CONF: "/appdata/deploy/site-config/sitedefault.yaml"
