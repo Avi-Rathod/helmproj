@@ -5,3 +5,7 @@ selectors.yaml
 *.htm
 *.html
 *.sh
+*.env
+*.ini
+*.properties
+*.jwt
