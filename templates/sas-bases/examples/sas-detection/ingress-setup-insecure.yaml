@@ -24,7 +24,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: "sas-sda-scr-detection-{{ .Values.ORGANIZATION }}"
+  name: "sas-sda-scr-detection-{{.Values.ORGANIZATION}}"
   namespace: {{ .Values.NAMESPACE }}
   labels:
     app.kubernetes.io/name: sas-sda-scr-{{ .Values.ORGANIZATION }}
