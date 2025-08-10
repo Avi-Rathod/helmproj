@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" href="sas.css"/>
+        <title>Configure SAS Micro Analytic Service to Enable Access to the IBM DB2 Client</title>
+    </head>
+    <body>
+        <h1 id="140345100039120configure-sas-micro-analytic-service-to-enable-access-to-the-ibm-db2-client">Configure SAS Micro Analytic Service to Enable Access to the IBM DB2 Client</h1>
+<h2 id="140345100039120overview">Overview</h2>
+<p>This document describes customizations that must be performed by the Kubernetes administrator for deploying SAS Micro Analytic Service to enable access to a DB2 database.</p>
+<p>SAS Micro Analytic Service uses the installed DB2 client environment. This environment must be accessible from a PersistentVolume.</p>
+<p><strong>Note:</strong> This overlay can be applied during the initial deployment of the SAS Viya platform or after the deployment of the SAS Viya platform.</p>
+<h2 id="140345100039120prerequisites">Prerequisites</h2>
+<p>The DB2 Client must be installed. After the initial DB2 Client setup, two directories (for example, /db2client and /db2) must be created and accessible to SAS Micro Analytic Service.
+Ensure that the two directories contain the installed client files (for example, /db2client) and the configured server definition files (/db2).</p>
+<h2 id="140345100039120installation">Installation</h2>
+<ol>
+<li>
+<p>Copy the files in <code>$deploy/sas-bases/examples/sas-microanalytic-score/db2-config</code> to the <code>$deploy/site-config/sas-microanalytic-score/db2-config</code> directory. Create the destination directory, if it does not already exist.</p>
+</li>
+<li>
+<p>Modify the three files under the site-config/sas-microanalytic-score/db2-config folder to point to your settings.</p>
+<ul>
+<li>
+<p>Modify the <code>$deploy/site-config/sas-microanalytic-score/db2-config/data-mounts-mas.yaml</code> file:</p>
+<ul>
+<li>Replace each instance of {{ .Values.DB2_CLIENT_DIR_NAME }} with a desired name (for example, db2client)</li>
+<li>Replace {{ .Values.DB2_CLIENT_DIR_MOUNT_PATH }} with an appropriate path for the installed DB2 client files (for example, &ldquo;/db2client&rdquo;)</li>
+<li>Replace {{ .Values.DB2_CLIENT_DIR_PATH }}with the location of the db2client folder (for example, /shared/gelcontent/access-clients/db2client)</li>
+<li>Replace {{ .Values.DB2_CLIENT_DIR_SERVER_NAME }} with the name of the server where DB2 Client is installed (for example, cloud.example.com)</li>
+<li>Replace each instance of {{ .Values.DB2_CONFIGURED_DIR_NAME }} with a desired name (for example, db2)</li>
+<li>Replace {{ .Values.DB2_CONFIGURED_DIR_MOUNT_PATH }} with an appropriate path for the DB2 configured server definition files (for example, &ldquo;/db2&rdquo;)</li>
+<li>Replace {{ .Values.DB2_CONFIGURED_DIR_PATH }} with the location where the DB2 configured server definition files exist (for example, /shared/gelcontent/access-clients/db2)</li>
+<li>Replace {{ .Values.DB2_CONFIGURED_DIR_SERVER_NAME }} with the name of the server where the DB2 configured server definition files exist (for example, cloud.example.com)</li>
+</ul>
+</li>
+<li>
+<p>Modify the <code>$deploy/site-config/sas-microanalytic-score/db2-config/etc-hosts-mas.yaml</code> file:</p>
+<ul>
+<li>Replace {{ .Values.DB2_DATABASE_IP }} with the IP address of the DB2 database server (for example, &ldquo;192.0.2.0&rdquo;)</li>
+<li>Replace {{ .Values.DB2_DATABASE_HOSTNAME }} with the DB2 database host name (for example, &ldquo;MyDBHost&rdquo;)</li>
+</ul>
+</li>
+<li>
+<p>Modify the <code>$deploy/site-config/sas-microanalytic-score/db2-config/db2-environment-variables-mas.yaml</code> file:</p>
+<ul>
+<li>Replace {{ .Values.VALUE_1 }} with the appropriate value of DB2DIR (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_2 }} with the appropriate value of DB2INSTANCE (for example, &ldquo;sas&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_3 }} with the appropriate value of DB2LIB (for example, &ldquo;/db2client/sqllib/lib&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_4 }} with the appropriate value of DB2_HOME (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_5 }} with the appropriate value of DB2_NET_CLIENT_PATH (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_6 }} with the appropriate value of IBM_DB_DIR (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_7}} with the appropriate value of IBM_DB_HOME (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_8}} with the appropriate value of IBM_DB_INCLUDE (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_9}} with the appropriate value of IBM_DB_LIB (for example, &ldquo;/db2client/sqllib/lib&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_10}} with the appropriate value of INSTHOME (for example, &ldquo;/db2&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_11}} with the appropriate value of INST_DIR (for example, &ldquo;/db2client/sqllib&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_12}} with the appropriate value of DB2 (for example, &ldquo;/db2client/sqllib/lib64:/db2client/sqllib/lib64/gskit:/db2client/sqllib/lib32&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_13 }} with the appropriate value of DB2_BIN (for example, &ldquo;/db2client/sqllib/bin:/db2client/sqllib/adm:/db2client/sqllib/misc&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_14 }} with the appropriate value of SAS_EXT_LLP_ACCESS (for example, &ldquo;/db2client/sqllib/lib64:/db2client/sqllib/lib64/gskit:/db2client/sqllib/lib32&rdquo;)</li>
+<li>Replace {{ .Values.VALUE_15 }} with the appropriate value of SAS_EXT_PATH_ACCESS (for example, &ldquo;/db2client/sqllib/bin:/db2client/sqllib/adm:/db2client/sqllib/misc&rdquo;)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Make the following changes to the transformers block of base kustomization.yaml file (&lsquo;$deploy/kustomization.yaml&rsquo;)</p>
+<ul>
+<li>Add site-config/sas-microanalytic-score/db2-config/data-mounts-mas.yaml</li>
+<li>Add site-config/sas-microanalytic-score/db2-config/etc-hosts-mas.yaml</li>
+<li>Add site-config/sas-microanalytic-score/db2-config/db2-environment-variables-mas.yaml</li>
+</ul>
+<p>Here is an example:</p>
+<pre class="highlight"><code class="language-yaml">transformers:
+- site-config/sas-microanalytic-score/db2-config/data-mounts-mas.yaml # patch to setup mount for mas
+- site-config/sas-microanalytic-score/db2-config/etc-hosts-mas.yaml # Host aliases
+- site-config/sas-microanalytic-score/db2-config/db2-environment-variables-mas.yaml  # patch to inject environment variables for DB2</code></pre>
+
+</li>
+<li>
+<p>Complete one of the following deployment steps to apply the new settings.</p>
+<ul>
+<li>If you are applying the overlay during the initial deployment of the SAS Viya platform, complete all the tasks in the README files that you want to use, and then see <a href="http://documentation.sas.com/?cdcId=itopscdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=p127f6y30iimr6n17x2xe9vlt54q.htm">Deploy the Software</a> in <em>SAS Viya Platform: Deployment Guide</em> for more information.</li>
+<li>If you are applying the overlay after the initial deployment of the SAS Viya platform, see <a href="http://documentation.sas.com/?cdcId=itopscdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a> in <em>SAS Viya Platform: Deployment Guide</em> for information about how to redeploy the software.</li>
+</ul>
+</li>
+</ol>
+<h2 id="140345100039120verify-overlays-for-the-persistent-volumes">Verify Overlays for the Persistent Volumes</h2>
+<ol>
+<li>
+<p>Run the following command to verify whether the overlays have been applied:</p>
+<pre class="highlight"><code class="language-sh">kubectl describe pod  &lt;sas-microanalyticscore-pod-name&gt; -n &lt;name-of-namespace&gt;</code></pre>
+
+</li>
+<li>
+<p>Verify that the output contains the following mount directory paths:</p>
+<pre class="highlight"><code class="language-yaml">Mounts:
+  /db2 from db2 (rw)
+  /db2client from db2client (rw)</code></pre>
+
+</li>
+<li>
+<p>Verify that the output shows that each environment variable is assigned the appropriate value. Here is an example:
+   <pre class="highlight"><code class="language-yaml">Environment:
+   SAS_K8S_DEPLOYMENT_NAME:               sas-microanalytic-score
+   DB2DIR:                                /db2client/sqllib
+   DB2INSTANCE:                           sas
+   DB2LIB:                                /db2client/sqllib/lib
+   DB2_HOME:                              /db2client/sqllib
+   DB2_NET_CLIENT_PATH:                   /db2client/sqllib
+   IBM_DB_DIR:                            /db2client/sqllib
+   IBM_DB_HOME:                           /db2client/sqllib
+   IBM_DB_INCLUDE:                        /db2client/sqllib/
+   IBM_DB_LIB:                            /db2client/sqllib/lib
+   INSTHOME:                              /db2
+   INST_DIR:                              /db2client/sqllib
+   DB2:                                   /db2client/sqllib/lib64:/db2client/sqllib/lib64/gskit:/db2client/sqllib/lib32
+   DB2_BIN:                               /db2client/sqllib/bin:/db2client/sqllib/adm:/db2client/sqllib/misc
+   SAS_EXT_LLP_ACCESS:                    /db2client/sqllib/lib64:/db2client/sqllib/lib64/gskit:/db2client/sqllib/lib32
+   SAS_EXT_PATH_ACCESS:                   /db2client/sqllib/bin:/db2client/sqllib/adm:/db2client/sqllib/misc</code></pre></p>
+</li>
+</ol>
+<h2 id="140345100039120additional-resources">Additional Resources</h2>
+<ul>
+<li><a href="http://documentation.sas.com/?cdcId=itopscdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=titlepage.htm">SAS Viya Platform: Deployment Guide</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims">Persistent Volume Claims on Kubernetes</a></li>
+<li><a href="http://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=calmodels&amp;docsetTarget=n10916nn7yro46n119nev9sb912c.htm">Accessing Analytic Store Model Files</a> in <em>SAS Viya Platform: Models Administration</em></li>
+<li><a href="http://documentation.sas.com/?cdcId=mascdc&amp;cdcVersion=default&amp;docsetId=masag&amp;docsetTarget=n0er040gsczf7bn1mndiw7znffad.htm">Configuring Analytic Store and Python Model Directories</a> in <em>SAS Micro Analytic Service: Programming and Administration Guide</em></li>
+</ul>
+    </body>
+</html>

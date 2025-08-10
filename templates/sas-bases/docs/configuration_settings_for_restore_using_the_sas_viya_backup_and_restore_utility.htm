@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" href="sas.css"/>
+        <title>Configuration Settings for Restore Using the SAS Viya Backup and Restore Utility</title>
+    </head>
+    <body>
+        <h1 id="140345100760064configuration-settings-for-restore-using-the-sas-viya-backup-and-restore-utility">Configuration Settings for Restore Using the SAS Viya Backup and Restore Utility</h1>
+<h2 id="140345100760064overview">Overview</h2>
+<p>This README describes how to revise and apply the settings for configuring restore jobs.</p>
+<h2 id="140345100760064change-restore-job-timeout">Change Restore Job Timeout</h2>
+<p>To change the restore job timeout value temporarily, edit the sas-restore-job-parameters configMap using the following command, where {{ .Values.TIMEOUT_IN_MINUTES }} is an integer.</p>
+<pre class="highlight"><code class="language-bash">kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[ {"op": "replace", "path": "/data/JOB_TIME_OUT", "value":"{{ .Values.TIMEOUT_IN_MINUTES }}" }]'</code></pre>
+
+<p>If you are running the restore job with this configuration frequently, then add this configuration permanently using the following method.</p>
+<ol>
+<li>
+<p>To change the restore job timeout value, edit the <code>$deploy/kustomization.yaml</code> file by adding an entry for the sas-restore-job-parameters configMap in the configMapGenerator block.
+The entry uses the following format, where {{ .Values.TIMEOUT_IN_MINUTES }} is an integer.</p>
+<pre class="highlight"><code class="language-yaml">configMapGenerator:
+- name: sas-restore-job-parameters
+  behavior: merge
+  literals:
+  - JOB_TIME_OUT={{ .Values.TIMEOUT_IN_MINUTES }}</code></pre>
+
+<p>If the sas-restore-job-parameters configMap is already present in the base kustomization.yaml file, you should add the last line only. If the configMap is not present,
+ add the entire example.</p>
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345100760064filter-configuration-definition-properties">Filter Configuration Definition Properties</h2>
+<p>To skip the restore of the configuration definition properties once, edit the sas-restore-job-parameters configMap using the following command.</p>
+<pre class="highlight"><code class="language-bash">kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/RESTORE_DEFINITION_FILTER", "value":"{{ .Values.RESTORE_DEFINITION_FILTER_CSV }}" }]'</code></pre>
+
+<p>The {{ .Values.RESTORE_DEFINITION_FILTER_CSV }} is a json string containing the comma-separated list of &lsquo;key:value&rsquo; pairs where the key is in the form &lsquo;serviceName.definitionName.version&rsquo;
+and the value can be a comma-separated list of properties to be filtered. If the entire definition is to be excluded,
+then set the value to &lsquo;*&rsquo;. If the service name is not present
+in the definition, then only provide &lsquo;definitionName&rsquo;. Each key and value must be enclosed in double quotes (&ldquo;). Here is an example:</p>
+<pre class="highlight"><code class="language-bash">kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/RESTORE_DEFINITION_FILTER", "value":"{\"sas.dataserver.common.1\":\"*\",\"deploymentBackup.sas.deploymentbackup.1\":\"*\",\"deploymentBackup.sas.deploymentbackup.2\":\"*\",\"deploymentBackup.sas.deploymentbackup.3\":\"*\",\"sas.security.1\":\"*\",\"vault.sas.vault.1\":\"*\",\"vault.sas.vault.2\":\"*\",\"SASDataExplorer.sas.dataexplorer.1\":\"*\",\"SASLogon.sas.logon.sas9.1\":\"*\",\"sas.cache.1\":\"*\",\"sas.cache.2\":\"*\",\"sas.cache.3\":\"*\",\"sas.cache.4\":\"*\",\"identities-SASLogon.sas.identities.providers.ldap.user.1\":\"accountId,address.country\",\"SASLogon.sas.logon.saml.providers.external_saml.1\":\"assertionConsumerIndex,idpMetadata\"}" }]'</code></pre>
+
+<p>If you are running the restore job with this configuration frequently, then add this configuration permanently using the following method.</p>
+<ol>
+<li>
+<p>Edit the <code>$deploy/kustomization.yaml</code> file by adding an entry for the sas-restore-job-parameters configMap in the configMapGenerator block. The entry uses the following format.</p>
+<pre class="highlight"><code class="language-yaml">configMapGenerator:
+- name: sas-restore-job-parameters
+  behavior: merge
+  literals:
+  - RESTORE_DEFINITION_FILTER={{ .Values.RESTORE_DEFINITION_FILTER_CSV }}</code></pre>
+
+<p>The {{ .Values.RESTORE_DEFINITION_FILTER_CSV }} is a json string containing the comma-separated list of &lsquo;key:value&rsquo; pairs where key is in the form &lsquo;serviceName.definitionName.version&rsquo;
+ and value itself can be a comma-separated list of properties to be filtered. If entire definition is to be excluded, then set the value to &lsquo;*&rsquo;. If service name is not present in
+ the definition then only provide &lsquo;definitionName&rsquo;. Each key and value must be enclosed in double quotes (&ldquo;). Here is an example:</p>
+<pre class="highlight"><code class="language-yaml">configMapGenerator:
+- name: sas-restore-job-parameters
+  behavior: merge
+  literals:
+  - RESTORE_DEFINITION_FILTER='{"sas.dataserver.common.1":"*","deploymentBackup.sas.deploymentbackup.1":"*","deploymentBackup.sas.deploymentbackup.2":"*","deploymentBackup.sas.deploymentbackup.3":"*","sas.security.1":"*","vault.sas.vault.1":"*","vault.sas.vault.2":"*","SASDataExplorer.sas.dataexplorer.1":"*","SASLogon.sas.logon.sas9.1":"*","sas.cache.1":"*","sas.cache.2":"*","sas.cache.3":"*","sas.cache.4":"*","identities-SASLogon.sas.identities.providers.ldap.user.1":"accountId,address.country","SASLogon.sas.logon.saml.providers.external_saml.1":"assertionConsumerIndex,idpMetadata"}'</code></pre>
+
+<p>If the sas-restore-job-parameters configMap is already present in the base kustomization.yaml file, you should add the last line only. If the configMap is not present, add the entire example.</p>
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345100760064filter-configuration-properties">Filter Configuration Properties</h2>
+<p>To skip the restore of the configuration properties once, edit  the sas-restore-job-parameters configMap using the following command.</p>
+<pre class="highlight"><code class="language-bash">kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/RESTORE_CONFIGURATION_FILTER", "value":"{{ .Values.RESTORE_CONFIGURATION_FILTER_CSV }}" }]'</code></pre>
+
+<p>The {{ .Values.RESTORE_CONFIGURATION_FILTER_CSV }} is a json string containing the comma-separated list of &lsquo;key:value&rsquo; pairs where the key is in the form &lsquo;serviceName.configurationMediaType&rsquo; and the value can
+be a comma-separated list of properties to be filtered.
+If the entire configuration is to be excluded, then set the value to &lsquo;*&rsquo;.
+If the service name is not present in the configuration, then use the media type. Each key and value must be enclosed in double quotes (&ldquo;). Here is an example:</p>
+<pre class="highlight"><code class="language-bash">kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/RESTORE_DEFINITION_FILTER", "value":"{\"postgres.application/vnd.sas.configuration.config.sas.dataserver.conf+json;version=1\":\"*\",\"maps-reportPackages-webDataAccess.application/vnd.sas.configuration.config.sas.maps+json;version=2\":\"useArcGISOnlineMaps,localEsriServicesUrl\"}" }]'</code></pre>
+
+<p>If you are running the restore job with this configuration frequently, then add this configuration permanently using the following method.</p>
+<ol>
+<li>
+<p>Edit the <code>$deploy/kustomization.yaml</code> file by adding an entry for the sas-restore-job-parameters configMap in the configMapGenerator block. The entry uses the following format.</p>
+<pre class="highlight"><code class="language-yaml">configMapGenerator:
+- name: sas-restore-job-parameters
+  behavior: merge
+  literals:
+  - RESTORE_CONFIGURATION_FILTER={{ .Values.RESTORE_CONFIGURATION_FILTER_CSV }}</code></pre>
+
+<p>The {{ .Values.RESTORE_CONFIGURATION_FILTER_CSV }} is a json string containing the comma-separated list of &lsquo;key:value&rsquo; pairs where key is in the form &lsquo;serviceName.configurationMediaType&rsquo; and value itself
+ can be a comma-separated list of properties to be filtered. If the entire configuration is to be excluded, then set the value to &lsquo;*&rsquo;. If service name is not present in the configuration, then use
+ the media type. Each key and value must be enclosed in double quotes (&ldquo;). Here is an example:</p>
+<pre class="highlight"><code class="language-yaml">configMapGenerator:
+- name: sas-restore-job-parameters
+  behavior: merge
+  literals:
+  - RESTORE_CONFIGURATION_FILTER='{"postgres.application/vnd.sas.configuration.config.sas.dataserver.conf+json;version=1":"*","maps-reportPackages-webDataAccess.application/vnd.sas.configuration.config.sas.maps+json;version=2":"useArcGISOnlineMaps,localEsriServicesUrl"}'</code></pre>
+
+<p>If the sas-restore-job-parameters configMap is already present in the base kustomization.yaml file, you should add the last line only. If the configMap is not present, add the entire example.</p>
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345100760064disable-restore-job-failure-notification">Disable Restore Job Failure Notification</h2>
+<p>By default, you are notified if the restore job fails. To disable the restore job failure notification once,
+add an entry to the sas-restore-job-parameters configMap with the following command. Replace {{ .Values.ENABLE_NOTIFICATIONS }} with the string &ldquo;false&rdquo;.</p>
+<pre class="highlight"><code class="language-bash">kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/ENABLE_NOTIFICATIONS", "value":"{{ .Values.ENABLE_NOTIFICATIONS }}" }]'</code></pre>
+
+<p>To restore the default, change the value of {{ .Values.ENABLE_NOTIFICATIONS }} from &ldquo;false&rdquo; to &ldquo;true&rdquo;.</p>
+<p>If you are running the restore job with this configuration frequently, then add this configuration permanently using the following method.</p>
+<ol>
+<li>
+<p>Add an entry to the sas-restore-job-parameters configMap in the configMapGenerator block of the base kustomization.yaml file. Replace {{ .Values.ENABLE_NOTIFICATIONS }} with the string &ldquo;false&rdquo;.</p>
+<pre class="highlight"><code class="language-yaml">configMapGenerator:
+- name: sas-restore-job-parameters
+  behavior: merge
+  literals:
+  - ENABLE_NOTIFICATIONS={{ .Values.ENABLE_NOTIFICATIONS }}</code></pre>
+
+<p>If the sas-restore-job-parameters configMap is already present in the base kustomization.yaml file, add the last line only. If the configMap is not present, add the entire example.</p>
+<p>To restore the default, change the value of {{ .Values.ENABLE_NOTIFICATIONS }} from &ldquo;false&rdquo; to &ldquo;true&rdquo;.</p>
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345100760064modify-the-resources-of-the-restore-job">Modify the Resources of the Restore Job</h2>
+<p>In some cases, the default resources may not be sufficient for completion or successful execution of the restore job,
+resulting in the pod status being marked as OOMKilled. In this case, modify the resources to the values you desire.</p>
+<p>Replace {{ .Values.CPU_LIMIT }} with the desired value of CPU. {{ .Values.CPU_LIMIT }} must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
+You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
+<pre class="highlight"><code class="language-bash">   kubectl patch cronjob sas-restore-job -n name-of-namespace --type json -p '[{"op": "replace", "path": "/spec/jobTemplate/spec/template/spec/containers/0/resources/limits/cpu", "value":"{{ .Values.CPU_LIMIT }}" }]'</code></pre>
+
+<p>Replace {{ .Values.MEMORY_LIMIT }} with the desired value for memory. {{ .Values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
+<pre><code> ```bash
+    kubectl patch cronjob sas-restore-job -n name-of-namespace --type json -p '[{"op": "replace", "path": "/spec/jobTemplate/spec/template/spec/containers/0/resources/limits/memory", "value":"{{ .Values.MEMORY_LIMIT }}" }]'
+ ```
+</code></pre>
+<p>If you are running the restore job with this configuration frequently, then add this configuration permanently using the following method.</p>
+<ol>
+<li>
+<p>Copy the file <code>$deploy/sas-bases/examples/restore/configure/sas-restore-job-modify-resources-transformer.yaml</code>
+to a location of your choice under <code>$deploy/site-config</code>, such as <code>$deploy/site-config/restore</code>.</p>
+</li>
+<li>
+<p>In the copied file, replace {{ .Values.CPU_LIMIT }} with the desired value of CPU.
+{{ .Values.CPU_LIMIT }} must be a non-zero and non-negative numeric value, such as &ldquo;3&rdquo; or &ldquo;5&rdquo;.
+You can specify fractional values for the CPUs by using decimals, such as &ldquo;1.5&rdquo; or &ldquo;0.5&rdquo;.</p>
+</li>
+<li>
+<p>In the same file, replace {{ .Values.MEMORY_LIMIT }} with the desired value of memory.
+{{ .Values.MEMORY_LIMIT }} must be a non-zero and non-negative numeric value followed by &ldquo;Gi&rdquo;. For example, &ldquo;8Gi&rdquo; for 8 gigabytes.</p>
+</li>
+<li>
+<p>Add the full path of the copied file to the transformers block of the base
+kustomization.yaml file (<code>$deploy/kustomization.yaml</code>). For example, if you
+moved the file to <code>$deploy/site-config/restore</code>, you would modify the
+base kustomization.yaml file like this:</p>
+<pre class="highlight"><code class="language-yaml">...
+transformers:
+...
+- site-config/restore/sas-restore-job-modify-resources-transformer.yaml
+...</code></pre>
+
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+<h2 id="140345100760064switch-postgresql-server-hosts-after-restore-without-sql-proxy">Switch PostgreSQL Server Hosts After Restore Without SQL Proxy</h2>
+<p>External PostgreSQL servers can be backed up and restored externally. Point in time recovery performed in such cases creates a new PostgreSQL server with a new host name.
+To automatically update the host names of the PostgreSQL server after the restore is completed using the SAS Viya Backup and Restore Utility,
+update the sas-restore-job-parameters config map with the following parameters before performing the restore.</p>
+<ul>
+<li>
+<p>AUTO_SWITCH_POSTGRES: &ldquo;true&rdquo;</p>
+</li>
+<li>
+<p>DATASERVER_HOST_MAP: &ldquo;{{ .Values.DATASERVER_HOST_MAP }}&rdquo;</p>
+<p>{{ .Values.DATASERVER_HOST_MAP }} is comma-separated list of key value pairs that describes the mapping of dataserver custom resource to updated host names.
+ The key and value within each KV pair is separated by colon (:).
+ Here is an example that switches the host names for SAS platform PostgreSQL and SAS CDS PostgreSQL servers with the new host names:</p>
+<p><code>DATASERVER_HOST_MAP="sas-platform-postgres:restored-postgres.postgres.azure.com,sas-cds-postgres:restored-cds-postgres.postgres.azure.com"</code></p>
+</li>
+</ul>
+<p>Here is an example command that adds the AUTO_SWITCH_POSTGRES_HOST and DATASERVER_HOST_MAP parameters to the config map:</p>
+<pre class="highlight"><code class="language-bash">kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/AUTO_SWITCH_POSTGRES_HOST", "value":"TRUE" }, {"op": "replace", "path": "/data/DATASERVER_HOST_MAP","value":"sas-platform-postgres:restored-postgres.postgres.azure.com,sas-cds-postgres:restored-cds-postgres.postgres.azure.com" }]'</code></pre>
+
+<h2 id="140345100760064switch-postgresql-server-hosts-after-restore-with-sql-proxy">Switch PostgreSQL Server Hosts After Restore With SQL Proxy</h2>
+<p>This section is used when SQL proxy is used to interface the external PostgreSQL server. External PostgreSQL servers can be backed up and restored externally.
+Point in time recovery performed in such cases creates a new PostgreSQL server with a new host name.
+To automatically update the host names of the PostgreSQL server after the restore is completed using the SAS Viya Backup and Restore Utility,
+update the sas-restore-job-parameters config map with the following parameters before performing the restore.</p>
+<ul>
+<li>
+<p>AUTO_SWITCH_POSTGRES: &ldquo;true&rdquo;</p>
+</li>
+<li>
+<p>SQL_PROXY_POSTGRES_CONNECTION_MAP: &ldquo;{{ .Values.SQL_PROXY_POSTGRES_CONNECTION_MAP }}&rdquo;</p>
+<p>{{ .Values.SQL_PROXY_POSTGRES_CONNECTION_MAP }} is comma-separated list of key value pairs that describes the mapping of the SQL proxy Kubernetes deployment name to new PostgreSQL connection string.
+ The key and value within each KV pair is separated by the first colon (:).
+ Here is an example that switches the host names for SAS platform PostgreSQL and SAS CDS PostgreSQL servers with the new connection strings:</p>
+<p><code>SQL_PROXY_POSTGRES_CONNECTION_MAP="platform-postgres-sql-proxy:sub7:us-east1:restored-postgres-default-pgsql-clone,cds-postgres-sql-proxy:restored-cds-postgres-default-pgsql-clone"</code></p>
+</li>
+</ul>
+<p>Here is an example command that adds the AUTO_SWITCH_POSTGRES_HOST and SQL_PROXY_POSTGRES_CONNECTION_MAP parameters to the config map:</p>
+<pre class="highlight"><code class="language-bash">kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/AUTO_SWITCH_POSTGRES_HOST", "value":"TRUE" }, {"op": "replace", "path": "/data/SQL_PROXY_POSTGRES_CONNECTION_MAP","value":"platform-postgres-sql-proxy:sub7:us-east1:restored-postgres-default-pgsql-clone,cds-postgres-sql-proxy:restored-cds-postgres-default-pgsql-clone" }]'</code></pre>
+
+<h2 id="140345100760064disable-resource-validations">Disable Resource Validations</h2>
+<p>By default, resources like CPU and memory are pre-validated in order for the restore job to be completed successfully.
+You can disable the resource validation to complete the restore job successfully</p>
+<h3 id="140345100760064disable-resource-validations-temporarily">Disable Resource Validations Temporarily</h3>
+<p>Add an entry to the sas-restore-job-parameters configMap with the following command.</p>
+<pre class="highlight"><code class="language-bash">kubectl patch cm sas-restore-job-parameters-name -n name-of-namespace --type json -p '[{"op": "replace", "path": "/data/DISABLE_VALIDATION", "value":"true" }]'</code></pre>
+
+<h3 id="140345100760064disable-resource-validation-permanently">Disable Resource Validation Permanently</h3>
+<ol>
+<li>
+<p>Add an entry to the sas-restore-job-parameters configMap in the configMapGenerator block of the base kustomization.yaml file.</p>
+<pre class="highlight"><code class="language-yaml">configMapGenerator:
+- name: sas-restore-job-parameters
+  behavior: merge
+  literals:
+  - DISABLE_VALIDATION="true"</code></pre>
+
+<p>If the sas-restore-job-parameters configMap is already present in the base kustomization.yaml file, add the last line only. If the configMap is not present, add the entire example.</p>
+</li>
+<li>
+<p>Build and Apply the Manifest</p>
+<p>As an administrator with cluster permissions, apply the edited files to your deployment by performing the steps described in <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=n1f2q6pp0gjheqn1jl204vptrubs.htm">Modify Existing Customizations in a Deployment</a>.</p>
+</li>
+</ol>
+    </body>
+</html>
