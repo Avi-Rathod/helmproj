@@ -1,4 +1,5 @@
 templates\sas-bases\overlays\crunchydata\postgres-operator\install\default\selectors.yaml
+templates/sas-bases/overlays/crunchydata/postgres-operator/install/default/selectors.yaml
 *.md
 *.htm
 *.html
