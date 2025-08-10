@@ -16,8 +16,7 @@ command: ["{{ .Values.customCommand }}"]
 #
 # {{ .Values.INGRESS_TYPE }}/{{ .Values.HOST }}: These placeholders are used along with {{ .Values.PREFIX }} for creating your deployment's ingresses.
 #
-# {{ .Values.VALUE_NEEDED }}
-: Miscellaneous placeholder used for setting up environment variables, pull secrets, and volume mounts for your containers.
+# {{ .Values.VALUE_NEEDED }} : Miscellaneous placeholder used for setting up environment variables, pull secrets, and volume mounts for your containers.
 # Context and environment variable names will help you fill these out. 
 #
 # {{ .Values.SECURITY }}: blocks tagged with this should be uncommented in order to enable Front Door TLS. Further instructions are located around each occurance of the tag
