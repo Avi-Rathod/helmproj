@@ -12,9 +12,9 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 8080 # port other services in the cluster use to communicate with this service
-      targetPort: 8080 # port exposed by this service
-      protocol: TCP # IP protoocl for this port. Supported values: TCP, UDP, SCTP. Default is TCP
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
   selector:
     app.kubernetes.io/name: sas-sda-scr-{{ .Values.ORGANIZATION }}
 ---
@@ -24,16 +24,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: "sas-sda-scr-detection-{{.Values.ORGANIZATION}}"
+  name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
   namespace: {{ .Values.NAMESPACE }}
   labels:
     app.kubernetes.io/name: sas-sda-scr-{{ .Values.ORGANIZATION }}
 spec:
   type: ClusterIP
   ports:
-    - port: 8777 # port other services in the cluster use to communicate with this service
-      targetPort: 8777 # port exposed by this service
-      protocol: TCP # IP protoocl for this port. Supported values: TCP, UDP, SCTP. Default is TCP
+    - port: 8777
+      targetPort: 8777
+      protocol: TCP
   selector:
     app.kubernetes.io/name: sas-sda-scr-{{ .Values.ORGANIZATION }}
 ---
@@ -61,9 +61,7 @@ spec:
       port:
         number: 8080
   rules:
-    # example: user.ingress-nginx.example.sas.com
-    host: "{{ .Values.ORGANIZATION }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}"
-
+    - host: "{{ .Values.ORGANIZATION }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}"
       http:
         paths:
           - path: "/decisionModule(/|$)(.*)"
@@ -98,14 +96,13 @@ spec:
       port:
         number: 8777
   rules:
-    # example: user.ingress-nginx.example.sas.com
     - host: "{{ .Values.ORGANIZATION }}.{{ .Values.INGRESS_TYPE }}.{{ .Values.HOST }}"
       http:
         paths:
-            - path: "/detection(/|$)(.*)"
-              pathType: Prefix
-              backend:
-                service:
-                  name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
-                  port:
-                    number: 8777
+          - path: "/detection(/|$)(.*)"
+            pathType: Prefix
+            backend:
+              service:
+                name: sas-sda-scr-detection-{{ .Values.ORGANIZATION }}
+                port:
+                  number: 8777
