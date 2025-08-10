@@ -39,31 +39,26 @@ patch: |-
       usernameKey: username # For internal use, do not modify
       passwordKey: password # For internal use, do not modify
 
-  # Replace 
-{{ .Values.DB_HOST }}
- with the host name for the PostgreSQL server.
+  # Replace {{ .Values.DB_HOST }} with the host name for the PostgreSQL server.
   # If you are using:
   #  * Google Cloud SQL for PostgreSQL, this value must be the private IP Address of the Google SQL server instance.
   #  * Amazon RDS, this value must be the database endpoint of RDS server.
   #  * Azure Database for PostgreSQL, this value must be the server name of the PostgreSQL server.
   - op: replace
     path: /spec/registrations/0/host
-    value: 
-{{ .Values.DB_HOST }}
+    value: {{ .Values.DB_HOST }}
 
 
-  # Replace 
-{{ .Values.DB_PORT }}
- with the port number for the PostgreSQL server.
+  # Replace {{ .Values.DB_PORT }} with the port number for the PostgreSQL server.
   - op: replace
     path: /spec/registrations/0/port
-    value: 
-{{ .Values.DB_PORT }}
+    value: {{ .Values.DB_PORT }}
 
 
   - op: replace
     path: /spec/ssl
     value: true
+    
 target:
   group: webinfdsvr.sas.com
   kind: DataServer

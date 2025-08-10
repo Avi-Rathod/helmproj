@@ -10,5 +10,5 @@ selectors.yaml
 *.properties
 *.jwt
 *.css
-.gitignore
-.orig
+*.gitignore
+*.orig
