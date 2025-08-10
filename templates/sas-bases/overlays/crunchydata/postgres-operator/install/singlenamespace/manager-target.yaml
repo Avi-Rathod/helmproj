@@ -3,7 +3,13 @@ kind: Deployment
 metadata:
   name: pgo
 spec:
+  selector:
+    matchLabels:
+      app: cpk
   template:
+    metadata:
+      label:
+        app: cpk
     spec:
       containers:
       - name: operator
