@@ -2,7 +2,7 @@
 
 ## Kubernetes Tools
 
-* [Using Kubernetes Tools from the sas-orchestration Image](./examples/kubernetes-tools/README.md)
+* Using Kubernetes Tools from the sas-orchestration Image](./examples/kubernetes-tools/README.md)
 
 * [Lifecycle Operation: Assess](./examples/kubernetes-tools/lifecycle-operations/assess/README.md)
 

@@ -12,3 +12,4 @@ selectors.yaml
 *.css
 *.gitignore
 *.orig
+*.txt
