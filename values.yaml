@@ -1,23 +1,138 @@
-STORAGE_ACCOUNT_NAME: "SOME NAME SAAS"
-NFS_MOUNT_PATH: "ABC"
-NFS_SERVER_LOCATION: "Location"
-NFS_SERVER: "SERVER"
-NFS_SERVER_ADDR: "add"
-NFS_SERVER_PATH: "path"
-EXISTING_K8S_PVC_NAME: "EXISTING"
-PVC_NAME: "pvc"
-VIYA_STOP_SCHEDULE: "stop schedule"
-STORAGE_CLASS: "storage"
-STORAGE_CAPACITY: "capacity"
+# Storage Settings
+storage_class: "storage"
+storage_capacity: "capacity"
+volume_storage_class: ""
+amount_of_storage: ""
+access_mode: ""
+
+# Postgres Storage
+postgres_storage_size: ""
+backrest_storage_size: ""
+postgres_access_mode: ""
+backrest_access_mode: ""
+
+# Cluster & Namespace
+name_of_clusterrolebinding: "clustur"
+name_of_namespace: "name"
+viya_deployment_namespace: ""
+cluster_name: ""
+
+# NFS
+nfs_server_path: "path"
+nfs_server_fqdn: ""
+nfs_path: ""
+nfs_server: "SERVER"
+nfs_server_location: "Location"
+nfs_path_to_be_mounted: ""
+
+# Kafka
+kafka_bootstrapper_address: ""
+kafka_consumer_debug: ""
+kafka_producer_debug: ""
+kafka_offset: ""
+kafka_acks_value: ""
+kafka_batch: ""
+kafka_linger: ""
+kafka_auto_create_topics: ""
+kafka_security_protocol: ""
+kafka_hostname_verification: ""
+
+# Kafka Topics
+detection_kafka_topic: ""
+detection_kafka_tdr_topic: ""
+detection_kafka_reject_topic: ""
+triage_kafka_tdr_topics: ""
+transaction_mark_topic: ""
+rws_kafka_brokers: ""
+rws_kafka_input_topic: ""
+rws_kafka_output_topic: ""
+rws_kafka_error_topic: ""
+rws_kafka_reject_topic: ""
+
+# Ingress & Certificates
 openid_url: "openid"
 ingress_cert_path: "ingress"
-USER_ID: "user-id"
-STORAGE_CLASS: "storage"
-HEAP_SIZE: "hip"
-NAME_OF_CLUSTERROLEBINDING: "clustur"
-NAME_OF_NAMESPACE: "name"
-replicaCount: 2
+gateway_certificate_secret_name: "deploymentNamespace-credential"
+istio_ingressgateway_filepath_to_server_certificate: ""
+istio_ingressgateway_filepath_to_private_key: ""
+base64_encoded_certificate: ""
+base64_encoded_p12_value: ""
+base64_encoded_password: ""
+base64_encoded_user_name: ""
+additional_san_dns_entries: ""
+additional_san_ip_entries: ""
+optional_additional_san_dns_alias_values: ""
+optional_additional_san_ip_values: ""
 
+# Security
+seccomp_profile: ""
+fs_group_value: ""
+user_id: "user-id"
+principal_name_in_keytab: ""
+security_protocol: ""
+security: ""
+
+# Resources
+heap_size: "hip"
+mem_required: ""
+cpu_required: ""
+default_cpu_request: ""
+default_cpu_limit: ""
+default_memory_limit: ""
+max_cpu_request: ""
+max_cpu_limit: ""
+max_memory_request: ""
+max_memory_limit: ""
+memory_required: ""
+cpu_limit: ""
+cpu_utilization: ""
+number_of_workers: ""
+number_of_nodes: ""
+max_replicas: ""
+min_replicas: ""
+
+# Prometheus
+prometheus_pushgateway_url: ""
+
+# Docker Registry
+docker_registry_config: ""
+
+# Backup / Restore
+sas_backup_id_value: ""
+schedule_backup_cron_expression: ""
+retention_period_in_days: ""
+restore_definition_filter_csv: ""
+restore_configuration_filter_csv: ""
+retention_archive: ""
+retention_archive_type: ""
+retention_full_backup: ""
+
+# Miscellaneous
+job_tag: ""
+sas_tenant_ids: ""
+sas_tenant_id: ""
+sas_provider_password: ""
+sas_service_account_spn: ""
+sfm_jar_image: ""
+suffix: ""
+mount_name: ""
+r_home: ""
+r_mount_path: ""
+r_home_dir: ""
+python_exe_dir: ""
+python_executable: ""
+python_docker_image_url: ""
+python_image_exe_dir: ""
+python_image_executable: ""
+primary_count: ""
+url: ""
+username: ""
+password: ""
+
+# Kubernetes / Deployment
+replica_count: 2
+
+# Image Details
 image:
   repository: nginx
   tag: "1.16.0"
