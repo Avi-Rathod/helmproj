@@ -1,6 +1,9 @@
 apiVersion: orchestration.sas.com/v2beta10
 kind: LifecycleOperation
 
+metadata:
+  name: {{ .Values.name }}
+
 namespace: sasviya
 resources:
 - sas-bases/base
