@@ -1,0 +1,102 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-mining
+    sas.com/admin: namespace
+  name: sas-data-mining
+spec:
+  routes:
+  - conditions:
+    - prefix: /dataMining
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /dataMining/
+    services:
+    - name: sas-data-mining
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /dataMining/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-data-mining
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-mining-project-resources
+    sas.com/admin: namespace
+  name: sas-data-mining-project-resources
+spec:
+  routes:
+  - conditions:
+    - prefix: /dataMiningProjectResources
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /dataMiningProjectResources/
+    services:
+    - name: sas-data-mining-project-resources
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /dataMiningProjectResources/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-data-mining-project-resources
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-mining-project-settings
+    sas.com/admin: namespace
+  name: sas-data-mining-project-settings
+spec:
+  routes:
+  - conditions:
+    - prefix: /dataMiningProjectSettings
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /dataMiningProjectSettings/
+    services:
+    - name: sas-data-mining-project-settings
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /dataMiningProjectSettings/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-data-mining-project-settings
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

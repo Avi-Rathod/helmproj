@@ -1,0 +1,82 @@
+apiVersion: orchestration.sas.com/v2beta15
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-k8s-common
+    sas.com/component-version: 2.89.1-20240916.1726514392006
+  creationTimestamp: null
+  name: start-all-execute
+spec:
+  args:
+  - name: namespace
+  - name: timeout
+  steps:
+  - args:
+    - start-all-scale
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    cmd: run
+  - args:
+    - patch
+    - --namespace
+    - $namespace
+    - cronjobs
+    - $resource.Name
+    - --patch
+    - (print "{\"spec\":{\"suspend\":" (.LastAppliedConfigurationValue $resource "{.spec.suspend}" "false") "}}")
+    cmd: kubectl
+    withClusterResources:
+      group: batch
+      labelSelector: sas.com/deployment=sas-viya,sas.com/zero-scale-phase!=never
+      namespace: $namespace
+      resource: cronjobs
+  - args:
+    - patch
+    - --namespace
+    - $namespace
+    - daemonsets
+    - $resource.Name
+    - --patch
+    - (print "{\"spec\":{\"template\":{\"spec\":{\"nodeSelector\":{\"sas.com/scale-class\":\"" (.LastAppliedConfigurationValue $resource "{.spec.template.spec.nodeSelector.sas\\.com/scale-class}" "ignored") "\"}}}}}" )
+    cmd: kubectl
+    withClusterResources:
+      group: apps
+      labelSelector: sas.com/deployment=sas-viya,sas.com/zero-scale-phase!=never
+      lastAppliedConfiguration:
+        jsonPath: '{.spec.template.spec.nodeSelector.sas\\.com/scale-class}'
+      namespace: $namespace
+      resource: daemonsets
+  - args:
+    - patch
+    - --namespace
+    - $namespace
+    - daemonsets
+    - $resource.Name
+    - --type
+    - json
+    - --patch
+    - '[{"op":"remove", "path": "/spec/template/spec/nodeSelector/sas.com~1scale-class"}]'
+    cmd: kubectl
+    withClusterResources:
+      currentConfiguration:
+        isMissing: false
+        jsonPath: '{.spec.template.spec.nodeSelector.sas\\.com/scale-class}'
+      group: apps
+      labelSelector: sas.com/deployment=sas-viya,sas.com/zero-scale-phase!=never
+      lastAppliedConfiguration:
+        isMissing: true
+        jsonPath: '{.spec.template.spec.nodeSelector.sas\\.com/scale-class}'
+      namespace: $namespace
+      resource: daemonsets
+  - always: true
+    args:
+    - $operation
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    cmd: run
+    withOperations:
+      labelSelector: participate.lifecycle.sas.com/start-all-execute-phase-0=true

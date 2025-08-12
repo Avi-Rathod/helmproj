@@ -1,0 +1,76 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-compute-server-enable-refreshtoken
+patch: |-
+  - op: add
+    path: "/template/spec/containers/0/env/-"
+    value:
+      name: SAS_REFRESHTOKEN_ENABLED
+      value: "true"
+  - op: add
+    path: "/template/spec/containers/-"
+    value:
+      args:
+      - /opt/sas/viya/home/bin/refreshman.py
+      command:
+      - python3
+      env:
+      - name: SAS_REFRESH_LIFE
+        value: "3600"
+      - name: SAS_REFRESH_EXECUTABLE
+        value: /opt/sas/viya/home/bin/refresh
+      - name: SAS_REFRESH_CONFIG_LOG_LEVEL
+        value: TRACE
+      envFrom:
+      - secretRef:
+          name: sas-consul-client
+      image: sas-config-init
+      imagePullPolicy: IfNotPresent
+      name: refreshtoken
+      resources:
+        limits:
+          cpu: 500m
+          memory: 500Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+        runAsGroup: 1001
+        runAsNonRoot: false
+        runAsUser: 1001
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /tmp
+        name: tmp
+      - mountPath: /config
+        name: config
+      - mountPath: /security
+        name: security
+target:
+  kind: PodTemplate
+  name: sas-compute-job-config
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-compute-server-annotate-add-refreshtoken
+patch: |-
+  - op: add
+    path: /template/metadata/labels/sas.com~1refreshtoken
+    value:
+      "true"
+  - op: add
+    path: /template/metadata/annotations/sas.com~1pod-uses-refreshtoken
+    value:
+      "true"
+target:
+  kind: PodTemplate
+  name: sas-compute-job-config

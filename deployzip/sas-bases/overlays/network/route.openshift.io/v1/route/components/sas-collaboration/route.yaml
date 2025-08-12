@@ -1,0 +1,184 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-comments
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-comments
+    sas.com/admin: namespace
+  name: sas-comments
+spec:
+  host: $(INGRESS_HOST)
+  path: /comments
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-comments
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-comments
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-comments
+    sas.com/admin: namespace
+  name: sas-comments-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /comments
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-comments
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-mail
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-mail
+    sas.com/admin: namespace
+  name: sas-mail
+spec:
+  host: $(INGRESS_HOST)
+  path: /mail
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-mail
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-mail
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-mail
+    sas.com/admin: namespace
+  name: sas-mail-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /mail
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-mail
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-notifications
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-notifications
+    sas.com/admin: namespace
+  name: sas-notifications
+spec:
+  host: $(INGRESS_HOST)
+  path: /notifications
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-notifications
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-notifications
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-notifications
+    sas.com/admin: namespace
+  name: sas-notifications-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /notifications
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-notifications
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-templates
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-templates
+    sas.com/admin: namespace
+  name: sas-templates
+spec:
+  host: $(INGRESS_HOST)
+  path: /templates
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-templates
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-templates
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-templates
+    sas.com/admin: namespace
+  name: sas-templates-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /templates
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-templates
+  wildcardPolicy: Subdomain
+

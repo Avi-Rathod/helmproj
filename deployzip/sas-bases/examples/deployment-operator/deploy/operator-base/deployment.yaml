@@ -1,0 +1,98 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sas-deployment-operator
+spec:
+  replicas: 1
+  selector:
+    matchExpressions: []
+    matchLabels:
+      app.kubernetes.io/name: sas-deployment-operator
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "8080"
+        prometheus.io/scheme: http
+        prometheus.io/scrape: "true"
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: In
+                values:
+                - system
+            weight: 100
+      containers:
+        - args:
+            - reconcile
+          command: []
+          env:
+            - name: SERVICE_ACCOUNT_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.serviceAccountName
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: sas-deployment-operator
+          envFrom: []
+          image: sas-deployment-operator
+          imagePullPolicy: Always
+          name: sas-deployment-operator
+          ports: []
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            initialDelaySeconds: 300
+            periodSeconds: 300
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 50m
+              memory: 50Mi
+          volumeDevices: []
+          volumeMounts:
+            - mountPath: /work
+              name: work
+            - mountPath: /reconcile-transformers/default/seccomp-remove
+              name: default-reconcile-transformers
+              subPath: seccomp-remove
+
+      hostAliases: []
+      imagePullSecrets: []
+      readinessGates: []
+      serviceAccountName: sas-deployment-operator
+      tolerations: []
+      volumes:
+        - emptyDir: {}
+          name: work
+        - name: default-reconcile-transformers
+          configMap:
+            name: default-reconcile-transformers
+            defaultMode: 0755
+            items:
+            - key: seccomp-remove
+              path: seccomp-remove
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault

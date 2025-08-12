@@ -1,0 +1,47 @@
+# User-defined values are indicated by a capitalized and hyphenated name set
+# off by curly braces and a space at each end. To replace the variable, replace the
+# curly braces, interior spaces, and the variable name.
+#
+# The variables are as follows:
+# - {{ POSTGRES-REQUEST-CPU-COUNT }} is the PostgreSQL pod request (minimum) CPU count
+# - {{ POSTGRES-REQUEST-MEMORY-SIZE }} is the PostgreSQL pod request (minimum) memory size
+# - {{ POSTGRES-LIMIT-CPU-COUNT }} is the PostgreSQL pod limit (maximum) CPU count
+# - {{ POSTGRES-LIMIT-MEMORY-SIZE }} is the PostgreSQL pod limit (maximum) memory size
+# - {{ BACKREST-REQUEST-CPU-COUNT }} is the pgBackrest pod request (minimum) CPU count
+# - {{ BACKREST-REQUEST-MEMORY-SIZE }} is the pgBackrest pod request (minimum) memory size
+# - {{ BACKREST-LIMIT-CPU-COUNT }} is the pgBackrest pod limit (maximum) CPU count
+# - {{ BACKREST-LIMIT-MEMORY-SIZE }} is the pgBackrest pod limit (maximum) memory size
+#
+# Note: Requests must be less than or equal to limits. Do not use zero (0) or negative values.
+
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: crunchy-resources-transformer
+patch: |-
+  # # Uncomment this section to change the resources for PostgreSQL pods
+  # - op: replace
+  #   path: /spec/instances/0/resources
+  #   value:
+  #     requests:
+  #       cpu: {{ POSTGRES-REQUEST-CPU-COUNT }}
+  #       memory: {{ POSTGRES-REQUEST-MEMORY-SIZE }}
+  #     limits:
+  #       cpu: {{ POSTGRES-LIMIT-CPU-COUNT }}
+  #       memory: {{ POSTGRES-LIMIT-MEMORY-SIZE }}
+
+  # # Uncomment this section to change the resources for pgBackrest pods
+  # - op: replace
+  #   path: /spec/backups/pgbackrest/repoHost/resources
+  #   value:
+  #     requests:
+  #       cpu: {{ BACKREST-REQUEST-CPU-COUNT }}
+  #       memory: {{ BACKREST-REQUEST-MEMORY-SIZE }}
+  #     limits:
+  #       cpu: {{ BACKREST-LIMIT-CPU-COUNT }}
+  #       memory: {{ BACKREST-LIMIT-MEMORY-SIZE }}
+target:
+  group: postgres-operator.crunchydata.com
+  kind: PostgresCluster
+  name: .*
+  version: v1beta1

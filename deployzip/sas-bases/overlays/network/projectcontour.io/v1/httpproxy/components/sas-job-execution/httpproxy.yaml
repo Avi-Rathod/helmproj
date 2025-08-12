@@ -1,0 +1,68 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-job-definitions
+    sas.com/admin: namespace
+  name: sas-job-definitions
+spec:
+  routes:
+  - conditions:
+    - prefix: /jobDefinitions
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /jobDefinitions/
+    services:
+    - name: sas-job-definitions
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /jobDefinitions/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-job-definitions
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-job-execution
+    sas.com/admin: namespace
+  name: sas-job-execution
+spec:
+  routes:
+  - conditions:
+    - prefix: /jobExecution
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /jobExecution/
+    services:
+    - name: sas-job-execution
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /jobExecution/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-job-execution
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

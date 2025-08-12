@@ -1,0 +1,24 @@
+apiVersion: orchestration.sas.com/v2beta10
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-k8s-common
+    sas.com/component-version: 2.89.1-20240916.1726514392006
+  creationTimestamp: null
+  name: scale-to-zero
+spec:
+  args:
+  - name: namespace
+  - default: 7200s
+    name: timeout
+  steps:
+  - args:
+    - 'DEPRECATED: Replaced by stop-all'
+    cmd: log
+  - args:
+    - stop-all
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    cmd: run

@@ -1,0 +1,277 @@
+apiVersion: orchestration.sas.com/v3beta1
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-analytics-resources
+    sas.com/component-version: 22.27.13-20240910.1725980964443
+  creationTimestamp: null
+  labels:
+    participate.lifecycle.sas.com/deploy-pre: "true"
+  name: deploy-pre-migrate-analytics-resources-services
+spec:
+  args:
+  - name: namespace
+  - name: serviceAccountName
+  - default: 7200s
+    name: timeout
+  source: |-
+    package main
+
+    import (
+      "fmt"
+      "sas/orchestration/lifecycle"
+      "strconv"
+      "strings"
+    )
+
+    const (
+      AnalyticsResourcesName = "sas-analytics-resources"
+      AnalyticsServicesName = "sas-analytics-services"
+      AnalyticsGatewayName = "sas-analytics-gateway"
+    )
+
+    func main() {
+
+      namespace := lifecycle.Arg("namespace")
+      lifecycle.Log(fmt.Sprintf("namespace: %s", namespace))
+
+      serviceAccountName := lifecycle.Arg("serviceAccountName")
+      lifecycle.Log(fmt.Sprintf("service account: %s", serviceAccountName))
+
+      namespaceBinding := namespace + ":" + serviceAccountName
+      lifecycle.Log(fmt.Sprintf("namespace binding: %s", namespaceBinding))
+
+      timeout := lifecycle.Arg("timeout")
+      serviceAccountNameBlank := len(strings.TrimSpace(serviceAccountName)) == 0
+
+      lifecycle.Log("Timeout for kubectl: " + timeout)
+
+      // The beginning major version of analytics resources when unifying analytics-resources and -services DB schema occurs
+      analyticsResourcesVer := 22
+
+      // if ANALYTICS_RESOURCES_DB_MIGRATION_MAJOR_VERSION is defined
+      // in configmaps, then override analyticsResourcesVer
+      analyticsResourcesVer = getUpgradeVersions(namespace, analyticsResourcesVer)
+
+      if !serviceAccountNameBlank {
+        lifecycle.Log("Add role-based access controls (RBAC) for deploy-pre-migrate-analytics-resources-services")
+        lifecycle.Kubectl("delete", "--namespace", namespace, "--wait", "--timeout", timeout,  "--ignore-not-found", "role", "deploy-pre-migrate-analytics-resources-services")
+        lifecycle.Kubectl("create", "--namespace", namespace,  "role", "deploy-pre-migrate-analytics-resources-services", "--verb=get,list,watch,patch", "--resource=deployments/scale,horizontalpodautoscalers,pods", "--resource-name", AnalyticsResourcesName, "--resource-name", AnalyticsServicesName, "--resource-name", AnalyticsGatewayName)
+        lifecycle.Kubectl("delete", "--namespace", namespace, "--wait", "--timeout", timeout,  "--ignore-not-found", "rolebinding", "deploy-pre-migrate-analytics-resources-services")
+        lifecycle.Kubectl("create", "--namespace", namespace,  "rolebinding", "deploy-pre-migrate-analytics-resources-services",  "--role", "deploy-pre-migrate-analytics-resources-services", "--serviceaccount", namespaceBinding)
+      } else {
+        lifecycle.Log("ServiceAccountName is not defined.. executing with the default user")
+      }
+
+      lifecycle.Kubectl("version", "--output=json")
+
+      res, err := lifecycle.Kubectl(
+         "get",
+         "pods",
+         "--namespace",
+         namespace,
+         "--no-headers",
+         "--output=jsonpath={range.items[*]}{.metadata.labels.app}{\":\"}{.metadata.annotations.sas\\.com/version}{\"\\n\"}{end}",
+         "--selector",
+         fmt.Sprintf("app in (%s,%s,%s)", AnalyticsResourcesName, AnalyticsServicesName, AnalyticsGatewayName))
+
+      lifecycle.Log(res)
+
+      if err != nil {
+          lifecycle.Log("Unable to determine if any of the deprecated analytics pods are running.")
+          // This is a fatal error since we are not able to determine if any of the deprecated analytics pods are running.
+          panic(fmt.Sprintf("Failed to determine if any deprecated analytics pods are running: %v", err))
+      }
+
+      lines := strings.Split(res, "\n")
+
+      // The total count of sas-analytics-resources (AR) pods.
+      // If deprecated pods are found, then this count will be used by the post migration script to scale up the AR pods to their original count.
+      arPod := 0
+
+      // The total count of sas-analytics-gateway (AG) pods.
+      agPod := 0
+
+      // The total count of deprecated sas-analytics-services (AS) pods.
+      // If deprecated pods are found, then the count of (agPod + asPod) will be used by the post migration script to scale up the AG pods.
+      asPod := 0
+
+      // Flag if deprecated AR pods are found.
+      arPodDeprecatedFound := false
+
+      for _, line := range lines {
+        if strings.Contains(line, ":") {
+          data := strings.Split(line, ":")
+
+          version := strings.Split(data[1], ".")
+
+          major, _ := strconv.Atoi(version[0])
+
+          deploymentName := data[0]
+          if strings.Contains(deploymentName, AnalyticsResourcesName) {
+            // increment the count of AR pods
+            arPod += 1
+            if major < analyticsResourcesVer {
+              // set flag when deprecated AR pods was found
+              arPodDeprecatedFound = true
+            }
+          } else if strings.Contains(deploymentName, AnalyticsServicesName) {
+            // increment the count of AS pods
+            asPod += 1
+          } else if strings.Contains(deploymentName, AnalyticsGatewayName) {
+            // increment the count of AG pods
+            agPod += 1
+          } else {
+            lifecycle.Log(fmt.Sprintf("Found unsupported deployment of '%s' with a major version of %d", deploymentName, major))
+          }
+        }
+      }
+
+      if asPod > 0 || arPodDeprecatedFound {
+
+        if arPod > 0 {
+          // scale the AR pods to 0
+          setHPAToOne(namespace, AnalyticsResourcesName)
+          lifecycle.Log(fmt.Sprintf("%s major < %s, scale pod to 0", AnalyticsResourcesName, analyticsResourcesVer))
+          lifecycle.Kubectl(
+             "scale",
+             "--namespace",
+             namespace,
+             "--replicas=0",
+             "deployment/" + AnalyticsResourcesName)
+        }
+
+        if asPod > 0 {
+          // scale the AS pods to 0
+          setHPAToOne(namespace, AnalyticsServicesName)
+          lifecycle.Log(fmt.Sprintf("%s, scale pod to 0", AnalyticsServicesName))
+          lifecycle.Kubectl(
+             "scale",
+             "--namespace",
+             namespace,
+             "--replicas=0",
+             "deployment/" + AnalyticsServicesName)
+        }
+
+        if agPod > 0 {
+          // scale the AG pods to 0
+          setHPAToOne(namespace, AnalyticsGatewayName)
+          lifecycle.Log(fmt.Sprintf("%s, scale pod to 0", AnalyticsGatewayName))
+          lifecycle.Kubectl(
+             "scale",
+             "--namespace",
+             namespace,
+             "--replicas=0",
+             "deployment/" + AnalyticsGatewayName)
+        }
+
+        // set flag to indicate to indicate the # of original AR pods
+        lifecycle.SetVariable(AnalyticsResourcesName + "/replicas", arPod)
+
+        // set flag to indicate to indicate the # of original AS pods
+        lifecycle.SetVariable(AnalyticsGatewayName + "/replicas", (asPod + agPod))
+      }
+
+      if !serviceAccountNameBlank {
+        lifecycle.Log("Clean up role-based access controls (RBAC) for deploy-pre-migrate-analytics-resources-services")
+        lifecycle.Kubectl("delete", "--namespace", namespace, "--wait", "--timeout", timeout,  "--ignore-not-found", "rolebinding", "deploy-pre-migrate-analytics-resources-services")
+        lifecycle.Kubectl("delete", "--namespace", namespace, "--wait", "--timeout", timeout,  "--ignore-not-found", "role", "sas-migrate-analytics-resources-services")
+      }
+
+    }
+
+    func setHPAToOne(nameSpace string, svcName string)  {
+
+      // Execute a kubectl "get hpa" command to determine the minReplicas and maxReplicas for the specified service.
+      // If there is no HPA entry for the service, the output will be ":".
+      // If there is an HPA entry for the service, the output will be two integer values demarcated by the colon character.
+      // For example, "1:2" means that the minReplicas is 1 and the maxReplicas is 2.
+      resHPA, errGetHPA := lifecycle.Kubectl(
+        "get",
+        "hpa",
+        "--namespace",
+        nameSpace,
+        "-o",
+        "jsonpath={.items[*].spec.minReplicas}:{.items[*].spec.maxReplicas}",
+        "--field-selector",
+        fmt.Sprintf("metadata.name=%s", svcName))
+      if errGetHPA != nil {
+         lifecycle.Log(resHPA)
+         panic(fmt.Sprintf("Failed to get HPA for service %s in namespace %s: %v", svcName, nameSpace, errGetHPA))
+      }
+
+      resHPA = strings.TrimSpace(resHPA)
+      if len(resHPA) > 2 && strings.Contains(resHPA, ":") {
+        lifecycle.Log(fmt.Sprintf("processing HPA settings for service %s: %q", svcName, resHPA))
+        tokens := strings.Split(resHPA, ":")
+        if len(tokens) != 2 {
+           panic(fmt.Sprintf("Unable to process HPA settings for %s: %s", svcName, resHPA))
+        }
+
+        hpaMin := tokens[0]
+        hpaMax := tokens[1]
+
+        if _, errMin := strconv.Atoi(hpaMin); errMin != nil {
+           panic(fmt.Sprintf("an integer was expected for hpaMin instead of %s", hpaMin))
+        }
+
+        if _, errMax := strconv.Atoi(hpaMax); errMax != nil {
+           panic(fmt.Sprintf("an integer was expected for hpaMax instead of %s", hpaMax))
+        }
+
+        lifecycle.SetVariable(fmt.Sprintf("%s/hpamin", svcName), hpaMin)
+        lifecycle.SetVariable(fmt.Sprintf("%s/hpamax", svcName), hpaMax)
+        lifecycle.Log(fmt.Sprintf("%s HPA Min=%s Max=%s", svcName, hpaMin, hpaMax))
+        if stdOutAndErrPatch, errPatchHPA := lifecycle.Kubectl(
+          "patch",
+          "hpa",
+          svcName,
+          "--namespace",
+          nameSpace,
+          "--patch", "{\"spec\": {\"minReplicas\": 1, \"maxReplicas\": 1}}"); errPatchHPA != nil {
+           lifecycle.Log(stdOutAndErrPatch)
+           panic(fmt.Sprintf("Failed to HPA patch %s in namespace %s: %v", svcName, nameSpace, errPatchHPA))
+        }
+        lifecycle.Log(fmt.Sprintf("%s was patched to set HPA minReplicas=1 and maxReplicas=1", svcName))
+      } else {
+        lifecycle.Log(fmt.Sprintf("Can't parse HPA Min and Max for %s", svcName))
+      }
+    }
+
+    func getUpgradeVersions(namespace string, analyticsResourcesVer int) (int) {
+      cfgMapRes, _ := lifecycle.Kubectl(
+         "get",
+         "configmaps",
+         "--namespace",
+         namespace,
+         "--no-headers",
+         "--output=jsonpath={range .items[*].metadata }{.name}{'\\n'}{end}")
+      cfgMapRows := strings.Split(cfgMapRes, "\n")
+      for _, cfgMap := range cfgMapRows {
+        if strings.HasPrefix(cfgMap, AnalyticsResourcesName) {
+          analyticsResourcesVer = getVersion(namespace, cfgMap, analyticsResourcesVer, "ANALYTICS_RESOURCES_DB_MIGRATION_MAJOR_VERSION")
+          break
+        }
+      }
+      return analyticsResourcesVer
+    }
+
+    func getVersion(namespace string, v string, svcVersion int, envVar string) (int) {
+      ver, _ := lifecycle.Kubectl(
+         "get",
+         "configmaps",
+         v,
+         "--namespace",
+         namespace,
+         fmt.Sprintf("--output=jsonpath={.data.%s}", envVar))
+      ver = strings.ReplaceAll(ver, "\n", "")
+      ver = strings.ReplaceAll(ver, "\"", "")
+      if ver != "" {
+        if intVer, err := strconv.Atoi(ver); err == nil {
+          svcVersion = intVer
+        }
+      } else {
+        lifecycle.Log(fmt.Sprintf("%s is not defined falling back to %d", envVar, svcVersion))
+      }
+      return svcVersion
+    }

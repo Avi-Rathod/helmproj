@@ -1,0 +1,260 @@
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
+metadata:
+  name: sas-crunchy-platform-postgres
+  labels:
+    sas.com/postgrescluster-cr: sas-crunchy-platform-postgres-postgrescluster-cr
+spec:
+  image: sas-crunchy5-postgres
+  imagePullSecrets:
+    - name: sas-image-pull-secrets
+  postgresVersion: 16
+  shutdown: false
+  metadata:
+    labels:
+      sas.com/deployment: sas-viya
+      workload.sas.com/class: stateful
+      sas.com/zero-scale-phase: never
+    annotations:
+      seccomp.security.alpha.kubernetes.io/pod: runtime/default
+  users:
+    - name: dbmsowner
+      options: "CREATEDB CREATEROLE SUPERUSER"
+      password:
+        type: AlphaNumeric
+  instances:
+    - replicas: 3
+      resources:
+        requests:
+          cpu: 150m
+          memory: 2Gi
+        limits:
+          cpu: "8"
+          memory: 8Gi
+      dataVolumeClaimSpec:
+        accessModes:
+        - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: 128Gi
+      sidecars:
+        replicaCertCopy:
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 500Mi
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateful
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - compute
+                - cas
+                - stateless
+                - connect
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: postgres-operator.crunchydata.com/cluster
+                  operator: In
+                  values:
+                  - sas-crunchy-platform-postgres
+                - key: postgres-operator.crunchydata.com/data
+                  operator: In
+                  values:
+                  - postgres
+              topologyKey: kubernetes.io/hostname
+            weight: 1
+      tolerations:
+        - effect: NoSchedule
+          key: workload.sas.com/class
+          operator: Equal
+          value: stateful
+        - effect: NoSchedule
+          key: workload.sas.com/class
+          operator: Equal
+          value: stateless
+  backups:
+    pgbackrest:
+      image: sas-crunchy5-pgbackrest
+      repoHost:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: "1"
+            memory: 500Mi
+        affinity:
+          nodeAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                - key: workload.sas.com/class
+                  operator: In
+                  values:
+                  - stateful
+            - weight: 1
+              preference:
+                matchExpressions:
+                - key: workload.sas.com/class
+                  operator: NotIn
+                  values:
+                  - compute
+                  - cas
+                  - stateless
+                  - connect
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.azure.com/mode
+                  operator: NotIn
+                  values:
+                  - system
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: postgres-operator.crunchydata.com/cluster
+                    operator: In
+                    values:
+                    - sas-crunchy-platform-postgres
+                  - key: postgres-operator.crunchydata.com/data
+                    operator: In
+                    values:
+                    - postgres
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        tolerations:
+          - effect: NoSchedule
+            key: workload.sas.com/class
+            operator: Equal
+            value: stateful
+          - effect: NoSchedule
+            key: workload.sas.com/class
+            operator: Equal
+            value: stateless
+      repos:
+      - name: repo1
+        volume:
+          volumeClaimSpec:
+            accessModes:
+            - "ReadWriteOnce"
+            resources:
+              requests:
+                storage: 128Gi
+        schedules:
+          full: "0 6 * * 0"
+          incremental: "0 6 * * 1-6"
+      global:
+        repo1-retention-full: "1"
+        repo1-retention-archive: "1"
+        repo1-retention-archive-type: "incr"
+      jobs:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: "1"
+            memory: 500Mi
+        affinity:
+          nodeAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                - key: workload.sas.com/class
+                  operator: In
+                  values:
+                  - stateful
+            - weight: 1
+              preference:
+                matchExpressions:
+                - key: workload.sas.com/class
+                  operator: NotIn
+                  values:
+                  - compute
+                  - cas
+                  - stateless
+                  - connect
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.azure.com/mode
+                  operator: NotIn
+                  values:
+                  - system
+        tolerations:
+          - effect: NoSchedule
+            key: workload.sas.com/class
+            operator: Equal
+            value: stateful
+          - effect: NoSchedule
+            key: workload.sas.com/class
+            operator: Equal
+            value: stateless
+      sidecars:
+        pgbackrest:
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 500Mi
+  monitoring:
+    pgmonitor:
+      exporter:
+        image: sas-crunchy5-postgres-exporter
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: "1"
+            memory: 500Mi
+  patroni:
+    dynamicConfiguration:
+      postgresql:
+        use_pg_rewind: true
+        parameters: # where we (or crunchy) don't use default
+          log_truncate_on_rotation: true
+          logging_collector: true
+          maintenance_work_mem: 128MB
+          max_connections: 1280
+          max_prepared_transactions: 1280
+          max_wal_senders: 6
+          max_wal_size: 6GB
+          shared_buffers: 1GB
+          wal_buffers: 16MB
+          wal_level: logical
+          wal_log_hints: true
+          work_mem: 16MB
+        pg_hba:
+          - "hostnossl all all all md5" # disable tls

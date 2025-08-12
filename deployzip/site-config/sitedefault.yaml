@@ -1,0 +1,4 @@
+- name: sas-consul-config
+  behavior: merge
+  files:
+    - SITEDEFAULT_CONF=/appdata/deploy/site-config/sitedefault.yaml

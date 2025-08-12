@@ -1,0 +1,68 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-mining-results
+    sas.com/admin: namespace
+  name: sas-data-mining-results
+spec:
+  routes:
+  - conditions:
+    - prefix: /dataMiningResults
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /dataMiningResults/
+    services:
+    - name: sas-data-mining-results
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /dataMiningResults/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-data-mining-results
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-mining-warehouse
+    sas.com/admin: namespace
+  name: sas-data-mining-warehouse
+spec:
+  routes:
+  - conditions:
+    - prefix: /dataMiningWarehouse
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /dataMiningWarehouse/
+    services:
+    - name: sas-data-mining-warehouse
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /dataMiningWarehouse/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-data-mining-warehouse
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

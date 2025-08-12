@@ -1,0 +1,109 @@
+---
+apiVersion: opendistro.sas.com/v1alpha1
+kind: OpenDistroCluster
+metadata:
+  annotations:
+    sas.com/certificate-file-format: pem
+  name: sas-opendistro
+spec:
+  # config, security, and authConfig not yet applied by the controller
+  config: 
+    rootLoggerLevel: "info"
+    # Set environment variables for each node in the cluster
+    env: 
+      - name: "action.auto_create_index"
+        value: "-sand__*,-viya_catalog__*,+*"
+      - name: logger.deprecation.level
+        value: "error"
+    # Set additional JVM options for each node in the cluster
+    jvm:
+      - "-XX:NewRatio=2"
+  security:
+    https: false
+    openIdConnectUrl: http://sas-logon-app/SASLogon/.well-known/openid-configuration
+  nodes:
+    - name: default
+      replicas: 1
+      roles:
+        - master
+        - data
+      heapsize: 1G
+      volume:
+        resources:
+          requests:
+            storage: 128Gi
+  # Omit the shutdown field for the moment as inclusion of it can cause
+  # validation problems if the old crd does not have this field
+  # shutdown: false
+  template:
+    metadata:
+      annotations:
+        sas.com/certificate-file-format: pem
+        sidecar.istio.io/proxyCPU: 15m
+        sidecar.istio.io/proxyMemory: 115Mi
+      labels:
+        workload.sas.com/class: stateful
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateful
+              matchFields: []
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - compute
+                - cas
+                - stateless
+                - connect
+              matchFields: []
+            weight: 50
+          - preference:
+              matchExpressions:
+              - key: sas.com/node-ssd-enabled
+                operator: In
+                values:
+                - "true"
+              matchFields: []
+            weight: 60
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+              matchFields: []
+      automountServiceAccountToken: false
+      containers:
+        - env: []
+          envFrom: []
+          name: sas-opendistro
+          image: sas-opendistro
+          volumeMounts: []
+      imagePullSecrets: []
+      initContainers: []
+      securityContext:
+        fsGroup: 1000
+        runAsNonRoot: true
+        supplementalGroups: []
+        sysctls: []
+      serviceAccountName: sas-opendistro
+      tolerations:
+        - effect: NoSchedule
+          key: workload.sas.com/class
+          operator: Equal
+          value: stateful
+        - effect: NoSchedule
+          key: workload.sas.com/class
+          operator: Equal
+          value: stateless
+      volumes: []

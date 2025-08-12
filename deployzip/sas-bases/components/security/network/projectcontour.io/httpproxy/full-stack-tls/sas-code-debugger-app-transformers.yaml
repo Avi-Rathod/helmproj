@@ -1,0 +1,26 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-code-debugger-app-httpproxy-full-stack-tls-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: full-stack
+  - op: add
+    path: /spec/routes/0/services/0/protocol
+    value: tls
+  - op: replace
+    path: /spec/routes/0/services/0/port
+    value: 443
+  - op: add
+    path: /spec/routes/1/services/0/protocol
+    value: tls
+  - op: replace
+    path: /spec/routes/1/services/0/port
+    value: 443
+target:
+  kind: HTTPProxy
+  group: projectcontour.io
+  version: v1
+  name: sas-code-debugger-app

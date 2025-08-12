@@ -1,0 +1,236 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cds-postgres-operator-truststores-only-tls-transformer
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0
+    value:
+      name: sas-certframe-cds-postgres
+      image: sas-certframe
+      env:
+      - name: KUBE_POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: SAS_CERTFRAME_TOKEN_DIR
+        value: /certframe-token
+      - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+        value: /customer-provided-ca-certificates
+      - name: SAS_CERTIFICATE_SECRET_NAME
+        value: sas-crunchy-cds-postgres-tls-secret
+      - name: SAS_CERTIFICATE_COMMON_NAME
+        value: sas-crunchy-cds-postgres-primary
+      - name: SAS_CERTIFICATE_SAN_DNS
+        value: sas-crunchy-cds-postgres-primary
+      envFrom:
+      - configMapRef:
+          name: sas-certframe-ingress-certificate-config
+      - configMapRef:
+          name: sas-certframe-truststore-config
+      volumeMounts:
+      - name: certframe-token
+        mountPath: /certframe-token
+      - name: security
+        mountPath: /security
+      - name: customer-provided-ca-certificates
+        mountPath: /customer-provided-ca-certificates
+      resources:
+        requests:
+          memory: "50Mi"
+          cpu: "50m"
+        limits:
+          memory: "500Mi"
+          cpu: "500m"
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+  - op: add
+    path: /spec/template/spec/initContainers/0
+    value:
+      name: sas-certframe-cds-postgres-replication
+      image: sas-certframe
+      env:
+      - name: KUBE_POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: SAS_CERTFRAME_TOKEN_DIR
+        value: /certframe-token
+      - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+        value: /customer-provided-ca-certificates
+      - name: SAS_CERTIFICATE_SECRET_NAME
+        value: sas-crunchy-cds-postgres-replication-tls-secret
+      - name: SAS_CERTIFICATE_COMMON_NAME
+        value: _crunchyrepl
+      - name: SAS_CERTIFICATE_SAN_DNS
+        value: _crunchyrepl
+      envFrom:
+      - configMapRef:
+          name: sas-certframe-ingress-certificate-config
+      - configMapRef:
+          name: sas-certframe-truststore-config
+      volumeMounts:
+      - name: certframe-token
+        mountPath: /certframe-token
+      - name: security
+        mountPath: /security
+      - name: customer-provided-ca-certificates
+        mountPath: /customer-provided-ca-certificates
+      resources:
+        requests:
+          memory: "50Mi"
+          cpu: "50m"
+        limits:
+          memory: "500Mi"
+          cpu: "500m"
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+target:
+  kind: Deployment
+  name: pgo
+  annotationSelector: sas.com/crunchy-cds-postgres
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: platform-postgres-operator-truststores-only-tls-transformer
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0
+    value:
+      name: sas-certframe-platform-postgres
+      image: sas-certframe
+      env:
+      - name: KUBE_POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: SAS_CERTFRAME_TOKEN_DIR
+        value: /certframe-token
+      - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+        value: /customer-provided-ca-certificates
+      - name: SAS_CERTIFICATE_SECRET_NAME
+        value: sas-crunchy-platform-postgres-tls-secret
+      - name: SAS_CERTIFICATE_COMMON_NAME
+        value: sas-crunchy-platform-postgres-primary
+      - name: SAS_CERTIFICATE_SAN_DNS
+        value: sas-crunchy-platform-postgres-primary
+      envFrom:
+      - configMapRef:
+          name: sas-certframe-ingress-certificate-config
+      - configMapRef:
+          name: sas-certframe-truststore-config
+      volumeMounts:
+      - name: certframe-token
+        mountPath: /certframe-token
+      - name: security
+        mountPath: /security
+      - name: customer-provided-ca-certificates
+        mountPath: /customer-provided-ca-certificates
+      resources:
+        requests:
+          memory: "50Mi"
+          cpu: "50m"
+        limits:
+          memory: "500Mi"
+          cpu: "500m"
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+  - op: add
+    path: /spec/template/spec/initContainers/0
+    value:
+      name: sas-certframe-platform-postgres-replication
+      image: sas-certframe
+      env:
+      - name: KUBE_POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: SAS_CERTFRAME_TOKEN_DIR
+        value: /certframe-token
+      - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+        value: /customer-provided-ca-certificates
+      - name: SAS_CERTIFICATE_SECRET_NAME
+        value: sas-crunchy-platform-postgres-replication-tls-secret
+      - name: SAS_CERTIFICATE_COMMON_NAME
+        value: _crunchyrepl
+      - name: SAS_CERTIFICATE_SAN_DNS
+        value: _crunchyrepl
+      envFrom:
+      - configMapRef:
+          name: sas-certframe-ingress-certificate-config
+      - configMapRef:
+          name: sas-certframe-truststore-config
+      volumeMounts:
+      - name: certframe-token
+        mountPath: /certframe-token
+      - name: security
+        mountPath: /security
+      - name: customer-provided-ca-certificates
+        mountPath: /customer-provided-ca-certificates
+      resources:
+        requests:
+          memory: "50Mi"
+          cpu: "50m"
+        limits:
+          memory: "500Mi"
+          cpu: "500m"
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+target:
+  kind: Deployment
+  name: pgo
+  annotationSelector: sas.com/crunchy-platform-postgres
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: crunchy-postgres-operator-truststores-only-tls-transformer
+patch: |-
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: certframe-token
+      secret:
+        secretName: sas-certframe-token
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: security
+      emptyDir: {}
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: customer-provided-ca-certificates
+      configMap:
+        name: sas-customer-provided-ca-certificates
+  - op: add
+    path: /spec/template/metadata/annotations/sas.com~1tls-mode
+    value: truststores-only
+  - op: add
+    path: /metadata/annotations/sas.com~1tls-mode
+    value: truststores-only
+target:
+  kind: Deployment
+  name: pgo

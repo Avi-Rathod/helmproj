@@ -1,0 +1,22 @@
+# This block of code is for enabling TLS for CAS internode communication
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-enable-internode-tls
+patch: |-
+   - op: add
+     path: /spec/enableInternodeTLS
+     value: true
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  # The following name specification will target all CAS servers. To target specific
+  # CAS servers, comment out the following line then uncomment and edit one of the lines
+  # targeting specific CAS servers.
+  name: .*
+  # Uncomment this to apply to one particular named CAS server:
+  #name: {{ NAME-OF-SERVER }}
+  # Uncomment this to apply to the default CAS server:
+  #labelSelector: "sas.com/cas-server-default"
+  version: v1alpha1

@@ -1,0 +1,21 @@
+###################################################################################
+# Kustomize patch configuration to change the add a home directory volume that will
+# be picked up by SAS Launcher. The path is determined by the identities service,
+# and allows you to configure Viya with volume where the users' home directories live.
+# Any volume can be used
+# See README.md for more information.
+###############################################################################
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-launcher-user-homedirectory-volume
+patch: |-
+  - op: add
+    path: /template/spec/volumes/-
+    value:
+      name: sas-launcher-userhome
+      {{ VOLUME-STORAGE-CLASS }}
+target:
+  kind: PodTemplate
+  labelSelector: sas.com/template-intent=sas-launcher

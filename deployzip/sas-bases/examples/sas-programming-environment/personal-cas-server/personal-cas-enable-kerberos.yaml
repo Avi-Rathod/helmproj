@@ -1,0 +1,34 @@
+# This block of code is for enabling kerberos support for the personal cas server.
+# To be valid, the sas-bases/overlays/sas-programming-environment/personal-cas-server transformer
+# must be enabled, and must precede the inclusion of this example.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-compute-server-kerberos-personal-cas-server
+patch: |-
+  - op: add
+    path: "/template/spec/containers/1/env/-"
+    value:
+      name: SAS_KERBEROS_ENABLED
+      value: "true"
+  - op: add
+    path: "/template/spec/containers/1/volumeMounts/-"
+    value:
+      mountPath: /etc/krb5.conf
+      name: sas-kerberos-secrets-volume
+      subPath: krb5.conf
+      readOnly: true
+  - op: add
+    path: "/template/spec/containers/1/volumeMounts/-"
+    value:
+      mountPath: /var/lib/sss
+      name: sss
+  - op: add
+    path: /template/spec/volumes/-
+    value:
+      name: sss
+      emptyDir: {}
+target:
+  kind: PodTemplate
+  name: sas-compute-job-config

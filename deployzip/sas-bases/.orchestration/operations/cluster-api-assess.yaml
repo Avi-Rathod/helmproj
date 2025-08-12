@@ -1,0 +1,78 @@
+apiVersion: orchestration.sas.com/v3beta6
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-k8s-common
+    sas.com/component-version: 2.89.1-20240916.1726514392006
+  creationTimestamp: null
+  name: cluster-api-assess
+spec:
+  args:
+  - name: clusterApiManifest
+    required: true
+  - name: clusterApiNamespace
+  libraries:
+  - cluster-api-lib
+  source: |-
+    package main
+    import (
+      "fmt"
+      "sas/orchestration/lifecycle"
+      m "sas/orchestration/lifecycle/manifest"
+      c "sas/orchestration/lifecycle/cluster"
+      ca "sas/orchestration/lifecycle/cadence"
+    )
+    func main() {
+      manifest := lifecycle.Arg("clusterApiManifest")
+      resources, err := m.Resources(manifest, m.Group("apiextensions.k8s.io"), m.Kind("CustomResourceDefinition"), m.LabelSelector("sas.com/admin=cluster-api"))
+      if err != nil {
+        fmt.Printf("%v\n", err)
+        return
+      }
+      for _, manifestCrd := range resources {
+        name := clusterapilib.nameOf(manifestCrd)
+        clusterCrd := clusterapilib.getClusterCrd(name)
+        validate(manifestCrd, clusterCrd)
+      }
+    }
+    func validate(manifestCrd, clusterCrd *lifecycle.Resource) {
+      // If nothing is in the cluster then the update is valid
+      if clusterCrd == nil {
+        return
+      }
+      clusterApiNamespace := lifecycle.Arg("clusterApiNamespace")
+      manifestCrdConversionStrategy := clusterapilib.conversionStrategyOf(manifestCrd)
+      clusterCrdConversionStrategy := clusterapilib.conversionStrategyOf(clusterCrd)
+      clusterCrdWebhookNamespace := clusterapilib.webhookNamespaceOf(clusterCrd)
+
+      // Calculate if update is "allowed"
+      namespace := lifecycle.Arg("clusterApiNamespace")
+      kind := clusterapilib.kindOf(clusterCrd)
+      name := clusterapilib.nameOf(clusterCrd)
+      clusterInfo := clusterapilib.MustGetClusterVersionInfo(namespace, kind, name)
+      manifestInfo := clusterapilib.GetManifestVersionInfo(manifestCrd)
+      updateError := ca.VerifyUpdateIsAllowed(clusterInfo, manifestInfo)
+
+      // If
+      // * no clusterApiNamespace is specified
+      // * the conversion strategy is webhook
+      // * the CRD in the manifest is an update
+      // then the update is not valid.
+      if clusterApiNamespace == "" &&
+        manifestCrdConversionStrategy == "Webhook" && updateError == nil {
+        name := clusterapilib.nameOf(manifestCrd)
+        lifecycle.Fail(fmt.Sprintf("CRD %s is being updated and requires clusterApiNamespace to be specified", name))
+      }
+      // If
+      // * clusterApiNamespace is specified
+      // * the CRD in the cluster has a webhook namespace
+      // * the CRD in the manifest has a webhook conversion strategy
+      // * the clusterApiNamespace is different than what is already in the CRD in the cluster
+      // then the update is not valid.
+      if clusterApiNamespace != "" &&
+        clusterCrdWebhookNamespace != "" &&
+        manifestCrdConversionStrategy == "Webhook" &&
+        clusterApiNamespace != clusterCrdWebhookNamespace {
+        lifecycle.Fail(fmt.Sprintf("Cluster CRD conversion.webhook.namespace is immutable and currently set to %s", clusterCrdWebhookNamespace))
+      }
+    }

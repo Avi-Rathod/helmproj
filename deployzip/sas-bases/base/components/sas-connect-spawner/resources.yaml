@@ -1,0 +1,348 @@
+
+---
+apiVersion: v1
+automountServiceAccountToken: false
+kind: ServiceAccount
+metadata:
+  annotations:
+    sas.com/component-name: sas-connect-spawner
+    sas.com/kustomize-base: base
+  name: sas-connect-spawner
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+    sas.com/registry-default-port-name: service
+    sas.com/registry-name: connect-spawner-viya
+    sas.com/registry-sync: default
+  labels:
+    app.kubernetes.io/name: sas-connect-spawner
+    sas.com/admin: namespace
+    sas.com/registry-sync: default
+  name: sas-connect-spawner
+spec:
+  ports:
+  - name: sasdaemonsvc
+    nodePort: null
+    port: 17550
+    protocol: TCP
+    targetPort: sasdaemonsvc
+  - name: mgmtport
+    nodePort: null
+    port: 17541
+    protocol: TCP
+    targetPort: mgmtport
+  - name: service
+    nodePort: null
+    port: 17551
+    protocol: TCP
+    targetPort: service
+  selector:
+    app.kubernetes.io/name: sas-connect-spawner
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/config-init-mode: initcontainer
+    sas.com/kustomize-base: base
+    sas.com/sas-access-config: "true"
+    sas.com/sas-kerberos-config: "true"
+    sidecar.istio.io/proxyCPU: 15m
+    sidecar.istio.io/proxyMemory: 115Mi
+  labels:
+    app.kubernetes.io/name: sas-connect-spawner
+    sas.com/admin: namespace
+    workload.sas.com/class: stateless
+  name: sas-connect-spawner
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-connect-spawner
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /internal/metrics
+        prometheus.io/port: "8080"
+        prometheus.io/scheme: http
+        prometheus.io/scrape: "true"
+        sas.com/certificate-file-format: pem
+        sas.com/config-init-mode: initcontainer
+        sas.com/kustomize-base: base
+        sidecar.istio.io/proxyCPU: 15m
+        sidecar.istio.io/proxyMemory: 115Mi
+      labels:
+        app: sas-connect-spawner
+        app.kubernetes.io/name: sas-connect-spawner
+        workload.sas.com/class: stateless
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateless
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - compute
+                - cas
+                - stateful
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - sas-connect-spawner
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution: []
+      automountServiceAccountToken: true
+      containers:
+      - env:
+        - name: SAS_K8S_DEPLOYMENT_NAME
+          value: sas-connect-spawner
+        - name: SAS_LICENSE
+          valueFrom:
+            secretKeyRef:
+              key: SAS_LICENSE
+              name: sas-license
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
+        envFrom:
+        - configMapRef:
+            name: sas-shared-config
+        - secretRef:
+            name: sas-consul-client
+        - configMapRef:
+            name: sas-java-config
+        - configMapRef:
+            name: sas-connect-spawner-config
+        - configMapRef:
+            name: sas-launcher-lockdown-config
+        - configMapRef:
+            name: sas-programming-environment-path-config
+        - configMapRef:
+            name: sas-access-config
+        image: sas-connect-spawner
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - /opt/sas/viya/home/bin/unregister_connect.sh
+        name: sas-connect-spawner
+        ports:
+        - containerPort: 17550
+          name: sasdaemonsvc
+          protocol: TCP
+        - containerPort: 17551
+          name: service
+          protocol: TCP
+        - containerPort: 17541
+          name: mgmtport
+          protocol: TCP
+        readinessProbe:
+          tcpSocket:
+            port: mgmtport
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add: []
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+        - mountPath: /sashelp
+          name: sashelp
+        - mountPath: /sasuser
+          name: sasuser
+        - mountPath: /config
+          name: config
+        - mountPath: /var/lib/sss
+          name: sss
+        - mountPath: /opt/sas/viya/home/SASFoundation/install/log
+          name: home-sasfoundation-install-log
+        - mountPath: /opt/sas/viya/config/var
+          name: config-var
+      imagePullSecrets: []
+      initContainers:
+      - args:
+        - /opt/sas/viya/config/etc/connect/default/connect-config-entrypoint.sh
+        command:
+        - /bin/bash
+        envFrom:
+        - configMapRef:
+            name: sas-go-config
+        - configMapRef:
+            name: sas-shared-config
+        - configMapRef:
+            name: sas-connect-spawner-config
+        - configMapRef:
+            name: sas-launcher-lockdown-config
+        - configMapRef:
+            name: sas-programming-environment-path-config
+        - secretRef:
+            name: sas-consul-client
+        image: sas-connect-spawner
+        name: sas-connect-config-setup
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 75m
+            memory: 64Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /config
+          name: config
+        - mountPath: /tmp
+          name: tmp
+        - mountPath: /opt/sas/viya/config/var
+          name: config-var
+      - envFrom:
+        - configMapRef:
+            name: sas-go-config
+        - configMapRef:
+            name: sas-shared-config
+        - configMapRef:
+            name: sas-connect-spawner-config
+        - configMapRef:
+            name: sas-launcher-lockdown-config
+        - configMapRef:
+            name: sas-programming-environment-path-config
+        - secretRef:
+            name: sas-consul-client
+        - configMapRef:
+            name: sas-launcher-init-nls-config
+        image: sas-config-init
+        name: sas-config-init
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 75m
+            memory: 64Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /config
+          name: config
+        - mountPath: /opt/sas/viya/config/var
+          name: config-var
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: sas-connect-spawner
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - emptyDir: {}
+        name: tmp
+      - emptyDir: {}
+        name: sashelp
+      - emptyDir: {}
+        name: sasuser
+      - emptyDir: {}
+        name: config
+      - emptyDir: {}
+        name: sss
+      - emptyDir: {}
+        name: home-sasfoundation-install-log
+      - emptyDir: {}
+        name: config-var
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  annotations:
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: base
+  name: sas-connect-spawner
+spec:
+  minAvailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-connect-spawner
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  annotations:
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: base
+  name: sas-connect-spawner
+spec:
+  maxReplicas: 1
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sas-connect-spawner

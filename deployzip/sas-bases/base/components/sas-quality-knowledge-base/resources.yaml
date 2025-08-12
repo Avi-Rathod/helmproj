@@ -1,0 +1,91 @@
+
+---
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/kustomize-base: base
+  labels:
+    sas.com/admin: namespace
+    sas.com/template-intent: sas-launcher
+  name: sas-qkb-bootstrap
+template:
+  metadata:
+    annotations:
+      sas.com/certificate-file-format: pem
+      sas.com/kustomize-base: base
+    labels: {}
+  spec:
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - stateless
+          weight: 100
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: NotIn
+              values:
+              - cas
+              - compute
+              - stateful
+          weight: 50
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.azure.com/mode
+              operator: NotIn
+              values:
+              - system
+      podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+    automountServiceAccountToken: false
+    containers:
+    - env: []
+      envFrom: []
+      image: sas-quality-knowledge-base
+      imagePullPolicy: IfNotPresent
+      name: sas-qkb-bootstrap
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          add: []
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      volumeMounts:
+      - mountPath: /rdutil
+        name: sas-rdutil-dir
+      - mountPath: /tgtdata
+        name: sas-quality-knowledge-base-volume
+    imagePullSecrets: []
+    initContainers: []
+    restartPolicy: Never
+    securityContext:
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    tolerations:
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: compute
+    volumes:
+    - name: sas-quality-knowledge-base-volume
+      persistentVolumeClaim:
+        claimName: sas-quality-knowledge-base
+    - configMap:
+        defaultMode: 493
+        name: sas-qkb-management-scripts
+      name: sas-rdutil-dir

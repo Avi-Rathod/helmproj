@@ -1,0 +1,25 @@
+# Transformers for deployment operator
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-sas-deployment-operator
+patch: |-
+  # name: MUST BE PROVIDED BY USER AND UNIQUE IN CLUSTER.
+  - op: replace
+    path: /metadata/name
+    value:
+      "{{ NAME-OF-CLUSTERROLEBINDING }}"
+  # namespace: MUST BE PROVIDED BY USER. THIS MUST BE THE NAMESPACE INTO WHICH
+  # THE SAS DEPLOYMENT OPERATOR IS DEPLOYED.
+  - op: add
+    path: /subjects/0/namespace
+    value:
+      "{{ NAME-OF-NAMESPACE }}"
+target:
+  annotationSelector: sas.com/component-name=sas-deployment-operator
+  # Some required components for the SAS Viya platform are scoped to the
+  # cluster. In order to deploy your software, the operator requires the
+  # ClusterRoleBinding, regardless of whether the intended scope is to the
+  # namespace or the cluster.
+  kind: ClusterRoleBinding

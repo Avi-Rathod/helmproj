@@ -1,0 +1,206 @@
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  annotations:
+    launcher.sas.com/jobContainerName: sas-programming-environment
+    sas.com/certificate-file-format: pem
+    sas.com/config-init-mode: initcontainer
+    sas.com/kustomize-base: sas-programming-environment
+    sas.com/sas-access-config: "true"
+    sas.com/sas-kerberos-config: "true"
+    sas.com/sas-sssd-config: "true"
+    sas.com/tenant-resource: "true"
+  labels:
+    sas.com/admin: namespace
+    sas.com/pod-container-image: sas-programming-environment
+    sas.com/template-intent: sas-launcher
+    workload.sas.com/class: compute
+  name: sas-connect-pod-template
+template:
+  metadata:
+    annotations:
+      sas.com/certificate-file-format: pem
+      sas.com/kustomize-base: sas-programming-environment
+      sidecar.istio.io/inject: "false"
+    labels:
+      launcher.sas.com/job-type: sas-connect-server
+  spec:
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - compute
+          weight: 100
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: NotIn
+              values:
+              - cas
+              - stateless
+              - stateful
+          weight: 50
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.azure.com/mode
+              operator: NotIn
+              values:
+              - system
+      podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+    automountServiceAccountToken: true
+    containers:
+    - env:
+      - name: SAS_K8S_POD_NAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      - name: SAS_K8S_NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      - name: SAS_LICENSE
+        valueFrom:
+          secretKeyRef:
+            key: SAS_LICENSE
+            name: sas-license
+      - name: SASCLOUDNATIVE
+        value: "1"
+      envFrom:
+      - configMapRef:
+          name: sas-access-config
+      - configMapRef:
+          name: sas-deployment-metadata
+      - configMapRef:
+          name: sas-launcher-lockdown-config
+      - configMapRef:
+          name: sas-programming-environment-path-config
+      - configMapRef:
+          name: sas-shared-config
+      - configMapRef:
+          name: sas-launcher-lockdown-config
+      image: sas-programming-environment
+      name: sas-programming-environment
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      volumeMounts:
+      - mountPath: /tmp
+        name: tmp
+      - mountPath: /sasuser
+        name: sasuser
+      - mountPath: /sashelp
+        name: sashelp
+      - mountPath: /config
+        name: config
+      - mountPath: /opt/sas/viya/config/var
+        name: viya
+      - mountPath: /opt/sas/viya/home/commonfiles
+        name: commonfilesvols
+        readOnly: true
+    imagePullSecrets: []
+    initContainers:
+    - env:
+      - name: SAS_K8S_POD_NAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      - name: SAS_K8S_NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      envFrom:
+      - configMapRef:
+          name: sas-go-config
+      - configMapRef:
+          name: sas-shared-config
+      - secretRef:
+          name: sas-consul-client
+      - configMapRef:
+          name: sas-programming-environment-path-config
+      - configMapRef:
+          name: sas-deployment-metadata
+      - configMapRef:
+          name: sas-programming-environment-java-policy-config
+      - configMapRef:
+          name: sas-access-config
+      - configMapRef:
+          name: sas-connect-spawner-config
+      - configMapRef:
+          name: sas-launcher-lockdown-config
+      image: sas-config-init
+      name: sas-config-init
+      resources:
+        limits:
+          cpu: 2
+          memory: 500Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+        runAsGroup: 1001
+        runAsUser: 1001
+      volumeMounts:
+      - mountPath: /tmp
+        name: config-init-tmp
+      - mountPath: /config
+        name: config
+      - mountPath: /opt/sas/viya/config/var
+        name: viya
+      - mountPath: /opt/sas/viya/home/commonfiles
+        name: commonfilesvols
+        readOnly: true
+    restartPolicy: OnFailure
+    securityContext:
+      fsGroupChangePolicy: OnRootMismatch
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccountName: sas-programming-environment
+    tolerations:
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: compute
+    volumes:
+    - emptyDir: {}
+      name: tmp
+    - emptyDir: {}
+      name: config-init-tmp
+    - emptyDir: {}
+      name: sasuser
+    - emptyDir: {}
+      name: sashelp
+    - emptyDir: {}
+      name: config
+    - emptyDir: {}
+      name: viya
+    - name: commonfilesvols
+      persistentVolumeClaim:
+        claimName: sas-commonfiles
+        readOnly: true
+
+---

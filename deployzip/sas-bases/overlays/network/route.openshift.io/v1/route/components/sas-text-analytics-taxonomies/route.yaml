@@ -1,0 +1,92 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-categoryTaxonomy
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-category-taxonomy
+    sas.com/admin: namespace
+  name: sas-category-taxonomy
+spec:
+  host: $(INGRESS_HOST)
+  path: /categoryTaxonomy
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-category-taxonomy
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-categoryTaxonomy
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-category-taxonomy
+    sas.com/admin: namespace
+  name: sas-category-taxonomy-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /categoryTaxonomy
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-category-taxonomy
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-conceptTaxonomy
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-concept-taxonomy
+    sas.com/admin: namespace
+  name: sas-concept-taxonomy
+spec:
+  host: $(INGRESS_HOST)
+  path: /conceptTaxonomy
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-concept-taxonomy
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-conceptTaxonomy
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-concept-taxonomy
+    sas.com/admin: namespace
+  name: sas-concept-taxonomy-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /conceptTaxonomy
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-concept-taxonomy
+  wildcardPolicy: Subdomain
+

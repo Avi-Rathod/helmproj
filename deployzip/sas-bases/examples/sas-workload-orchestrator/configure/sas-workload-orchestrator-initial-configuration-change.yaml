@@ -1,0 +1,19 @@
+###############################################################################
+# Kustomize patch configuration to set the initial configuration for
+# SAS workload Orchestrator statefulsets and daemonsets pods.
+#
+# See README.md for more information.
+###############################################################################
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-workload-orchestrator-manager-initial-configuration-change
+patch: |-
+  - op: replace
+    path: /data/SGMG_CONFIG_JSON
+    value: |
+        {{ NEW_CONFIG_JSON }}
+target:
+  kind: ConfigMap
+  name: sas-workload-orchestrator-initial-configuration

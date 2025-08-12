@@ -1,0 +1,24 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: multi-tenant-colocated-rbac-rules
+patch: |-
+  - op: add
+    path: /rules/-
+    value:
+      apiGroups: [ "", "apps", "extensions", "rbac.authorization.k8s.io", "orchestration.sas.com", "policy", "route.openshift", "route.openshift.io" ]
+      resources: [ "pods", "services", "podtemplates", "configmaps", "secrets", "deployments", "statefulsets", "roles", "rolebindings", "serviceaccounts", "poddisruptionbudgets", "ingresses", "routes", "routes/custom-host" ]
+      verbs: [ "get", "update", "create", "list", "patch", "delete", "deletecollection", "*" ]
+  - op: add
+    path: /rules/-
+    value:
+      apiGroups: [ "networking.k8s.io" ]
+      resources: [ "ingresses" ]
+      verbs: [ "get", "update", "create", "list", "patch", "delete", "deletecollection" ]
+target:
+  group: rbac.authorization.k8s.io
+  kind: Role
+  version: v1
+  annotationSelector: sas.com/component-name in (sas-data-agent-server-colocated,sas-data-agent-server-tenant)
+---

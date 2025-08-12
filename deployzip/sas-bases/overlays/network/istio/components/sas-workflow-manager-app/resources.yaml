@@ -1,0 +1,41 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-workflow-manager-app
+spec:
+  host: sas-workflow-manager-app
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /SASWorkflowManager/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-workflow-manager-app
+    sas.com/admin: namespace
+  name: sas-workflow-manager-app
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /SASWorkflowManager
+    - uri:
+        prefix: /SASWorkflowManager/
+    route:
+    - destination:
+        host: sas-workflow-manager-app
+    timeout: 300s
+

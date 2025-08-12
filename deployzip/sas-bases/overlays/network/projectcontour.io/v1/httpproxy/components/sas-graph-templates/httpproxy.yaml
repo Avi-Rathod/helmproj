@@ -1,0 +1,34 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-graph-templates
+    sas.com/admin: namespace
+  name: sas-graph-templates
+spec:
+  routes:
+  - conditions:
+    - prefix: /graphTemplates
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /graphTemplates/
+    services:
+    - name: sas-graph-templates
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /graphTemplates/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-graph-templates
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

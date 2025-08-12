@@ -1,0 +1,68 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-workflow
+    sas.com/admin: namespace
+  name: sas-workflow
+spec:
+  routes:
+  - conditions:
+    - prefix: /workflow
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /workflow/
+    services:
+    - name: sas-workflow
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /workflow/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-workflow
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-workflow-definition
+    sas.com/admin: namespace
+  name: sas-workflow-definition
+spec:
+  routes:
+  - conditions:
+    - prefix: /workflowDefinition
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /workflowDefinition/
+    services:
+    - name: sas-workflow-definition
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /workflowDefinition/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-workflow-definition
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

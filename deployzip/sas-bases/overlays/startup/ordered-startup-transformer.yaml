@@ -1,0 +1,33 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: add-start-sequencer-deployments
+patch: |-
+  kind: Deployment
+  metadata:
+    name: all-deployments
+  spec:
+    template:
+      metadata:
+        labels:
+          sas.com/start-sequencer-2.3: "true"
+target:
+  kind: Deployment
+  group: apps
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: add-start-sequencer-statefulsets
+patch: |-
+  kind: StatefulSet
+  metadata:
+    name: all-statefulsets
+    labels:
+      sas.com/start-sequencer-2.3: "true"
+target:
+  kind: StatefulSet
+  group: apps
+  version: v1
+# Ignoring DaemonSets and Jobs

@@ -1,0 +1,12 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-scheduled-backup-all-sources-enable
+patch: |-
+  - op: replace
+    path: /spec/suspend
+    value: false
+target:
+  kind: CronJob
+  name: sas-scheduled-backup-all-sources
+  version: v1

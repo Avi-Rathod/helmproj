@@ -1,0 +1,27 @@
+###############################################################################
+# Kustomize patch configuration to remove DoS protection on Launcher service.
+# This will remove the limitation on the amount of processes a user can have
+#
+# NOTE: If SAS Workload Orchestrator is enabled, these values will be ignored
+# See README.md for more information.
+###############################################################################
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: disable-processes-per-user-limitation
+patch: |-
+  - op: replace
+    path: /spec/template/spec/containers/0/env/2
+    value:
+      name: SAS_LAUNCHER_USER_PROCESS_LIMIT_ENABLED
+      value: "false"
+  - op: replace
+    path: /spec/template/spec/containers/0/env/4
+    value:
+      name: SAS_LAUNCHER_SUPER_USER_PROCESS_LIMIT_ENABLED
+      value: "false"
+target:
+  version: v1
+  group: apps
+  kind: Deployment
+  name: sas-launcher

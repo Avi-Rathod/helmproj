@@ -1,0 +1,6 @@
+apiVersion: builtin
+kind: ConfigMapGenerator
+metadata:
+  name: sas-files-blob-config
+literals:
+- AZURE_STORAGE_ACCOUNT_NAME={{ STORAGE-ACCOUNT-NAME }}

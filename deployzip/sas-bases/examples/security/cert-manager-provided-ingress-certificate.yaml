@@ -1,0 +1,20 @@
+## This file is deprecated, please use the files in the directory 
+## sas-bases/overlays/cert-manager-provided-ingress-certificate
+## instead as it does not require editing
+##
+## PatchTransformer to patch the secret used by nginx ingress objects
+## 
+##
+##
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-cert-manager-ingress-annotation-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/cert-manager.io~1issuer
+    value: sas-viya-issuer
+target:
+  kind: Ingress
+  name: .*

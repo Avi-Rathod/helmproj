@@ -1,0 +1,23 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-sas-update-checker-proxy
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/env/-
+    value:
+      name: HTTP_PROXY
+      value: {{ HTTP-PROXY-FQDN-AND-PORT }}
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/env/-
+    value:
+      name: HTTPS_PROXY
+      value: {{ HTTPS-PROXY-FQDN-AND-PORT }}
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/env/-
+    value:
+      name: NO_PROXY
+      value: {{ NO-PROXY-FQDN-COMMA-SEPARATED-LIST }}
+target:
+  name: sas-update-checker
+  kind: CronJob

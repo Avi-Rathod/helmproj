@@ -1,0 +1,21 @@
+###############################################################################
+# Kustomize patch to change the Prometheus Pushgateway URL from
+# http://prometheus-pushgateway:9091 to the value of the environment variable
+# 'PROMETHEUS_PUSHGATEWAY_URL'
+#
+# See README.md for more information.
+###############################################################################
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-workload-orchestrator-manager-prometheus-pushgateway-url
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+        name: SGMG_PROMETHEUS_PUSHGATEWAY_URL
+        value: {{ PROMETHEUS_PUSHGATEWAY_URL }}
+target:
+  kind: DaemonSet
+  name: sas-workload-orchestrator

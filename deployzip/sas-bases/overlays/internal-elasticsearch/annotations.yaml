@@ -1,0 +1,9 @@
+apiVersion: builtin
+kind: AnnotationsTransformer
+metadata:
+  name: annotations-opendistro-cluster
+annotations:
+  sas.com/component-name: sas-opendistro-operator
+fieldSpecs:
+- path: metadata/annotations
+  create: true

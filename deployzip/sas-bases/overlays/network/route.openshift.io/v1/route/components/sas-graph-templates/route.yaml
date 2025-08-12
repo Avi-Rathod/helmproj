@@ -1,0 +1,46 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-graphTemplates
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-graph-templates
+    sas.com/admin: namespace
+  name: sas-graph-templates
+spec:
+  host: $(INGRESS_HOST)
+  path: /graphTemplates
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-graph-templates
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-graphTemplates
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-graph-templates
+    sas.com/admin: namespace
+  name: sas-graph-templates-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /graphTemplates
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-graph-templates
+  wildcardPolicy: Subdomain
+

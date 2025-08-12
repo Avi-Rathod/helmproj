@@ -1,0 +1,27 @@
+###################################################################################
+# Kustomize patch configuration to set the default and max for
+# memory requests and memory limits. This PatchTransformer will target all PodTemplates
+# with the label sas.com/template-intent=sas-launcher
+# See README.md for more information.
+###############################################################################
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-launcher-memory-requests-limits
+patch: |-
+  - op: add
+    path: /metadata/annotations/launcher.sas.com~1default-memory-request
+    value: {{ DEFAULT-MEMORY-REQUEST }}
+  - op: add
+    path: /metadata/annotations/launcher.sas.com~1max-memory-request
+    value: {{ MAX-MEMORY-REQUEST }}
+  - op: add
+    path: /metadata/annotations/launcher.sas.com~1default-memory-limit
+    value: {{ DEFAULT-MEMORY-LIMIT }}
+  - op: add
+    path: /metadata/annotations/launcher.sas.com~1max-memory-limit
+    value: {{ MAX-MEMORY-LIMIT }}
+target:
+  kind: PodTemplate
+  labelSelector: sas.com/template-intent=sas-launcher

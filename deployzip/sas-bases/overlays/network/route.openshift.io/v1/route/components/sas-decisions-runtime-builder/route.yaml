@@ -1,0 +1,46 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-decisionsRuntimeBuilder
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-decisions-runtime-builder
+    sas.com/admin: namespace
+  name: sas-decisions-runtime-builder
+spec:
+  host: $(INGRESS_HOST)
+  path: /decisionsRuntimeBuilder
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-decisions-runtime-builder
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-decisionsRuntimeBuilder
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-decisions-runtime-builder
+    sas.com/admin: namespace
+  name: sas-decisions-runtime-builder-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /decisionsRuntimeBuilder
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-decisions-runtime-builder
+  wildcardPolicy: Subdomain
+

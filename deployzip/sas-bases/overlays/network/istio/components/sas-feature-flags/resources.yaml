@@ -1,0 +1,41 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-feature-flags
+spec:
+  host: sas-feature-flags
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /featureFlags/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-feature-flags
+    sas.com/admin: namespace
+  name: sas-feature-flags
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /featureFlags
+    - uri:
+        prefix: /featureFlags/
+    route:
+    - destination:
+        host: sas-feature-flags
+    timeout: 300s
+

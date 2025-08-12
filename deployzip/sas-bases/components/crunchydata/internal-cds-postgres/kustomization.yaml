@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+configurations:
+- kustomizeconfig.yaml
+
+resources:
+- sas-crunchy-cds-postgres.yaml
+- sas-crunchy-cds-postgres-upgrade.yaml
+
+transformers:
+- deployment-transformer.yaml

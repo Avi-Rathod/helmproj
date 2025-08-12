@@ -1,0 +1,68 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-quality
+    sas.com/admin: namespace
+  name: sas-data-quality
+spec:
+  routes:
+  - conditions:
+    - prefix: /dataQuality
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /dataQuality/
+    services:
+    - name: sas-data-quality
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /dataQuality/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-data-quality
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-qkb-management
+    sas.com/admin: namespace
+  name: sas-qkb-management
+spec:
+  routes:
+  - conditions:
+    - prefix: /qkbManagement
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /qkbManagement/
+    services:
+    - name: sas-qkb-management
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /qkbManagement/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-qkb-management
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

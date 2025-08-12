@@ -1,0 +1,16 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-model-repository-restore-transformer
+patch: |-
+  # Add restore job parameters
+  - op: add
+    path: /spec/template/spec/containers/0/envFrom/-
+    value:
+      configMapRef:
+        name: sas-restore-job-parameters
+target:
+  group: apps
+  kind: Deployment
+  name: sas-model-repository
+  version: v1

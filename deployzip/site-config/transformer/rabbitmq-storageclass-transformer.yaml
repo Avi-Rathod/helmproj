@@ -1,0 +1,12 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: volume-claim-templates-change-storage-class-rabbitmq
+patch: |-
+  - op: replace
+    path: /spec/volumeClaimTemplates/0/spec/storageClassName
+    value: nfs-client
+target:
+  name: sas-rabbitmq-server
+  version: v1
+  kind: StatefulSet

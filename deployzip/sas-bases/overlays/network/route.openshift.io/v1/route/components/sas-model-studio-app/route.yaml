@@ -1,0 +1,94 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-SASModelStudio
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-model-studio-app
+    sas.com/admin: namespace
+  name: sas-model-studio-app
+spec:
+  host: $(INGRESS_HOST)
+  path: /SASModelStudio
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-model-studio-app
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/rewrite-target: /SASModelStudio
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-SASModelStudio
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-model-studio-app-ms
+    sas.com/admin: namespace
+  name: sas-model-studio-app-ms
+spec:
+  host: $(INGRESS_HOST)
+  path: /ModelStudio
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-model-studio-app
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/rewrite-target: /SASModelStudio
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-SASModelStudio
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-model-studio-app-ms
+    sas.com/admin: namespace
+  name: sas-model-studio-app-ms-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /ModelStudio
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-model-studio-app
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-SASModelStudio
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-model-studio-app
+    sas.com/admin: namespace
+  name: sas-model-studio-app-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /SASModelStudio
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-model-studio-app
+  wildcardPolicy: Subdomain
+

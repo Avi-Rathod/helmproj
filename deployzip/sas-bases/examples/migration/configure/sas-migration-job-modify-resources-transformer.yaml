@@ -1,0 +1,18 @@
+#   # NOTE:
+#   # {{ CPU-LIMIT }} must be a non-negative numeric value, such as "3" or "5".
+#   # {{ MEMORY-LIMIT }} must be a non-zero and non-negative value followed by "Gi". For example, "8Gi" for 8 gigabytes.
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-migration-job-modify-resources-transformer
+patch: |-
+  - op: replace
+    path: /spec/template/spec/containers/0/resources/limits/cpu
+    value: "{{ CPU-LIMIT }}"
+  - op: replace
+    path: /spec/template/spec/containers/0/resources/limits/memory
+    value: "{{ MEMORY-LIMIT }}"
+target:
+  kind: Job
+  labelselector: sas.com/backup-job-type in (migration)
+  version: v1

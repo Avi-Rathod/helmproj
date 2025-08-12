@@ -1,0 +1,82 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-category-taxonomy
+spec:
+  host: sas-category-taxonomy
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /categoryTaxonomy/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-concept-taxonomy
+spec:
+  host: sas-concept-taxonomy
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /conceptTaxonomy/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-category-taxonomy
+    sas.com/admin: namespace
+  name: sas-category-taxonomy
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /categoryTaxonomy
+    - uri:
+        prefix: /categoryTaxonomy/
+    route:
+    - destination:
+        host: sas-category-taxonomy
+    timeout: 300s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-concept-taxonomy
+    sas.com/admin: namespace
+  name: sas-concept-taxonomy
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /conceptTaxonomy
+    - uri:
+        prefix: /conceptTaxonomy/
+    route:
+    - destination:
+        host: sas-concept-taxonomy
+    timeout: 300s
+

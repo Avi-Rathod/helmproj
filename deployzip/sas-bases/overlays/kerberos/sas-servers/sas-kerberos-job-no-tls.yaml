@@ -1,0 +1,93 @@
+# This block of code is for setting up Kerberos support
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-krb5-proxy-job-sidecar
+patch: |-
+  - op: add
+    path: /template/spec/containers/-
+    value:
+      env:
+      - name: SAS_K8S_DEPLOYMENT_NAME
+        value: "sas-krb5-proxy"
+      - name: POD_NAMESPACE
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.namespace
+      image: sas-krb5-proxy
+      name: sas-krb5-proxy
+      securityContext:
+        runAsGroup: 1001
+        runAsUser: 1001
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      resources:
+        limits:
+          cpu: 500m
+          memory: 256Mi
+        requests:
+          cpu: 75m
+          memory: 64Mi
+      volumeMounts:
+      - mountPath: /opt/kerberos
+        name: sas-kerberos-secrets-volume
+        readOnly: true
+      - mountPath: /tmp
+        name: krb-tmp
+      - mountPath: /var/tmp
+        name: var-tmp
+      envFrom:
+      - configMapRef:
+          name: sas-servers-kerberos-sidecar-config
+      - configMapRef:
+          name: sas-go-config
+      - configMapRef:
+          name: sas-shared-config
+      command: [/bin/bash]
+      args:
+        - -c
+        - rm -f /tmp/sas-shutdown; backoff_micros=010; while [ ! -f /tmp/sas-shutdown ]; do sas-run-tool -manifest-file run-manifest.json; echo restarting_krb5-proxy_script; sleep $((backoff_micros/1000)).$((backoff_micros%1000)); [ $backoff_micros -lt 3000 ] && let backoff_micros+=10; done;
+      lifecycle:
+        preStop:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - touch /tmp/sas-shutdown; sleep 1; pkill krb5-proxy
+  - op: add
+    path: /template/spec/volumes/-
+    value:
+      name: sas-kerberos-secrets-volume
+      secret:
+        secretName: sas-servers-kerberos-secrets
+  - op: add
+    path: /template/spec/containers/0/volumeMounts/-
+    value:
+      name: sas-kerberos-secrets-volume
+      mountPath: /etc/krb5.conf
+      subPath: krb5.conf
+      readOnly: true
+  - op: add
+    path: /template/spec/containers/0/envFrom/-
+    value:
+      configMapRef:
+        name: sas-servers-kerberos-container-config
+  - op: add
+    path: /template/spec/volumes/-
+    value:
+      name: var-tmp
+      emptyDir: {}
+  - op: add
+    path: /template/spec/volumes/-
+    value:
+      name: krb-tmp
+      emptyDir: {}
+target:
+  kind: PodTemplate
+  annotationSelector: sas.com/sas-kerberos-config=true
+---

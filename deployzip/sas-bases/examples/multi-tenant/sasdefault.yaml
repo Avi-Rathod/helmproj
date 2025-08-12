@@ -1,0 +1,10 @@
+# This file should not be modified after initial deployment customization steps have been completed.
+# The same values must also be used during migration for any new target deployment.
+config:
+  application:
+    sas.multi.tenancy.enabled: true
+    sas.multi.tenancy.from.uaa: true
+    sas.deployment.springdatasource.defaults: large
+    # The '{INGRESS_HOST}' literal in the line below should not be modified directly by the customer.
+    zones.internal.hostnames: httpd.service.consul,vcap.me,localhost,127.0.0.1,{INGRESS_HOST}
+    sas.multi.tenancy.db.mode: databasePerTenant

@@ -1,0 +1,24 @@
+# This block of code is for removing the Seccomp Profile
+# from CAS pods. Setting "/spec/disableSeccomp" to "true"
+# will cause sas-cas-operator to remove any existing
+# Seccomp Profile configurations for CAS.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-disable-seccomp
+patch: |-
+   - op: add
+     path: /spec/disableSeccomp
+     value:
+       true
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  # Uncomment this to apply to all CAS servers:
+  name: .*
+  # Uncomment this to apply to one particular named CAS server:
+  #name: {{ NAME-OF-SERVER }}
+  # Uncomment this to apply to the default CAS server:
+  #labelSelector: "sas.com/cas-server-default"
+  version: v1alpha1

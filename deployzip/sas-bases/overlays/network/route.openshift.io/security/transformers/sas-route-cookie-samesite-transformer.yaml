@@ -1,0 +1,14 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-route-session-cookie-samesite-transformer
+patch: |-
+  kind: Route
+  metadata:
+    name: wildcard
+    annotations:
+      router.openshift.io/cookie-same-site: "None"
+target:
+  annotationSelector: sas.com/kustomize-base=base
+  kind: Route

@@ -1,0 +1,323 @@
+
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-bec772aee5424da4
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/initContainers
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-dff7b01c805e8b75
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/command
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-28076b6d3a04be9d
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/args
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-3585033c53a67202
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/ports
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-5e2947d777b8ed80
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/resizePolicy
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-20a18264c6b57b39
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/volumeDevices
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-b140e1b4853b0d3e
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/containers/0/securityContext/capabilities/add
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-feaceb0fe1ad00f7
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/ephemeralContainers
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-d15f66129ca396ce
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/securityContext/supplementalGroups
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-0de2f6a53f5c9c51
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/securityContext/sysctls
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c957768bc658a8c7
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/imagePullSecrets
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-d61bdf325c04c6be
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchFields
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-21576e5ef76e6fcb
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/preference/matchFields
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2a0149b4928166a4
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/1/preference/matchFields
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-cdb11a652e8cb50a
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/affinity/podAffinity/requiredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c6a07a58d64df588
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/affinity/podAffinity/preferredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-6bde0c9e060f4686
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/affinity/podAntiAffinity/requiredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2dbe644e787a6ef4
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/affinity/podAntiAffinity/preferredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-161e6f189bfccdcc
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/hostAliases
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-af588c7429d669ae
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/readinessGates
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-73f363e178e54d5c
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/topologySpreadConstraints
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-0bec6cdd828e3384
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/schedulingGates
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c32c07632b77bf71
+patch: |-
+  - op: add
+    path: /spec/jobTemplate/spec/template/spec/resourceClaims
+    value: []
+target:
+  group: batch
+  kind: CronJob
+  name: sas-inventory-collector
+  version: v1

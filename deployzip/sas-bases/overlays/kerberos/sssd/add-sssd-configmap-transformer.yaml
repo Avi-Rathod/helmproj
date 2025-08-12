@@ -1,0 +1,32 @@
+###############################################################################
+# Kustomize patch to add external SSSD configMap in sas-programming-environment
+# PodTemplate.
+# See README.md for more information.
+###############################################################################
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-sssd-custom-config
+patch: |-
+  - op: add
+    path:  /template/spec/volumes/-
+    value:
+      name: sas-sssd-custom-config
+      secret:
+        secretName:  sas-sssd-custom-config-secrets
+        defaultMode: 420
+        items:
+        - key: SSSD_CONF
+          mode: 384
+          path: sssd.conf
+  - op: add
+    path: /template/spec/containers/2/volumeMounts/-
+    value:
+      name: sas-sssd-custom-config
+      mountPath: /sssd
+
+target:
+  kind: PodTemplate
+  annotationSelector: sas.com/sas-sssd-config=true
+---

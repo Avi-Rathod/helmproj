@@ -1,0 +1,68 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-report-data
+    sas.com/admin: namespace
+  name: sas-report-data
+spec:
+  routes:
+  - conditions:
+    - prefix: /reportData
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /reportData/
+    services:
+    - name: sas-report-data
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /reportData/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-report-data
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-report-packages
+    sas.com/admin: namespace
+  name: sas-report-packages
+spec:
+  routes:
+  - conditions:
+    - prefix: /reportPackages
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /reportPackages/
+    services:
+    - name: sas-report-packages
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /reportPackages/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-report-packages
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

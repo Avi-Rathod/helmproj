@@ -1,0 +1,47 @@
+apiVersion: orchestration.sas.com/v3beta6
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-crunchy5-postgres-operator
+    sas.com/component-version: 1.5.12-20241206.1733500383664
+  creationTimestamp: null
+  labels:
+    participate.lifecycle.sas.com/deploy-assess: "true"
+  name: deploy-assess-crunchy4
+spec:
+  args:
+  - name: namespace
+    required: true
+  source: |-
+    package main
+    import (
+      "fmt"
+      "strings"
+      "sas/orchestration/lifecycle"
+      c "sas/orchestration/lifecycle/cluster"
+    )
+    func main() {
+      namespace := lifecycle.Arg("namespace")
+      checkCrunchy4(namespace)
+      checkOpenShift()
+    }
+    func checkCrunchy4(namespace string) {
+      opDeployments, err := c.Resources(c.Namespace(namespace), c.Version("v1"), c.Resource("Deployment"), c.Name("sas-crunchy-data-postgres-operator"))
+      if err != nil {
+        panic(fmt.Sprintf("Failed to get deployments: %v", err))
+      }
+      if len(opDeployments) > 0 {
+        lifecycle.Log("Detected existing deployment as running Crunchy 4")
+        lifecycle.SetVariable("dataserver.sas.com/crunchy-v4", "true")
+      }
+    }
+    func checkOpenShift() {
+      out, err := lifecycle.Kubectl("api-versions")
+      if err != nil {
+        panic(fmt.Sprintf("Failed to get api-versions: %v", err))
+      }
+      if strings.Contains(out, "config.openshift.io") {
+        lifecycle.Log("Detected deployment as running on OpenShift")
+        lifecycle.SetVariable("dataserver.sas.com/is-openshift", "true")
+      }
+    }

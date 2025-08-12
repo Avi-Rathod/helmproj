@@ -1,0 +1,34 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-visual-analytics-app
+    sas.com/admin: namespace
+  name: sas-visual-analytics-app
+spec:
+  routes:
+  - conditions:
+    - prefix: /SASVisualAnalytics
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /SASVisualAnalytics/
+    services:
+    - name: sas-visual-analytics-app
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /SASVisualAnalytics/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-visual-analytics-app
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

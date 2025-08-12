@@ -1,0 +1,22 @@
+###############################################################################
+# Kustomize patch configuration to set the volume object that will contain
+# a user-defined resource script.
+#
+# See README.md for more information.
+###############################################################################
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-workload-orchestrator-daemon-host-user-defined-resources-script-storage
+patch: |-
+  - op: replace
+    path: /spec/template/spec/volumes/0
+    value:
+      name: scripts
+      nfs:
+        path: {{ NFS-SERVER-PATH }}
+        server: {{ NFS-SERVER-FQDN }}
+target:
+  kind: DaemonSet
+  name: sas-workload-orchestrator

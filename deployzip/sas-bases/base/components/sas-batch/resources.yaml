@@ -1,0 +1,608 @@
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+    sas.com/registry-sync: default
+    sas.com/registry-tags: proxy
+  labels:
+    app.kubernetes.io/name: sas-batch
+    sas.com/admin: namespace
+    sas.com/registry-sync: default
+  name: sas-batch
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/name: sas-batch
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/kustomize-base: golang
+    sas.com/pod-uses-db-migrator: "true"
+    sas.com/pod-uses-liveness-probe: http
+    sas.com/pod-uses-readiness-probe: http
+    sas.com/pod-uses-startup-probe: http
+    sidecar.istio.io/proxyCPU: 15m
+    sidecar.istio.io/proxyMemory: 115Mi
+  labels:
+    app.kubernetes.io/name: sas-batch
+    sas.com/admin: namespace
+    sas.com/deployment-base: golang
+    workload.sas.com/class: stateless
+  name: sas-batch
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-batch
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /internal/metrics
+        prometheus.io/port: "8080"
+        prometheus.io/scheme: http
+        prometheus.io/scrape: "true"
+        sas.com/certificate-file-format: pem
+        sas.com/kustomize-base: golang
+        sas.com/pod-uses-liveness-probe: http
+        sas.com/pod-uses-readiness-probe: http
+        sas.com/pod-uses-startup-probe: http
+        sidecar.istio.io/proxyCPU: 15m
+        sidecar.istio.io/proxyMemory: 115Mi
+      labels:
+        app: sas-batch
+        app.kubernetes.io/name: sas-batch
+        workload.sas.com/class: stateless
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateless
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - compute
+                - cas
+                - stateful
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - sas-batch
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution: []
+      automountServiceAccountToken: false
+      containers:
+      - env:
+        - name: SAS_K8S_DEPLOYMENT_NAME
+          value: sas-batch
+        envFrom:
+        - configMapRef:
+            name: sas-go-config
+        - configMapRef:
+            name: sas-shared-config
+        - secretRef:
+            name: sas-consul-client
+        image: sas-batch
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - sh
+              - -c
+              - sleep 5
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /internal/live
+            port: http
+            scheme: HTTP
+          periodSeconds: 20
+          timeoutSeconds: 5
+        name: sas-batch
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /internal/ready
+            port: http
+            scheme: HTTP
+          periodSeconds: 20
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add: []
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        startupProbe:
+          failureThreshold: 180
+          httpGet:
+            path: /internal/live
+            port: http
+            scheme: HTTP
+          periodSeconds: 10
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+      imagePullSecrets: []
+      initContainers:
+      - args:
+        - cp -rf meta /data
+        command:
+        - /bin/sh
+        - -c
+        image: sas-batch
+        imagePullPolicy: IfNotPresent
+        name: hydrator
+        resources:
+          limits:
+            cpu: 500m
+            memory: 128Mi
+          requests:
+            cpu: 75m
+            memory: 64Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add: []
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /data
+          name: shared-vol
+      - env:
+        - name: SAS_SERVICE_NAME
+          value: sas-batch
+        envFrom:
+        - configMapRef:
+            name: sas-go-config
+        - configMapRef:
+            name: sas-shared-config
+        - configMapRef:
+            name: sas-java-config
+        - secretRef:
+            name: sas-consul-client
+        image: sas-db-migrator
+        imagePullPolicy: IfNotPresent
+        name: sas-db-migrator
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 100m
+            memory: 90Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add: []
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /data
+          name: shared-vol
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - emptyDir: {}
+        name: tmp
+      - emptyDir: {}
+        name: shared-vol
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  annotations:
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: base
+  name: sas-batch
+spec:
+  minAvailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-batch
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  annotations:
+    sas.com/ha-class: decentralized
+    sas.com/kustomize-base: decentralized
+  name: sas-batch-job
+spec:
+  maxUnavailable: 0
+  selector:
+    matchLabels:
+      launcher.sas.com/job-type: sas-batch-job
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  annotations:
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: golang
+  name: sas-batch
+spec:
+  maxReplicas: 1
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sas-batch
+
+---
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  annotations:
+    launcher.sas.com/jobContainerName: sas-batch-cmd
+    sas.com/certificate-file-format: pem
+    sas.com/kustomize-base: base
+  labels:
+    launcher.sas.com/job-type: sas-batch-job
+    sas.com/admin: namespace
+    sas.com/template-intent: sas-launcher
+  name: sas-batch-cmd-pod-template
+template:
+  metadata:
+    annotations:
+      sas.com/certificate-file-format: pem
+      sas.com/kustomize-base: base
+    labels:
+      launcher.sas.com/job-type: sas-batch-job
+  spec:
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - compute
+          weight: 100
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: NotIn
+              values:
+              - cas
+              - stateless
+              - stateful
+          weight: 50
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.azure.com/mode
+              operator: NotIn
+              values:
+              - system
+      podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+    automountServiceAccountToken: false
+    containers:
+    - env:
+      - name: HOSTIP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.podIP
+      - name: SASREDIRCMDOPTS
+        value: -addshell -noauth
+      envFrom: []
+      image: sas-batch-cmd
+      name: sas-batch-cmd
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          add: []
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      volumeMounts:
+      - mountPath: /opt/sas/viya/home/sas-pyconfig
+        name: python
+      - mountPath: /opt/sas/viya/config/var
+        name: viya
+    imagePullSecrets: []
+    initContainers: []
+    restartPolicy: OnFailure
+    securityContext:
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    tolerations:
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: compute
+    volumes:
+    - name: python
+      persistentVolumeClaim:
+        claimName: sas-pyconfig
+    - emptyDir: {}
+      name: viya
+
+---
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  annotations:
+    launcher.sas.com/jobContainerName: sas-programming-environment
+    sas.com/certificate-file-format: pem
+    sas.com/config-init-mode: initcontainer
+    sas.com/kustomize-base: sas-programming-environment
+    sas.com/sas-access-config: "true"
+    sas.com/sas-kerberos-config: "true"
+    sas.com/sas-sssd-config: "true"
+    sas.com/tenant-resource: "true"
+  labels:
+    launcher.sas.com/job-type: sas-batch-job
+    sas.com/admin: namespace
+    sas.com/pod-container-image: sas-programming-environment
+    sas.com/template-intent: sas-launcher
+  name: sas-batch-pod-template
+template:
+  metadata:
+    annotations:
+      sas.com/certificate-file-format: pem
+      sas.com/kustomize-base: sas-programming-environment
+      sidecar.istio.io/inject: "false"
+    labels:
+      launcher.sas.com/job-type: sas-batch-job
+  spec:
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - compute
+          weight: 100
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: NotIn
+              values:
+              - cas
+              - stateless
+              - stateful
+          weight: 50
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.azure.com/mode
+              operator: NotIn
+              values:
+              - system
+      podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+    automountServiceAccountToken: true
+    containers:
+    - env:
+      - name: SAS_K8S_POD_NAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      - name: SAS_K8S_NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      - name: SAS_LICENSE
+        valueFrom:
+          secretKeyRef:
+            key: SAS_LICENSE
+            name: sas-license
+      - name: SASCLOUDNATIVE
+        value: "1"
+      - name: HOSTIP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.podIP
+      - name: SASREDIRSASOPTS
+        value: -noauth
+      - name: SASREDIRCMDOPTS
+        value: -addshell -noauth
+      envFrom:
+      - configMapRef:
+          name: sas-access-config
+      - configMapRef:
+          name: sas-deployment-metadata
+      - configMapRef:
+          name: sas-launcher-lockdown-config
+      - configMapRef:
+          name: sas-programming-environment-path-config
+      - configMapRef:
+          name: sas-shared-config
+      image: sas-programming-environment
+      name: sas-programming-environment
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      volumeMounts:
+      - mountPath: /tmp
+        name: tmp
+      - mountPath: /sasuser
+        name: sasuser
+      - mountPath: /sashelp
+        name: sashelp
+      - mountPath: /config
+        name: config
+      - mountPath: /opt/sas/viya/config/var
+        name: viya
+      - mountPath: /opt/sas/viya/home/commonfiles
+        name: commonfilesvols
+        readOnly: true
+    imagePullSecrets: []
+    initContainers:
+    - env:
+      - name: SAS_K8S_POD_NAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      - name: SAS_K8S_NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      envFrom:
+      - configMapRef:
+          name: sas-go-config
+      - configMapRef:
+          name: sas-shared-config
+      - secretRef:
+          name: sas-consul-client
+      - configMapRef:
+          name: sas-programming-environment-path-config
+      - configMapRef:
+          name: sas-deployment-metadata
+      - configMapRef:
+          name: sas-programming-environment-java-policy-config
+      - configMapRef:
+          name: sas-access-config
+      - configMapRef:
+          name: sas-batch-server-config
+      image: sas-config-init
+      name: sas-config-init
+      resources:
+        limits:
+          cpu: 2
+          memory: 500Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+        runAsGroup: 1001
+        runAsUser: 1001
+      volumeMounts:
+      - mountPath: /tmp
+        name: config-init-tmp
+      - mountPath: /config
+        name: config
+      - mountPath: /opt/sas/viya/config/var
+        name: viya
+      - mountPath: /opt/sas/viya/home/commonfiles
+        name: commonfilesvols
+        readOnly: true
+    restartPolicy: OnFailure
+    securityContext:
+      fsGroupChangePolicy: OnRootMismatch
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccountName: sas-programming-environment
+    tolerations:
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: compute
+    volumes:
+    - emptyDir: {}
+      name: tmp
+    - emptyDir: {}
+      name: config-init-tmp
+    - emptyDir: {}
+      name: sasuser
+    - emptyDir: {}
+      name: sashelp
+    - emptyDir: {}
+      name: config
+    - emptyDir: {}
+      name: viya
+    - name: commonfilesvols
+      persistentVolumeClaim:
+        claimName: sas-commonfiles
+        readOnly: true

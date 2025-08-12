@@ -1,0 +1,22 @@
+# Global required kustomize configuration
+nameReference:
+- fieldSpecs:
+  - kind: SASDeployment
+    path: spec/license/secretKeyRef/name
+  - kind: SASDeployment
+    path: spec/clientCertificate/secretKeyRef/name
+  - kind: SASDeployment
+    path: spec/caCertificate/secretKeyRef/name
+  kind: Secret
+  version: v1
+namespace:
+  - path: spec/conversion/webhook/clientConfig/service/namespace
+    group: apiextensions.k8s.io
+    version: v1
+    kind: CustomResourceDefinition
+    create: false
+  - path: spec/conversion/webhookClientConfig/service/namespace
+    group: apiextensions.k8s.io
+    version: v1beta1
+    kind: CustomResourceDefinition
+    create: false

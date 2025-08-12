@@ -1,0 +1,37 @@
+# This block of code is for changing the user that CAS runs as. By default
+# the cas container and processes run as 1001 (sas). By modifying the runAsUser
+# and runAsGroup securityContext options, you can set the user ID and group ID,
+# respectively. The user ID and group ID are only used for the CAS container and
+# not for any other containers in the pod.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-modify-user
+patch: |-
+   - op: replace
+     path: /spec/controllerTemplate/spec/securityContext/runAsUser
+     value:
+       1001
+   - op: replace
+     path: /spec/controllerTemplate/spec/securityContext/runAsGroup
+     value:
+       1001
+   - op: replace
+     path: /spec/controllerTemplate/spec/securityContext/fsGroup
+     value:
+       1001
+   - op: replace
+     path: /spec/controllerTemplate/spec/securityContext/supplementalGroups
+     value:
+       [2003,3000,3001,3002,3003,3004,3005,3006,3007]
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  # Uncomment this to apply to all CAS servers:
+  name: .*
+  # Uncomment this to apply to one particular named CAS server:
+  #name: {{ NAME-OF-SERVER }}
+  # Uncomment this to apply to the default CAS server:
+  #labelSelector: "sas.com/cas-server-default"
+  version: v1alpha1

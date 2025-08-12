@@ -1,0 +1,72 @@
+apiVersion: orchestration.sas.com/v2beta10
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-k8s-common
+    sas.com/component-version: 2.89.1-20240916.1726514392006
+  creationTimestamp: null
+  name: deploy-pre
+spec:
+  args:
+  - name: namespace
+  - name: manifest
+  - name: timeout
+  - name: serviceAccountName
+  steps:
+  - args:
+    - $operation
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    - --manifest
+    - $manifest
+    - --serviceAccountName
+    - $serviceAccountName
+    cmd: run
+    withOperations:
+      labelSelector: participate.lifecycle.sas.com/deploy-pre=true
+  - args:
+    - deploy-pre-commonfiles
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    - --manifest
+    - $manifest
+    - --serviceAccountName
+    - $serviceAccountName
+    cmd: run_when_exists
+  - args:
+    - deploy-pre-consul
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    - --manifest
+    - $manifest
+    - --serviceAccountName
+    - $serviceAccountName
+    cmd: run_when_exists
+  - args:
+    - deploy-pre-elasticsearch
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    - --manifest
+    - $manifest
+    - --serviceAccountName
+    - $serviceAccountName
+    cmd: run_when_exists
+  - args:
+    - deploy-pre-rabbitmq
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    - --manifest
+    - $manifest
+    - --serviceAccountName
+    - $serviceAccountName
+    cmd: run_when_exists

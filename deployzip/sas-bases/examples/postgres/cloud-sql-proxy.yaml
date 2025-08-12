@@ -1,0 +1,67 @@
+## Example deployment and service used to deploy Google cloud platform cloud SQL proxy
+##
+## In the following code, the locations that require user specified values are indicated by a capitalized and
+## hyphenated name set off by curly braces and a space at each end. You should replace this token with the
+## actual value.
+## Replace the curly braces, interior spaces, and the variable name.
+## For instance, "{{ CLOUD-SQL-PROXY-IMAGE-NAME }}"
+## If you use the suggested example, the correct, final syntax would be:
+##   image: "gcr.io/cloudsql-docker/gce-proxy:1.20.2"
+## 
+## For {{ POSTGRES-SERVER-NAME }}, use "platform-postgres" or "cds-postgres".
+## A separate proxy file is needed for each when both platform and cds postgres are used.
+## Customize the credential variables similarly if different for each.
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ POSTGRES-SERVER-NAME }}-sql-proxy
+  labels:
+    app: {{ POSTGRES-SERVER-NAME }}-sql-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ POSTGRES-SERVER-NAME }}-sql-proxy
+  template:
+    metadata:
+      labels:
+        app: {{ POSTGRES-SERVER-NAME }}-sql-proxy
+    spec:
+      containers:
+        - name: {{ POSTGRES-SERVER-NAME }}-sql-proxy
+          image: "{{ CLOUD-SQL-PROXY-IMAGE-NAME }}" # For example: "gcr.io/cloudsql-docker/gce-proxy:1.20.2"
+          env:
+            - name: POSTGRES_CONNECTION_NAME
+              value: "{{ CLOUD-SQL-PROXY-INSTANCE-NAME }}" # For example: "my_project:us-east1:my_sql-proxy-instance-name-f6983407"
+          command:
+            - "/cloud_sql_proxy"
+          args:
+            - "-credential_file=/secrets/cloudsql/credentials.json"
+            - "-ip_address_types=PRIVATE"
+            - "-instances=$(POSTGRES_CONNECTION_NAME)=tcp:0.0.0.0:5432"
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+      volumes:
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: sql-proxy-serviceaccountkey
+      imagePullSecrets: []
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ POSTGRES-SERVER-NAME }}-sql-proxy
+  labels:
+    app: {{ POSTGRES-SERVER-NAME }}-sql-proxy
+spec:
+  ports:
+    - name: sql
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+  selector:
+    app: {{ POSTGRES-SERVER-NAME }}-sql-proxy
+  type: ClusterIP

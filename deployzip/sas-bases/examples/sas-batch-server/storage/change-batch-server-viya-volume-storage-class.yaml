@@ -1,0 +1,31 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: delete-batch-viya-volume
+patch: |-
+  apiVersion: v1
+  kind: PodTemplate
+  metadata:
+    name: change-viya-volume-storage-class
+  template:
+    spec:
+      volumes:
+        - $patch: delete
+          name: viya
+target:
+  kind: PodTemplate
+  labelSelector: "launcher.sas.com/job-type=sas-batch-job"
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: add-batch-viya-volume
+patch: |-
+  - op: add
+    path: /template/spec/volumes/-
+    value:
+      name: viya
+      {{ VOLUME-STORAGE-CLASS }}
+target:
+  kind: PodTemplate
+  labelSelector: "launcher.sas.com/job-type=sas-batch-job"

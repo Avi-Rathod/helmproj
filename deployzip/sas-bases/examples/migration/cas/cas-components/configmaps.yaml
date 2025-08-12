@@ -1,0 +1,16 @@
+apiVersion: builtin
+kind: ConfigMapGenerator
+metadata:
+  name: cas-input
+literals:
+- CAS_INSTANCE=default
+---
+apiVersion: builtin
+kind: ConfigMapGenerator
+metadata:
+  name: sas-cas-config
+literals:
+- CASCLOUDNATIVE=1
+options:
+  labels:
+    app.kubernetes.io/part-of: cas

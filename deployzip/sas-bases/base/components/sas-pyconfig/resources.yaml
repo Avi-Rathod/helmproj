@@ -1,0 +1,186 @@
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/name: sas-pyconfig
+  name: sas-pyconfig
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app.kubernetes.io/name: sas-pyconfig
+  name: sas-pyconfig
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/name: sas-pyconfig
+  name: sas-pyconfig
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sas-pyconfig
+subjects:
+- kind: ServiceAccount
+  name: sas-pyconfig
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app.kubernetes.io/name: sas-pyconfig
+  name: sas-pyconfig
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  annotations:
+    sas.com/certificate-file-format: none
+    sas.com/component-name: sas-pyconfig
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-pyconfig
+    workload.sas.com/class: stateless
+  name: sas-pyconfig
+spec:
+  jobTemplate:
+    metadata:
+      labels:
+        sas.com/component-name: sas-pyconfig
+    spec:
+      template:
+        metadata:
+          annotations:
+            sas.com/certificate-file-format: none
+            sas.com/kustomize-base: base
+          generateName: sas-pyconfig-
+          labels:
+            app.kubernetes.io/name: sas-pyconfig
+            workload.sas.com/class: stateless
+        spec:
+          affinity:
+            nodeAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - preference:
+                  matchExpressions:
+                  - key: workload.sas.com/class
+                    operator: In
+                    values:
+                    - stateless
+                weight: 100
+              - preference:
+                  matchExpressions:
+                  - key: workload.sas.com/class
+                    operator: NotIn
+                    values:
+                    - cas
+                    - compute
+                    - stateful
+                weight: 50
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.azure.com/mode
+                    operator: NotIn
+                    values:
+                    - system
+            podAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution: []
+              requiredDuringSchedulingIgnoredDuringExecution: []
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution: []
+              requiredDuringSchedulingIgnoredDuringExecution: []
+          automountServiceAccountToken: true
+          containers:
+          - env:
+            - name: SAS_K8S_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: SAS_SPEC_NODENAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: SAS_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            image: sas-pyconfig
+            name: sas-pyconfig
+            resources:
+              limits:
+                cpu: 250m
+                memory: 250Mi
+              requests:
+                cpu: 25m
+                memory: 25Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                add: []
+                drop:
+                - ALL
+              privileged: false
+              readOnlyRootFilesystem: true
+            volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+            - mountPath: /opt/sas/viya/home/sas-pyconfig
+              name: saspyconfigvol
+          imagePullSecrets: []
+          restartPolicy: Never
+          securityContext:
+            fsGroup: 1001
+            runAsGroup: 1001
+            runAsNonRoot: true
+            runAsUser: 1001
+            seccompProfile:
+              type: RuntimeDefault
+          serviceAccountName: sas-pyconfig
+          tolerations:
+          - effect: NoSchedule
+            key: workload.sas.com/class
+            operator: Equal
+            value: stateless
+          - effect: NoSchedule
+            key: workload.sas.com/class
+            operator: Equal
+            value: stateful
+          volumes:
+          - emptyDir: {}
+            name: tmp
+          - name: saspyconfigvol
+            persistentVolumeClaim:
+              claimName: sas-pyconfig
+  schedule: '* * 30 2 *'
+  suspend: true

@@ -1,0 +1,20 @@
+# This block of code is for specifying the memory resources for sas-arke pods.
+# The default required value is 50Mi and the default limit is 500Mi.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: arke-modify-memory
+patch: |-
+  - op: replace
+    path: /spec/template/spec/containers/0/resources/requests/memory
+    value:
+      {{ MEMORY-REQUIRED }}
+  - op: replace
+    path: /spec/template/spec/containers/0/resources/limits/memory
+    value:
+      {{ MEMORY-LIMIT }}
+target:
+  kind: Deployment
+  name: sas-arke
+  version: v1

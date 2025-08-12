@@ -1,0 +1,29 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-ingress-session-cookie-samesite-transformer
+patch: |-
+  kind: Ingress
+  metadata:
+    name: wildcard
+    annotations:
+      nginx.ingress.kubernetes.io/session-cookie-samesite: "None"
+      nginx.ingress.kubernetes.io/session-cookie-conditional-samesite-none: "true"
+target:
+  annotationSelector: sas.com/kustomize-base=base
+  kind: Ingress
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-route-session-cookie-samesite-transformer
+patch: |-
+  kind: Route
+  metadata:
+    name: wildcard
+    annotations:
+      router.openshift.io/cookie-same-site: "None"
+target:
+  annotationSelector: sas.com/kustomize-base=base
+  kind: Route

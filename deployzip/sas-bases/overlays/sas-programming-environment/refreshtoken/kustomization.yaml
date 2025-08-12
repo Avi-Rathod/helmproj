@@ -1,0 +1,4 @@
+resources:
+- enable-refreshtoken-compute.yaml
+- enable-refreshtoken-connect.yaml
+- enable-refreshtoken-batch.yaml

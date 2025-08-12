@@ -1,0 +1,11 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: change-sas-compute-http-request-timeout
+patch: |-
+  - op: replace
+    path: /data/SAS_HTTP_CLIENT_TIMEOUT_REQUEST
+    value: {{ TIMEOUT }}s
+target:
+  kind: ConfigMap
+  name: sas-compute-config

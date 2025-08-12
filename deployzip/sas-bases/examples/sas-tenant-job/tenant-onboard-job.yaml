@@ -1,0 +1,35 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    run: sas-tenant-onboard-job
+  name: sas-tenant-onboard-job-{{ JOB-TAG }}
+spec:
+  template:
+    spec:
+      serviceAccountName: sas-tenant-job
+      imagePullSecrets: []
+      containers:
+      - name: sas-tenant-onboard
+        image: sas-tenant-job
+        imagePullPolicy: Always
+        env:
+          - name: SAS_TENANT_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: TENANT_LIFECYCLE_ACTION
+            value: onboard
+          - name: SAS_TENANT_IDS
+            value: "{{ SAS-TENANT-IDS }}"
+          - name: SAS_LOG_LEVEL
+            value: INFO
+          - name: SAS_PROVIDER_PASSWORD
+            value: {{ SAS-PROVIDER-PASSWORD }}
+        envFrom: []
+        volumeMounts: []
+      initContainers: []
+      volumes: []
+      restartPolicy: Never
+  backoffLimit: 0

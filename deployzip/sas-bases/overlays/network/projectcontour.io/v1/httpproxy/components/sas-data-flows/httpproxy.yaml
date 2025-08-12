@@ -1,0 +1,34 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-flows
+    sas.com/admin: namespace
+  name: sas-data-flows
+spec:
+  routes:
+  - conditions:
+    - prefix: /dataFlows
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /dataFlows/
+    services:
+    - name: sas-data-flows
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /dataFlows/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-data-flows
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

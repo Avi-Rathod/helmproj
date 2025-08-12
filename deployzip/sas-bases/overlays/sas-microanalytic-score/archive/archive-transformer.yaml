@@ -1,0 +1,22 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: mas-archive-transformer
+patch: |-
+  # archive volume
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: archive-volume
+      persistentVolumeClaim:
+        claimName: sas-microanalytic-score-archive
+  - op: add
+    path: /spec/template/spec/containers/0/volumeMounts/-
+    value:
+      name: archive-volume
+      mountPath: /opt/sas/viya/config/var/log/microanalyticservice/default/archive
+target:
+  group: apps
+  kind: Deployment
+  name: sas-microanalytic-score
+  version: v1

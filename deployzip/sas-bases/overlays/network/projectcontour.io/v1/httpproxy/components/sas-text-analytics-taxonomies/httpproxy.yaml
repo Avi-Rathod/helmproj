@@ -1,0 +1,68 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-category-taxonomy
+    sas.com/admin: namespace
+  name: sas-category-taxonomy
+spec:
+  routes:
+  - conditions:
+    - prefix: /categoryTaxonomy
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /categoryTaxonomy/
+    services:
+    - name: sas-category-taxonomy
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /categoryTaxonomy/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-category-taxonomy
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-concept-taxonomy
+    sas.com/admin: namespace
+  name: sas-concept-taxonomy
+spec:
+  routes:
+  - conditions:
+    - prefix: /conceptTaxonomy
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /conceptTaxonomy/
+    services:
+    - name: sas-concept-taxonomy
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /conceptTaxonomy/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-concept-taxonomy
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

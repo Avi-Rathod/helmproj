@@ -1,0 +1,5 @@
+resources:
+- platform-postgres-dataserver.yaml
+
+configurations:
+- kustomizeconfig.yaml

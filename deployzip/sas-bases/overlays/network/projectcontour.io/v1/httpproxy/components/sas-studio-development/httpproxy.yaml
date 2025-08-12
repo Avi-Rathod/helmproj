@@ -1,0 +1,34 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-studio-development
+    sas.com/admin: namespace
+  name: sas-studio-development
+spec:
+  routes:
+  - conditions:
+    - prefix: /studioDevelopment
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /studioDevelopment/
+    services:
+    - name: sas-studio-development
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /studioDevelopment/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-studio-development
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

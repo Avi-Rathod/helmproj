@@ -1,0 +1,5 @@
+resources:
+- install/singlenamespace
+
+transformers:
+  - rename-deployments-transformer.yaml

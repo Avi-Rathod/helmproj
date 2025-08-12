@@ -1,0 +1,116 @@
+###############################################################################
+# Kustomize patch configuration to add SSSD container to sas-connect-spawner
+# deployment to enable SSSD configurations.
+# See README.md for more information.
+###############################################################################
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: add-sssd-container-no-tls
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1pod-uses-sssd
+    value: "true"
+  - op: add
+    path: /spec/template/spec/containers/-
+    value:
+      env:
+        - name: SAS_K8S_DEPLOYMENT_NAME
+          value: "sas-sssd-server"
+      image: sas-sssd-server
+      name: sssd
+      lifecycle:
+        preStop:
+          exec:
+            command: ["bash", "-c", "kill -SIGKILL $(ps -Af | grep '/opt/sas/viya/home/bin/consul-template'  | grep -v grep | awk '{print $2}')", "kill -SIGKILL $(ps -Af | grep '/sbin/sssd'  | grep -v grep | awk '{print $2}')"]
+      securityContext:
+        runAsGroup: 0
+        runAsUser: 0
+        readOnlyRootFilesystem: false
+        allowPrivilegeEscalation: true
+        privileged: false
+      resources:
+        limits:
+          cpu: 500m
+          memory: 256Mi
+        requests:
+          cpu: 75m
+          memory: 64Mi
+      envFrom:
+        - configMapRef:
+            name: sas-shared-config
+        - configMapRef:
+            name: sas-java-config
+        - secretRef:
+            name: sas-consul-client
+      volumeMounts:
+        - mountPath: /var/lib/sss
+          name: sss
+  # The sssd sidecar container has to run as root
+  - op: replace
+    path: /spec/template/spec/securityContext/runAsNonRoot
+    value: false
+target:
+  version: v1
+  group: apps
+  kind: Deployment
+  name: sas-connect-spawner
+  annotationSelector: sas.com/tls-mode notin (full-stack, front-door, truststores-only)
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: add-sssd-container-tls
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1pod-uses-sssd
+    value: "true"
+  - op: add
+    path: /spec/template/spec/containers/-
+    value:
+      env:
+        - name: SAS_K8S_DEPLOYMENT_NAME
+          value: "sas-sssd-server"
+        - name: SSL_CERT_FILE
+          value: /security/trustedcerts.pem
+      image: sas-sssd-server
+      name: sssd
+      lifecycle:
+        preStop:
+          exec:
+            command: ["bash", "-c", "kill -SIGKILL $(ps -Af | grep '/opt/sas/viya/home/bin/consul-template'  | grep -v grep | awk '{print $2}')", "kill -SIGKILL $(ps -Af | grep '/sbin/sssd'  | grep -v grep | awk '{print $2}')"]
+      securityContext:
+        runAsGroup: 0
+        runAsUser: 0
+        readOnlyRootFilesystem: false
+        allowPrivilegeEscalation: true
+        privileged: false
+      resources:
+        limits:
+          cpu: 500m
+          memory: 256Mi
+        requests:
+          cpu: 75m
+          memory: 64Mi
+      envFrom:
+        - configMapRef:
+            name: sas-shared-config
+        - configMapRef:
+            name: sas-java-config
+        - secretRef:
+            name: sas-consul-client
+      volumeMounts:
+        - mountPath: /var/lib/sss
+          name: sss
+        - mountPath: /security
+          name: security
+  # The sssd sidecar container has to run as root
+  - op: replace
+    path: /spec/template/spec/securityContext/runAsNonRoot
+    value: false
+target:
+  version: v1
+  group: apps
+  kind: Deployment
+  name: sas-connect-spawner
+  annotationSelector: sas.com/tls-mode in (full-stack, front-door, truststores-only)

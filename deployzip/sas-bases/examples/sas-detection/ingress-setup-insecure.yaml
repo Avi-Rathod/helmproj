@@ -1,0 +1,110 @@
+---
+########################################################################
+# Create Service for scr
+########################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: sas-sda-scr-{{ ORGANIZATION }}
+  namespace: {{ NAMESPACE }}
+  labels:
+    app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080 # port other services in the cluster use to communicate with this service
+      targetPort: 8080 # port exposed by this service
+      protocol: TCP # IP protoocl for this port. Supported values: TCP, UDP, SCTP. Default is TCP
+  selector:
+    app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
+---
+########################################################################
+# Create Service for sas-detection
+########################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: sas-sda-scr-detection-{{ ORGANIZATION }}
+  namespace: {{ NAMESPACE }}
+  labels:
+    app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8777 # port other services in the cluster use to communicate with this service
+      targetPort: 8777 # port exposed by this service
+      protocol: TCP # IP protoocl for this port. Supported values: TCP, UDP, SCTP. Default is TCP
+  selector:
+    app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
+---
+########################################################################
+# create Ingress for SCR container
+########################################################################
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sas-sda-scr-{{ ORGANIZATION }}
+  namespace: {{ NAMESPACE }}
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
+    nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  labels:
+    app.kubernetes.io/name: sas-sda-scr-{{ ORGANIZATION }}
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: sas-sda-scr-{{ ORGANIZATION }}
+      port:
+        number: 8080
+  rules:
+    # example: user.ingress-nginx.example.sas.com
+    - host: "{{ ORGANIZATION} }}.{{ INGRESS-TYPE }}.{{ HOST }}"
+      http:
+        paths:
+          - path: "/decisionModule(/|$)(.*)"
+            pathType: Prefix
+            backend:
+              service:
+                name: sas-sda-scr-{{ ORGANIZATION }}
+                port:
+                  number: 8080
+---
+########################################################################
+# create TLS Disabled Ingress for sas-detection container
+########################################################################
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sas-sda-scr-detection-{{ ORGANIZATION }}
+  namespace: {{ NAMESPACE }}
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
+    nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  labels:
+    app.kubernetes.io/name: sas-sda-scr-detection-{{ ORGANIZATION }}
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: sas-sda-scr-detection-{{ ORGANIZATION }}
+      port:
+        number: 8777
+  rules:
+    # example: user.ingress-nginx.example.sas.com
+    - host: "{{ ORGANIZATION }}.{{ INGRESS-TYPE }}.{{ HOST }}"
+      http:
+        paths:
+            - path: "/detection(/|$)(.*)"
+              pathType: Prefix
+              backend:
+                service:
+                  name: sas-sda-scr-detection-{{ ORGANIZATION }}
+                  port:
+                    number: 8777

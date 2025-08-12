@@ -1,0 +1,1625 @@
+
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-43d63244e1a96d36
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-3ac4a91e296819e1
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/args
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-9569e2883059f16c
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/ports
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-fbee3cbd7ce3a023
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/envFrom
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-daab98c8a9f558d3
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/env
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-64905d1c4b89f6a2
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/resizePolicy
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c371c614f56d9cb5
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/volumeDevices
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c9d3a98479ce2eb0
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/securityContext/capabilities/add
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-8fd55551d811d8db
+patch: |-
+  - op: add
+    path: /spec/template/spec/ephemeralContainers
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-5a8f476df8cba855
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/sysctls
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-d3ed5624894c3ddb
+patch: |-
+  - op: add
+    path: /spec/template/spec/imagePullSecrets
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-5d1ded1e0daa68d8
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchFields
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-bbb239cba5b93747
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/preference/matchFields
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-815ad5a293c4de16
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/1/preference/matchFields
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-32f7b4dc9533ad5e
+patch: |-
+  - op: add
+    path: /spec/template/spec/hostAliases
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-4f4e6b9b27ea7fb0
+patch: |-
+  - op: add
+    path: /spec/template/spec/readinessGates
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-1b27c80c6b2a6036
+patch: |-
+  - op: add
+    path: /spec/template/spec/topologySpreadConstraints
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-36a7311b85cd2c9e
+patch: |-
+  - op: add
+    path: /spec/template/spec/schedulingGates
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-bef2756620bd2585
+patch: |-
+  - op: add
+    path: /spec/template/spec/resourceClaims
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-44cb532a4fd01424
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-023c10fbfc9e7953
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/args
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2292e3488cafdc0a
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/ports
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-eb7aa0eba6eef325
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/envFrom
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-ef8d5f1e9c4d3515
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/env
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-8e10b8d15093f5e0
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/resizePolicy
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-87ba3d4de0b0c827
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/volumeDevices
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-8887f19f9753a13e
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/securityContext/capabilities/add
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-de05f856ced7b69d
+patch: |-
+  - op: add
+    path: /spec/template/spec/ephemeralContainers
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-d027585d946e54c7
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/sysctls
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-221df92980121b9d
+patch: |-
+  - op: add
+    path: /spec/template/spec/imagePullSecrets
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-0ead1ac9d144ee66
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchFields
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c6ab50cd943496e9
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/preference/matchFields
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-21a5e36548405784
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/1/preference/matchFields
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-85b07fadaeda54ac
+patch: |-
+  - op: add
+    path: /spec/template/spec/hostAliases
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-0e02b3b6456ff23e
+patch: |-
+  - op: add
+    path: /spec/template/spec/readinessGates
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-1c1ce8f1d9510724
+patch: |-
+  - op: add
+    path: /spec/template/spec/topologySpreadConstraints
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-bb6cdbd097b0c9ec
+patch: |-
+  - op: add
+    path: /spec/template/spec/schedulingGates
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-40331c479ee3d877
+patch: |-
+  - op: add
+    path: /spec/template/spec/resourceClaims
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-06c566575f64daf9
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-4651e423eb4c7a76
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/args
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2fd9affd1a050547
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/ports
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-a2368f30cf1f8610
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/envFrom
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-3d5bb14655dbab00
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/env
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-629e0fcf0b97ddf5
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/resizePolicy
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-19ce23b410b44f6a
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/volumeDevices
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-dc8a1bba6334763b
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/securityContext/capabilities/add
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-513adb12cfda7b88
+patch: |-
+  - op: add
+    path: /spec/template/spec/ephemeralContainers
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c990d5acfcc0c603
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/supplementalGroups
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c2e08ba907192b8a
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/sysctls
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-9552dbe58114e088
+patch: |-
+  - op: add
+    path: /spec/template/spec/imagePullSecrets
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-e631344851c5e3c3
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchFields
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-6cc234c8eb25c214
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/preference/matchFields
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-35dc080b6e626559
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/1/preference/matchFields
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-86e2f38a7b795ba1
+patch: |-
+  - op: add
+    path: /spec/template/spec/hostAliases
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-6204ddd11150c73b
+patch: |-
+  - op: add
+    path: /spec/template/spec/readinessGates
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-de16fc1ee8e5cdf9
+patch: |-
+  - op: add
+    path: /spec/template/spec/topologySpreadConstraints
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2df730d12e9080e1
+patch: |-
+  - op: add
+    path: /spec/template/spec/schedulingGates
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-1ed2938045299f7a
+patch: |-
+  - op: add
+    path: /spec/template/spec/resourceClaims
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-cds-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-8e533a0a1941dd43
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-708e3e0b621e06a2
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/args
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-aac0ae14544bf5a1
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/ports
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-3b265486782edf14
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/envFrom
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-a099b7c9fcf56de4
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/env
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-d91691fdf97d6457
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/resizePolicy
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-43151f64e690ff9e
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/volumeDevices
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-91f19622a38d79dd
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/securityContext/capabilities/add
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-30310250159362cc
+patch: |-
+  - op: add
+    path: /spec/template/spec/ephemeralContainers
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-1e652ef29cbef63e
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/sysctls
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-18825782f7fa71cc
+patch: |-
+  - op: add
+    path: /spec/template/spec/imagePullSecrets
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-b677ebf33b1c8f45
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchFields
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-8c1aefb0b1b887d0
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/preference/matchFields
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-f0fab1df93fea9a3
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/1/preference/matchFields
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-8fed9c81eb9adf2b
+patch: |-
+  - op: add
+    path: /spec/template/spec/hostAliases
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-b743e149b10accdd
+patch: |-
+  - op: add
+    path: /spec/template/spec/readinessGates
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-523d0895a7bdd643
+patch: |-
+  - op: add
+    path: /spec/template/spec/topologySpreadConstraints
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-70b3e09b5a9bd36b
+patch: |-
+  - op: add
+    path: /spec/template/spec/schedulingGates
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-0fe5c264f648984e
+patch: |-
+  - op: add
+    path: /spec/template/spec/resourceClaims
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-backrest-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-6c793dbc3a6b6545
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-9a0e99c0672805e0
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/args
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-9a3844d67cbe9913
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/ports
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-b8658d0814325752
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/envFrom
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-b3cf3ea61dbd4462
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/env
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-50f016e2a71544b9
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/resizePolicy
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c7daca19f8749cec
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/volumeDevices
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-dfc2443fc103b16f
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/securityContext/capabilities/add
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-45b5c896c843b8ea
+patch: |-
+  - op: add
+    path: /spec/template/spec/ephemeralContainers
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-9919a90e5898dd0c
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/sysctls
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2e071dc9aaaac7ea
+patch: |-
+  - op: add
+    path: /spec/template/spec/imagePullSecrets
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-1e21c0b313724f37
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchFields
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-af12e99d7e08e4de
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/preference/matchFields
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-e087160dbe09fca5
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/1/preference/matchFields
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-96e17afedbcc6f6d
+patch: |-
+  - op: add
+    path: /spec/template/spec/hostAliases
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-05148f66ce81046f
+patch: |-
+  - op: add
+    path: /spec/template/spec/readinessGates
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-30630c47c8e75e45
+patch: |-
+  - op: add
+    path: /spec/template/spec/topologySpreadConstraints
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-53d74585d7628cad
+patch: |-
+  - op: add
+    path: /spec/template/spec/schedulingGates
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-843049853c88c15c
+patch: |-
+  - op: add
+    path: /spec/template/spec/resourceClaims
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v4-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-d1abc913e9d4e430
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-6e9bf0be222bedf5
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/args
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-b1dadaf84ffb6b36
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/ports
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-90994e35c3ea1cef
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/envFrom
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-3c6a0ae5522b2f7f
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/env
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-ef5cbd8414b0efe4
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/resizePolicy
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-3a651f1a8f5453e1
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/volumeDevices
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-078e8312114bebd2
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/securityContext/capabilities/add
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-b3a1e230984031a7
+patch: |-
+  - op: add
+    path: /spec/template/spec/ephemeralContainers
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-060e005001c9227a
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/supplementalGroups
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-9190783afa0e0f81
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/sysctls
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-9bf337637aa740a7
+patch: |-
+  - op: add
+    path: /spec/template/spec/imagePullSecrets
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-5d83f1ac0e237d3a
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchFields
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-1d9f6a03c6759edb
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/preference/matchFields
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-97430452e63a8f90
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/1/preference/matchFields
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-7e86480794b01818
+patch: |-
+  - op: add
+    path: /spec/template/spec/hostAliases
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2ce0ce391ec93ed2
+patch: |-
+  - op: add
+    path: /spec/template/spec/readinessGates
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-9595979f7850dd30
+patch: |-
+  - op: add
+    path: /spec/template/spec/topologySpreadConstraints
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-9a5d685f58384558
+patch: |-
+  - op: add
+    path: /spec/template/spec/schedulingGates
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2cf0ba241420df51
+patch: |-
+  - op: add
+    path: /spec/template/spec/resourceClaims
+    value: []
+target:
+  group: batch
+  kind: Job
+  name: sas-crunchy-platform-postgres-fix-v5-postgres-job
+  version: v1

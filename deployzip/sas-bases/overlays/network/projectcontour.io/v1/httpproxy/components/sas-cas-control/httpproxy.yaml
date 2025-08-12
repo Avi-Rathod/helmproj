@@ -1,0 +1,170 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-access-management
+    sas.com/admin: namespace
+  name: sas-cas-access-management
+spec:
+  routes:
+  - conditions:
+    - prefix: /casAccessManagement
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /casAccessManagement/
+    services:
+    - name: sas-cas-access-management
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /casAccessManagement/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-cas-access-management
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-formats
+    sas.com/admin: namespace
+  name: sas-cas-formats
+spec:
+  routes:
+  - conditions:
+    - prefix: /casFormats
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /casFormats/
+    services:
+    - name: sas-cas-formats
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /casFormats/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-cas-formats
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-management
+    sas.com/admin: namespace
+  name: sas-cas-management
+spec:
+  routes:
+  - conditions:
+    - prefix: /casManagement
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /casManagement/
+    services:
+    - name: sas-cas-management
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /casManagement/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-cas-management
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-proxy
+    sas.com/admin: namespace
+  name: sas-cas-proxy
+spec:
+  routes:
+  - conditions:
+    - prefix: /casProxy
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /casProxy/
+    services:
+    - name: sas-cas-proxy
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /casProxy/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-cas-proxy
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-cas-row-sets
+    sas.com/admin: namespace
+  name: sas-cas-row-sets
+spec:
+  routes:
+  - conditions:
+    - prefix: /casRowSets
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /casRowSets/
+    services:
+    - name: sas-cas-row-sets
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /casRowSets/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-cas-row-sets
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

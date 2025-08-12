@@ -1,0 +1,20 @@
+###################################################################################
+# Kustomize patch configuration to modify the check intervals in the 
+# sas-prepull-paratemets configmap. See README.md for more information.
+###############################################################################
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-prepull-change-interval-values
+patch: |-
+  - op: replace
+    path: /data/SAS_PREPULL_DAEMON_INT
+    value: {{ DOUBLE-QUOTED-VALUE-IN-SECONDS }}
+  - op: replace
+    path: /data/SAS_PREPULL_CRCRB_INT
+    value: {{ DOUBLE-QUOTED-VALUE-IN-SECONDS }}
+target:
+  version: v1
+  kind: ConfigMap
+  name: sas-prepull-parameters

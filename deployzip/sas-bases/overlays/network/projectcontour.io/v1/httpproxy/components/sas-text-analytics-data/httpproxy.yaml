@@ -1,0 +1,102 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-documents
+    sas.com/admin: namespace
+  name: sas-documents
+spec:
+  routes:
+  - conditions:
+    - prefix: /documents
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /documents/
+    services:
+    - name: sas-documents
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /documents/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-documents
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-terms-management
+    sas.com/admin: namespace
+  name: sas-terms-management
+spec:
+  routes:
+  - conditions:
+    - prefix: /termsManagement
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /termsManagement/
+    services:
+    - name: sas-terms-management
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /termsManagement/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-terms-management
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-topic-management
+    sas.com/admin: namespace
+  name: sas-topic-management
+spec:
+  routes:
+  - conditions:
+    - prefix: /topicManagement
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /topicManagement/
+    services:
+    - name: sas-topic-management
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /topicManagement/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-topic-management
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

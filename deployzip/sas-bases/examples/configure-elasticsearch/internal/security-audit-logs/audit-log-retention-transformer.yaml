@@ -1,0 +1,25 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-opendistro-audit-log-retention-transformer
+patch: |-
+  - op: add
+    path: /spec/auditLogRetention
+    value: {}
+  - op: replace
+    path: /spec/auditLogRetention/indexRetentionPeriod
+    value: "7d"
+  - op: replace
+    path: /spec/auditLogRetention/enableIndexCleanup 
+    value: true
+  - op: replace
+    path: /spec/auditLogRetention/enableISMPolicyHistory 
+    value: true
+  - op: replace
+    path: /spec/auditLogRetention/ismLogRetentionPeriod
+    value: "7d"
+  - op: replace
+    path: /spec/auditLogRetention/ismPriority
+    value: 50
+target:
+  kind: OpenDistroCluster

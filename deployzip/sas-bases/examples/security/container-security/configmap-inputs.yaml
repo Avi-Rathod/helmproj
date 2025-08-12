@@ -1,0 +1,17 @@
+## Example ConfigMap that defines the fsGroup value.
+##
+## The location that requires a user specified value is indicated by a capitalized and
+## name set off by curly braces and a space at each end. Replace this token with the
+## actual value. Replace the curly braces, interior spaces, and the variable name.
+## For instance, {{ FSGROUP_VALUE }} should be replaced by the desired fsgroup value.
+## Example:
+##   fsGroup: "1000700000"
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: security-container-security-inputs
+  labels:
+    sas.com/admin: none
+data:
+  fsGroup: "{{ FSGROUP_VALUE }}"

@@ -1,0 +1,102 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-report-templates
+    sas.com/admin: namespace
+  name: sas-report-templates
+spec:
+  routes:
+  - conditions:
+    - prefix: /reportTemplates
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /reportTemplates/
+    services:
+    - name: sas-report-templates
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /reportTemplates/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-report-templates
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-report-transforms
+    sas.com/admin: namespace
+  name: sas-report-transforms
+spec:
+  routes:
+  - conditions:
+    - prefix: /reportTransforms
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /reportTransforms/
+    services:
+    - name: sas-report-transforms
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /reportTransforms/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-report-transforms
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-reports
+    sas.com/admin: namespace
+  name: sas-reports
+spec:
+  routes:
+  - conditions:
+    - prefix: /reports
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /reports/
+    services:
+    - name: sas-reports
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /reports/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-reports
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

@@ -1,0 +1,41 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-office-addin-app
+spec:
+  host: sas-office-addin-app
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /SASOfficeAddin/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-office-addin-app
+    sas.com/admin: namespace
+  name: sas-office-addin-app
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /SASOfficeAddin
+    - uri:
+        prefix: /SASOfficeAddin/
+    route:
+    - destination:
+        host: sas-office-addin-app
+    timeout: 300s
+

@@ -1,0 +1,18 @@
+#######################################################################
+# The following is a path file that can be used to disable the SAS
+# Workload Orchestrator daemonset set using the following command:
+#
+# 'kubectl patch daemonset sas-workload-orchestrator --patch-file /<path>/<to>/sas-workload-orchestrator-patch-daemonset-disable.yaml'
+#######################################################################
+spec:
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - none

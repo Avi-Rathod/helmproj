@@ -1,0 +1,6 @@
+apiVersion: builtin
+kind: ConfigMapGenerator
+metadata:
+  name: sas-files-customdb
+literals:
+- DATABASE_NAME=azureblob

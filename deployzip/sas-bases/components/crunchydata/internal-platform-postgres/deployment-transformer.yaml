@@ -1,0 +1,11 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: platform-postgres-deployment-transformer
+patch: |-
+  - op: add
+    path: /metadata/annotations/sas.com~1crunchy-platform-postgres
+    value: "true"
+target:
+  kind: Deployment
+  name: pgo

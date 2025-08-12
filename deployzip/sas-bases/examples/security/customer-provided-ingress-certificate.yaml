@@ -1,0 +1,42 @@
+## Example SecretGenerator to generate the secret to be used by the ingress controller
+##
+## In the following code, the locations that require user specified values are indicated by a capitalized and
+## hyphenated name set off by curly braces and a space at each end. You should replace this token with the
+## actual value.
+## Replace the curly braces, interior spaces, and the variable name.
+## For instance, "{{ INGRESS_CERTIFICATE_FILE_NAME }}"
+## should be replaced by the path to a .pem file containing your ingress certificate.
+## If you use the suggested example directory structure, the correct, final syntax would resemble the following:
+## - tls.crt=site-config/security/sas-ingress-certificate.pem
+## - tls.key=site-config/security/sas-ingress.key
+## - ca.crt=site-config/security/sas-ingress-CA-certificate.pem
+##
+##  Special Note:  the name of the Kubernetes secret which will contain the certificate and key can be
+##  renamed.  However, the name provided below "sas-ingress-certificate" is referenced in other kustomization
+##  files.  If you change the name below, you will need to change all the other references: All the ingress objects' spec.tls.secretName
+##  and the sas-certframe-ingress-certificate-config config map's SAS_INGRESS_CERTIFICATE_SECRET_NAME environment variable.
+##  Use the sas-bases/overlays/network/ingress/security/transformers/ingress-tls-transformers.yaml as guidance.
+---
+apiVersion: builtin
+kind: SecretGenerator
+metadata:
+  name: sas-ingress-certificate
+## This file specifies the certificate and key to be used by the Ingress controller.
+## The files named below must exist in a directory under your kustomization.yaml prior to running the 'kustomize build' command, and
+## they must be readable by the user ID that is running the kustomize command.
+## The tls.crt certificate file contains the server identity certificate plus all intermediate CA certificates in the chain between it
+## and the root CA certificate. Certificates are ordered according to issuer hierarchy. The hierarchy starts with the server identity
+## certificate, which is followed by its issuer, then followed by its issuer and so on, up to and including the root CA certificate.
+## SAS recommends including the root CA certificate as the last certificate in the tls.crt file.  While not strictly required, this makes it
+## more convenient for clients to obtain the root CA certificate.
+## The ca.crt certificate file contains the root CA certificate that is the issuer of the ingress server identity certificate. SAS recommends
+## redundantly including the root CA certificate in both the tls.crt file and the ca.crt file. Unless your ingress certificate was issued by
+## one of the public CA certificates distributed by https://www.mozilla.org, then it must either be included in this file or via the mechanism
+## documented in the security README.md section labeled "Incorporating Additional CA Certificates".
+## The certificates and key will be copied into the Kubernetes secret named above.
+## The files can be deleted after you run the 'kustomize build' command with the modified kustomization files in place.
+files:
+  - tls.crt={{ INGRESS_CERTIFICATE_FILE_NAME }} # For example: site-config/security/sas-ingress-certificate.pem
+  - tls.key={{ INGRESS_KEY_FILE_NAME }} # For example: site-config/security/sas-ingress-key.pem
+  - ca.crt={{ INGRESS_CA_CERTIFICATE_FILE_NAME }} # For example: site-config/security/sas-ingress-ca-certificate.pem
+type: "kubernetes.io/tls"

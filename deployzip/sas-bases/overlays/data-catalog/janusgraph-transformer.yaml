@@ -1,0 +1,7 @@
+###############################################################################
+## Kustomize patch configuration to enable the Janusgraph backend for 
+## SAS Data Catalog.
+## See README.md for more information.
+###############################################################################
+
+# This file is intentionally empty since Janusgraph is no longer supported.

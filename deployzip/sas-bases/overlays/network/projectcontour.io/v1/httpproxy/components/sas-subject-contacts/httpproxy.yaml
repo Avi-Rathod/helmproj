@@ -1,0 +1,34 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-subject-contacts
+    sas.com/admin: namespace
+  name: sas-subject-contacts
+spec:
+  routes:
+  - conditions:
+    - prefix: /subjectContacts
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /subjectContacts/
+    services:
+    - name: sas-subject-contacts
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /subjectContacts/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-subject-contacts
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

@@ -1,0 +1,15 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-set-qkb-defaults
+patch: |-
+  - op: replace
+    path: /spec/controllerTemplate/spec/containers/0/env/3/value
+    value: "QKB NAME"
+  - op: replace
+    path: /spec/controllerTemplate/spec/containers/0/env/2/value
+    value: "ENUSA"
+target:
+  kind: CASDeployment
+  group: viya.sas.com

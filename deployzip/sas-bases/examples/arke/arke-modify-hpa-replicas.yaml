@@ -1,0 +1,27 @@
+# This block of code is for modifying the HorizontalPodAutoscaler
+# for sas-arke. The default values for minimum replicas is 1,
+# max replicas is 2 and CPU utilization is 800. We recommend
+# keeping the averageUtilization at 80% of the CPU limit.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: arke-modify-hpa-replicas
+patch: |-
+  - op: replace
+    path: /spec/maxReplicas
+    value:
+      {{ MAX-REPLICAS }}
+  - op: replace
+    path: /spec/minReplicas
+    value:
+      {{ MIN-REPLICAS }}
+  - op: replace
+    path: /spec/metrics/0/resource/target/averageUtilization
+    value:
+      {{ CPU-UTILIZATION }}
+target:
+  kind: HorizontalPodAutoscaler
+  name: sas-arke
+  version: v2
+  group: autoscaling

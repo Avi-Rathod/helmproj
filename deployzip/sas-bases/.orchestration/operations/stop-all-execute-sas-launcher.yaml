@@ -1,0 +1,38 @@
+apiVersion: orchestration.sas.com/v2beta15
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-launcher
+    sas.com/component-version: 1.90.2-20240920.1726846518073
+  creationTimestamp: null
+  labels:
+    participate.lifecycle.sas.com/stop-all-execute-phase-0: "true"
+  name: stop-all-execute-sas-launcher
+spec:
+  args:
+  - name: namespace
+  - default: 7200s
+    name: timeout
+  steps:
+  - args:
+    - --namespace
+    - $namespace
+    - delete
+    - job
+    - --selector
+    - sas.com/created-by=sas-launcher
+    - --wait
+    - --timeout
+    - $timeout
+    cmd: kubectl
+  - args:
+    - --namespace
+    - $namespace
+    - delete
+    - pod
+    - --selector
+    - sas.com/created-by=sas-launcher
+    - --wait
+    - --timeout
+    - $timeout
+    cmd: kubectl

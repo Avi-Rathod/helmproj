@@ -1,0 +1,11 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: deny-set-options-variables
+patch: |-
+  - op: add
+    path: /data/SAS_OPTIONS_SET_DENY_LIST
+    value: "{{ OPTIONS-SET-DENY-LIST }}"
+target:
+  kind: ConfigMap
+  name: sas-programming-environment-path-config

@@ -1,0 +1,92 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-jobDefinitions
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-job-definitions
+    sas.com/admin: namespace
+  name: sas-job-definitions
+spec:
+  host: $(INGRESS_HOST)
+  path: /jobDefinitions
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-job-definitions
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-jobDefinitions
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-job-definitions
+    sas.com/admin: namespace
+  name: sas-job-definitions-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /jobDefinitions
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-job-definitions
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-jobExecution
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-job-execution
+    sas.com/admin: namespace
+  name: sas-job-execution
+spec:
+  host: $(INGRESS_HOST)
+  path: /jobExecution
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-job-execution
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-jobExecution
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-job-execution
+    sas.com/admin: namespace
+  name: sas-job-execution-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /jobExecution
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-job-execution
+  wildcardPolicy: Subdomain
+

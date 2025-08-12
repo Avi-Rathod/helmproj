@@ -1,0 +1,136 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-crossdomainproxy
+    sas.com/admin: namespace
+  name: sas-crossdomainproxy
+spec:
+  routes:
+  - conditions:
+    - prefix: /crossdomainproxy
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /crossdomainproxy/
+    services:
+    - name: sas-crossdomainproxy
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /crossdomainproxy/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-crossdomainproxy
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-geo-enrichment
+    sas.com/admin: namespace
+  name: sas-geo-enrichment
+spec:
+  routes:
+  - conditions:
+    - prefix: /geoEnrichment
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /geoEnrichment/
+    services:
+    - name: sas-geo-enrichment
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /geoEnrichment/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-geo-enrichment
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-maps
+    sas.com/admin: namespace
+  name: sas-maps
+spec:
+  routes:
+  - conditions:
+    - prefix: /maps
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /maps/
+    services:
+    - name: sas-maps
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /maps/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-maps
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-web-data-access
+    sas.com/admin: namespace
+  name: sas-web-data-access
+spec:
+  routes:
+  - conditions:
+    - prefix: /webDataAccess
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /webDataAccess/
+    services:
+    - name: sas-web-data-access
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /webDataAccess/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-web-data-access
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

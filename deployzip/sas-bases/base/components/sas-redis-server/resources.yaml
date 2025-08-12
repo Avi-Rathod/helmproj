@@ -1,0 +1,175 @@
+
+---
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/kustomize-base: base
+    sas.com/pod-uses-liveness-probe: exec
+    sas.com/pod-uses-readiness-probe: exec
+    sas.com/pod-uses-startup-probe: exec
+  labels:
+    sas.com/admin: namespace
+    workload.sas.com/class: stateful
+  name: sas-redis-server
+template:
+  metadata:
+    annotations:
+      sas.com/certificate-file-format: pem
+      sas.com/kustomize-base: base
+      sas.com/pod-uses-liveness-probe: exec
+      sas.com/pod-uses-readiness-probe: exec
+      sas.com/pod-uses-startup-probe: exec
+    labels:
+      workload.sas.com/class: stateful
+  spec:
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - stateful
+          weight: 100
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: NotIn
+              values:
+              - stateless
+              - cas
+              - compute
+          weight: 50
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.azure.com/mode
+              operator: NotIn
+              values:
+              - system
+      podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+              - key: statefulSet
+                operator: In
+                values:
+                - replacedByOperator
+            topologyKey: kubernetes.io/hostname
+          weight: 100
+        - podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+              - key: managed-by
+                operator: In
+                values:
+                - redis-cluster-operator
+            topologyKey: kubernetes.io/hostname
+          weight: 10
+        requiredDuringSchedulingIgnoredDuringExecution: []
+    automountServiceAccountToken: false
+    containers:
+    - command:
+      - /usr/local/bin/tini
+      - --
+      - docker-entrypoint.sh
+      - redis-server
+      - /opt/sas/viya/config/redis/redis.conf
+      - --cluster-enabled yes
+      - --cluster-config-file /data/nodes.conf
+      env:
+      - name: POD_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.podIP
+      - name: HOSTNAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      envFrom:
+      - secretRef:
+          name: sas-redis-server-secret
+      - configMapRef:
+          name: sas-go-config
+      - secretRef:
+          name: sas-consul-client
+      image: sas-redis-server
+      lifecycle:
+        preStop:
+          exec:
+            command:
+            - /opt/sas/viya/home/sbin/shutdown.sh
+      livenessProbe:
+        exec:
+          command:
+          - /opt/sas/viya/home/sbin/liveness.sh
+        initialDelaySeconds: 5
+        periodSeconds: 30
+        timeoutSeconds: 10
+      name: sas-redis-server
+      ports:
+      - containerPort: 6379
+        name: tcp
+        protocol: TCP
+      - containerPort: 16379
+        name: gossip
+        protocol: TCP
+      readinessProbe:
+        exec:
+          command:
+          - /opt/sas/viya/home/sbin/readiness.sh
+        initialDelaySeconds: 5
+        timeoutSeconds: 10
+      resources:
+        limits:
+          cpu: "1"
+          memory: 500Mi
+        requests:
+          cpu: 50m
+          memory: 300Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          add: []
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      startupProbe:
+        exec:
+          command:
+          - /opt/sas/viya/home/sbin/liveness.sh
+        failureThreshold: 30
+        periodSeconds: 10
+        timeoutSeconds: 10
+      volumeMounts:
+      - mountPath: /opt/sas/viya/config/redis/includes
+        name: redis-config
+        subPath: includes
+    imagePullSecrets: []
+    initContainers: []
+    restartPolicy: Always
+    securityContext:
+      fsGroup: 1001
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    tolerations:
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: stateful
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: stateless
+    volumes:
+    - emptyDir: {}
+      name: redis-config

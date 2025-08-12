@@ -1,0 +1,46 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-analyticsExecution
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-execution
+    sas.com/admin: namespace
+  name: sas-analytics-execution
+spec:
+  host: $(INGRESS_HOST)
+  path: /analyticsExecution
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-analytics-execution
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-analyticsExecution
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-execution
+    sas.com/admin: namespace
+  name: sas-analytics-execution-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /analyticsExecution
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-analytics-execution
+  wildcardPolicy: Subdomain
+

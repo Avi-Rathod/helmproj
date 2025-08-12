@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" href="sas.css"/>
+        <title>Configure Kaniko for SAS Decisions Runtime Builder Service</title>
+    </head>
+    <body>
+        <h1 id="140345099398928configure-kaniko-for-sas-decisions-runtime-builder-service">Configure Kaniko for SAS Decisions Runtime Builder Service</h1>
+<h2 id="140345099398928overview">Overview</h2>
+<p>Kaniko is a tool that is used to build container images from a Dockerfile without depending on a Docker daemon. The Kaniko can build a container image in Kubernetes and then push the built image to the container registry for a specific destination.</p>
+<p>The Decisions Runtime Builder service then loads a pod template from the sas-decisions-runtime-builder-kaniko-job-config (as defined in updateJobtemplate.yaml) and dynamically constructs a job specification. The job specification helps mount the directories in the Kaniko container.</p>
+<p>The Kaniko container is started after a batch job is executed. The Decisions Runtime Builder service checks the job status every 30 seconds. The job times out after 30 minutes, if it has not completed.</p>
+<h2 id="140345099398928prerequisites">Prerequisites</h2>
+<p>If you are deploying in a Red Hat OpenShift cluster, use the following command to link the service account to run as the root user.</p>
+<pre class="highlight"><code class="language-yaml">oc -n {{ NAME-OF-NAMESPACE }} adm policy add-scc-to-user anyuid -z sas-decisions-runtime-builder-kaniko</code></pre>
+
+<h2 id="140345099398928installation">Installation</h2>
+<ol>
+<li>
+<p>Copy the files in the <code>$deploy/sas-bases/examples/sas-decisions-runtime-builder/kaniko</code> directory to the <code>$deploy/site-config/sas-decisions-runtime-builder/kaniko</code> directory. Create the destination directory, if it does not already exist.</p>
+</li>
+<li>
+<p>Modify the parameters in the $deploy/site-config/sas-decisions-runtime-builder/kaniko/storage.yaml file. For more information about PersistentVolume Claims (PVCs), see <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims">Persistent Volume Claims on Kubernetes</a>.</p>
+<ul>
+<li>Replace {{ STORAGE-CAPACITY }} with the amount of storage required.</li>
+<li>Replace {{ STORAGE-CLASS-NAME }} with the appropriate storage class from the cloud provider that supports ReadWriteMany access mode.</li>
+</ul>
+</li>
+<li>
+<p>Make the following changes to the base kustomization.yaml file in the $deploy directory.</p>
+<ul>
+<li>Add site-config/sas-decisions-runtime-builder/kaniko to the resources block.</li>
+<li>Add sas-bases/overlays/sas-decisions-runtime-builder/kaniko/kaniko-transformer.yaml to the transformers block. Here is an example:</li>
+</ul>
+<pre class="highlight"><code class="language-yaml">resources:
+  - site-config/sas-decisions-runtime-builder/kaniko
+
+transformers:
+  - sas-bases/overlays/sas-decisions-runtime-builder/kaniko/kaniko-transformer.yaml</code></pre>
+
+</li>
+<li>
+<p>Complete the deployment steps to apply the new settings. See <a href="http://documentation.sas.com/?cdcId=itopscdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=p127f6y30iimr6n17x2xe9vlt54q.htm">Deploy the Software</a> in <em>SAS Viya platform: Deployment Guide</em>.</p>
+</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> This overlay can be applied during the initial deployment of the SAS Viya platform or after the deployment of the SAS Viya platform.</p>
+</blockquote>
+<ul>
+<li>If you are applying the overlay during the initial deployment of the SAS Viya platform, complete all the tasks in the README files that you want to use, and then run <code>kustomize build</code> to create and apply the manifests.</li>
+<li>If the overlay is applied after the initial deployment of the SAS Viya platform, run <code>kustomize build</code> to create and apply the manifests.</li>
+</ul>
+<h2 id="140345099398928verify-the-overlay-for-kaniko">Verify the Overlay for Kaniko</h2>
+<p>Run the following command to verify whether the overlays have been applied. It the overlay is applied, it shows a podTemplate named &lsquo;sas-decisions-runtime-builder-kaniko-job-config&rsquo;.</p>
+<pre class="highlight"><code class="language-sh">kubectl get podTemplates  | grep sas-decisions-runtime-buider-kaniko-job-config</code></pre>
+
+<h2 id="140345099398928additional-resources">Additional Resources</h2>
+<ul>
+<li><a href="http://documentation.sas.com/?cdcId=itopscdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=titlepage.htm">SAS Viya platform: Deployment Guide</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims">Persistent Volume Claims on Kubernetes</a></li>
+<li><a href="http://documentation.sas.com/?cdcId=mdlmgrcdc&amp;cdcVersion=default&amp;docsetId=mdlmgrag&amp;docsetTarget=n0x0rvwqs9lvpun16sfdqoff4tsk.htm">Configuring Publishing Destinations</a> in the <em>SAS Model Manager: Administrator&rsquo;s Guide</em></li>
+</ul>
+    </body>
+</html>

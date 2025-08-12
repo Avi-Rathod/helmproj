@@ -1,0 +1,136 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-catalog
+    sas.com/admin: namespace
+  name: sas-catalog
+spec:
+  routes:
+  - conditions:
+    - prefix: /catalog
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /catalog/
+    services:
+    - name: sas-catalog
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /catalog/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-catalog
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-catalog-table-bot
+    sas.com/admin: namespace
+  name: sas-catalog-table-bot
+spec:
+  routes:
+  - conditions:
+    - prefix: /catalogTableBot
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /catalogTableBot/
+    services:
+    - name: sas-catalog-table-bot
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /catalogTableBot/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-catalog-table-bot
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-glossary
+    sas.com/admin: namespace
+  name: sas-glossary
+spec:
+  routes:
+  - conditions:
+    - prefix: /glossary
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /glossary/
+    services:
+    - name: sas-glossary
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /glossary/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-glossary
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-relationships
+    sas.com/admin: namespace
+  name: sas-relationships
+spec:
+  routes:
+  - conditions:
+    - prefix: /relationships
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /relationships/
+    services:
+    - name: sas-relationships
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /relationships/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-relationships
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

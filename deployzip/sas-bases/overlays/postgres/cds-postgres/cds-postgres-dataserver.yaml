@@ -1,0 +1,21 @@
+apiVersion: webinfdsvr.sas.com/v1beta1
+kind: DataServer
+metadata:
+  name: sas-cds-postgres
+spec:
+  ssl: false
+  registrations:
+    - serviceName: sas-cdspostgres
+      dataServiceName: cdspostgres
+      host: sas-crunchy-cds-postgres-primary
+      port: 5432
+  users:
+    - name: dbmsowner
+      credentials:
+        input:
+          secretRef:
+            name: sas-crunchy-cds-postgres-pguser-dbmsowner
+          usernameKey: user
+          passwordKey: password
+  databases:
+    - name: SharedServices

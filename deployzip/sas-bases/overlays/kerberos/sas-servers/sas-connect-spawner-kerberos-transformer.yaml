@@ -1,0 +1,40 @@
+# This block of code is for setting up Kerberos support
+# for SAS/Connect Spawner for utilizing external client connections.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-connect-spawner-kerberos
+patch: |-
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: sas-connect-spawner-kerberos-secrets-volume
+      secret:
+        secretName: sas-connect-spawner-kerberos-secrets
+  - op: add
+    path: /spec/template/spec/containers/0/volumeMounts/-
+    value:
+      name: sas-connect-spawner-kerberos-secrets-volume
+      mountPath: /opt/kerberos
+      readOnly: true
+  - op: add
+    path: /spec/template/spec/containers/0/volumeMounts/-
+    value:
+      mountPath: /var/tmp
+      name: var-tmp
+  - op: add
+    path: /spec/template/spec/containers/0/envFrom/-
+    value:
+      configMapRef:
+        name: sas-connect-spawner-kerberos-config
+  - op: add
+    path: /spec/template/spec/containers/0/envFrom/-
+    value:
+      configMapRef:
+        name: sas-servers-kerberos-container-config
+target:
+  version: v1
+  group: apps
+  kind: Deployment
+  name: sas-connect-spawner

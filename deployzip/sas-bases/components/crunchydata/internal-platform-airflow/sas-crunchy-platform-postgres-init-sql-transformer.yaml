@@ -1,0 +1,15 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-crunchy-platform-postgres-init-sql-transformer
+patch: |-
+  - op: add
+    path: /spec/databaseInitSQL
+    value:
+      key: init.sql
+      name: airflow-init-sql
+target:
+  group: postgres-operator.crunchydata.com
+  kind: PostgresCluster
+  version: v1beta1
+  name: sas-crunchy-platform-postgres

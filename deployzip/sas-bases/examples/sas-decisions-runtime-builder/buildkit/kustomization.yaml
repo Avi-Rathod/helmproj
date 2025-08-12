@@ -1,0 +1,10 @@
+resources:
+  - updateJobtemplate.yaml
+  - sa.yaml
+  - storage.yaml
+  - buildkit-client-certs.yaml
+  - buildkit-daemon-certs.yaml
+  - buildkitd.yaml
+  - publish-job-template.yaml
+  - publish-sa.yaml
+  - publish-storage.yaml

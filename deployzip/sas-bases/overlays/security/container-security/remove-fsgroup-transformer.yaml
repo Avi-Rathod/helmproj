@@ -1,0 +1,59 @@
+#Delete fsgroup from all statefulset pods
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: remove-fsgroup-securitycontext-statefulset
+patch: |-
+  - op: replace
+    path: /spec/template/spec/securityContext/fsGroup
+    value: 1001
+  - op: remove
+    path: /spec/template/spec/securityContext/fsGroup
+target:
+  kind: StatefulSet
+
+#Delete fsgroup from batch jobs
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: remove-fsgroup-securitycontext-sas-commonfiles
+patch: |-
+  - op: replace
+    path: /spec/template/spec/securityContext/fsGroup
+    value: 1001
+  - op: remove
+    path: /spec/template/spec/securityContext/fsGroup
+target:
+  kind: Job
+
+#Delete fsgroup from elasticsearch operator spec
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-opendistro-fsgroup-transformer
+patch: |-
+  - op: replace
+    path: /spec/template/spec/securityContext/fsGroup
+    value: 1000
+  - op: remove
+    path: /spec/template/spec/securityContext/fsGroup
+target:
+  kind: OpenDistroCluster
+
+#Delete fsgroup from cas operator spec
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: update-sas-cas-server-fsgroup-transformer
+patch: |-
+  - op: replace
+    path: /spec/controllerTemplate/spec/securityContext/fsGroup
+    value: 1001
+  - op: remove
+    path: /spec/controllerTemplate/spec/securityContext/fsGroup
+target:
+  kind: CASDeployment

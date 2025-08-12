@@ -1,0 +1,37 @@
+# General example for adding mounts to SAS Micro Analytic Service
+# PatchTransformer
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: data-mounts-mas
+patch: |-
+  ## NFS path example - kubernetes will mount these for you
+  - op: add
+    path: /spec/template/spec/containers/0/volumeMounts/-
+    value:
+      name: {{ DB2_CLIENT_DIR_NAME }}   #for example, db2client
+      mountPath: {{ DB2_CLIENT_DIR_MOUNT_PATH }}   #for example, "/db2client"
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: {{ DB2_CLIENT_DIR_NAME }}   #for example, db2client
+      nfs:
+        path: {{ DB2_CLIENT_DIR_PATH }}   #for example, /shared/gelcontent/access-clients/db2client
+        server: {{ DB2_CLIENT_DIR_SERVER_NAME }}  #for example, cloud.example.com
+  - op: add
+    path: /spec/template/spec/containers/0/volumeMounts/-
+    value:
+      name: {{ DB2_CONFIGURED_DIR_NAME }}   #for example, db2
+      mountPath: {{DB2_CONFIGURED_DIR_MOUNT_PATH}}   #for example, "/db2"
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: {{ DB2_CONFIGURED_DIR_NAME }}   #for example, db2
+      nfs:
+        path: {{ DB2_CONFIGURED_DIR_PATH }}   #for example, /shared/gelcontent/access-clients/db2
+        server: {{ DB2_CONFIGURED_DIR_SERVER_NAME }}  #for example, cloud.example.com
+target:
+  group: apps
+  kind: Deployment
+  name: sas-microanalytic-score
+  version: v1

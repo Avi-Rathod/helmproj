@@ -1,0 +1,41 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-subject-contacts
+spec:
+  host: sas-subject-contacts
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /subjectContacts/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-subject-contacts
+    sas.com/admin: namespace
+  name: sas-subject-contacts
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /subjectContacts
+    - uri:
+        prefix: /subjectContacts/
+    route:
+    - destination:
+        host: sas-subject-contacts
+    timeout: 300s
+

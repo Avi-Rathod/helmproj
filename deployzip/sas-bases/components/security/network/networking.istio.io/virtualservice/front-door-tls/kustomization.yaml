@@ -1,0 +1,5 @@
+kind: Component
+
+transformers:
+- sas-certframe-transformers.yaml
+

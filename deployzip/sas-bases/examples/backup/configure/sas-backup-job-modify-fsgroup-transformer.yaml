@@ -1,0 +1,26 @@
+## Example PatchTransformer to update the fsgroup value.
+##
+## In the following code, the locations that require user specified values are indicated by a capitalized and
+## hyphenated name set off by curly braces and a space at each end. You should replace this token with the
+## actual value.
+## Replace the curly braces, interior spaces, and the variable name.
+## For instance, "{{ FSGROUP_VALUE }}"
+## should be replaced by the desired fsgroup value
+## The correct, final syntax would include a value within the allowed range, such as:
+## value: 1001
+##
+##
+
+# Update fsgroup for sas-backup-job and sas-restore-job
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-backup-job-modify-fsgroup-resources-transformer
+patch: |-
+  - op: replace
+    path: /spec/jobTemplate/spec/template/spec/securityContext/fsGroup
+    value: {{ FSGROUP_VALUE }}
+target:
+  kind: CronJob
+  labelselector: sas.com/backup-job-type in (scheduled-backup, scheduled-backup-incremental, restore, purge-backup, sas-backup-pv-copy-cleanup)
+  version: v1

@@ -1,0 +1,33 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    run: sas-tenant-resetpw-job
+  name: sas-tenant-resetpw-job-{{ JOB-TAG }}
+spec:
+  template:
+    spec:
+      serviceAccountName: sas-tenant-job
+      imagePullSecrets: []
+      containers:
+      - name: sas-tenant-resetpw
+        image: sas-tenant-job
+        imagePullPolicy: Always
+        env:
+          - name: SAS_TENANT_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: TENANT_LIFECYCLE_ACTION
+            value: resetsasproviderpw
+          - name: SAS_TENANT_IDS
+            value: "{{ SAS-TENANT-IDS }}"
+          - name: SAS_LOG_LEVEL
+            value: INFO
+        envFrom: []
+        volumeMounts: []
+      initContainers: []
+      volumes: []
+      restartPolicy: Never
+  backoffLimit: 0

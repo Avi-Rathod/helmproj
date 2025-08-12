@@ -1,0 +1,11 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-shared-config-disable-admin-script-access
+patch: |-
+  - op: replace
+    path: /data/SAS_ALLOW_ADMIN_SCRIPTS
+    value: "false"
+target:
+  kind: ConfigMap
+  name: sas-shared-config

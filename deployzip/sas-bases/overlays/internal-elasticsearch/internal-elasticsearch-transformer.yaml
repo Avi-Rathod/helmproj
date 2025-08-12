@@ -1,0 +1,30 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-internal-elasticsearch-client-config-transformer
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: SAS_ELASTICSEARCH_USERNAME
+      valueFrom:
+        secretKeyRef:
+          key: username
+          name: sas-opendistro-sasadmin-secret
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: SAS_ELASTICSEARCH_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          key: password
+          name: sas-opendistro-sasadmin-secret
+  - op: add
+    path: /spec/template/spec/containers/0/envFrom/-
+    value:
+      configMapRef:
+        name: sas-opendistro-client-config
+target:
+  group: apps
+  annotationSelector: sas.com/elasticsearch-consumer

@@ -1,0 +1,29 @@
+# This block of code is for adding a volume and volumemount for the CAS DISK CACHE location.
+# To be valid, the sas-bases/overlays/sas-programming-environment/personal-cas-server transformer
+# must be enabled, and must precede the inclusion of this example.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: personal-cas-cache-hostpath
+patch: |-
+  - op: add
+    path: /template/spec/volumes/-
+    value:
+      name: cas-cache-nvme0
+      hostPath: # # hostPath, is the path on the host, outside the pod
+        path: {{/mnt-nvme0}}
+  - op: add
+    path: /template/spec/containers/1/volumeMounts/-
+    value:
+      name: cas-cache-nvme0
+      mountPath: /cas/cache-nvme0 # # mountPath is what it will be mounted as, inside the pod
+  - op: add
+    path: /template/spec/containers/1/env/-
+    value:
+      name: CASENV_CAS_DISK_CACHE
+      value: "/cas/cache-nvme0" # # This has to match the value that is inside the pod
+target:
+  version: v1
+  kind: PodTemplate
+  name: sas-compute-job-config

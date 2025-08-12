@@ -1,0 +1,23 @@
+apiVersion: webinfdsvr.sas.com/v1beta1
+kind: DataServer
+metadata:
+  name: sas-platform-postgres
+  annotations:
+    sas.com/default-database: "true"
+spec:
+  ssl: false
+  registrations:
+    - serviceName: sas-postgres
+      dataServiceName: postgres
+      host: sas-crunchy-platform-postgres-primary
+      port: 5432
+  users:
+    - name: dbmsowner
+      credentials:
+        input:
+          secretRef:
+            name: sas-crunchy-platform-postgres-pguser-dbmsowner
+          usernameKey: user
+          passwordKey: password
+  databases:
+    - name: SharedServices

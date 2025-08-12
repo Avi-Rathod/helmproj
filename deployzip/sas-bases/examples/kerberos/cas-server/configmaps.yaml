@@ -1,0 +1,18 @@
+apiVersion: builtin
+kind: ConfigMapGenerator
+metadata:
+  name: cas-server-kerberos-config
+literals:
+  - KRB5_KTNAME=/opt/kerberos/keytab
+
+  # Used to specify the principal name in the keytab used by cas
+  - CAS_SERVER_PRINCIPAL={{ SPN }} # SPN from keytab file
+
+  # HTTP SPN used for the krb5 proxy sidecar container. It is recommended
+  # in Viya 4 to use the same keytab and SPN for both the CAS Server and the krb5
+  # proxy for consistency and to allow direct kerberos connections to the
+  # REST port.
+  - SAS_KRB5_PROXY_SPN={{ HTTP_SPN }} # HTTP SPN from keytab
+
+  # Produce caches using the default format: krb5cc_<UID>_<RANDOM>
+  - CASUSEDEFAULTCACHE=1

@@ -1,0 +1,92 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-dataDiscovery
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-discovery
+    sas.com/admin: namespace
+  name: sas-data-discovery
+spec:
+  host: $(INGRESS_HOST)
+  path: /dataDiscovery
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-data-discovery
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-dataDiscovery
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-discovery
+    sas.com/admin: namespace
+  name: sas-data-discovery-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /dataDiscovery
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-data-discovery
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-discoveryTableProvider
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-discovery-table-provider
+    sas.com/admin: namespace
+  name: sas-discovery-table-provider
+spec:
+  host: $(INGRESS_HOST)
+  path: /discoveryTableProvider
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-discovery-table-provider
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-discoveryTableProvider
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-discovery-table-provider
+    sas.com/admin: namespace
+  name: sas-discovery-table-provider-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /discoveryTableProvider
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-discovery-table-provider
+  wildcardPolicy: Subdomain
+

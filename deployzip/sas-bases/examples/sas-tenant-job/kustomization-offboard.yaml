@@ -1,0 +1,8 @@
+---
+namespace: {{ VIYA-DEPLOYMENT-NAMESPACE }}
+resources:
+- tenant-offboard-job.yaml
+
+transformers:
+- tenant-offboard-job-tls-transformer.yaml  # Comment out, if Viya environment is TLS disable
+- ../../sas-bases/overlays/required/transformers.yaml

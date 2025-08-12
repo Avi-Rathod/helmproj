@@ -1,0 +1,56 @@
+# This is an example transformer to customize Crunchy PostgreSQL pgBackRest backup config settings.
+# Note: It is NOT for SAS Backup BUT for the internal Crunchy Postgres pgBackRest backup utility.
+#
+# Uncomment the sections you want to update.
+#
+# The variables to replace:
+# - {{ CLUSTER-NAME }} is the name of the PostgresCluster. Valid values are:
+#    - sas-crunchy-platform-postgres for platform Postgres cluster
+#    - sas-crunchy-cds-postgres for CDS Postgres cluster
+#    - .* for both clusters. In this case, use a unique name like 'both-clusters' for the transformer metadata name
+#    - If different settings are needed for each cluster, then separate transformers must be created:
+#        one for Platform Postgres, and the other for CDS Postgres.
+# - {{ FULL-BACKUP-CRONJOB }} is the schedule for full backups in Cron syntax
+#    - The default is every Sunday morning at 06:00 UTC ('0 6 * * 0')
+# - {{ INCR-BACKUP-CRONJOB }} is the schedule for incremental backups in Cron syntax
+#    - The default is every morning at 06:00 UTC except Sundays ('0 6 * * 1-6')
+# - {{ RETENTION-FULL-BACKUP }} is the number of full backups to retain. It must be a string, so quote the number as '2'.
+#    - By default, it is "1" to retain only one full backup
+# - {{ RETENTION-ARCHIVE-TYPE }} and {{ RETENTION-ARCHIVE }} to control WAL data to retain.
+#    - By default, it is 'incr' and '1' to retain one 'incr' backup worth of WAL data. They must be strings, so quote the number as '1'.
+#    - The default backups automatically scheduled are weekly full backups and daily incremental backups,
+#      so the meaningful values for the backup types are 'full' and 'incr'.
+#    - The default settings are aimed to minimize the space consumption by WAL data which takes up much bigger space than backups.
+#    - The drawback of the default settings is to limit Point-In-Time-Recovery to the level of the 'incr' backup instead of the WAL data level.
+#
+# To replace a variable, replace the curly braces, interior spaces, and the variable name with an actual value.
+#
+# For more information on pgBackRest, see pgBackRest User Guide at https://pgbackrest.org/user-guide-rhel.html or pgBackRest Command Reference at https://pgbackrest.org/command.html.
+# See $deploy/sas-bases/examples/crunchydata/backup/README.md for how to include this transformer to the base kustomization file.
+
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: {{ CLUSTER-NAME }}-crunchy-pgbackrest-backup-config-transformer
+patch: |-
+  #- op: replace
+  #  path: /spec/backups/pgbackrest/repos/0/schedules/full
+  #  value: {{ FULL-BACKUP-CRONJOB }}
+  #- op: replace
+  #  path: /spec/backups/pgbackrest/repos/0/schedules/incremental
+  #  value: {{ INCR-BACKUP-CRONJOB }}
+  - op: replace
+    path: /spec/backups/pgbackrest/global/repo1-retention-full
+    value: {{ RETENTION-FULL-BACKUP }}
+  #- op: replace
+  #  path: /spec/backups/pgbackrest/global/repo1-retention-archive-type
+  #  value: {{ RETENTION-ARCHIVE-TYPE }}
+  #- op: replace
+  #  path: /spec/backups/pgbackrest/global/repo1-retention-archive
+  #  value: {{ RETENTION-ARCHIVE }}
+target:
+  group: postgres-operator.crunchydata.com
+  kind: PostgresCluster
+  version: v1beta1
+  name: {{ CLUSTER-NAME }}
+

@@ -1,0 +1,24 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: single-tenant-colocated-rbac-rules
+patch: |-
+  - op: add
+    path: /rules/-
+    value:
+      apiGroups: [ "" ]
+      resources: [ "secrets" ]
+      verbs: [ "create", "get", "list", "update" ]
+  - op: add
+    path: /rules/-
+    value:
+      apiGroups: [ "" ]
+      resources: [ "pods" ]
+      verbs: [ "get", "list" ]
+target:
+  group: rbac.authorization.k8s.io
+  kind: Role
+  version: v1
+  annotationSelector: sas.com/component-name in (sas-data-agent-server-colocated,sas-data-agent-server-tenant)
+---

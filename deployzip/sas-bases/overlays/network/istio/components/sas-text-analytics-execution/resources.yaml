@@ -1,0 +1,41 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-text-analytics-execution
+spec:
+  host: sas-text-analytics-execution
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /textAnalyticsExecution/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-text-analytics-execution
+    sas.com/admin: namespace
+  name: sas-text-analytics-execution
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /textAnalyticsExecution
+    - uri:
+        prefix: /textAnalyticsExecution/
+    route:
+    - destination:
+        host: sas-text-analytics-execution
+    timeout: 300s
+

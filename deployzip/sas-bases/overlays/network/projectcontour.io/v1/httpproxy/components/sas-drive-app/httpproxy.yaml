@@ -1,0 +1,46 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-drive-app
+    sas.com/admin: namespace
+  name: sas-drive-app
+spec:
+  routes:
+  - conditions:
+    - prefix: /SASDrive
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /SASDrive/
+    services:
+    - name: sas-drive-app
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /SASDrive/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-drive-app
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /SASDrive/
+    services:
+    - name: sas-drive-app
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

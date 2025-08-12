@@ -1,0 +1,164 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-crossdomainproxy
+spec:
+  host: sas-crossdomainproxy
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /crossdomainproxy/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-geo-enrichment
+spec:
+  host: sas-geo-enrichment
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /geoEnrichment/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-maps
+spec:
+  host: sas-maps
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /maps/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-web-data-access
+spec:
+  host: sas-web-data-access
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /webDataAccess/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-crossdomainproxy
+    sas.com/admin: namespace
+  name: sas-crossdomainproxy
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /crossdomainproxy
+    - uri:
+        prefix: /crossdomainproxy/
+    route:
+    - destination:
+        host: sas-crossdomainproxy
+    timeout: 300s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-geo-enrichment
+    sas.com/admin: namespace
+  name: sas-geo-enrichment
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /geoEnrichment
+    - uri:
+        prefix: /geoEnrichment/
+    route:
+    - destination:
+        host: sas-geo-enrichment
+    timeout: 300s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-maps
+    sas.com/admin: namespace
+  name: sas-maps
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /maps
+    - uri:
+        prefix: /maps/
+    route:
+    - destination:
+        host: sas-maps
+    timeout: 300s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-web-data-access
+    sas.com/admin: namespace
+  name: sas-web-data-access
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /webDataAccess
+    - uri:
+        prefix: /webDataAccess/
+    route:
+    - destination:
+        host: sas-web-data-access
+    timeout: 300s
+

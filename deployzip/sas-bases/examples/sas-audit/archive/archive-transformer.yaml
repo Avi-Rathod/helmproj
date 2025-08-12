@@ -1,0 +1,21 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: archive-transformer
+patch: |-
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: audit-archive-volume
+      persistentVolumeClaim:
+        claimName: audit-archive-pvc
+  - op: add
+    path: /spec/template/spec/containers/0/volumeMounts/-
+    value:
+      name: audit-archive-volume
+      mountPath: /archive
+target:
+  group: apps
+  kind: Deployment
+  name: sas-audit
+  version: v1

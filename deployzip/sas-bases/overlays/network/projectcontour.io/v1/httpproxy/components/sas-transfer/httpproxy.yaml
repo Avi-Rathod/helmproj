@@ -1,0 +1,34 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-transfer
+    sas.com/admin: namespace
+  name: sas-transfer
+spec:
+  routes:
+  - conditions:
+    - prefix: /transfer
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /transfer/
+    services:
+    - name: sas-transfer
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /transfer/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-transfer
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

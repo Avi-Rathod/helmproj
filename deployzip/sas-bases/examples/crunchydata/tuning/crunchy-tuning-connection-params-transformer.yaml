@@ -1,0 +1,34 @@
+# This is an example transformer to customize PostgreSQL configurations for max_connections and its related parameter.
+# The variables to replace:
+# - {{ CLUSTER-NAME }} is the name of the PostgresCluster. Valid values are:
+#    - sas-crunchy-platform-postgres for platform Postgres cluster
+#    - sas-crunchy-cds-postgres for CDS Postgres cluster
+#    - .* for both clusters. In this case, use a unique name like 'both-clusters' for the transformer metadata name
+#    - If different settings are needed for each cluster, then separate transformers must be created:
+#        one for Platform Postgres, and the other for CDS Postgres.
+# - {{ MAX-CONNECTIONS }} is the calculated numeric value as shown by SAS Viya Platform Deployment Guide at http://documentation.sas.com/?cdcId=itopscdc&cdcVersion=default&docsetId=dplyml0phy0dkr&docsetTarget=titlepage.htm&locale=en.
+# - {{ MAX-PREPARED-TRANSACTIONS }} is the same value as {{ MAX-CONNECTIONS }}
+#
+# NOTE: max_connections and max_prepared_transactions must go together.
+#
+# To replace a variable, replace the curly braces, interior spaces, and the variable name with an actual value.
+#
+# See the PostgreSQL Server Configuration documentation at https://www.postgresql.org/docs/12/config-setting.html for the complete list of PostgreSQL configuration parameters.
+# See $deploy/sas-bases/examples/crunchydata/tuning/README.md for how to include this transformer to the base kustomization file.
+
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: {{ CLUSTER-NAME }}-crunchy-tuning-connection-transformer
+patch: |-
+  - op: replace
+    path: /spec/patroni/dynamicConfiguration/postgresql/parameters/max_connections
+    value: {{ MAX-CONNECTIONS }}
+  - op: replace
+    path: /spec/patroni/dynamicConfiguration/postgresql/parameters/max_prepared_transactions
+    value: {{ MAX-PREPARED-TRANSACTIONS }}
+target:
+  group: postgres-operator.crunchydata.com
+  kind: PostgresCluster
+  version: v1beta1
+  name: {{ CLUSTER-NAME }}

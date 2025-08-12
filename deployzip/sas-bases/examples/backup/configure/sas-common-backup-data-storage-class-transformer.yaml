@@ -1,0 +1,14 @@
+#   # NOTE:
+#   # STORAGE-CLASS-NAME should be the name of a StorageClass that has a ReclaimPolicy value of 'Retain'.
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-common-backup-data-storage-class-transformer
+patch: |-
+  - op: replace
+    path: /spec/storageClassName
+    value: {{ STORAGE-CLASS-NAME }}
+target:
+  kind: PersistentVolumeClaim
+  labelSelector: sas.com/backup-role=storage
+  version: v1

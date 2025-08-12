@@ -1,0 +1,28 @@
+apiVersion: orchestration.sas.com/v2beta10
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-k8s-common
+    sas.com/component-version: 2.89.1-20240916.1726514392006
+  creationTimestamp: null
+  name: deploy-stage
+spec:
+  args:
+  - name: namespace
+  - name: manifest
+  - name: timeout
+  - name: serviceAccountName
+  steps:
+  - args:
+    - $operation
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    - --manifest
+    - $manifest
+    - --serviceAccountName
+    - $serviceAccountName
+    cmd: run
+    withOperations:
+      labelSelector: participate.lifecycle.sas.com/deploy-stage=true

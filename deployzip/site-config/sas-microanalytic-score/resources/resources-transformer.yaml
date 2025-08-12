@@ -1,0 +1,26 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: mas-resource-transformer
+patch: |-
+  #Change required memory
+  - op: replace
+    path: /spec/template/spec/containers/0/resources/requests/memory
+    value: {{ MEMORY-REQUIRED }}
+  #Change Memory upper limit
+  - op: replace
+    path: /spec/template/spec/containers/0/resources/limits/memory
+    value: {{ MEMORY-LIMIT }}                                    
+  #Change required cpu 
+  - op: replace
+    path: /spec/template/spec/containers/0/resources/requests/cpu
+    value: {{ CPU-REQUIRED }}
+  #Change cpu upper limit
+  - op: replace
+    path: /spec/template/spec/containers/0/resources/limits/cpu
+    value: {{ CPU-LIMIT }}                                                            
+target:
+  group: apps
+  kind: Deployment
+  name: sas-microanalytic-score
+  version: v1

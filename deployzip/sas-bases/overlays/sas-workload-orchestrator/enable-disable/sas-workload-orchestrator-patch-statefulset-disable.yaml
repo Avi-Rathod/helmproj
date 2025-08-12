@@ -1,0 +1,8 @@
+#######################################################################
+# The following is a path file that can be used to disable the SAS
+# Workload Orchestrator stateful set using the following command:
+#
+# 'kubectl patch statefulset sas-workload-orchestrator --patch-file /<path>/<to>/sas-workload-orchestrator-patch-statefulset-disable.yaml'
+#######################################################################
+spec:
+  replicas: 0

@@ -1,0 +1,46 @@
+# PatchTransformer to enable support for state transfer
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-support-state-transfer
+patch: |-
+  - op: add
+    path: /spec/supportStateTransfer
+    value: true
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/env/-
+    value:
+      name: K8S_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  # This applies to the default CAS server:
+  labelSelector: "sas.com/cas-server-default"
+  version: v1alpha1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-state-transfer-mount
+patch: |-
+  - op: add
+    path: /spec/controllerTemplate/spec/volumes/-
+    value:
+      name: cas-default-transfer-volume
+      persistentVolumeClaim:
+        claimName: sas-cas-transfer-data
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/volumeMounts/-
+    value:
+      name: cas-default-transfer-volume
+      mountPath: /cas/transferdir
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  # This applies to the default CAS server:
+  labelSelector: "sas.com/cas-server-default"
+  version: v1alpha1

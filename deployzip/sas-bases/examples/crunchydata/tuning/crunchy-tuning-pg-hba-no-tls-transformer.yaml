@@ -1,0 +1,28 @@
+# This is an example transformer to customize PostgreSQL configurations for pg_hba.conf to allow non-TLS connections.
+# The variable:
+# - {{ CLUSTER-NAME }} is the name of the PostgresCluster. Valid values are:
+#    - sas-crunchy-platform-postgres for platform Postgres cluster
+#    - sas-crunchy-cds-postgres for CDS Postgres cluster
+#    - .* for both clusters. In this case, use a unique name like 'both-clusters' for the transformer metadata name
+#    - If different settings are needed for each cluster, then separate transformers must be created:
+#        one for Platform Postgres, and the other for CDS Postgres.
+#
+# To replace a variable, replace the curly braces, interior spaces, and the variable name with an actual value.
+#
+# See https://www.postgresql.org/docs/12/auth-pg-hba-conf.html for PostgreSQL Client Host-Based Authentication documentation.
+# See $deploy/sas-bases/examples/crunchydata/tuning/README.md for how to include this transformer to the base kustomization file.
+
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: {{ CLUSTER-NAME }}-crunchy-tuning-hba-no-tls-transformer
+patch: |-
+  - op: replace
+    path: /spec/patroni/dynamicConfiguration/postgresql/pg_hba
+    value:
+          - "hostnossl all all all md5"
+target:
+  group: postgres-operator.crunchydata.com
+  kind: PostgresCluster
+  version: v1beta1
+  name: {{ CLUSTER-NAME }}

@@ -1,0 +1,64 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: enable-gpu-processing
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/env/-
+    value:
+      name: NVIDIA_DRIVER_CAPABILITIES
+      value: all
+  - op: add
+    path: /template/spec/containers/0/env/-
+    value:
+      name: NVIDIA_REQUIRE_CUDA
+      value: "brand=quadro brand=tesla arch=pascal arch=volta arch=turing driver>=410.48"
+  - op: add
+    path: /template/spec/containers/0/env/-
+    value:
+      name: SAS_USE_LOCAL_SASGPUD
+      value: "True"
+  - op: add
+    path: /template/spec/containers/0/env/-
+    value:
+      name: SASGPUD_LOG_TYPE
+      value: "error"
+target:
+  kind: PodTemplate
+  labelSelector: "sas.com/template-intent=sas-launcher"
+---
+# Add additional mount
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: spre-sasgpud-mount
+patch: |-
+  - op: add
+    path: /template/spec/volumes/-
+    value:
+      name: sasgpud-volume
+      emptyDir: {}
+  - op: add
+    path: /template/spec/containers/0/volumeMounts/-
+    value:
+      name: sasgpud-volume
+      mountPath: /var/tmp/sasgpud
+target:
+  kind: PodTemplate
+  labelSelector: "sas.com/template-intent=sas-launcher"
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: spre-modify-gpu
+patch: |-
+   - op: add
+     path: /template/spec/containers/0/resources
+     value:
+       requests:
+         nvidia.com/gpu: 1
+       limits:
+         nvidia.com/gpu: 1
+target:
+  kind: PodTemplate
+  labelSelector: "sas.com/template-intent=sas-launcher"

@@ -1,0 +1,168 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-connections
+    sas.com/admin: namespace
+  name: sas-data-connections
+spec:
+  routes:
+  - conditions:
+    - prefix: /dataConnections
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /dataConnections/
+    requestHeadersPolicy:
+      set:
+      - name: X-Sas-Ingress-Request
+        value: "true"
+    services:
+    - name: sas-data-connections
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /dataConnections/
+    loadBalancerPolicy:
+      strategy: Cookie
+    requestHeadersPolicy:
+      set:
+      - name: X-Sas-Ingress-Request
+        value: "true"
+    services:
+    - name: sas-data-connections
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-sources
+    sas.com/admin: namespace
+  name: sas-data-sources
+spec:
+  routes:
+  - conditions:
+    - prefix: /dataSources
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /dataSources/
+    requestHeadersPolicy:
+      set:
+      - name: X-Sas-Ingress-Request
+        value: "true"
+    services:
+    - name: sas-data-sources
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /dataSources/
+    loadBalancerPolicy:
+      strategy: Cookie
+    requestHeadersPolicy:
+      set:
+      - name: X-Sas-Ingress-Request
+        value: "true"
+    services:
+    - name: sas-data-sources
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-tables
+    sas.com/admin: namespace
+  name: sas-data-tables
+spec:
+  routes:
+  - conditions:
+    - prefix: /dataTables
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /dataTables/
+    requestHeadersPolicy:
+      set:
+      - name: X-Sas-Ingress-Request
+        value: "true"
+    services:
+    - name: sas-data-tables
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /dataTables/
+    loadBalancerPolicy:
+      strategy: Cookie
+    requestHeadersPolicy:
+      set:
+      - name: X-Sas-Ingress-Request
+        value: "true"
+    services:
+    - name: sas-data-tables
+      port: 80
+    timeoutPolicy:
+      response: 300s
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-row-sets
+    sas.com/admin: namespace
+  name: sas-row-sets
+spec:
+  routes:
+  - conditions:
+    - prefix: /rowSets
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /rowSets/
+    requestHeadersPolicy:
+      set:
+      - name: X-Sas-Ingress-Request
+        value: "true"
+    services:
+    - name: sas-row-sets
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /rowSets/
+    loadBalancerPolicy:
+      strategy: Cookie
+    requestHeadersPolicy:
+      set:
+      - name: X-Sas-Ingress-Request
+        value: "true"
+    services:
+    - name: sas-row-sets
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

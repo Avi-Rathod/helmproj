@@ -1,0 +1,123 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-data-mining
+spec:
+  host: sas-data-mining
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /dataMining/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-data-mining-project-resources
+spec:
+  host: sas-data-mining-project-resources
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /dataMiningProjectResources/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-data-mining-project-settings
+spec:
+  host: sas-data-mining-project-settings
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /dataMiningProjectSettings/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-mining
+    sas.com/admin: namespace
+  name: sas-data-mining
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /dataMining
+    - uri:
+        prefix: /dataMining/
+    route:
+    - destination:
+        host: sas-data-mining
+    timeout: 300s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-mining-project-resources
+    sas.com/admin: namespace
+  name: sas-data-mining-project-resources
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /dataMiningProjectResources
+    - uri:
+        prefix: /dataMiningProjectResources/
+    route:
+    - destination:
+        host: sas-data-mining-project-resources
+    timeout: 300s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-data-mining-project-settings
+    sas.com/admin: namespace
+  name: sas-data-mining-project-settings
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /dataMiningProjectSettings
+    - uri:
+        prefix: /dataMiningProjectSettings/
+    route:
+    - destination:
+        host: sas-data-mining-project-settings
+    timeout: 300s
+

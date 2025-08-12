@@ -1,0 +1,52 @@
+apiVersion: orchestration.sas.com/v2beta10
+kind: LifecycleOperation
+metadata:
+  annotations:
+    lifecycle.orchestration.sas.com/publish: "true"
+    sas.com/component-name: sas-k8s-common
+    sas.com/component-version: 2.89.1-20240916.1726514392006
+  creationTimestamp: null
+  name: stop-all
+spec:
+  args:
+  - name: namespace
+  - default: 7200s
+    name: timeout
+  steps:
+  - always: true
+    args:
+    - $operation
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    cmd: run
+    withOperations:
+      labelSelector: participate.lifecycle.sas.com/stop-all-assess=true
+  - always: true
+    args:
+    - $operation
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    cmd: run
+    withOperations:
+      labelSelector: participate.lifecycle.sas.com/stop-all-pre=true
+  - args:
+    - stop-all-execute
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    cmd: run
+  - always: true
+    args:
+    - $operation
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    cmd: run
+    withOperations:
+      labelSelector: participate.lifecycle.sas.com/stop-all-post=true

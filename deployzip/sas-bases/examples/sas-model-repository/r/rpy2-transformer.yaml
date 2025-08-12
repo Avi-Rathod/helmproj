@@ -1,0 +1,48 @@
+# PatchTransformer to set R_HOME and add to LD_LIBRARY_PATH environment variable in sas-launcher-job-config PodTemplate
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: launcher-job-rpy2-transformer
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/env/-
+    value:
+      name: R_HOME
+      value:  {{ R-HOME }}  #Change this to your R-HOME path.
+target:
+  kind: PodTemplate
+  name: sas-launcher-job-config
+---
+# PatchTransformer to set R_HOME and add to LD_LIBRARY_PATH environment variable in sas-compute-job-config PodTemplate
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: compute-job-rpy2-transformer
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/env/-
+    value:
+      name: R_HOME
+      value: {{ R-HOME }}
+target:
+  kind: PodTemplate
+  name: sas-compute-job-config
+---
+# PatchTransformer to set R_HOME and add to LD_LIBRARY_PATH environment variable in CASDeployment
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-rpy2-transformer
+patch: |-
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/env/-
+    value:
+      name: R_HOME
+      value: {{ R-HOME }}
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/env/-
+    value:
+      name: CASLLP_99_EDMR
+      value: {{ R-HOME }}/lib
+target:
+  kind: CASDeployment

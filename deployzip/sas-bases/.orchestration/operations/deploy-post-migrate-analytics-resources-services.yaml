@@ -1,0 +1,113 @@
+apiVersion: orchestration.sas.com/v3beta1
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-analytics-resources
+    sas.com/component-version: 22.27.13-20240910.1725980964443
+  creationTimestamp: null
+  labels:
+    participate.lifecycle.sas.com/deploy-post: "true"
+  name: deploy-post-migrate-analytics-resources-services
+spec:
+  args:
+  - name: namespace
+  - name: serviceAccountName
+  - default: 7200s
+    name: timeout
+  source: |-
+    package main
+
+    import (
+      "fmt"
+      "strings"
+      "strconv"
+      "time"
+      "sas/orchestration/lifecycle"
+    )
+
+    const (
+      AnalyticsResourcesName = "sas-analytics-resources"
+      AnalyticsServicesName = "sas-analytics-services"
+      AnalyticsGatewayName = "sas-analytics-gateway"
+    )
+
+    func main() {
+
+      namespace := lifecycle.Arg("namespace")
+      serviceAccountName := lifecycle.Arg("serviceAccountName")
+      timeout := lifecycle.Arg("timeout")
+      namespaceBinding := namespace + ":" + serviceAccountName
+      serviceAccountNameBlank := len(strings.TrimSpace(serviceAccountName)) == 0
+
+      lifecycle.Log("Timeout for kubectl: " + timeout)
+
+      if !serviceAccountNameBlank {
+        lifecycle.Log("Add role-based access controls (RBAC) for deploy-post-migrate-analytics-resources-services")
+        lifecycle.Kubectl("delete", "--namespace", namespace, "--wait", "--timeout", timeout,  "--ignore-not-found", "role", "deploy-post-migrate-analytics-resources-services")
+        lifecycle.Kubectl("create", "--namespace", namespace,  "role", "deploy-post-migrate-analytics-resources-services", "--verb=get,list,watch,patch", "--resource=deployments/scale,horizontalpodautoscalers,pods", "--resource-name", AnalyticsResourcesName, "--resource-name", AnalyticsGatewayName)
+        lifecycle.Kubectl("delete", "--namespace", namespace, "--wait", "--timeout", timeout,  "--ignore-not-found", "rolebinding", "deploy-post-migrate-analytics-resources-services")
+        lifecycle.Kubectl("create", "--namespace", namespace,  "rolebinding", "deploy-post-migrate-analytics-resources-services",  "--role", "deploy-post-migrate-analytics-resources-services", "--serviceaccount", namespaceBinding)
+      } else {
+        lifecycle.Log("ServiceAccountName is not defined.. executing with the default user")
+      }
+
+      restoreHPA(namespace, AnalyticsResourcesName)
+      restoreHPA(namespace, AnalyticsGatewayName)
+      restoreDeploymentScale(namespace, AnalyticsResourcesName)
+      restoreDeploymentScale(namespace, AnalyticsGatewayName)
+
+      if !serviceAccountNameBlank {
+        lifecycle.Log("Clean up role-based access controls (RBAC) for deploy-post-migrate-analytics-resources-services")
+        lifecycle.Kubectl("delete", "--namespace", namespace, "--wait", "--timeout", timeout,  "--ignore-not-found", "rolebinding", "deploy-post-migrate-analytics-resources-services")
+        lifecycle.Kubectl("delete", "--namespace", namespace, "--wait", "--timeout", timeout,  "--ignore-not-found", "role", "sas-migrate-analytics-resources-services")
+      }
+    }
+
+    func restoreDeploymentScale(namespace string, svcName string) {
+      if lifecycle.VariableExists(svcName + "/replicas") {
+        replicas := lifecycle.GetVariable(svcName + "/replicas")
+        lifecycle.Log(fmt.Sprintf("deployment/%s was scaled to 0 from %d. Restoring replicas..", svcName, replicas))
+        lifecycle.Kubectl(
+           "scale",
+          "--namespace",
+           namespace,
+           fmt.Sprintf("--replicas=%d", replicas),
+           "deployment/" + svcName)
+      }
+    }
+
+    func restoreHPA(namespace string, svcName string) {
+        min, max := 0, 0
+
+        if svcName == AnalyticsResourcesName {
+          min, max = getOriginalHPA(namespace, svcName)
+        } else if svcName == AnalyticsGatewayName {
+          asMin, asMax := getOriginalHPA(namespace, AnalyticsServicesName)
+          agMin, agMax := getOriginalHPA(namespace, AnalyticsGatewayName)
+          min = asMin + agMin
+          max = asMax + agMax
+        }
+
+        if max > 0 {
+          lifecycle.Log(fmt.Sprintf("Restoring %s HPA to min %d, max %d", svcName, min, max))
+          lifecycle.Kubectl("patch", "--namespace", namespace, "hpa", svcName, "--patch", fmt.Sprintf("{\"spec\":{\"minReplicas\":%d, \"maxReplicas\":%d}}", min, max))
+        }
+    }
+
+    func getOriginalHPA(namespace string, svcName string) (int, int) {
+      if lifecycle.VariableExists(svcName + "/hpamin") {
+        min, minError := strconv.Atoi(lifecycle.GetVariable(svcName + "/hpamin").(string))
+        if minError!=nil{
+          lifecycle.Log("Error while getting hpamin for service %s in namespace %s with Error %s",svcName,namespace,minError.Error())
+          min=0
+        }
+        max, maxError := strconv.Atoi(lifecycle.GetVariable(svcName + "/hpamax").(string))
+        if maxError!=nil{
+          lifecycle.Log("Error while getting hpamax for service %s in namespace %s with Error %s",svcName,namespace,maxError.Error())
+          max=0
+        }
+
+        return min, max
+      }
+      return 0, 0
+    }

@@ -1,0 +1,17 @@
+# This block of code is for adding environment variables for SAS Micro Analytic Service .
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: mas-add-environment-variables
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: {{ VARIABLE-NAME }}
+      value: {{ VARIABLE-VALUE }}
+target:
+  group: apps
+  kind: Deployment
+  name: sas-microanalytic-score
+  version: v1

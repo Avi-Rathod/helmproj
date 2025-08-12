@@ -1,0 +1,45 @@
+apiVersion: orchestration.sas.com/v2beta15
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-cas-operator
+    sas.com/component-version: 3.48.4-20241014.1728921008318
+  creationTimestamp: null
+  labels:
+    participate.lifecycle.sas.com/stop-all-execute-phase-0: "true"
+  name: stop-all-execute-cas
+spec:
+  args:
+  - name: namespace
+  - default: 7200s
+    name: timeout
+  steps:
+  - args:
+    - patch
+    - --namespace
+    - $namespace
+    - casdeployments
+    - $resource.Name
+    - --type
+    - json
+    - --patch
+    - '[{"op":"replace", "path": "/spec/shutdown", "value":true}]'
+    cmd: kubectl
+    when: (.ClusterDefinitions (((.NewClusterDefinitionsIterationSpec).WithGroup "viya.sas.com").WithResource "casdeployments"))
+    withClusterResources:
+      group: viya.sas.com
+      labelSelector: sas.com/deployment=sas-viya,!sas.com/zero-scale-phase
+      namespace: $namespace
+      resource: casdeployments
+  - args:
+    - wait
+    - --namespace
+    - $namespace
+    - --for
+    - delete
+    - pod
+    - --selector
+    - app.kubernetes.io/managed-by=sas-cas-operator
+    - --timeout
+    - $timeout
+    cmd: kubectl

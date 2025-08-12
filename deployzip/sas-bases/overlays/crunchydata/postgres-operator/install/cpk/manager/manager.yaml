@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpk
+spec:
+  replicas: 1
+  strategy: { type: Recreate }
+  selector:
+    matchLabels:
+      cpk.crunchydata.com/control-plane: cpk
+  template:
+    metadata:
+      labels:
+        cpk.crunchydata.com/control-plane: cpk
+    spec:
+      containers:
+      - name: operator
+        command: 
+        - manager
+        image: postgres-operator
+        env:
+        - name: RELATED_IMAGE_CRUNCHY_POSTGRESQL_STIG
+          value: registry.crunchydata.com/crunchydata-stig/crunchy-postgres-stig-playbook:ubi8-5.6.0-0
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
+          allowPrivilegeEscalation: false
+          capabilities: { drop: [ALL] }
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+      serviceAccountName: cpk

@@ -1,0 +1,138 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-reportTemplates
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-report-templates
+    sas.com/admin: namespace
+  name: sas-report-templates
+spec:
+  host: $(INGRESS_HOST)
+  path: /reportTemplates
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-report-templates
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-reportTemplates
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-report-templates
+    sas.com/admin: namespace
+  name: sas-report-templates-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /reportTemplates
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-report-templates
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-reportTransforms
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-report-transforms
+    sas.com/admin: namespace
+  name: sas-report-transforms
+spec:
+  host: $(INGRESS_HOST)
+  path: /reportTransforms
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-report-transforms
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-reportTransforms
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-report-transforms
+    sas.com/admin: namespace
+  name: sas-report-transforms-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /reportTransforms
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-report-transforms
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-reports
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-reports
+    sas.com/admin: namespace
+  name: sas-reports
+spec:
+  host: $(INGRESS_HOST)
+  path: /reports
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-reports
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-reports
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-reports
+    sas.com/admin: namespace
+  name: sas-reports-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /reports
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-reports
+  wildcardPolicy: Subdomain
+

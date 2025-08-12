@@ -1,0 +1,184 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-crossdomainproxy
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-crossdomainproxy
+    sas.com/admin: namespace
+  name: sas-crossdomainproxy
+spec:
+  host: $(INGRESS_HOST)
+  path: /crossdomainproxy
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-crossdomainproxy
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-crossdomainproxy
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-crossdomainproxy
+    sas.com/admin: namespace
+  name: sas-crossdomainproxy-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /crossdomainproxy
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-crossdomainproxy
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-geoEnrichment
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-geo-enrichment
+    sas.com/admin: namespace
+  name: sas-geo-enrichment
+spec:
+  host: $(INGRESS_HOST)
+  path: /geoEnrichment
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-geo-enrichment
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-geoEnrichment
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-geo-enrichment
+    sas.com/admin: namespace
+  name: sas-geo-enrichment-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /geoEnrichment
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-geo-enrichment
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-maps
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-maps
+    sas.com/admin: namespace
+  name: sas-maps
+spec:
+  host: $(INGRESS_HOST)
+  path: /maps
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-maps
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-maps
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-maps
+    sas.com/admin: namespace
+  name: sas-maps-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /maps
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-maps
+  wildcardPolicy: Subdomain
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-webDataAccess
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-web-data-access
+    sas.com/admin: namespace
+  name: sas-web-data-access
+spec:
+  host: $(INGRESS_HOST)
+  path: /webDataAccess
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-web-data-access
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-webDataAccess
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-web-data-access
+    sas.com/admin: namespace
+  name: sas-web-data-access-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /webDataAccess
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-web-data-access
+  wildcardPolicy: Subdomain
+

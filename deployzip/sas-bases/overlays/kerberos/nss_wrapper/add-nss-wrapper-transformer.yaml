@@ -1,0 +1,27 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: spre-container-nss-wrapper
+patch: |-
+  - op: add
+    path: /template/spec/containers/0/env/-
+    value:
+      name: SAS_POD_USES_NSS_WRAPPER
+      value: "true"
+target:
+  kind: PodTemplate
+  annotationSelector: sas.com/component-name in (sas-compute,sas-launcher,sas-connect,sas-batch)
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: cas-container-nss-wrapper
+patch: |-
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/env/-
+    value:
+      name: SAS_POD_USES_NSS_WRAPPER
+      value: "true"
+target:
+  kind: CASDeployment

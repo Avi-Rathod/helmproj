@@ -1,0 +1,23 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata: 
+  name: prepull-patch-transformer-configmap-components-mirror
+patch: |-
+  - op: replace
+    path: /data/SAS_COMPONENT_RELPATH_sas-orchestration
+    value: sas-orchestration
+  - op: replace
+    path: /data/SAS_COMPONENT_RELPATH_sas-programming-environment
+    value: sas-programming-environment
+  - op: replace
+    path: /data/SAS_COMPONENT_RELPATH_sas-certframe
+    value: sas-certframe
+  - op: replace
+    path: /data/SAS_COMPONENT_RELPATH_sas-config-init
+    value: sas-config-init
+  - op: replace
+    path: /data/SAS_COMPONENT_RELPATH_sas-krb5-proxy
+    value: sas-krb5-proxy
+target: 
+  kind: ConfigMap
+  labelSelector: orchestration.sas.com/lifecycle=components

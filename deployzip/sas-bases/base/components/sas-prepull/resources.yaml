@@ -1,0 +1,279 @@
+
+---
+apiVersion: v1
+automountServiceAccountToken: false
+imagePullSecrets:
+- name: sas-image-pull-secrets
+kind: ServiceAccount
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-prepull
+  name: sas-prepull
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app.kubernetes.io/name: sas-prepull
+  name: sas-prepull-v2-namespace
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - create
+  - watch
+  - get
+  - list
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - pods/log
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - ""
+  resources:
+  - podtemplates
+  verbs:
+  - get
+- apiGroups:
+  - apps
+  resources:
+  - daemonsets
+  verbs:
+  - get
+  - delete
+  - list
+  - create
+  - watch
+  - deletecollection
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - patch
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/name: sas-prepull
+  name: sas-prepull-v2-namespace
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sas-prepull-v2-namespace
+subjects:
+- kind: ServiceAccount
+  name: sas-prepull
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    sas.com/certificate-file-format: none
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-prepull
+    sas.com/admin: namespace
+    workload.sas.com/class: stateless
+  name: sas-prepull
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-prepull
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "false"
+        sas.com/certificate-file-format: none
+        sas.com/kustomize-base: base
+        sidecar.istio.io/inject: "false"
+      labels:
+        app: sas-prepull
+        app.kubernetes.io/name: sas-prepull
+        workload.sas.com/class: stateless
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateless
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - compute
+                - cas
+                - stateful
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - sas-prepull
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution: []
+      automountServiceAccountToken: true
+      containers:
+      - env:
+        - name: SAS_PREPULL_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: SAS_SPEC_NODENAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        image: sas-prepull
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - while [ -e /tmp/sas-prepull.running ]; do sleep 1; done; sleep 5;
+        name: sas-prepull
+        resources:
+          limits:
+            cpu: 1
+            memory: 1Gi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add: []
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+      imagePullSecrets: []
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: sas-prepull
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - emptyDir: {}
+        name: tmp
+
+---
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  annotations:
+    sas.com/certificate-file-format: none
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-prepull
+    sas.com/admin: namespace
+  name: sas-prepull
+template:
+  metadata:
+    annotations:
+      sas.com/certificate-file-format: none
+      sas.com/kustomize-base: base
+      sidecar.istio.io/inject: "false"
+    labels: {}
+  spec:
+    automountServiceAccountToken: true
+    containers:
+    - env:
+      - name: SAS_PREPULL_NAMESPACE
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.namespace
+      - name: SAS_SPEC_NODENAME
+        valueFrom:
+          fieldRef:
+            fieldPath: spec.nodeName
+      envFrom: []
+      image: sas-prepull
+      imagePullPolicy: IfNotPresent
+      name: sas-prepull
+      readinessProbe:
+        exec:
+          command:
+          - cat
+          - /tmp/ready
+        initialDelaySeconds: 10
+      resources:
+        limits:
+          cpu: 250m
+          memory: 250Mi
+        requests:
+          cpu: 25m
+          memory: 25Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          add: []
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      volumeMounts:
+      - mountPath: /tmp
+        name: tmp
+    imagePullSecrets: []
+    initContainers: []
+    restartPolicy: Always
+    securityContext:
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccountName: sas-prepull
+    volumes:
+    - emptyDir: null
+      name: tmp

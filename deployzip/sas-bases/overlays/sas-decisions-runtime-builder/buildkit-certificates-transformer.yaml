@@ -1,0 +1,21 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-decisions-runtime-builder-buildkit-certificates-transformer
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/volumeMounts/-
+    value:
+      mountPath: /etc/ssl/certs
+      name: buildkit-registry-certs
+  - op: add
+    path: /spec/template/spec/volumes/-
+    value:
+      name: buildkit-registry-certs
+      secret:
+        secretName: sas-buildkit-registry-secrets
+target:
+  name: buildkitd
+  group: apps
+  kind: Deployment
+  version: v1

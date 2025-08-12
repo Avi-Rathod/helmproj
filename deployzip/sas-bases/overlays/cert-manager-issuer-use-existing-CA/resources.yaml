@@ -1,0 +1,10 @@
+---
+# sas-viya-issuer.yaml
+# ....................
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: sas-viya-issuer
+spec:
+  ca:
+    secretName: sas-viya-ca-certificate-secret

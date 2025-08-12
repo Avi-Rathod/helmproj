@@ -1,0 +1,13 @@
+# This block of code adds a ClusterRole for the sas-cas-operator to retrieve
+#   the cluster nodes' resources in order to properly size an auto-resources CAS Deployment.
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sas-cas-operator
+  labels:
+    sas.com/admin: cluster-wide
+rules:
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["get", "list", "watch"]

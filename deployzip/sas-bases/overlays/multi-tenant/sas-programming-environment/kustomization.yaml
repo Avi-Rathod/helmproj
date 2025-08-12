@@ -1,0 +1,6 @@
+resources:
+- sas-batch.yaml
+- sas-compute.yaml
+- sas-connect.yaml
+- sas-job-flow-scheduling.yaml
+- sas-launcher.yaml

@@ -1,0 +1,46 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-formats
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-formats
+    sas.com/admin: namespace
+  name: sas-formats
+spec:
+  host: $(INGRESS_HOST)
+  path: /formats
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-formats
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-formats
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-formats
+    sas.com/admin: namespace
+  name: sas-formats-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /formats
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-formats
+  wildcardPolicy: Subdomain
+
