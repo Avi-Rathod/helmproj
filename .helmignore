@@ -16,7 +16,7 @@ selectors.yaml
 # Ignore Kustomize config files
 kustomization.yaml
 */kustomization.yaml
-**/kustomization.yaml
+
 
 # Ignore README and scripts
 *.md
