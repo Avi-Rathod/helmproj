@@ -21,4 +21,4 @@ kustomization.yaml
 # Ignore README and scripts
 *.md
 *.sh
-**/README.txt
+*/README.txt
