@@ -1,4 +1,0 @@
-resources:
-- httpproxy.yaml
-transformers:
-- annotations.yaml

@@ -1,8 +1,0 @@
-apiVersion: builtin
-kind: ConfigMapGenerator
-metadata:
-  name: ingress-input
-literals:
-- INGRESS_HOST=*
-- INGRESS_APIVERSION=networking.istio.io/v1alpha3
-- INGRESS_KIND=VirtualService

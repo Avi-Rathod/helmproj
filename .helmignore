@@ -13,3 +13,11 @@ selectors.yaml
 *.gitignore
 *.orig
 *.txt.txt
+# Ignore Kustomize config files
+kustomization.yaml
+*/kustomization.yaml
+**/kustomization.yaml
+
+# Ignore README and scripts
+*.md
+*.sh

@@ -1,4 +1,0 @@
-kind: Component
-
-transformers:
-  - transformers.yaml

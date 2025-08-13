@@ -1,5 +1,0 @@
-resources:
-  - cronjobs.yaml
-
-transformers:
-  - tolerations-affinity-patch.yaml

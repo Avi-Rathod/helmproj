@@ -1,5 +1,0 @@
-- op: replace
-  path: /data
-  value:
-    username: {{BASE64-ENCODED-USER-NAME}}
-    password: {{BASE64-ENCODED-PASSWORD}}

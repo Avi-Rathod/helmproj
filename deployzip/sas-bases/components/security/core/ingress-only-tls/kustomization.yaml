@@ -1,7 +1,0 @@
-kind: Component
-
-components:
-- ../base/truststores-only
-
-transformers:
-- transformers.yaml

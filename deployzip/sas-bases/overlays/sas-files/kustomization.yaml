@@ -1,4 +1,0 @@
-generators:
-- sas-files-customdb.yaml
-transformers:
-- file-custom-db-transformer.yaml

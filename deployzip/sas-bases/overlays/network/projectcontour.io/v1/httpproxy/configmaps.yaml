@@ -1,8 +1,0 @@
-apiVersion: builtin
-kind: ConfigMapGenerator
-metadata:
-  name: ingress-input
-literals:
-- INGRESS_HOST=
-- INGRESS_APIVERSION=projectcontour.io/v1
-- INGRESS_KIND=HTTPProxy

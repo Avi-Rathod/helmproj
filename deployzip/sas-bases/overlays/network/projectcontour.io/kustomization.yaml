@@ -1,3 +1,0 @@
-# Alias for current default version of HTTPProxy
-resources:
-  - ./v1/httpproxy
