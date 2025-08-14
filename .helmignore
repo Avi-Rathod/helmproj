@@ -22,6 +22,28 @@ README*
 */*/*/*/*.txt
 */*/*/*/*/*.txt
 
+# Shell scripts
+*.sh
+*/*.sh
+*/*/*.sh
+*/*/*/*.sh
+*/*/*/*/*.sh
+*/*/*/*/*/*.sh
+
+# Env files
+*.env
+*/*.env
+*/*/*.env
+*/*/*/*.env
+*/*/*/*/*.env
+*/*/*/*/*/*.env
+
+# Properties/config files
+*.properties
+*.cfg
+*.conf
+*.ini
+
 # Kustomize-only configs / transformers
 templates/*/kustomizeconfig.yaml
 templates/*/*/kustomizeconfig.yaml
@@ -39,6 +61,9 @@ templates/sas-bases/overlays/security/container-security/remove-seccomp-transfor
 # Problematic selectors.yaml (arrays that Helm can't parse)
 templates/sas-bases/overlays/crunchydata/postgres-operator/install/default/selectors.yaml
 templates/sas-bases/overlays/crunchydata/postgres-operator/install/singlenamespace/selectors.yaml
+
+# Problematic params.env
+templates/sas-bases/overlays/internal-elasticsearch/params.env
 
 # Render artifacts
 rendered.yaml
