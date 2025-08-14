@@ -1,5 +1,3 @@
-templates/sas-bases/overlays/crunchydata/postgres-operator/install/default/selectors.yaml
-
 # Ignore docs & readmes up to 5 levels deep
 README*
 */README*
@@ -37,6 +35,10 @@ templates/*/*/*/enable-disable/*
 
 # Known Kustomize-specific transformers
 templates/sas-bases/overlays/security/container-security/remove-seccomp-transformer.yaml
+
+# Problematic selectors.yaml (arrays that Helm can't parse)
+templates/sas-bases/overlays/crunchydata/postgres-operator/install/default/selectors.yaml
+templates/sas-bases/overlays/crunchydata/postgres-operator/install/singlenamespace/selectors.yaml
 
 # Render artifacts
 rendered.yaml
