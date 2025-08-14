@@ -1,24 +1,34 @@
-templates\sas-bases\overlays\crunchydata\postgres-operator\install\default\selectors.yaml
-templates/sas-bases/overlays/crunchydata/postgres-operator/install/default/selectors.yaml
-selectors.yaml
-# Ignore docs & readmes up to 4 levels deep
+# Ignore docs & readmes up to 5 levels deep
 README*
 */README*
 */*/README*
 */*/*/README*
 */*/*/*/README*
+*/*/*/*/*/README*
 
-# Markdown and text files
+# Markdown files (ignore up to 5 levels)
 *.md
-*/**.md
+*/*.md
+*/*/*.md
+*/*/*/*.md
+*/*/*/*/*.md
+*/*/*/*/*/*.md
+
+# Text files (ignore up to 5 levels)
 *.txt
-*/**.txt
+*/*.txt
+*/*/*.txt
+*/*/*/*.txt
+*/*/*/*/*.txt
+*/*/*/*/*/*.txt
 
 # Kustomize-only configs / transformers
 templates/*/kustomizeconfig.yaml
 templates/*/*/kustomizeconfig.yaml
 templates/*/*/*/kustomizeconfig.yaml
 templates/*/*/*/*/kustomizeconfig.yaml
+
+# enable-disable folders
 templates/*/enable-disable/*
 templates/*/*/enable-disable/*
 templates/*/*/*/enable-disable/*
