@@ -1,25 +1,31 @@
 templates\sas-bases\overlays\crunchydata\postgres-operator\install\default\selectors.yaml
 templates/sas-bases/overlays/crunchydata/postgres-operator/install/default/selectors.yaml
 selectors.yaml
-*.md
-*.htm
-*.html
-*.sh
-*.env
-*.ini
-*.properties
-*.jwt
-*.css
-*.gitignore
-*.orig
-*.txt.txt
-# Ignore Kustomize config files
-kustomization.yaml
-*/kustomization.yaml
+# Ignore docs & readmes up to 4 levels deep
+README*
+*/README*
+*/*/README*
+*/*/*/README*
+*/*/*/*/README*
 
-
-# Ignore README and scripts
+# Markdown and text files
 *.md
-*.sh
-*/README.txt
-*.txt  
+*/**.md
+*.txt
+*/**.txt
+
+# Kustomize-only configs / transformers
+templates/*/kustomizeconfig.yaml
+templates/*/*/kustomizeconfig.yaml
+templates/*/*/*/kustomizeconfig.yaml
+templates/*/*/*/*/kustomizeconfig.yaml
+templates/*/enable-disable/*
+templates/*/*/enable-disable/*
+templates/*/*/*/enable-disable/*
+
+# Known Kustomize-specific transformers
+templates/sas-bases/overlays/security/container-security/remove-seccomp-transformer.yaml
+
+# Render artifacts
+rendered.yaml
+*.rendered.yaml
