@@ -38,6 +38,13 @@ README*
 */*/*/*/*.env
 */*/*/*/*/*.env
 
+# JWT, keys, certs, JSON
+*.jwt
+*.crt
+*.key
+*.pem
+*.json
+
 # Properties/config files
 *.properties
 *.cfg
