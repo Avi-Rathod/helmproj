@@ -1,3 +1,5 @@
+templates/sas-bases/overlays/crunchydata/postgres-operator/install/default/selectors.yaml
+
 # Ignore docs & readmes up to 5 levels deep
 README*
 */README*
