@@ -1,81 +1,24 @@
-# Ignore docs & readmes up to 5 levels deep
+# ----- Docs -----
 README*
-*/README*
-*/*/README*
-*/*/*/README*
-*/*/*/*/README*
-*/*/*/*/*/README*
-
-# Markdown files (ignore up to 5 levels)
 *.md
-*/*.md
-*/*/*.md
-*/*/*/*.md
-*/*/*/*/*.md
-*/*/*/*/*/*.md
-
-# Text files (ignore up to 5 levels)
 *.txt
-*/*.txt
-*/*/*.txt
-*/*/*/*.txt
-*/*/*/*/*.txt
-*/*/*/*/*/*.txt
 
-# Shell scripts
+# ----- Scripts & Local Config -----
 *.sh
-*/*.sh
-*/*/*.sh
-*/*/*/*.sh
-*/*/*/*/*.sh
-*/*/*/*/*/*.sh
-
-# Env files
 *.env
-*/*.env
-*/*/*.env
-*/*/*/*.env
-*/*/*/*/*.env
-*/*/*/*/*/*.env
-
-# JWT, keys, certs, JSON
-*.jwt
-*.crt
-*.key
-*.pem
-*.json
-
-# Properties/config files
 *.properties
 *.cfg
 *.conf
 *.ini
 
-# Kustomize-only configs / transformers
-templates/*/kustomizeconfig.yaml
-templates/*/*/kustomizeconfig.yaml
-templates/*/*/*/kustomizeconfig.yaml
-templates/*/*/*/*/kustomizeconfig.yaml
+# ----- Certificates / Keys -----
+*.crt
+*.key
+*.pem
+*.jwt
 
-# enable-disable folders
-templates/*/enable-disable/*
-templates/*/*/enable-disable/*
-templates/*/*/*/enable-disable/*
-
-# Known Kustomize-specific transformers
-templates/sas-bases/overlays/security/container-security/remove-seccomp-transformer.yaml
-
-# Problematic selectors.yaml (arrays that Helm can't parse)
-templates/sas-bases/overlays/crunchydata/postgres-operator/install/default/selectors.yaml
-templates/sas-bases/overlays/crunchydata/postgres-operator/install/singlenamespace/selectors.yaml
-
-# Problematic params.env
-templates/sas-bases/overlays/internal-elasticsearch/params.env
-
-# Render artifacts
-rendered.yaml
-*.rendered.yaml
-# Ignore binaries and large files
+# ----- JSON / Binary -----
+*.json
 *.exe
 *.dll
 *.so
@@ -91,113 +34,23 @@ rendered.yaml
 *.iso
 *.db
 *.sqlite
-*.pdf
-*.md
-*.sh
-*.crt
-*.key
+*.log
 
-# Specific binary causing issue
-minikube-linux-amd64
-# -------- general junk ----------
+# ----- Kustomize-only configs -----
+templates/**/kustomizeconfig.yaml
+templates/**/enable-disable/*
+templates/sas-bases/overlays/security/container-security/remove-seccomp-transformer.yaml
+templates/sas-bases/overlays/crunchydata/postgres-operator/install/**/selectors.yaml
+templates/sas-bases/overlays/internal-elasticsearch/params.env
+
+# ----- Render artifacts -----
+rendered.yaml
+*.rendered.yaml
+
+# ----- OS / Git / Temp -----
 .DS_Store
 .git
-*.log
 *.bak
 *.tmp
 *.swp
 *.swo
-
-# -------- huge/binary files -------
-*.exe
-*.dll
-*.so
-*.dylib
-*.tar
-*.gz
-*.zip
-*.tgz
-*.7z
-*.rar
-*.bin
-*.img
-*.iso
-*.db
-*.idx
-*.pack
-
-# common local artifacts
-rendered.yaml
-*.rendered.yaml
-
-# known large binaries sometimes lying around
-minikube-linux-amd64
-*/minikube-linux-amd64
-
-# -------- docs / text  (expand depth manually; helm doesn't support **) -----
-README*
-*/README*
-*/*/README*
-*/*/*/README*
-*/*/*/*/README*
-*/*/*/*/*/README*
-
-*.md
-*/*.md
-*/*/*.md
-*/*/*/*.md
-*/*/*/*/*.md
-*/*/*/*/*/*.md
-
-*.txt
-*/*.txt
-*/*/*.txt
-*/*/*/*.txt
-*/*/*/*/*.txt
-*/*/*/*/*/*.txt
-
-# -------- scripts / env / misc text that aren't k8s manifests ---------------
-*.sh
-*/*.sh
-*/*/*.sh
-*/*/*/*.sh
-*/*/*/*/*.sh
-*/*/*/*/*/*.sh
-
-*.env
-*/*.env
-*/*/*.env
-*/*/*/*.env
-*/*/*/*/*.env
-*/*/*/*/*/*.env
-
-*.jwt
-*.crt
-*.key
-*.pem
-*.json
-*.properties
-*.cfg
-*.conf
-*.ini
-
-# -------- kustomize-only stuff (not valid k8s resources) --------------------
-templates/*/kustomizeconfig.yaml
-templates/*/*/kustomizeconfig.yaml
-templates/*/*/*/kustomizeconfig.yaml
-templates/*/*/*/*/kustomizeconfig.yaml
-
-templates/*/enable-disable/*
-templates/*/*/enable-disable/*
-templates/*/*/*/enable-disable/*
-
-# specific kustomize transformer from your warnings
-templates/sas-bases/overlays/security/container-security/remove-seccomp-transformer.yaml
-
-# problematic selector lists (arrays; not k8s objects)
-templates/sas-bases/overlays/crunchydata/postgres-operator/install/default/selectors.yaml
-templates/sas-bases/overlays/crunchydata/postgres-operator/install/singlenamespace/selectors.yaml
-
-# raw env / jwt that were under templates (we'll handle via files/)
-templates/sas-bases/overlays/internal-elasticsearch/params.env
-templates/site-config/license.jwt
