@@ -75,3 +75,27 @@ templates/sas-bases/overlays/internal-elasticsearch/params.env
 # Render artifacts
 rendered.yaml
 *.rendered.yaml
+# Ignore binaries and large files
+*.exe
+*.dll
+*.so
+*.dylib
+*.tar
+*.gz
+*.zip
+*.tgz
+*.7z
+*.rar
+*.bin
+*.img
+*.iso
+*.db
+*.sqlite
+*.pdf
+*.md
+*.sh
+*.crt
+*.key
+
+# Specific binary causing issue
+minikube-linux-amd64
