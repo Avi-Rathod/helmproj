@@ -99,3 +99,105 @@ rendered.yaml
 
 # Specific binary causing issue
 minikube-linux-amd64
+# -------- general junk ----------
+.DS_Store
+.git
+*.log
+*.bak
+*.tmp
+*.swp
+*.swo
+
+# -------- huge/binary files -------
+*.exe
+*.dll
+*.so
+*.dylib
+*.tar
+*.gz
+*.zip
+*.tgz
+*.7z
+*.rar
+*.bin
+*.img
+*.iso
+*.db
+*.idx
+*.pack
+
+# common local artifacts
+rendered.yaml
+*.rendered.yaml
+
+# known large binaries sometimes lying around
+minikube-linux-amd64
+*/minikube-linux-amd64
+
+# -------- docs / text  (expand depth manually; helm doesn't support **) -----
+README*
+*/README*
+*/*/README*
+*/*/*/README*
+*/*/*/*/README*
+*/*/*/*/*/README*
+
+*.md
+*/*.md
+*/*/*.md
+*/*/*/*.md
+*/*/*/*/*.md
+*/*/*/*/*/*.md
+
+*.txt
+*/*.txt
+*/*/*.txt
+*/*/*/*.txt
+*/*/*/*/*.txt
+*/*/*/*/*/*.txt
+
+# -------- scripts / env / misc text that aren't k8s manifests ---------------
+*.sh
+*/*.sh
+*/*/*.sh
+*/*/*/*.sh
+*/*/*/*/*.sh
+*/*/*/*/*/*.sh
+
+*.env
+*/*.env
+*/*/*.env
+*/*/*/*.env
+*/*/*/*/*.env
+*/*/*/*/*/*.env
+
+*.jwt
+*.crt
+*.key
+*.pem
+*.json
+*.properties
+*.cfg
+*.conf
+*.ini
+
+# -------- kustomize-only stuff (not valid k8s resources) --------------------
+templates/*/kustomizeconfig.yaml
+templates/*/*/kustomizeconfig.yaml
+templates/*/*/*/kustomizeconfig.yaml
+templates/*/*/*/*/kustomizeconfig.yaml
+
+templates/*/enable-disable/*
+templates/*/*/enable-disable/*
+templates/*/*/*/enable-disable/*
+
+# specific kustomize transformer from your warnings
+templates/sas-bases/overlays/security/container-security/remove-seccomp-transformer.yaml
+
+# problematic selector lists (arrays; not k8s objects)
+templates/sas-bases/overlays/crunchydata/postgres-operator/install/default/selectors.yaml
+templates/sas-bases/overlays/crunchydata/postgres-operator/install/singlenamespace/selectors.yaml
+
+# raw env / jwt that were under templates (we'll handle via files/)
+templates/sas-bases/overlays/internal-elasticsearch/params.env
+templates/site-config/license.jwt
