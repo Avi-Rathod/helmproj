@@ -15692,8 +15692,8 @@ reportsParameters6M9F9Htddc:
   sasPortName: reports
   sasServiceName: sas-reports
 repositorywarehouseCertificatesMmg75Bttt4:
-  cACertificate: ""
-  clientCertificate: ""
+  cACertificate: "ABC"
+  clientCertificate: "ABC"
 restoreJob:
   podSecurityContext:
     runAsNonRoot: true
@@ -19687,7 +19687,7 @@ workflowEngine:
       privileged: false
       readOnlyRootFilesystem: true
     env:
-      javaOptionServerPort: ""
+      javaOptionServerPort: "ABC"
       managementServerPort: ${sas.${spring.application.name}.management.server.port:10445}
       sasK8SDeploymentName: sas-workflow-engine
     image:
