@@ -15900,20 +15900,20 @@ rfcSolutionConfig:
         memory: 25Mi
   type: ClusterIP
 rfcSolutionConfigKafkaCaCertHmkbtm6Mt8:
-  caCrt: ""
-  caP12: ""
-  caPassword: ""
+  caCrt: "ABC"
+  caP12: "ABC"
+  caPassword: "ABC"
 rfcSolutionConfigKafkaConfigC4Thc4Bhbg:
-  sasDetectionKafkaRejecttopic: ""
-  sasDetectionKafkaTdrTopic: ""
-  sasDetectionKafkaTopic: ""
-  sasKafkaAcks: ""
+  sasDetectionKafkaRejecttopic: "ABC"
+  sasDetectionKafkaTdrTopic: "ABC"
+  sasDetectionKafkaTopic: "ABC"
+  sasKafkaAcks: "ABC"
   sasKafkaAutoCreateTopics: "true"
-  sasKafkaBatch: ""
-  sasKafkaConsumerDebug: ""
+  sasKafkaBatch: "ABC"
+  sasKafkaConsumerDebug: "ABC"
   sasKafkaEnabled: "true"
   sasKafkaHostnameVerification: "false"
-  sasKafkaLinger: ""
+  sasKafkaLinger: "ABC"
   sasKafkaOffset: earliest
   sasKafkaProducerDebug: "ABC"
   sasKafkaSecurityProtocol: "ABC"
