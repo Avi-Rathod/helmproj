@@ -1,4 +1,7 @@
 accessConfigMm6Fhg8Gc7:
+rfcSolutionConfigKafkaCreds98Ht2Kf8Db:
+  username: "testuser"
+  password: "changeme123"
   coplib: ""
   curInsthome: ""
   curInstname: ""
