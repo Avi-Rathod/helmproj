@@ -15915,17 +15915,17 @@ rfcSolutionConfigKafkaConfigC4Thc4Bhbg:
   sasKafkaHostnameVerification: "false"
   sasKafkaLinger: ""
   sasKafkaOffset: earliest
-  sasKafkaProducerDebug: ""
-  sasKafkaSecurityProtocol: ""
-  sasKafkaServer: ""
-  sasRwsKafkaBrokers: ""
-  sasRwsKafkaErrorTopic: ""
-  sasRwsKafkaInputTopic: ""
-  sasRwsKafkaOutputTopic: ""
-  sasRwsKafkaRejectTopic: ""
-  sasTransactionMarkTopic: ""
-  sasTransactionTdrTopics: ""
-  sasTriageKafkaTdrTopics: ""
+  sasKafkaProducerDebug: "ABC"
+  sasKafkaSecurityProtocol: "ABC"
+  sasKafkaServer: "ABC"
+  sasRwsKafkaBrokers: "ABC"
+  sasRwsKafkaErrorTopic: "ABC"
+  sasRwsKafkaInputTopic: "ABC"
+  sasRwsKafkaOutputTopic: "ABC"
+  sasRwsKafkaRejectTopic: "ABC"
+  sasTransactionMarkTopic: "ABC"
+  sasTransactionTdrTopics: "ABC"
+  sasTriageKafkaTdrTopics: "ABC"
 rfcSolutionConfigParameters9C7Bd67Hcf:
   sasContextPath: rfcSolutionConfig
   sasDuName: sas-rfc-solution-config
