@@ -1,11 +1,11 @@
 accessConfigMm6Fhg8Gc7:
-rfcSolutionConfigKafkaCreds98Ht2Kf8Db:
-  username: "testuser"
-  password: "changeme123"
   coplib: ""
   curInsthome: ""
   curInstname: ""
   dasworkdir: ""
+rfcSolutionConfigKafkaCreds98Ht2Kf8Db:
+  username: "testuser"
+  password: "changeme123"
   db2: /access-clients/db2client_1/sqllib/lib64:/access-clients/db2client_1/sqllib/lib64/gskit:/access-clients/db2client_1/sqllib/lib32
   db2Bin: /access-clients/db2client_1/sqllib/bin:/access-clients/db2client_1/sqllib/adm:/access-clients/db2client_1/sqllib/misc
   db2Dir: /access-clients/db2client_1/sqllib
