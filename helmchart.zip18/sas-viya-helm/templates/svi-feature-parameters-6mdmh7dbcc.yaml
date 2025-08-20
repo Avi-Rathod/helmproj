@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-svi-feature-parameters-6mdmh7dbcc
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.sviFeatureParameters6Mdmh7Dbcc.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.sviFeatureParameters6Mdmh7Dbcc.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.sviFeatureParameters6Mdmh7Dbcc.sasServiceName | quote
+    }}

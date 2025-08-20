@@ -1,0 +1,90 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-crunchy-platform-postgres-fix-v5-postgres-job
+  labels:
+    sas.com/admin: none
+    sas.com/deployment: sas-viya
+    webinfdsvr.sas.com/upgrade-crunchy-step-3: sas-crunchy-data-postgres
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-crunchy5-postgres-operator
+    sas.com/component-version: 1.custom5.custom12-20241206.custom1733500383664
+    sas.com/version: 1.custom5.custom12
+spec:
+  template:
+    metadata:
+      annotations:
+        sas.com/component-name: sas-crunchy5-postgres-operator
+        sas.com/component-version: 1.custom5.custom12-20241206.custom1733500383664
+        sas.com/version: 1.custom5.custom12
+      labels:
+        sas.com/deployment: sas-viya
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateful
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - cas
+                - compute
+                - stateless
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+      containers:
+      - command:
+        - sh
+        - -cex
+        - |
+          target=/pgdata/sas-crunchy-data-postgres
+          tmp=$(mktemp -d -p "${target%/*}"); GLOBIGNORE=.:..
+          chmod 0700 "${tmp}"; mv "${target}"/* "${tmp}"
+          rmdir "${target}"; mv "${tmp}" "${target}"
+        env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.crunchyPlatformPostgresFixV5PostgresJob.postgresDataFix.image.repository
+          }}:{{ .Values.crunchyPlatformPostgresFixV5PostgresJob.postgresDataFix.image.tag
+          | default .Chart.AppVersion }}
+        name: postgres-data-fix
+        resources: {{- toYaml .Values.crunchyPlatformPostgresFixV5PostgresJob.postgresDataFix.resources
+          | nindent 10 }}
+        securityContext: {{- toYaml .Values.crunchyPlatformPostgresFixV5PostgresJob.postgresDataFix.containerSecurityContext
+          | nindent 10 }}
+        volumeMounts:
+        - mountPath: /pgdata
+          name: postgres-data
+      imagePullSecrets:
+      - name: {{ include "sas-viya-helm.fullname" . }}-image-pull-secrets-9dd8hm29fm
+      restartPolicy: Never
+      securityContext: {{- toYaml .Values.crunchyPlatformPostgresFixV5PostgresJob.podSecurityContext
+        | nindent 8 }}
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: sas-crunchy-data-postgres

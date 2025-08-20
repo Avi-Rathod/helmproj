@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-ingress-certificate-b976h462g7
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  tls.crt: {{ required "ingressCertificateB976H462G7.tlsCrt is required" .Values.ingressCertificateB976H462G7.tlsCrt
+    | b64enc | quote }}
+  tls.key: {{ required "ingressCertificateB976H462G7.tlsKey is required" .Values.ingressCertificateB976H462G7.tlsKey
+    | b64enc | quote }}
+type: kubernetes.io/tls

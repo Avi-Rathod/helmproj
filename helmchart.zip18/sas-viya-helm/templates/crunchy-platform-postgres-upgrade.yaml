@@ -1,0 +1,60 @@
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PGUpgrade
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-crunchy-platform-postgres-upgrade
+  labels:
+    sas.com/admin: sas-crunchy-platform-postgres-pgupgrade-cr
+    sas.com/deployment: sas-viya
+    sas.com/pgupgrade-cr: sas-crunchy-platform-postgres-pgupgrade-cr
+    workload.sas.com/class: stateful
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+spec:
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - preference:
+          matchExpressions:
+          - key: workload.sas.com/class
+            operator: In
+            values:
+            - stateful
+        weight: 1
+      - preference:
+          matchExpressions:
+          - key: workload.sas.com/class
+            operator: NotIn
+            values:
+            - compute
+            - cas
+            - stateless
+            - connect
+        weight: 1
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.azure.com/mode
+            operator: NotIn
+            values:
+            - system
+  fromPostgresVersion: 12
+  image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-crunchy5-upgrade:1.custom3.custom4-20241206.custom1733500352503
+  imagePullSecrets:
+  - name: sas-image-pull-secrets-9dd8hm29fm
+  postgresClusterName: sas-crunchy-platform-postgres
+  resources:
+    limits:
+      cpu: "1"
+      memory: 2Gi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  toPostgresVersion: 16
+  tolerations:
+  - effect: NoSchedule
+    key: workload.sas.com/class
+    operator: Equal
+    value: stateful
+  - effect: NoSchedule
+    key: workload.sas.com/class
+    operator: Equal
+    value: stateless

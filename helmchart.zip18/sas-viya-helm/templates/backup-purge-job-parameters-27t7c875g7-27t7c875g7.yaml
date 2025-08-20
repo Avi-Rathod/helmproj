@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-backup-purge-job-parameters-27t7c875g7-27t7c875g7
+  labels:
+    sas.com/admin: namespace
+    sas.com/backup-job-type: purge-backup
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_BACKUP_JOB_DU_NAME: {{ .Values.backupPurgeJobParameters27T7C875G727T7C875G7.sasBackupJobDuName
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.backupPurgeJobParameters27T7C875G727T7C875G7.sasContextPath
+    | quote }}
+  SAS_CRONJOB_NAME: {{ .Values.backupPurgeJobParameters27T7C875G727T7C875G7.sasCronjobName
+    | quote }}
+  SAS_DU_NAME: {{ .Values.backupPurgeJobParameters27T7C875G727T7C875G7.sasDuName
+    | quote }}
+  SAS_SERVICE_NAME: {{ .Values.backupPurgeJobParameters27T7C875G727T7C875G7.sasServiceName
+    | quote }}

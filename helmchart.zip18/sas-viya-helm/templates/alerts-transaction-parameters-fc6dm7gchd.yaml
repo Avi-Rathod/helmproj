@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-alerts-transaction-parameters-fc6dm7gchd
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CGO_LDFLAGS: {{ .Values.alertsTransactionParametersFc6Dm7Gchd.cgoLdflags | quote
+    }}
+  SAS_CONTEXT_PATH: {{ .Values.alertsTransactionParametersFc6Dm7Gchd.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.alertsTransactionParametersFc6Dm7Gchd.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.alertsTransactionParametersFc6Dm7Gchd.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.alertsTransactionParametersFc6Dm7Gchd.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.alertsTransactionParametersFc6Dm7Gchd.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.alertsTransactionParametersFc6Dm7Gchd.sgProject | quote
+    }}
+  SG_STATIC: {{ .Values.alertsTransactionParametersFc6Dm7Gchd.sgStatic | quote }}

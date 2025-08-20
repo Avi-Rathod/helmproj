@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-search-root-parameters-66bk7hg44h
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.searchRootParameters66Bk7Hg44H.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.searchRootParameters66Bk7Hg44H.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.searchRootParameters66Bk7Hg44H.sasServiceName | quote
+    }}
+  SG_GO_MODULES_ENABLED: {{ .Values.searchRootParameters66Bk7Hg44H.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.searchRootParameters66Bk7Hg44H.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.searchRootParameters66Bk7Hg44H.sgProject | quote }}
+  SG_STATIC: {{ .Values.searchRootParameters66Bk7Hg44H.sgStatic | quote }}

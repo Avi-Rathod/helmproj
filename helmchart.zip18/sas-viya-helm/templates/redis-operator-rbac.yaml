@@ -1,0 +1,131 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-redis-operator
+  labels:
+    sas.com/admin: cluster-wide
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-redis-operator
+    sas.com/component-version: 1.custom14.custom12-20240911.custom1726069464254
+    sas.com/kustomize-base: base
+    sas.com/version: 1.custom14.custom12
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - secrets
+  - endpoints
+  - persistentvolumeclaims
+  verbs:
+  - get
+  - list
+  - watch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - secrets
+  - services
+  - events
+  - persistentvolumeclaims
+  verbs:
+  - create
+  - get
+  - list
+  - patch
+  - update
+  - watch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  - podtemplates
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  verbs:
+  - create
+  - get
+  - list
+  - patch
+  - update
+  - watch
+  - delete
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  - replicasets
+  - statefulsets
+  verbs:
+  - create
+  - get
+  - list
+  - patch
+  - update
+  - watch
+  - delete
+- apiGroups:
+  - policy
+  resources:
+  - poddisruptionbudgets
+  verbs:
+  - create
+  - get
+  - list
+  - patch
+  - update
+  - watch
+  - delete
+- apiGroups:
+  - apps
+  resourceNames:
+  - redis-operator
+  resources:
+  - deployments/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - redis.kun
+  resources:
+  - '*'
+  verbs:
+  - delete
+  - deletecollection
+  - get
+  - list
+  - patch
+  - update
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-redis-operator
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-redis-operator
+    sas.com/component-version: 1.custom14.custom12-20240911.custom1726069464254
+    sas.com/kustomize-base: base
+    sas.com/version: 1.custom14.custom12
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: '{{ include "sas-viya-helm.fullname" . }}-redis-operator'
+subjects:
+- kind: ServiceAccount
+  name: '{{ include "sas-viya-helm.fullname" . }}-redis-operator'
+  namespace: '{{ .Release.Namespace }}'

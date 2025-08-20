@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-cas-management-parameters-4g78kgb2f7
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.casManagementParameters4G78Kgb2F7.sasContextPath |
+    quote }}
+  SAS_PORT_NAME: {{ .Values.casManagementParameters4G78Kgb2F7.sasPortName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.casManagementParameters4G78Kgb2F7.sasServiceName |
+    quote }}

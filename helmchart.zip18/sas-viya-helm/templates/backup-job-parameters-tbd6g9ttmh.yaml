@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-backup-job-parameters-tbd6g9ttmh
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.backupJobParametersTbd6G9Ttmh.cntrRepoPrefix | quote
+    }}
+  FILE_SYSTEM_BACKUP_FORMAT: {{ .Values.backupJobParametersTbd6G9Ttmh.fileSystemBackupFormat
+    | quote }}
+  JOB_TIME_OUT: {{ .Values.backupJobParametersTbd6G9Ttmh.jobTimeOut | quote }}
+  RETENTION_PERIOD: {{ .Values.backupJobParametersTbd6G9Ttmh.retentionPeriod | quote
+    }}
+  SAS_BACKUP_JOB_DU_NAME: {{ .Values.backupJobParametersTbd6G9Ttmh.sasBackupJobDuName
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.backupJobParametersTbd6G9Ttmh.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.backupJobParametersTbd6G9Ttmh.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.backupJobParametersTbd6G9Ttmh.sasServiceName | quote
+    }}
+  SG_GO_MODULES_ENABLED: {{ .Values.backupJobParametersTbd6G9Ttmh.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.backupJobParametersTbd6G9Ttmh.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.backupJobParametersTbd6G9Ttmh.sgProject | quote }}

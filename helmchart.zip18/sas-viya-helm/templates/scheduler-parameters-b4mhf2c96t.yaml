@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-scheduler-parameters-b4mhf2c96t
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.schedulerParametersB4Mhf2C96T.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.schedulerParametersB4Mhf2C96T.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.schedulerParametersB4Mhf2C96T.sasServiceName | quote
+    }}

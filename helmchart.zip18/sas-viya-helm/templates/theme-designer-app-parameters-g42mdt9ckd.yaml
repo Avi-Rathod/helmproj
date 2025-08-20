@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-theme-designer-app-parameters-g42mdt9ckd
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.themeDesignerAppParametersG42Mdt9Ckd.cntrRepoPrefix
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.themeDesignerAppParametersG42Mdt9Ckd.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.themeDesignerAppParametersG42Mdt9Ckd.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.themeDesignerAppParametersG42Mdt9Ckd.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.themeDesignerAppParametersG42Mdt9Ckd.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.themeDesignerAppParametersG42Mdt9Ckd.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.themeDesignerAppParametersG42Mdt9Ckd.sgProject | quote }}

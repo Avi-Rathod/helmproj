@@ -1,0 +1,57 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-decisions-runtime-builder
+  labels:
+    sas.com/admin: cluster-wide
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-decisions-runtime-builder
+    sas.com/component-version: 1.custom14.custom2-20240905.custom1725565128727
+    sas.com/version: 1.custom14.custom2
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  - pods
+  - pods/log
+  - podtemplates
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - delete
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-decisions-runtime-builder
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-decisions-runtime-builder
+    sas.com/component-version: 1.custom14.custom2-20240905.custom1725565128727
+    sas.com/version: 1.custom14.custom2
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: '{{ include "sas-viya-helm.fullname" . }}-decisions-runtime-builder'
+subjects:
+- kind: ServiceAccount
+  name: '{{ include "sas-viya-helm.fullname" . }}-decisions-runtime-builder'
+  namespace: '{{ .Release.Namespace }}'

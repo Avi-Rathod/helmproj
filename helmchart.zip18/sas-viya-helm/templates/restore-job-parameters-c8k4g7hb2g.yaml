@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-restore-job-parameters-c8k4g7hb2g
+  labels:
+    sas.com/admin: namespace
+    sas.com/backup-job-type: restore
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  OAUTH2_CLIENT_ACCESSTOKENVALIDITY: {{ .Values.restoreJobParametersC8K4G7Hb2G.oauth2ClientAccesstokenvalidity
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.restoreJobParametersC8K4G7Hb2G.sasContextPath | quote
+    }}
+  SAS_CRONJOB_NAME: {{ .Values.restoreJobParametersC8K4G7Hb2G.sasCronjobName | quote
+    }}
+  SAS_DU_NAME: {{ .Values.restoreJobParametersC8K4G7Hb2G.sasDuName | quote }}
+  SAS_RESTORE_JOB_DU_NAME: {{ .Values.restoreJobParametersC8K4G7Hb2G.sasRestoreJobDuName
+    | quote }}
+  SAS_SERVICE_NAME: {{ .Values.restoreJobParametersC8K4G7Hb2G.sasServiceName | quote
+    }}
+  SG_PROJECT: {{ .Values.restoreJobParametersC8K4G7Hb2G.sgProject | quote }}

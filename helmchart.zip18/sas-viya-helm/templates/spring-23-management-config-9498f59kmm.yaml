@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-spring-23-management-config-9498f59kmm
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  MANAGEMENT_ENDPOINT_HEALTH_GROUP_LIVE_INCLUDE: {{ .Values.spring23ManagementConfig9498F59Kmm.managementEndpointHealthGroupLiveInclude
+    | quote }}
+  MANAGEMENT_ENDPOINT_HEALTH_GROUP_READY_INCLUDE: {{ .Values.spring23ManagementConfig9498F59Kmm.managementEndpointHealthGroupReadyInclude
+    | quote }}
+  MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED: {{ .Values.spring23ManagementConfig9498F59Kmm.managementEndpointHealthProbesEnabled
+    | quote }}
+  MANAGEMENT_ENDPOINT_METRICS_ENABLED: {{ .Values.spring23ManagementConfig9498F59Kmm.managementEndpointMetricsEnabled
+    | quote }}
+  MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED: {{ .Values.spring23ManagementConfig9498F59Kmm.managementEndpointPrometheusEnabled
+    | quote }}
+  MANAGEMENT_ENDPOINTS_WEB_BASEPATH: {{ .Values.spring23ManagementConfig9498F59Kmm.managementEndpointsWebBasepath
+    | quote }}
+  MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: {{ .Values.spring23ManagementConfig9498F59Kmm.managementEndpointsWebExposureInclude
+    | quote }}
+  MANAGEMENT_ENDPOINTS_WEB_PATHMAPPING_ENV: {{ .Values.spring23ManagementConfig9498F59Kmm.managementEndpointsWebPathmappingEnv
+    | quote }}
+  MANAGEMENT_ENDPOINTS_WEB_PATHMAPPING_HEALTH: {{ .Values.spring23ManagementConfig9498F59Kmm.managementEndpointsWebPathmappingHealth
+    | quote }}
+  MANAGEMENT_ENDPOINTS_WEB_PATHMAPPING_PROMETHEUS: {{ .Values.spring23ManagementConfig9498F59Kmm.managementEndpointsWebPathmappingPrometheus
+    | quote }}
+  MANAGEMENT_SERVER_PORT: {{ .Values.spring23ManagementConfig9498F59Kmm.managementServerPort
+    | quote }}
+  MANAGEMENT_SERVER_SERVLET_CONTEXTPATH: {{ .Values.spring23ManagementConfig9498F59Kmm.managementServerServletContextpath
+    | quote }}
+  SAS_MANAGEMENT_INDICATOR_BOOTSTRAP_ENABLED: {{ .Values.spring23ManagementConfig9498F59Kmm.sasManagementIndicatorBootstrapEnabled
+    | quote }}
+  SAS_MANAGEMENT_INDICATOR_COMMONS_ENABLED: {{ .Values.spring23ManagementConfig9498F59Kmm.sasManagementIndicatorCommonsEnabled
+    | quote }}

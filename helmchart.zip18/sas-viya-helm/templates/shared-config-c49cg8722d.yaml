@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-shared-config-c49cg8722d
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_ALLOW_ADMIN_SCRIPTS: {{ .Values.sharedConfigC49Cg8722D.sasAllowAdminScripts
+    | quote }}
+  SAS_MULTI_TENANCY_ENABLED: {{ .Values.sharedConfigC49Cg8722D.sasMultiTenancyEnabled
+    | quote }}
+  SAS_SERVICES_URL: {{ .Values.sharedConfigC49Cg8722D.sasServicesUrl | quote }}
+  SAS_URL_EXTERNAL_VIYA: {{ .Values.sharedConfigC49Cg8722D.sasUrlExternalViya | quote
+    }}
+  SAS_URL_SERVICE_SCHEME: {{ .Values.sharedConfigC49Cg8722D.sasUrlServiceScheme |
+    quote }}
+  SAS_URL_SERVICE_TEMPLATE: {{ .Values.sharedConfigC49Cg8722D.sasUrlServiceTemplate
+    | quote }}

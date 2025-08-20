@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-data-sources-parameters-8986k67gbd
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.dataSourcesParameters8986K67Gbd.sasContextPath | quote
+    }}
+  SAS_PORT_NAME: {{ .Values.dataSourcesParameters8986K67Gbd.sasPortName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.dataSourcesParameters8986K67Gbd.sasServiceName | quote
+    }}

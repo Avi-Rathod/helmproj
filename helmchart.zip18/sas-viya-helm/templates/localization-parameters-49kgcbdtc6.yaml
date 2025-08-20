@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-localization-parameters-49kgcbdtc6
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.localizationParameters49Kgcbdtc6.sasContextPath |
+    quote }}
+  SAS_DU_NAME: {{ .Values.localizationParameters49Kgcbdtc6.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.localizationParameters49Kgcbdtc6.sasServiceName |
+    quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.localizationParameters49Kgcbdtc6.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.localizationParameters49Kgcbdtc6.sgGoMultiModules
+    | quote }}
+  SG_HOOK_IMAGE: {{ .Values.localizationParameters49Kgcbdtc6.sgHookImage | quote
+    }}
+  SG_PROJECT: {{ .Values.localizationParameters49Kgcbdtc6.sgProject | quote }}
+  SG_STATIC: {{ .Values.localizationParameters49Kgcbdtc6.sgStatic | quote }}

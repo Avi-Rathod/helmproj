@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-open-source-config-python-k944mgb256
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  DM_PYPATH: {{ .Values.openSourceConfigPythonK944Mgb256.dmPypath | quote }}
+  MAS_M2PATH: {{ .Values.openSourceConfigPythonK944Mgb256.masM2Path | quote }}
+  MAS_PYPATH: {{ .Values.openSourceConfigPythonK944Mgb256.masPypath | quote }}
+  PROC_M2PATH: {{ .Values.openSourceConfigPythonK944Mgb256.procM2Path | quote }}
+  PROC_PYPATH: {{ .Values.openSourceConfigPythonK944Mgb256.procPypath | quote }}
+  SAS_EXT_LLP_PYTHON: {{ .Values.openSourceConfigPythonK944Mgb256.sasExtLlpPython
+    | quote }}
+  SAS_EXTLANG_SETTINGS: {{ .Values.openSourceConfigPythonK944Mgb256.sasExtlangSettings
+    | quote }}

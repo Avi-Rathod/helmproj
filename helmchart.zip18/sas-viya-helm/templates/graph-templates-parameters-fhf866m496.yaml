@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-graph-templates-parameters-fhf866m496
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.graphTemplatesParametersFhf866M496.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.graphTemplatesParametersFhf866M496.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.graphTemplatesParametersFhf866M496.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.graphTemplatesParametersFhf866M496.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.graphTemplatesParametersFhf866M496.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.graphTemplatesParametersFhf866M496.sgProject | quote }}

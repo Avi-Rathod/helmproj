@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-folders-parameters-d4gt29tc47
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.foldersParametersD4Gt29Tc47.sasContextPath | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.foldersParametersD4Gt29Tc47.sasServiceName | quote
+    }}

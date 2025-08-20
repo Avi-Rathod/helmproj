@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-prepull-parameters-bk7td52m9t
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_DU_NAME: {{ .Values.prepullParametersBk7Td52M9T.sasDuName | quote }}
+  SAS_PREPULL_CRCRB_INT: {{ .Values.prepullParametersBk7Td52M9T.sasPrepullCrcrbInt
+    | quote }}
+  SAS_PREPULL_DAEMON_INT: {{ .Values.prepullParametersBk7Td52M9T.sasPrepullDaemonInt
+    | quote }}
+  SAS_PREPULL_IMAGE_LIST: {{ .Values.prepullParametersBk7Td52M9T.sasPrepullImageList
+    | quote }}
+  SAS_PREPULL_NODE_LABEL: {{ .Values.prepullParametersBk7Td52M9T.sasPrepullNodeLabel
+    | quote }}
+  SAS_SERVICE_NAME: {{ .Values.prepullParametersBk7Td52M9T.sasServiceName | quote
+    }}

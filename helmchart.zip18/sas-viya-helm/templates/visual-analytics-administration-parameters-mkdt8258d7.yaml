@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-visual-analytics-administration-parameters-mkdt8258d7
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.visualAnalyticsAdministrationParametersMkdt8258D7.cntrRepoPrefix
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.visualAnalyticsAdministrationParametersMkdt8258D7.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.visualAnalyticsAdministrationParametersMkdt8258D7.sasDuName
+    | quote }}
+  SAS_SERVICE_NAME: {{ .Values.visualAnalyticsAdministrationParametersMkdt8258D7.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.visualAnalyticsAdministrationParametersMkdt8258D7.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.visualAnalyticsAdministrationParametersMkdt8258D7.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.visualAnalyticsAdministrationParametersMkdt8258D7.sgProject
+    | quote }}

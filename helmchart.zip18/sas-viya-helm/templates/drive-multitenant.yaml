@@ -1,0 +1,31 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-drive-multitenant
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    cert-utils-operator.redhat-cop.io/certs-from-secret: sas-ingress-certificate-b976h462g7
+    cert-utils-operator.redhat-cop.io/destinationCA-from-secret: sas-viya-ca-certificate-secret
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-drive
+    sas.com/component-name: sas-content
+    sas.com/component-version: 1.custom110.custom13-20240909.custom1725902073585
+    sas.com/kustomize-base: base
+    sas.com/tls-mode: full-stack
+    sas.com/version: 1.custom110.custom13
+spec:
+  host: wildcard.sasvi.hbctxdom.com
+  path: /drive
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: reencrypt
+  to:
+    kind: Service
+    name: sas-drive
+  wildcardPolicy: Subdomain

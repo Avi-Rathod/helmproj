@@ -1,0 +1,90 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-crunchy-cds-postgres-fix-v4-backrest-job
+  labels:
+    sas.com/admin: none
+    sas.com/deployment: sas-viya
+    webinfdsvr.sas.com/upgrade-crunchy-step-1: sas-crunchy-data-cdspostgres
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-crunchy5-postgres-operator
+    sas.com/component-version: 1.custom5.custom12-20241206.custom1733500383664
+    sas.com/version: 1.custom5.custom12
+spec:
+  template:
+    metadata:
+      annotations:
+        sas.com/component-name: sas-crunchy5-postgres-operator
+        sas.com/component-version: 1.custom5.custom12-20241206.custom1733500383664
+        sas.com/version: 1.custom5.custom12
+      labels:
+        sas.com/deployment: sas-viya
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateful
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - cas
+                - compute
+                - stateless
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+      containers:
+      - command:
+        - sh
+        - -cex
+        - |
+          target=/backrestrepo/sas-crunchy-data-cdspostgres-backrest-shared-repo
+          chmod -R g+rwx "${target}" && chown -R :0 "${target}"
+        env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.crunchyCdsPostgresFixV4BackrestJob.pgbrDataFix.image.repository
+          }}:{{ .Values.crunchyCdsPostgresFixV4BackrestJob.pgbrDataFix.image.tag |
+          default .Chart.AppVersion }}
+        name: pgbr-data-fix
+        resources: {{- toYaml .Values.crunchyCdsPostgresFixV4BackrestJob.pgbrDataFix.resources
+          | nindent 10 }}
+        securityContext: {{- toYaml .Values.crunchyCdsPostgresFixV4BackrestJob.pgbrDataFix.containerSecurityContext
+          | nindent 10 }}
+        volumeMounts:
+        - mountPath: /backrestrepo
+          name: backrestrepo
+      imagePullSecrets:
+      - name: {{ include "sas-viya-helm.fullname" . }}-image-pull-secrets-9dd8hm29fm
+      restartPolicy: Never
+      securityContext: {{- toYaml .Values.crunchyCdsPostgresFixV4BackrestJob.podSecurityContext
+        | nindent 8 }}
+      serviceAccount: pgo-default
+      serviceAccountName: pgo-default
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - name: backrestrepo
+        persistentVolumeClaim:
+          claimName: sas-crunchy-data-cdspostgres-pgbr-repo

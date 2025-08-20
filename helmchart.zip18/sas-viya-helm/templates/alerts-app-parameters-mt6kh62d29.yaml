@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-alerts-app-parameters-mt6kh62d29
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.alertsAppParametersMt6Kh62D29.cntrRepoPrefix | quote
+    }}
+  SAS_CONTEXT_PATH: {{ .Values.alertsAppParametersMt6Kh62D29.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.alertsAppParametersMt6Kh62D29.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.alertsAppParametersMt6Kh62D29.sasServiceName | quote
+    }}
+  SG_GO_MODULES_ENABLED: {{ .Values.alertsAppParametersMt6Kh62D29.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.alertsAppParametersMt6Kh62D29.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.alertsAppParametersMt6Kh62D29.sgProject | quote }}

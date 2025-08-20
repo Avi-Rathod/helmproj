@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-compute-server-config-ctgd6tkm4c
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  AUTOEXEC_USERMODS_FILE: {{ .Values.computeServerConfigCtgd6Tkm4C.autoexecUsermodsFile
+    | quote }}
+  COMPUTESERVER_USER_CONFIG: {{ .Values.computeServerConfigCtgd6Tkm4C.computeserverUserConfig
+    | quote }}
+  COMPUTESERVER_VAR_PATH: {{ .Values.computeServerConfigCtgd6Tkm4C.computeserverVarPath
+    | quote }}
+  CONFIG_USERMODS_FILE: {{ .Values.computeServerConfigCtgd6Tkm4C.configUsermodsFile
+    | quote }}
+  CONNECTSERVER_AUTOEXEC_USERMODS_FILE: {{ .Values.computeServerConfigCtgd6Tkm4C.connectserverAutoexecUsermodsFile
+    | quote }}
+  CONNECTSERVER_CONFIG_USERMODS_FILE: {{ .Values.computeServerConfigCtgd6Tkm4C.connectserverConfigUsermodsFile
+    | quote }}
+  CONNECTSERVER_SCRIPT_USERMODS_FILE: {{ .Values.computeServerConfigCtgd6Tkm4C.connectserverScriptUsermodsFile
+    | quote }}
+  CONNECTSERVER_USER_CONFIG: {{ .Values.computeServerConfigCtgd6Tkm4C.connectserverUserConfig
+    | quote }}
+  SAS_INIT_CONFIG_FILE_CONNECTSERVER_AUTOEXEC: {{ .Values.computeServerConfigCtgd6Tkm4C.sasInitConfigFileConnectserverAutoexec
+    | quote }}
+  SAS_INIT_CONFIG_FILE_CONNECTSERVER_USERMODS: {{ .Values.computeServerConfigCtgd6Tkm4C.sasInitConfigFileConnectserverUsermods
+    | quote }}
+  SAS_INIT_CONFIG_FILE_CONNECTSERVER_V9USERMODS: {{ .Values.computeServerConfigCtgd6Tkm4C.sasInitConfigFileConnectserverV9Usermods
+    | quote }}
+  SAS_INIT_CONFIG_FILE_LOGCONFIG: {{ .Values.computeServerConfigCtgd6Tkm4C.sasInitConfigFileLogconfig
+    | quote }}
+  SAS_INIT_CONFIG_FILE_RESTROPTS: {{ .Values.computeServerConfigCtgd6Tkm4C.sasInitConfigFileRestropts
+    | quote }}
+  SAS_INIT_CONFIG_FILE1: {{ .Values.computeServerConfigCtgd6Tkm4C.sasInitConfigFile1
+    | quote }}
+  SAS_INIT_CONFIG_FILE2: {{ .Values.computeServerConfigCtgd6Tkm4C.sasInitConfigFile2
+    | quote }}
+  SAS_INIT_CONFIG_FILE3: {{ .Values.computeServerConfigCtgd6Tkm4C.sasInitConfigFile3
+    | quote }}
+  SAS_INIT_CONFIG_KEY_CONNECTSERVER_AUTOEXEC: {{ .Values.computeServerConfigCtgd6Tkm4C.sasInitConfigKeyConnectserverAutoexec
+    | quote }}
+  SAS_INIT_CONFIG_KEY_CONNECTSERVER_USERMODS: {{ .Values.computeServerConfigCtgd6Tkm4C.sasInitConfigKeyConnectserverUsermods
+    | quote }}
+  SAS_INIT_CONFIG_KEY_CONNECTSERVER_V9USERMODS: {{ .Values.computeServerConfigCtgd6Tkm4C.sasInitConfigKeyConnectserverV9Usermods
+    | quote }}
+  SAS_INIT_CONFIG_KEY_LOGCONFIG: {{ .Values.computeServerConfigCtgd6Tkm4C.sasInitConfigKeyLogconfig
+    | quote }}
+  SAS_INIT_CONFIG_KEY_RESTROPTS: {{ .Values.computeServerConfigCtgd6Tkm4C.sasInitConfigKeyRestropts
+    | quote }}
+  SAS_INIT_CONFIG_KEY1: {{ .Values.computeServerConfigCtgd6Tkm4C.sasInitConfigKey1
+    | quote }}
+  SAS_INIT_CONFIG_KEY2: {{ .Values.computeServerConfigCtgd6Tkm4C.sasInitConfigKey2
+    | quote }}
+  SAS_INIT_CONFIG_KEY3: {{ .Values.computeServerConfigCtgd6Tkm4C.sasInitConfigKey3
+    | quote }}
+  SAS_LANG_FILE_IN: {{ .Values.computeServerConfigCtgd6Tkm4C.sasLangFileIn | quote
+    }}
+  SCRIPT_USERMODS_FILE: {{ .Values.computeServerConfigCtgd6Tkm4C.scriptUsermodsFile
+    | quote }}

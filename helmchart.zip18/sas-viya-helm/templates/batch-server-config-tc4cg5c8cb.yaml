@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-batch-server-config-tc4cg5c8cb
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  BATCHSERVER_AUTOEXEC_USERMODS_FILE: {{ .Values.batchServerConfigTc4Cg5C8Cb.batchserverAutoexecUsermodsFile
+    | quote }}
+  BATCHSERVER_CONFIG_USERMODS_FILE: {{ .Values.batchServerConfigTc4Cg5C8Cb.batchserverConfigUsermodsFile
+    | quote }}
+  BATCHSERVER_SCRIPT_USERMODS_FILE: {{ .Values.batchServerConfigTc4Cg5C8Cb.batchserverScriptUsermodsFile
+    | quote }}
+  BATCHSERVER_USER_CONFIG: {{ .Values.batchServerConfigTc4Cg5C8Cb.batchserverUserConfig
+    | quote }}
+  CONNECTSERVER_AUTOEXEC_USERMODS_FILE: {{ .Values.batchServerConfigTc4Cg5C8Cb.connectserverAutoexecUsermodsFile
+    | quote }}
+  CONNECTSERVER_CONFIG_USERMODS_FILE: {{ .Values.batchServerConfigTc4Cg5C8Cb.connectserverConfigUsermodsFile
+    | quote }}
+  CONNECTSERVER_SCRIPT_USERMODS_FILE: {{ .Values.batchServerConfigTc4Cg5C8Cb.connectserverScriptUsermodsFile
+    | quote }}
+  CONNECTSERVER_USER_CONFIG: {{ .Values.batchServerConfigTc4Cg5C8Cb.connectserverUserConfig
+    | quote }}
+  SAS_INIT_CONFIG_FILE_CONNECTSERVER_AUTOEXEC: {{ .Values.batchServerConfigTc4Cg5C8Cb.sasInitConfigFileConnectserverAutoexec
+    | quote }}
+  SAS_INIT_CONFIG_FILE_CONNECTSERVER_USERMODS: {{ .Values.batchServerConfigTc4Cg5C8Cb.sasInitConfigFileConnectserverUsermods
+    | quote }}
+  SAS_INIT_CONFIG_FILE_CONNECTSERVER_V9USERMODS: {{ .Values.batchServerConfigTc4Cg5C8Cb.sasInitConfigFileConnectserverV9Usermods
+    | quote }}
+  SAS_INIT_CONFIG_FILE_RESTROPTS: {{ .Values.batchServerConfigTc4Cg5C8Cb.sasInitConfigFileRestropts
+    | quote }}
+  SAS_INIT_CONFIG_FILE1: {{ .Values.batchServerConfigTc4Cg5C8Cb.sasInitConfigFile1
+    | quote }}
+  SAS_INIT_CONFIG_FILE2: {{ .Values.batchServerConfigTc4Cg5C8Cb.sasInitConfigFile2
+    | quote }}
+  SAS_INIT_CONFIG_FILE3: {{ .Values.batchServerConfigTc4Cg5C8Cb.sasInitConfigFile3
+    | quote }}
+  SAS_INIT_CONFIG_KEY_CONNECTSERVER_AUTOEXEC: {{ .Values.batchServerConfigTc4Cg5C8Cb.sasInitConfigKeyConnectserverAutoexec
+    | quote }}
+  SAS_INIT_CONFIG_KEY_CONNECTSERVER_USERMODS: {{ .Values.batchServerConfigTc4Cg5C8Cb.sasInitConfigKeyConnectserverUsermods
+    | quote }}
+  SAS_INIT_CONFIG_KEY_CONNECTSERVER_V9USERMODS: {{ .Values.batchServerConfigTc4Cg5C8Cb.sasInitConfigKeyConnectserverV9Usermods
+    | quote }}
+  SAS_INIT_CONFIG_KEY_RESTROPTS: {{ .Values.batchServerConfigTc4Cg5C8Cb.sasInitConfigKeyRestropts
+    | quote }}
+  SAS_INIT_CONFIG_KEY1: {{ .Values.batchServerConfigTc4Cg5C8Cb.sasInitConfigKey1
+    | quote }}
+  SAS_INIT_CONFIG_KEY2: {{ .Values.batchServerConfigTc4Cg5C8Cb.sasInitConfigKey2
+    | quote }}
+  SAS_INIT_CONFIG_KEY3: {{ .Values.batchServerConfigTc4Cg5C8Cb.sasInitConfigKey3
+    | quote }}
+  SAS_LANG_FILE_IN: {{ .Values.batchServerConfigTc4Cg5C8Cb.sasLangFileIn | quote
+    }}

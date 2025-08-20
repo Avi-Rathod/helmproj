@@ -1,0 +1,115 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-text-analytics-execution
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    sas.com/registry-sync: default
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-text-analytics-execution
+    sas.com/component-version: 6.custom19.custom4-20241207.custom1733533080467
+    sas.com/kustomize-base: base
+    sas.com/registry-providers: jobExecution-provider, jobExecution-provider-text-execution,
+      jobExecution-provider-text, jobExecution-provider-text-category, jobExecution-provider-text-concept,
+      jobExecution-provider-text-parse, jobExecution-provider-text-sentiment, jobExecution-provider-text-topic,
+      jobExecution-provider-text-test-sandbox-concept, jobExecution-provider-text-build-component-table,
+      jobExecution-provider-text-sandbox-concept-scoring, jobExecution-provider-concept-sample-text-scoring,
+      jobExecution-provider-text-category-scoring
+    sas.com/registry-sync: default
+    sas.com/registry-tags: proxy
+    sas.com/tls-mode: full-stack
+    sas.com/version: 6.custom19.custom4
+spec:
+  type: {{ .Values.textAnalyticsExecution.type }}
+  selector:
+    app.kubernetes.io/name: sas-text-analytics-execution
+    sas.com/deployment: sas-viya
+    {{- include "sas-viya-helm.selectorLabels" . | nindent 4 }}
+  ports:
+  {{- .Values.textAnalyticsExecution.ports | toYaml | nindent 2 }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-text-analytics-execution
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-text-analytics-execution
+    sas.com/component-version: 6.custom19.custom4-20241207.custom1733533080467
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: base
+    sas.com/version: 6.custom19.custom4
+spec:
+  minAvailable: {{ .Values.textAnalyticsExecution.minAvailable }}
+  maxUnavailable: {{ .Values.textAnalyticsExecution.maxUnavailable }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-text-analytics-execution
+      sas.com/deployment: sas-viya
+    {{- include "sas-viya-helm.selectorLabels" . | nindent 6 }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-text-analytics-execution
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-text-analytics-execution
+    sas.com/component-version: 6.custom19.custom4-20241207.custom1733533080467
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: golang
+    sas.com/version: 6.custom19.custom4
+spec:
+  maxReplicas: 1
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sas-text-analytics-execution
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-text-analytics-execution
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    cert-utils-operator.redhat-cop.io/certs-from-secret: sas-ingress-certificate-b976h462g7
+    cert-utils-operator.redhat-cop.io/destinationCA-from-secret: sas-viya-ca-certificate-secret
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-textAnalyticsExecution
+    sas.com/component-name: sas-text-analytics-execution
+    sas.com/component-version: 6.custom19.custom4-20241207.custom1733533080467
+    sas.com/kustomize-base: base
+    sas.com/tls-mode: full-stack
+    sas.com/version: 6.custom19.custom4
+spec:
+  host: sasvi.hbctxdom.com
+  path: /textAnalyticsExecution
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: reencrypt
+  to:
+    kind: Service
+    name: sas-text-analytics-execution
+  wildcardPolicy: None

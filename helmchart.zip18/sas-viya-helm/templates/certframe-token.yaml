@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-certframe-token
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    kubernetes.io/service-account.name: sas-certframe
+    orchestration.sas.com/literal: "true"
+    sas.com/component-name: sas-certframe
+    sas.com/component-version: 3.custom57.custom1-20240905.custom1725561224344
+    sas.com/version: 3.custom57.custom1
+type: kubernetes.io/service-account-token

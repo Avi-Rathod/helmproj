@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-report-operations-parameters-d7h9ctb6kk
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.reportOperationsParametersD7H9Ctb6Kk.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.reportOperationsParametersD7H9Ctb6Kk.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.reportOperationsParametersD7H9Ctb6Kk.sasServiceName
+    | quote }}

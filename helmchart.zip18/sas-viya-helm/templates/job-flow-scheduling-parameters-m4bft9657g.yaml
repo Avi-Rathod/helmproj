@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-job-flow-scheduling-parameters-m4bft9657g
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.jobFlowSchedulingParametersM4Bft9657G.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.jobFlowSchedulingParametersM4Bft9657G.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.jobFlowSchedulingParametersM4Bft9657G.sasServiceName
+    | quote }}
+  SG_PROJECT: {{ .Values.jobFlowSchedulingParametersM4Bft9657G.sgProject | quote
+    }}

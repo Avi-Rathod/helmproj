@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-catalog-table-bot-parameters-d92f5kb895
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.catalogTableBotParametersD92F5Kb895.sasContextPath
+    | quote }}
+  SAS_PORT_NAME: {{ .Values.catalogTableBotParametersD92F5Kb895.sasPortName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.catalogTableBotParametersD92F5Kb895.sasServiceName
+    | quote }}

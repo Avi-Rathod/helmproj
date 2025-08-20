@@ -1,0 +1,109 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-microanalytic-score
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    sas.com/registry-sync: default
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-microanalytic-score
+    sas.com/component-version: 2.custom402.custom56-20241126.custom1732657782630
+    sas.com/kustomize-base: base
+    sas.com/registry-sync: default
+    sas.com/registry-tags: proxy
+    sas.com/tls-mode: full-stack
+    sas.com/version: 2.custom402.custom56
+spec:
+  type: {{ .Values.microanalyticScore.type }}
+  selector:
+    app.kubernetes.io/name: sas-microanalytic-score
+    sas.com/deployment: sas-viya
+    {{- include "sas-viya-helm.selectorLabels" . | nindent 4 }}
+  ports:
+  {{- .Values.microanalyticScore.ports | toYaml | nindent 2 }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-microanalytic-score
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-microanalytic-score
+    sas.com/component-version: 2.custom402.custom56-20241126.custom1732657782630
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: base
+    sas.com/version: 2.custom402.custom56
+spec:
+  minAvailable: {{ .Values.microanalyticScore.minAvailable }}
+  maxUnavailable: {{ .Values.microanalyticScore.maxUnavailable }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-microanalytic-score
+      sas.com/deployment: sas-viya
+    {{- include "sas-viya-helm.selectorLabels" . | nindent 6 }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-microanalytic-score
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-microanalytic-score
+    sas.com/component-version: 2.custom402.custom56-20241126.custom1732657782630
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: spring
+    sas.com/version: 2.custom402.custom56
+spec:
+  maxReplicas: 1
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sas-microanalytic-score
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-microanalytic-score
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    cert-utils-operator.redhat-cop.io/certs-from-secret: sas-ingress-certificate-b976h462g7
+    cert-utils-operator.redhat-cop.io/destinationCA-from-secret: sas-viya-ca-certificate-secret
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-microanalyticScore
+    sas.com/component-name: sas-microanalytic-score
+    sas.com/component-version: 2.custom402.custom56-20241126.custom1732657782630
+    sas.com/kustomize-base: base
+    sas.com/tls-mode: full-stack
+    sas.com/version: 2.custom402.custom56
+spec:
+  host: sasvi.hbctxdom.com
+  path: /microanalyticScore
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: reencrypt
+  to:
+    kind: Service
+    name: sas-microanalytic-score
+  wildcardPolicy: None

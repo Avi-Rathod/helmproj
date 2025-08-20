@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-certframe-user-config-679cgdbhdt
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CA_CERTIFICATE_SECRET_NAME: {{ .Values.certframeUserConfig679Cgdbhdt.sasCaCertificateSecretName
+    | quote }}
+  SAS_CERTIFICATE_GENERATOR: {{ .Values.certframeUserConfig679Cgdbhdt.sasCertificateGenerator
+    | quote }}
+  SAS_CERTIFICATE_INGRESS_SAN_DNS: {{ .Values.certframeUserConfig679Cgdbhdt.sasCertificateIngressSanDns
+    | quote }}
+  SAS_CERTIFICATE_ISSUER: {{ .Values.certframeUserConfig679Cgdbhdt.sasCertificateIssuer
+    | quote }}

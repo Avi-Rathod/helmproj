@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-workflow-manager-app-parameters-9bfk2dcb77
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.workflowManagerAppParameters9Bfk2Dcb77.cntrRepoPrefix
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.workflowManagerAppParameters9Bfk2Dcb77.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.workflowManagerAppParameters9Bfk2Dcb77.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.workflowManagerAppParameters9Bfk2Dcb77.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.workflowManagerAppParameters9Bfk2Dcb77.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.workflowManagerAppParameters9Bfk2Dcb77.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.workflowManagerAppParameters9Bfk2Dcb77.sgProject | quote
+    }}

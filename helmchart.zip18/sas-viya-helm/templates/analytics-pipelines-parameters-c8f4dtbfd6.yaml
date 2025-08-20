@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-analytics-pipelines-parameters-c8f4dtbfd6
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.analyticsPipelinesParametersC8F4Dtbfd6.sasContextPath
+    | quote }}
+  SAS_PORT_NAME: {{ .Values.analyticsPipelinesParametersC8F4Dtbfd6.sasPortName |
+    quote }}
+  SAS_SERVICE_NAME: {{ .Values.analyticsPipelinesParametersC8F4Dtbfd6.sasServiceName
+    | quote }}

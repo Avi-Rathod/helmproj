@@ -1,0 +1,69 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-commonfiles
+  labels:
+    sas.com/admin: cluster-wide
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-commonfiles
+    sas.com/component-version: 2.custom4.custom36-20240917.custom1726594981014
+    sas.com/version: 2.custom4.custom36
+rules:
+- apiGroups:
+  - batch
+  - extensions
+  resources:
+  - jobs
+  verbs:
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - pods/log
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - ""
+  resources:
+  - podtemplates
+  verbs:
+  - get
+- apiGroups:
+  - ""
+  resources:
+  - pod
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-commonfiles
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-commonfiles
+    sas.com/component-version: 2.custom4.custom36-20240917.custom1726594981014
+    sas.com/version: 2.custom4.custom36
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: '{{ include "sas-viya-helm.fullname" . }}-commonfiles'
+subjects:
+- kind: ServiceAccount
+  name: '{{ include "sas-viya-helm.fullname" . }}-commonfiles'
+  namespace: '{{ .Release.Namespace }}'

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-launcher-init-nls-config-9d6k8f9hcd
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_LAUNCHER_INIT_ENCODING_DEFAULT: {{ .Values.launcherInitNlsConfig9D6K8F9Hcd.sasLauncherInitEncodingDefault
+    | quote }}
+  SAS_LAUNCHER_INIT_LOCALE_DEFAULT: {{ .Values.launcherInitNlsConfig9D6K8F9Hcd.sasLauncherInitLocaleDefault
+    | quote }}

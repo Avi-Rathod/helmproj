@@ -1,0 +1,159 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: distributedredisclusters.redis.kun
+  annotations:
+    sas.com/SAS_BASE_CADENCE_NAME: stable
+    sas.com/SAS_BASE_CADENCE_VERSION: "2024.custom09"
+    sas.com/SAS_CADENCE_DISPLAY_NAME: Long-Term Support 2024.custom09
+    sas.com/SAS_CADENCE_DISPLAY_SHORT_NAME: Long-Term Support
+    sas.com/SAS_CADENCE_DISPLAY_VERSION: "2024.custom09"
+    sas.com/SAS_CADENCE_NAME: lts
+    sas.com/SAS_CADENCE_RELEASE: "20241224.custom1735022792025"
+    sas.com/SAS_CADENCE_VERSION: "2024.custom09"
+    sas.com/component-name: sas-redis-operator
+    sas.com/component-version: 1.custom14.custom12-20240911.custom1726069464254
+    sas.com/version: 1.custom14.custom12
+  labels:
+    sas.com/admin: cluster-api
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+spec:
+  group: redis.kun
+  names:
+    kind: DistributedRedisCluster
+    listKind: DistributedRedisClusterList
+    plural: distributedredisclusters
+    shortNames:
+    - drc
+    singular: distributedrediscluster
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - description: The number of redis master node in the ensemble
+      jsonPath: .spec.masterSize
+      name: MasterSize
+      type: integer
+    - description: The status of redis cluster
+      jsonPath: .status.status
+      name: Status
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: The current master number of redis cluster
+      jsonPath: .status.numberOfMaster
+      name: CurrentMasters
+      priority: 1
+      type: integer
+    - description: The image of redis cluster
+      jsonPath: .spec.image
+      name: Images
+      priority: 1
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: DistributedRedisCluster is the Schema for the distributedredisclusters
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DistributedRedisClusterSpec defines the desired state of DistributedRedisCluster
+            properties:
+              clusterReplicas:
+                default: 1
+                format: int32
+                maximum: 3
+                minimum: 1
+                type: integer
+              config:
+                additionalProperties:
+                  type: string
+                type: object
+              masterSize:
+                default: 3
+                format: int32
+                maximum: 3
+                minimum: 3
+                type: integer
+              shutdown:
+                type: boolean
+              storage:
+                properties:
+                  class:
+                    type: string
+                  deleteClaim:
+                    type: boolean
+                  size:
+                    default: 1Gi
+                    type: string
+                  type:
+                    default: persistent-claim
+                    type: string
+                type: object
+            type: object
+          status:
+            description: DistributedRedisClusterStatus defines the observed state of
+              DistributedRedisCluster
+            properties:
+              maxReplicationFactor:
+                type: integer
+              minReplicationFactor:
+                type: integer
+              nodes:
+                items:
+                  properties:
+                    id:
+                      type: string
+                    ip:
+                      type: string
+                    masterRef:
+                      type: string
+                    nodeName:
+                      type: string
+                    podName:
+                      type: string
+                    port:
+                      type: string
+                    role:
+                      type: string
+                    slots:
+                      items:
+                        type: string
+                      type: array
+                    statefulSet:
+                      type: string
+                  type: object
+                type: array
+              nodesPlacement:
+                type: string
+              numberOfMaster:
+                type: integer
+              reason:
+                type: string
+              status:
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

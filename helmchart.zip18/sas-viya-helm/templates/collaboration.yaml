@@ -1,0 +1,51 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-collaboration
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-collaboration
+    sas.com/component-version: 2.custom512.custom3-20240920.custom1726812276887
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: base
+    sas.com/version: 2.custom512.custom3
+spec:
+  minAvailable: {{ .Values.collaboration.minAvailable }}
+  maxUnavailable: {{ .Values.collaboration.maxUnavailable }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-collaboration
+      sas.com/deployment: sas-viya
+    {{- include "sas-viya-helm.selectorLabels" . | nindent 6 }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-collaboration
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-collaboration
+    sas.com/component-version: 2.custom512.custom3-20240920.custom1726812276887
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: golang
+    sas.com/version: 2.custom512.custom3
+spec:
+  maxReplicas: 1
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sas-collaboration

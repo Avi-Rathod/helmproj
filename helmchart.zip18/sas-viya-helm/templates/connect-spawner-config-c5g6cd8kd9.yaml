@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-connect-spawner-config-c5g6cd8kd9
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CONNECTSERVER_AUTOEXEC_USERMODS_FILE: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.connectserverAutoexecUsermodsFile
+    | quote }}
+  CONNECTSERVER_CONFIG_USERMODS_FILE: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.connectserverConfigUsermodsFile
+    | quote }}
+  CONNECTSERVER_SCRIPT_USERMODS_FILE: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.connectserverScriptUsermodsFile
+    | quote }}
+  CONNECTSERVER_USER_CONFIG: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.connectserverUserConfig
+    | quote }}
+  CONNECTSPAWNER_SCRIPT_USERMODS_FILE: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.connectspawnerScriptUsermodsFile
+    | quote }}
+  CONNECTSPAWNER_USER_CONFIG: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.connectspawnerUserConfig
+    | quote }}
+  SAS_INIT_CONFIG_FILE1: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.sasInitConfigFile1
+    | quote }}
+  SAS_INIT_CONFIG_FILE2: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.sasInitConfigFile2
+    | quote }}
+  SAS_INIT_CONFIG_FILE3: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.sasInitConfigFile3
+    | quote }}
+  SAS_INIT_CONFIG_FILE4: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.sasInitConfigFile4
+    | quote }}
+  SAS_INIT_CONFIG_FILE5: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.sasInitConfigFile5
+    | quote }}
+  SAS_INIT_CONFIG_FILE6: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.sasInitConfigFile6
+    | quote }}
+  SAS_INIT_CONFIG_FILE7: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.sasInitConfigFile7
+    | quote }}
+  SAS_INIT_CONFIG_KEY1: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.sasInitConfigKey1
+    | quote }}
+  SAS_INIT_CONFIG_KEY2: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.sasInitConfigKey2
+    | quote }}
+  SAS_INIT_CONFIG_KEY3: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.sasInitConfigKey3
+    | quote }}
+  SAS_INIT_CONFIG_KEY4: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.sasInitConfigKey4
+    | quote }}
+  SAS_INIT_CONFIG_KEY5: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.sasInitConfigKey5
+    | quote }}
+  SAS_INIT_CONFIG_KEY6: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.sasInitConfigKey6
+    | quote }}
+  SAS_INIT_CONFIG_KEY7: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.sasInitConfigKey7
+    | quote }}
+  SAS_LANG_FILE_IN: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.sasLangFileIn | quote
+    }}
+  SASCLOUDNATIVE: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.sascloudnative | quote
+    }}
+  USERMODS: {{ .Values.connectSpawnerConfigC5G6Cd8Kd9.usermods | quote }}

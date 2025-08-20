@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-lifecycle-image-d6t8dfc7m6
+  labels:
+    orchestration.sas.com/lifecycle: image
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  password: {{ required "lifecycleImageD6T8Dfc7M6.password is required" .Values.lifecycleImageD6T8Dfc7M6.password
+    | b64enc | quote }}
+  username: {{ required "lifecycleImageD6T8Dfc7M6.username is required" .Values.lifecycleImageD6T8Dfc7M6.username
+    | b64enc | quote }}
+type: Opaque

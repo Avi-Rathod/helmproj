@@ -1,0 +1,1250 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-consul-server
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    sas.com/uses-start-sequencer: "true"
+    workload.sas.com/class: stateful
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/component-name: sas-consul-server
+    sas.com/component-version: 1.custom1910000.custom0-20240906.custom1725639831251
+    sas.com/kustomize-base: base
+    sas.com/tls-mode: full-stack
+    sas.com/version: 1.custom1910000.custom0
+    sidecar.istio.io/proxyCPU: 15m
+    sidecar.istio.io/proxyMemory: 115Mi
+spec:
+  podManagementPolicy: Parallel
+  replicas: {{ .Values.consulServer.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-consul-server
+      sas.com/deployment: sas-viya
+  serviceName: {{ include "sas-viya-helm.fullname" . }}-consul-server-internal
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scheme: https
+        sas.com/certificate-file-format: pem
+        sas.com/component-name: sas-consul-server
+        sas.com/component-version: 1.custom1910000.custom0-20240906.custom1725639831251
+        sas.com/kustomize-base: base
+        sas.com/tls-enabled-ports: all
+        sas.com/tls-mode: full-stack
+        sas.com/version: 1.custom1910000.custom0
+        sidecar.istio.io/inject: "false"
+        sidecar.istio.io/proxyCPU: 15m
+        sidecar.istio.io/proxyMemory: 115Mi
+        traffic.sidecar.istio.io/excludeInboundPorts: "8301"
+      labels:
+        app: sas-consul-server
+        app.kubernetes.io/name: sas-consul-server
+        sas.com/deployment: sas-viya
+        sas.com/start-sequencer: "true"
+        workload.sas.com/class: stateful
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateful
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - compute
+                - cas
+                - stateless
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+        podAffinity: {}
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - sas-consul-server
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+      automountServiceAccountToken: false
+      containers:
+      - env:
+        - name: CONSUL_BOOTSTRAP_EXPECT
+          value: {{ quote .Values.consulServer.sasConsulServer.env.consulBootstrapExpect
+            }}
+        - name: CONSUL_CLIENT_ADDRESS
+          value: {{ quote .Values.consulServer.sasConsulServer.env.consulClientAddress
+            }}
+        - name: CONSUL_DATACENTER_NAME
+          value: {{ quote .Values.consulServer.sasConsulServer.env.consulDatacenterName
+            }}
+        - name: CONSUL_BIND_EXTERNAL
+          value: {{ quote .Values.consulServer.sasConsulServer.env.consulBindExternal
+            }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        envFrom:
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-tls-config-dg85g4hfh8
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-shared-config-c49cg8722d
+        - secretRef:
+            name: sas-consul-client
+        - secretRef:
+            name: sas-consul-management
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-ingress-input-f7cb564t8c
+        image: {{ .Values.consulServer.sasConsulServer.image.repository }}:{{ .Values.consulServer.sasConsulServer.image.tag
+          | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.consulServer.sasConsulServer.imagePullPolicy }}
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - if [ -n "${SAS_CERTIFICATE_FILE}" ]; then export CONSUL_HTTP_SSL=true;
+                fi; /opt/sas/viya/home/bin/consul snapshot save -stale -token-file=/opt/sas/viya/config/etc/SASSecurityCertificateFramework/tokens/consul/default/management.token
+                -http-addr=https://localhost:8500  /consul/data/raft/snapshots/backup.snap;
+                /opt/sas/viya/home/bin/consul leave  && sleep 5
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - /opt/sas/viya/home/bin/consul-liveness-probe.sh
+          initialDelaySeconds: 45
+          periodSeconds: 30
+          timeoutSeconds: 60
+        name: sas-consul-server
+        ports:
+        - containerPort: 8300
+          name: server
+          protocol: TCP
+        - containerPort: 8301
+          name: serflan-tcp
+          protocol: TCP
+        - containerPort: 8301
+          name: serflan-udp
+          protocol: UDP
+        - containerPort: 8500
+          name: http
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - /opt/sas/viya/home/bin/consul-readiness-probe.sh
+          initialDelaySeconds: 45
+          periodSeconds: 30
+          timeoutSeconds: 60
+        resources: {{- toYaml .Values.consulServer.sasConsulServer.resources | nindent
+          10 }}
+        securityContext: {{- toYaml .Values.consulServer.sasConsulServer.containerSecurityContext
+          | nindent 10 }}
+        startupProbe:
+          exec:
+            command:
+            - sh
+            - /opt/sas/viya/home/bin/consul-startup-probe.sh
+          initialDelaySeconds: 45
+          periodSeconds: 30
+          timeoutSeconds: 60
+        volumeMounts:
+        - mountPath: /opt/sas/viya/config/etc/consul.d
+          name: tmp-volume
+          subPath: consul.d
+        - mountPath: /opt/sas/viya/config/etc/consul.d/default
+          name: sitedefault-vol
+        - mountPath: /consul/data
+          name: sas-viya-consul-data-volume
+        - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/tokens/consul/default
+          name: tmp-volume
+          subPath: consul-tokens
+        - mountPath: /opt/sas/viya/config/tmp/sas-consul
+          name: tmp-volume
+          subPath: sas-consul
+        - mountPath: /tmp
+          name: tmp-volume
+          subPath: tmp
+        - mountPath: /security
+          name: security
+        - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
+          name: security
+          subPath: cacerts
+        - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
+          name: security
+          subPath: private
+      imagePullSecrets:
+      - name: {{ include "sas-viya-helm.fullname" . }}-image-pull-secrets-9dd8hm29fm
+      initContainers:
+      - env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        envFrom:
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-go-config-4m2m8m8662
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-shared-config-c49cg8722d
+        image: {{ .Values.consulServer.sasStartSequencer.image.repository }}:{{ .Values.consulServer.sasStartSequencer.image.tag
+          | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.consulServer.sasStartSequencer.imagePullPolicy
+          }}
+        name: sas-start-sequencer
+        resources: {{- toYaml .Values.consulServer.sasStartSequencer.resources | nindent
+          10 }}
+        securityContext: {{- toYaml .Values.consulServer.sasStartSequencer.containerSecurityContext
+          | nindent 10 }}
+      - env:
+        - name: KUBE_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: SAS_CERTFRAME_TOKEN_DIR
+          value: {{ quote .Values.consulServer.sasCertframe.env.sasCertframeTokenDir
+            }}
+        - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+          value: {{ quote .Values.consulServer.sasCertframe.env.sasAdditionalCaCertificatesDir
+            }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        envFrom:
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-certframe-config-6t84hm65mc
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-certframe-ingress-certificate-config-6mt27h98mb
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-certframe-user-config-679cgdbhdt
+        image: {{ .Values.consulServer.sasCertframe.image.repository }}:{{ .Values.consulServer.sasCertframe.image.tag
+          | default .Chart.AppVersion }}
+        name: sas-certframe
+        resources: {{- toYaml .Values.consulServer.sasCertframe.resources | nindent
+          10 }}
+        securityContext: {{- toYaml .Values.consulServer.sasCertframe.containerSecurityContext
+          | nindent 10 }}
+        volumeMounts:
+        - mountPath: /certframe-token
+          name: certframe-token
+        - mountPath: /security
+          name: security
+        - mountPath: /customer-provided-ca-certificates
+          name: customer-provided-ca-certificates
+      - env:
+        - name: SAS_KEYS_SECRET_NAME
+          value: {{ quote .Values.consulServer.sasCertframeClientTokenGenerator.env.sasKeysSecretName
+            }}
+        - name: SAS_KEYS_KEY_NAMES
+          value: {{ quote .Values.consulServer.sasCertframeClientTokenGenerator.env.sasKeysKeyNames
+            }}
+        - name: SAS_SECURITY_ARTIFACTS_DIR
+          value: {{ quote .Values.consulServer.sasCertframeClientTokenGenerator.env.sasSecurityArtifactsDir
+            }}
+        - name: SAS_CERTFRAME_TOKEN_DIR
+          value: {{ quote .Values.consulServer.sasCertframeClientTokenGenerator.env.sasCertframeTokenDir
+            }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.consulServer.sasCertframeClientTokenGenerator.image.repository
+          }}:{{ .Values.consulServer.sasCertframeClientTokenGenerator.image.tag | default
+          .Chart.AppVersion }}
+        name: sas-certframe-client-token-generator
+        resources: {{- toYaml .Values.consulServer.sasCertframeClientTokenGenerator.resources
+          | nindent 10 }}
+        securityContext: {{- toYaml .Values.consulServer.sasCertframeClientTokenGenerator.containerSecurityContext
+          | nindent 10 }}
+        volumeMounts:
+        - mountPath: /security
+          name: security
+        - mountPath: /certframe-token
+          name: certframe-token
+      - env:
+        - name: SAS_KEYS_SECRET_NAME
+          value: {{ quote .Values.consulServer.sasCertframeManagementTokenGenerator.env.sasKeysSecretName
+            }}
+        - name: SAS_KEYS_KEY_NAMES
+          value: {{ quote .Values.consulServer.sasCertframeManagementTokenGenerator.env.sasKeysKeyNames
+            }}
+        - name: SAS_KEYS_KEY_TYPES
+          value: {{ quote .Values.consulServer.sasCertframeManagementTokenGenerator.env.sasKeysKeyTypes
+            }}
+        - name: SAS_SECURITY_ARTIFACTS_DIR
+          value: {{ quote .Values.consulServer.sasCertframeManagementTokenGenerator.env.sasSecurityArtifactsDir
+            }}
+        - name: SAS_CERTFRAME_TOKEN_DIR
+          value: {{ quote .Values.consulServer.sasCertframeManagementTokenGenerator.env.sasCertframeTokenDir
+            }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.consulServer.sasCertframeManagementTokenGenerator.image.repository
+          }}:{{ .Values.consulServer.sasCertframeManagementTokenGenerator.image.tag
+          | default .Chart.AppVersion }}
+        name: sas-certframe-management-token-generator
+        resources: {{- toYaml .Values.consulServer.sasCertframeManagementTokenGenerator.resources
+          | nindent 10 }}
+        securityContext: {{- toYaml .Values.consulServer.sasCertframeManagementTokenGenerator.containerSecurityContext
+          | nindent 10 }}
+        volumeMounts:
+        - mountPath: /security
+          name: security
+        - mountPath: /certframe-token
+          name: certframe-token
+      securityContext: {{- toYaml .Values.consulServer.podSecurityContext | nindent
+        8 }}
+      terminationGracePeriodSeconds: 600
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - name: sitedefault-vol
+        projected:
+          sources:
+          - configMap:
+              items:
+              - key: SITEDEFAULT_CONF
+                mode: 438
+                path: sitedefault.yml
+              name: sas-consul-config-2b9bfdfm25
+          - secret:
+              items:
+              - key: SITEDEFAULT_CONF
+                mode: 438
+                path: sitedefault-secret.yml
+              - key: SASDEFAULT_CONF
+                mode: 438
+                path: sasdefault-secret.yml
+              name: sas-consul-config-f8d42992t6
+      - emptyDir: {}
+        name: tmp-volume
+      - name: certframe-token
+        secret:
+          secretName: {{ include "sas-viya-helm.fullname" . }}-certframe-token
+      - emptyDir: {}
+        name: security
+      - configMap:
+          name: {{ include "sas-viya-helm.fullname" . }}-customer-provided-ca-certificates-bm5hc686c7
+        name: customer-provided-ca-certificates
+  updateStrategy: {}
+  volumeClaimTemplates:
+  - metadata:
+      creationTimestamp: null
+      labels:
+        sas.com/deployment: sas-viya
+      name: sas-viya-consul-data-volume
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources: {{ .Values.consulServer.volumeClaims.sasViyaConsulDataVolume | toYaml
+        | nindent 8 }}
+      storageClassName: nfs-client
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-data-agent-server-colocated
+  labels:
+    sas.com/admin: namespace
+    sas.com/data-agent: colocated
+    sas.com/deployment: sas-viya
+    sas.com/restart: "true"
+    sas.com/uses-start-sequencer: "true"
+    workload.sas.com/class: stateful
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/component-name: sas-data-agent-server-colocated
+    sas.com/component-version: 0.custom33.custom48-20241122.custom1732290447142
+    sas.com/kustomize-base: base
+    sas.com/sas-access-config: "true"
+    sas.com/tls-mode: full-stack
+    sas.com/version: 0.custom33.custom48
+    sidecar.istio.io/proxyCPU: 15m
+    sidecar.istio.io/proxyMemory: 115Mi
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-data-agent-server-colocated
+      sas.com/deployment: sas-viya
+  serviceName: {{ include "sas-viya-helm.fullname" . }}-data-agent-server-colocated
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scheme: https
+        sas.com/certificate-file-format: pem
+        sas.com/component-name: sas-data-agent-server-colocated
+        sas.com/component-version: 0.custom33.custom48-20241122.custom1732290447142
+        sas.com/kustomize-base: base
+        sas.com/tls-enabled-ports: all
+        sas.com/tls-mode: full-stack
+        sas.com/version: 0.custom33.custom48
+        sidecar.istio.io/proxyCPU: 15m
+        sidecar.istio.io/proxyMemory: 115Mi
+      labels:
+        app: sas-data-agent-server-colocated
+        app.kubernetes.io/name: sas-data-agent-server-colocated
+        sas.com/deployment: sas-viya
+        sas.com/start-sequencer: "true"
+        workload.sas.com/class: stateful
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateful
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - compute
+                - cas
+                - stateless
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+        podAffinity: {}
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - sas-data-agent-server-colocated
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+      automountServiceAccountToken: true
+      containers:
+      - env:
+        - name: SAS_DA_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: CONSUL_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: CONSUL_TOKEN
+              name: sas-consul-client
+        - name: CONSUL_HTTP_ADDR
+          valueFrom:
+            configMapKeyRef:
+              key: CONSUL_HTTP_ADDR
+              name: {{ include "sas-viya-helm.fullname" . }}-go-config-4m2m8m8662
+        - name: SAS_LICENSE
+          valueFrom:
+            secretKeyRef:
+              key: SAS_LICENSE
+              name: {{ include "sas-viya-helm.fullname" . }}-license-996thbcbkg
+        - name: SAS_DA_OAUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: SAS_DA_OAUTH_SECRET
+              name: {{ include "sas-viya-helm.fullname" . }}-data-agent-server-colocated-secrets-h8d59h9472
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        envFrom:
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-tls-config-dg85g4hfh8
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-shared-config-c49cg8722d
+        - secretRef:
+            name: sas-consul-client
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-data-agent-server-colocated-config-6ct58987ht
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-access-config-mm6fhg8gc7
+        image: {{ .Values.dataAgentServerColocated.sasDataAgentServerColocated.image.repository
+          }}:{{ .Values.dataAgentServerColocated.sasDataAgentServerColocated.image.tag
+          | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.dataAgentServerColocated.sasDataAgentServerColocated.imagePullPolicy
+          }}
+        name: sas-data-agent-server-colocated
+        ports:
+        - containerPort: 25141
+          name: http
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - test
+            - -f
+            - /tmp/healthy
+          initialDelaySeconds: 45
+          periodSeconds: 60
+        resources: {{- toYaml .Values.dataAgentServerColocated.sasDataAgentServerColocated.resources
+          | nindent 10 }}
+        securityContext: {{- toYaml .Values.dataAgentServerColocated.sasDataAgentServerColocated.containerSecurityContext
+          | nindent 10 }}
+        volumeMounts:
+        - mountPath: /etc/podinfo
+          name: podinfo
+        - mountPath: /tmp
+          name: tmp-volume
+        - mountPath: /opt/sas/viya/config/etc/dagentsrv/default
+          name: da-def-volume
+        - mountPath: /opt/sas/viya/config/etc/serviceaccount/dagentsrv/default
+          name: sa-da-def-volume
+        - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/tokens
+          name: tokens-volume
+        - mountPath: /security
+          name: security
+        - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
+          name: security
+          subPath: cacerts
+        - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
+          name: security
+          subPath: private
+        - mountPath: /access-clients
+          name: access-clients
+      imagePullSecrets:
+      - name: {{ include "sas-viya-helm.fullname" . }}-image-pull-secrets-9dd8hm29fm
+      initContainers:
+      - env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        envFrom:
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-go-config-4m2m8m8662
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-shared-config-c49cg8722d
+        image: {{ .Values.dataAgentServerColocated.sasStartSequencer.image.repository
+          }}:{{ .Values.dataAgentServerColocated.sasStartSequencer.image.tag | default
+          .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.dataAgentServerColocated.sasStartSequencer.imagePullPolicy
+          }}
+        name: sas-start-sequencer
+        resources: {{- toYaml .Values.dataAgentServerColocated.sasStartSequencer.resources
+          | nindent 10 }}
+        securityContext: {{- toYaml .Values.dataAgentServerColocated.sasStartSequencer.containerSecurityContext
+          | nindent 10 }}
+      - env:
+        - name: KUBE_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: SAS_CERTFRAME_TOKEN_DIR
+          value: {{ quote .Values.dataAgentServerColocated.sasCertframe.env.sasCertframeTokenDir
+            }}
+        - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+          value: {{ quote .Values.dataAgentServerColocated.sasCertframe.env.sasAdditionalCaCertificatesDir
+            }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        envFrom:
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-certframe-config-6t84hm65mc
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-certframe-ingress-certificate-config-6mt27h98mb
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-certframe-user-config-679cgdbhdt
+        image: {{ .Values.dataAgentServerColocated.sasCertframe.image.repository }}:{{
+          .Values.dataAgentServerColocated.sasCertframe.image.tag | default .Chart.AppVersion
+          }}
+        name: sas-certframe
+        resources: {{- toYaml .Values.dataAgentServerColocated.sasCertframe.resources
+          | nindent 10 }}
+        securityContext: {{- toYaml .Values.dataAgentServerColocated.sasCertframe.containerSecurityContext
+          | nindent 10 }}
+        volumeMounts:
+        - mountPath: /certframe-token
+          name: certframe-token
+        - mountPath: /security
+          name: security
+        - mountPath: /customer-provided-ca-certificates
+          name: customer-provided-ca-certificates
+      securityContext: {{- toYaml .Values.dataAgentServerColocated.podSecurityContext
+        | nindent 8 }}
+      serviceAccountName: {{ include "sas-viya-helm.fullname" . }}-data-agent-server-colocated
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - downwardAPI:
+          items:
+          - fieldRef:
+              fieldPath: metadata.annotations
+            path: annotations
+        name: podinfo
+      - emptyDir: {}
+        name: tmp-volume
+      - emptyDir: {}
+        name: da-def-volume
+      - emptyDir: {}
+        name: sa-da-def-volume
+      - emptyDir: {}
+        name: tokens-volume
+      - name: certframe-token
+        secret:
+          secretName: {{ include "sas-viya-helm.fullname" . }}-certframe-token
+      - emptyDir: {}
+        name: security
+      - configMap:
+          name: {{ include "sas-viya-helm.fullname" . }}-customer-provided-ca-certificates-bm5hc686c7
+        name: customer-provided-ca-certificates
+      - name: ""
+  updateStrategy: {}
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-rabbitmq-server
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    sas.com/uses-start-sequencer: "true"
+    workload.sas.com/class: stateful
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/component-name: sas-rabbitmq-server
+    sas.com/component-version: 3.custom1128003.custom5-20241125.custom1732559651976
+    sas.com/kustomize-base: base
+    sas.com/tls-mode: full-stack
+    sas.com/version: 3.custom1128003.custom5
+    sidecar.istio.io/proxyCPU: 15m
+    sidecar.istio.io/proxyMemory: 115Mi
+spec:
+  podManagementPolicy: Parallel
+  replicas: {{ .Values.rabbitmqServer.replicas }}
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-rabbitmq-server
+      sas.com/deployment: sas-viya
+  serviceName: {{ include "sas-viya-helm.fullname" . }}-rabbitmq-server
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "15692"
+        prometheus.io/scheme: https
+        prometheus.io/scrape: "true"
+        sas.com/certificate-file-format: pem
+        sas.com/component-name: sas-rabbitmq-server
+        sas.com/component-version: 3.custom1128003.custom5-20241125.custom1732559651976
+        sas.com/kustomize-base: base
+        sas.com/tls-enabled-ports: all
+        sas.com/tls-mode: full-stack
+        sas.com/version: 3.custom1128003.custom5
+        sidecar.istio.io/proxyCPU: 15m
+        sidecar.istio.io/proxyMemory: 115Mi
+      labels:
+        app: sas-rabbitmq-server
+        app.kubernetes.io/name: sas-rabbitmq-server
+        sas.com/deployment: sas-viya
+        sas.com/start-sequencer: "true"
+        workload.sas.com/class: stateful
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateful
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - compute
+                - cas
+                - stateless
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+        podAffinity: {}
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - sas-rabbitmq-server
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+      automountServiceAccountToken: true
+      containers:
+      - env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: RABBITMQ_USE_LONGNAME
+          value: {{ quote .Values.rabbitmqServer.sasRabbitmqServer.env.rabbitmqUseLongname
+            }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        envFrom:
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-tls-config-dg85g4hfh8
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-shared-config-c49cg8722d
+        - secretRef:
+            name: sas-consul-client
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-java-config-fg8dm449m4
+        - secretRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-rabbitmq-server-secret
+        image: {{ .Values.rabbitmqServer.sasRabbitmqServer.image.repository }}:{{ .Values.rabbitmqServer.sasRabbitmqServer.image.tag
+          | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.rabbitmqServer.sasRabbitmqServer.imagePullPolicy
+          }}
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - |
+              source ${HOME}/.bashrc; timeout 120 ${SASHOME}/sbin/liveness.sh
+          failureThreshold: 5
+          periodSeconds: 30
+          timeoutSeconds: 120
+        name: sas-rabbitmq-server
+        ports:
+        - containerPort: 5672
+          name: amqp
+          protocol: TCP
+        - containerPort: 15672
+          name: management
+          protocol: TCP
+        - containerPort: 25672
+          name: erlang
+          protocol: TCP
+        - containerPort: 4369
+          name: epmd
+          protocol: TCP
+        - containerPort: 15692
+          name: metrics
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - |
+              source ${HOME}/.bashrc; timeout 120 ${SASHOME}/sbin/readiness.sh
+          failureThreshold: 5
+          periodSeconds: 10
+          timeoutSeconds: 120
+        resources: {{- toYaml .Values.rabbitmqServer.sasRabbitmqServer.resources |
+          nindent 10 }}
+        securityContext: {{- toYaml .Values.rabbitmqServer.sasRabbitmqServer.containerSecurityContext
+          | nindent 10 }}
+        volumeMounts:
+        - mountPath: /rabbitmq/data
+          name: sas-viya-rabbitmq-data-volume
+        - mountPath: /security
+          name: security
+        - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
+          name: security
+          subPath: cacerts
+        - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
+          name: security
+          subPath: private
+      imagePullSecrets:
+      - name: {{ include "sas-viya-helm.fullname" . }}-image-pull-secrets-9dd8hm29fm
+      initContainers:
+      - env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        envFrom:
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-go-config-4m2m8m8662
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-shared-config-c49cg8722d
+        image: {{ .Values.rabbitmqServer.sasStartSequencer.image.repository }}:{{ .Values.rabbitmqServer.sasStartSequencer.image.tag
+          | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.rabbitmqServer.sasStartSequencer.imagePullPolicy
+          }}
+        name: sas-start-sequencer
+        resources: {{- toYaml .Values.rabbitmqServer.sasStartSequencer.resources |
+          nindent 10 }}
+        securityContext: {{- toYaml .Values.rabbitmqServer.sasStartSequencer.containerSecurityContext
+          | nindent 10 }}
+      - env:
+        - name: KUBE_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: SAS_CERTFRAME_TOKEN_DIR
+          value: {{ quote .Values.rabbitmqServer.sasCertframe.env.sasCertframeTokenDir
+            }}
+        - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+          value: {{ quote .Values.rabbitmqServer.sasCertframe.env.sasAdditionalCaCertificatesDir
+            }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        envFrom:
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-certframe-config-6t84hm65mc
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-certframe-ingress-certificate-config-6mt27h98mb
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-certframe-user-config-679cgdbhdt
+        image: {{ .Values.rabbitmqServer.sasCertframe.image.repository }}:{{ .Values.rabbitmqServer.sasCertframe.image.tag
+          | default .Chart.AppVersion }}
+        name: sas-certframe
+        resources: {{- toYaml .Values.rabbitmqServer.sasCertframe.resources | nindent
+          10 }}
+        securityContext: {{- toYaml .Values.rabbitmqServer.sasCertframe.containerSecurityContext
+          | nindent 10 }}
+        volumeMounts:
+        - mountPath: /certframe-token
+          name: certframe-token
+        - mountPath: /security
+          name: security
+        - mountPath: /customer-provided-ca-certificates
+          name: customer-provided-ca-certificates
+      - env:
+        - name: SAS_KEYS_SECRET_NAME
+          value: {{ quote .Values.rabbitmqServer.sasCertframeTokenGenerator.env.sasKeysSecretName
+            }}
+        - name: SAS_KEYS_KEY_NAMES
+          value: {{ quote .Values.rabbitmqServer.sasCertframeTokenGenerator.env.sasKeysKeyNames
+            }}
+        - name: SAS_SECURITY_ARTIFACTS_DIR
+          value: {{ quote .Values.rabbitmqServer.sasCertframeTokenGenerator.env.sasSecurityArtifactsDir
+            }}
+        - name: SAS_CERTFRAME_TOKEN_DIR
+          value: {{ quote .Values.rabbitmqServer.sasCertframeTokenGenerator.env.sasCertframeTokenDir
+            }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.rabbitmqServer.sasCertframeTokenGenerator.image.repository
+          }}:{{ .Values.rabbitmqServer.sasCertframeTokenGenerator.image.tag | default
+          .Chart.AppVersion }}
+        name: sas-certframe-token-generator
+        resources: {{- toYaml .Values.rabbitmqServer.sasCertframeTokenGenerator.resources
+          | nindent 10 }}
+        securityContext: {{- toYaml .Values.rabbitmqServer.sasCertframeTokenGenerator.containerSecurityContext
+          | nindent 10 }}
+        volumeMounts:
+        - mountPath: /security
+          name: security
+        - mountPath: /certframe-token
+          name: certframe-token
+      securityContext: {{- toYaml .Values.rabbitmqServer.podSecurityContext | nindent
+        8 }}
+      serviceAccountName: {{ include "sas-viya-helm.fullname" . }}-rabbitmq-server
+      terminationGracePeriodSeconds: 60
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - name: certframe-token
+        secret:
+          secretName: {{ include "sas-viya-helm.fullname" . }}-certframe-token
+      - emptyDir: {}
+        name: security
+      - configMap:
+          name: {{ include "sas-viya-helm.fullname" . }}-customer-provided-ca-certificates-bm5hc686c7
+        name: customer-provided-ca-certificates
+  updateStrategy: {}
+  volumeClaimTemplates:
+  - metadata:
+      creationTimestamp: null
+      labels:
+        sas.com/deployment: sas-viya
+      name: sas-viya-rabbitmq-data-volume
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources: {{ .Values.rabbitmqServer.volumeClaims.sasViyaRabbitmqDataVolume |
+        toYaml | nindent 8 }}
+      storageClassName: nfs-client
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-workload-orchestrator
+  labels:
+    app.kubernetes.io/component: sas-workload-orchestrator-manager
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    sas.com/uses-start-sequencer: "true"
+    workload.sas.com/class: stateful
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/component-name: sas-workload-orchestrator
+    sas.com/component-version: 1.custom35.custom40-20241115.custom1731693263822
+    sas.com/kustomize-base: base
+    sas.com/pod-uses-db-migrator: "true"
+    sas.com/tls-mode: full-stack
+    sas.com/version: 1.custom35.custom40
+    sidecar.istio.io/proxyCPU: 15m
+    sidecar.istio.io/proxyMemory: 115Mi
+spec:
+  replicas: {{ .Values.workloadOrchestrator.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-workload-orchestrator
+      sas.com/deployment: sas-viya
+  serviceName: {{ include "sas-viya-helm.fullname" . }}-workload-orchestrator
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scheme: https
+        sas.com/certificate-file-format: pem
+        sas.com/component-name: sas-workload-orchestrator
+        sas.com/component-version: 1.custom35.custom40-20241115.custom1731693263822
+        sas.com/kustomize-base: base
+        sas.com/tls-enabled-ports: all
+        sas.com/tls-mode: full-stack
+        sas.com/version: 1.custom35.custom40
+        sidecar.istio.io/proxyCPU: 15m
+        sidecar.istio.io/proxyMemory: 115Mi
+      labels:
+        app: sas-workload-orchestrator
+        app.kubernetes.io/component: sas-workload-orchestrator-manager
+        app.kubernetes.io/name: sas-workload-orchestrator
+        sas.com/deployment: sas-viya
+        sas.com/start-sequencer: "true"
+        workload.sas.com/class: stateful
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateful
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - compute
+                - cas
+                - stateless
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+        podAffinity: {}
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                  - sas-workload-orchestrator-manager
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+      automountServiceAccountToken: true
+      containers:
+      - env:
+        - name: SAS_K8S_DEPLOYMENT_NAME
+          value: {{ quote .Values.workloadOrchestrator.sasWorkloadOrchestrator.env.sasK8SDeploymentName
+            }}
+        - name: SGMG_MANAGER_HOST
+          value: {{ quote .Values.workloadOrchestrator.sasWorkloadOrchestrator.env.sgmgManagerHost
+            }}
+        - name: SGMG_LOGCONFIG_FILE
+          value: {{ quote .Values.workloadOrchestrator.sasWorkloadOrchestrator.env.sgmgLogconfigFile
+            }}
+        - name: SASCLOUDNATIVE
+          value: {{ quote .Values.workloadOrchestrator.sasWorkloadOrchestrator.env.sascloudnative
+            }}
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        envFrom:
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-tls-config-dg85g4hfh8
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-shared-config-c49cg8722d
+        - secretRef:
+            name: sas-consul-client
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-workload-orchestrator-parameters-862fg2h5h6
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-workload-orchestrator-initial-configuration-2gh6c5dft5
+        - secretRef:
+            name: sas-workload-orchestrator-passphrase
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-go-config-4m2m8m8662
+        image: {{ .Values.workloadOrchestrator.sasWorkloadOrchestrator.image.repository
+          }}:{{ .Values.workloadOrchestrator.sasWorkloadOrchestrator.image.tag | default
+          .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.workloadOrchestrator.sasWorkloadOrchestrator.imagePullPolicy
+          }}
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - /opt/sas/viya/config/etc/sgmg/default/sgmgTerm.sh
+        name: sas-workload-orchestrator
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /internal/ready
+            port: http
+            scheme: HTTPS
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 2
+        resources: {{- toYaml .Values.workloadOrchestrator.sasWorkloadOrchestrator.resources
+          | nindent 10 }}
+        securityContext: {{- toYaml .Values.workloadOrchestrator.sasWorkloadOrchestrator.containerSecurityContext
+          | nindent 10 }}
+        volumeMounts:
+        - mountPath: /scripts
+          name: scripts
+        - mountPath: /opt/sas/viya/config/var/log/sgmg/default
+          name: config-var-log
+        - mountPath: /opt/sas/viya/config/var/run/sgmg/default
+          name: config-var-run
+        - mountPath: /tmp
+          name: temp-dir
+        - mountPath: /security
+          name: security
+        - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
+          name: security
+          subPath: cacerts
+        - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
+          name: security
+          subPath: private
+      imagePullSecrets:
+      - name: {{ include "sas-viya-helm.fullname" . }}-image-pull-secrets-9dd8hm29fm
+      initContainers:
+      - env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        envFrom:
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-go-config-4m2m8m8662
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-shared-config-c49cg8722d
+        image: {{ .Values.workloadOrchestrator.sasStartSequencer.image.repository }}:{{
+          .Values.workloadOrchestrator.sasStartSequencer.image.tag | default .Chart.AppVersion
+          }}
+        imagePullPolicy: {{ .Values.workloadOrchestrator.sasStartSequencer.imagePullPolicy
+          }}
+        name: sas-start-sequencer
+        resources: {{- toYaml .Values.workloadOrchestrator.sasStartSequencer.resources
+          | nindent 10 }}
+        securityContext: {{- toYaml .Values.workloadOrchestrator.sasStartSequencer.containerSecurityContext
+          | nindent 10 }}
+      - env:
+        - name: KUBE_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: SAS_CERTFRAME_TOKEN_DIR
+          value: {{ quote .Values.workloadOrchestrator.sasCertframe.env.sasCertframeTokenDir
+            }}
+        - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+          value: {{ quote .Values.workloadOrchestrator.sasCertframe.env.sasAdditionalCaCertificatesDir
+            }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        envFrom:
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-certframe-config-6t84hm65mc
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-certframe-ingress-certificate-config-6mt27h98mb
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-certframe-user-config-679cgdbhdt
+        image: {{ .Values.workloadOrchestrator.sasCertframe.image.repository }}:{{
+          .Values.workloadOrchestrator.sasCertframe.image.tag | default .Chart.AppVersion
+          }}
+        name: sas-certframe
+        resources: {{- toYaml .Values.workloadOrchestrator.sasCertframe.resources |
+          nindent 10 }}
+        securityContext: {{- toYaml .Values.workloadOrchestrator.sasCertframe.containerSecurityContext
+          | nindent 10 }}
+        volumeMounts:
+        - mountPath: /certframe-token
+          name: certframe-token
+        - mountPath: /security
+          name: security
+        - mountPath: /customer-provided-ca-certificates
+          name: customer-provided-ca-certificates
+      - args: {{- toYaml .Values.workloadOrchestrator.hydrator.args | nindent 8 }}
+        command:
+        - /bin/sh
+        - -c
+        env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.workloadOrchestrator.hydrator.image.repository }}:{{ .Values.workloadOrchestrator.hydrator.image.tag
+          | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.workloadOrchestrator.hydrator.imagePullPolicy }}
+        name: hydrator
+        resources: {{- toYaml .Values.workloadOrchestrator.hydrator.resources | nindent
+          10 }}
+        securityContext: {{- toYaml .Values.workloadOrchestrator.hydrator.containerSecurityContext
+          | nindent 10 }}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /data
+          name: shared-vol
+      - env:
+        - name: SAS_SERVICE_NAME
+          value: {{ quote .Values.workloadOrchestrator.sasDbMigrator.env.sasServiceName
+            }}
+        - name: SSL_CERT_FILE
+          value: {{ quote .Values.workloadOrchestrator.sasDbMigrator.env.sslCertFile
+            }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        envFrom:
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-shared-config-c49cg8722d
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-java-config-fg8dm449m4
+        - secretRef:
+            name: sas-consul-client
+        image: {{ .Values.workloadOrchestrator.sasDbMigrator.image.repository }}:{{
+          .Values.workloadOrchestrator.sasDbMigrator.image.tag | default .Chart.AppVersion
+          }}
+        imagePullPolicy: {{ .Values.workloadOrchestrator.sasDbMigrator.imagePullPolicy
+          }}
+        name: sas-db-migrator
+        resources: {{- toYaml .Values.workloadOrchestrator.sasDbMigrator.resources
+          | nindent 10 }}
+        securityContext: {{- toYaml .Values.workloadOrchestrator.sasDbMigrator.containerSecurityContext
+          | nindent 10 }}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /data
+          name: shared-vol
+        - mountPath: /security
+          name: security
+      - env:
+        - name: SAS_KEYS_SECRET_NAME
+          value: {{ quote .Values.workloadOrchestrator.sasCertframePassphraseGenerator.env.sasKeysSecretName
+            }}
+        - name: SAS_KEYS_KEY_NAMES
+          value: {{ quote .Values.workloadOrchestrator.sasCertframePassphraseGenerator.env.sasKeysKeyNames
+            }}
+        - name: SAS_SECURITY_ARTIFACTS_DIR
+          value: {{ quote .Values.workloadOrchestrator.sasCertframePassphraseGenerator.env.sasSecurityArtifactsDir
+            }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.workloadOrchestrator.sasCertframePassphraseGenerator.image.repository
+          }}:{{ .Values.workloadOrchestrator.sasCertframePassphraseGenerator.image.tag
+          | default .Chart.AppVersion }}
+        name: sas-certframe-passphrase-generator
+        resources: {{- toYaml .Values.workloadOrchestrator.sasCertframePassphraseGenerator.resources
+          | nindent 10 }}
+        securityContext: {{- toYaml .Values.workloadOrchestrator.sasCertframePassphraseGenerator.containerSecurityContext
+          | nindent 10 }}
+        volumeMounts:
+        - mountPath: /security
+          name: security
+      securityContext: {{- toYaml .Values.workloadOrchestrator.podSecurityContext |
+        nindent 8 }}
+      serviceAccountName: {{ include "sas-viya-helm.fullname" . }}-workload-orchestrator
+      terminationGracePeriodSeconds: 60
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - emptyDir: {}
+        name: scripts
+      - emptyDir: {}
+        name: shared-vol
+      - emptyDir: {}
+        name: config-var-log
+      - emptyDir: {}
+        name: config-var-run
+      - emptyDir: {}
+        name: temp-dir
+      - name: certframe-token
+        secret:
+          secretName: {{ include "sas-viya-helm.fullname" . }}-certframe-token
+      - emptyDir: {}
+        name: security
+      - configMap:
+          name: {{ include "sas-viya-helm.fullname" . }}-customer-provided-ca-certificates-bm5hc686c7
+        name: customer-provided-ca-certificates
+  updateStrategy: {}

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-insights-parameters-kg4mm47db2
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.insightsParametersKg4Mm47Db2.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.insightsParametersKg4Mm47Db2.sasDuName | quote }}
+  SAS_FMTSRV_PORT: {{ .Values.insightsParametersKg4Mm47Db2.sasFmtsrvPort | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.insightsParametersKg4Mm47Db2.sasServiceName | quote
+    }}
+  SG_GO_MODULES_ENABLED: {{ .Values.insightsParametersKg4Mm47Db2.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.insightsParametersKg4Mm47Db2.sgGoMultiModules |
+    quote }}
+  SG_PROJECT: {{ .Values.insightsParametersKg4Mm47Db2.sgProject | quote }}
+  SG_STATIC: {{ .Values.insightsParametersKg4Mm47Db2.sgStatic | quote }}

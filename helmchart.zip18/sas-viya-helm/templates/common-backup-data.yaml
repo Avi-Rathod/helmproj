@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-common-backup-data
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/backup-role: storage
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-backup-job
+    sas.com/component-version: 1.custom95.custom12-20241106.custom1730904857007
+    sas.com/version: 1.custom95.custom12
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.pvc.commonBackupData.storageRequest | quote }}
+  storageClassName: {{ .Values.pvc.commonBackupData.storageClass | quote }}

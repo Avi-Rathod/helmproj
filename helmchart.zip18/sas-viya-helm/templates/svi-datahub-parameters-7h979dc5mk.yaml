@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-svi-datahub-parameters-7h979dc5mk
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.sviDatahubParameters7H979Dc5Mk.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.sviDatahubParameters7H979Dc5Mk.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.sviDatahubParameters7H979Dc5Mk.sasServiceName | quote
+    }}

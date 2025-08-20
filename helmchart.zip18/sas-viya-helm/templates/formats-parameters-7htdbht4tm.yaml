@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-formats-parameters-7htdbht4tm
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.formatsParameters7Htdbht4Tm.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.formatsParameters7Htdbht4Tm.sasDuName | quote }}
+  SAS_FMT_VALIDATE_JSON: {{ .Values.formatsParameters7Htdbht4Tm.sasFmtValidateJson
+    | quote }}
+  SAS_FMTSRV_PAYLOAD_SIZE_LIMIT: {{ .Values.formatsParameters7Htdbht4Tm.sasFmtsrvPayloadSizeLimit
+    | quote }}
+  SAS_FMTSRV_PORT: {{ .Values.formatsParameters7Htdbht4Tm.sasFmtsrvPort | quote }}
+  SAS_SERVICE_NAME: {{ .Values.formatsParameters7Htdbht4Tm.sasServiceName | quote
+    }}
+  SG_GO_MODULES_ENABLED: {{ .Values.formatsParameters7Htdbht4Tm.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.formatsParameters7Htdbht4Tm.sgGoMultiModules |
+    quote }}
+  SG_PROJECT: {{ .Values.formatsParameters7Htdbht4Tm.sgProject | quote }}

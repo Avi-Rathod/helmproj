@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-report-renderers-parameters-6gdfkchg85
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.reportRenderersParameters6Gdfkchg85.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.reportRenderersParameters6Gdfkchg85.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.reportRenderersParameters6Gdfkchg85.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.reportRenderersParameters6Gdfkchg85.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.reportRenderersParameters6Gdfkchg85.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.reportRenderersParameters6Gdfkchg85.sgProject | quote }}

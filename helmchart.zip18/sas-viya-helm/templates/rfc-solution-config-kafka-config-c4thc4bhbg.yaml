@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-rfc-solution-config-kafka-config-c4thc4bhbg
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_DETECTION_KAFKA_REJECTTOPIC: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasDetectionKafkaRejecttopic
+    | quote }}
+  SAS_DETECTION_KAFKA_TDR_TOPIC: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasDetectionKafkaTdrTopic
+    | quote }}
+  SAS_DETECTION_KAFKA_TOPIC: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasDetectionKafkaTopic
+    | quote }}
+  SAS_KAFKA_ACKS: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasKafkaAcks
+    | quote }}
+  SAS_KAFKA_AUTO_CREATE_TOPICS: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasKafkaAutoCreateTopics
+    | quote }}
+  SAS_KAFKA_BATCH: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasKafkaBatch
+    | quote }}
+  SAS_KAFKA_CONSUMER_DEBUG: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasKafkaConsumerDebug
+    | quote }}
+  SAS_KAFKA_ENABLED: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasKafkaEnabled
+    | quote }}
+  SAS_KAFKA_HOSTNAME_VERIFICATION: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasKafkaHostnameVerification
+    | quote }}
+  SAS_KAFKA_LINGER: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasKafkaLinger
+    | quote }}
+  SAS_KAFKA_OFFSET: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasKafkaOffset
+    | quote }}
+  SAS_KAFKA_PRODUCER_DEBUG: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasKafkaProducerDebug
+    | quote }}
+  SAS_KAFKA_SECURITY_PROTOCOL: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasKafkaSecurityProtocol
+    | quote }}
+  SAS_KAFKA_SERVER: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasKafkaServer
+    | quote }}
+  SAS_RWS_KAFKA_BROKERS: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasRwsKafkaBrokers
+    | quote }}
+  SAS_RWS_KAFKA_ERROR_TOPIC: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasRwsKafkaErrorTopic
+    | quote }}
+  SAS_RWS_KAFKA_INPUT_TOPIC: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasRwsKafkaInputTopic
+    | quote }}
+  SAS_RWS_KAFKA_OUTPUT_TOPIC: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasRwsKafkaOutputTopic
+    | quote }}
+  SAS_RWS_KAFKA_REJECT_TOPIC: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasRwsKafkaRejectTopic
+    | quote }}
+  SAS_TRANSACTION_MARK_TOPIC: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasTransactionMarkTopic
+    | quote }}
+  SAS_TRANSACTION_TDR_TOPICS: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasTransactionTdrTopics
+    | quote }}
+  SAS_TRIAGE_KAFKA_TDR_TOPICS: {{ .Values.rfcSolutionConfigKafkaConfigC4Thc4Bhbg.sasTriageKafkaTdrTopics
+    | quote }}

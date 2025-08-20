@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-fonts
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    sas.com/registry-sync: default
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-web-assets
+    sas.com/component-version: 3.custom82.custom3-20240905.custom1725560400967
+    sas.com/kustomize-base: base
+    sas.com/registry-sync: default
+    sas.com/registry-tags: proxy
+    sas.com/tls-mode: full-stack
+    sas.com/version: 3.custom82.custom3
+spec:
+  type: {{ .Values.fonts.type }}
+  selector:
+    app.kubernetes.io/name: sas-web-assets
+    sas.com/deployment: sas-viya
+    {{- include "sas-viya-helm.selectorLabels" . | nindent 4 }}
+  ports:
+  {{- .Values.fonts.ports | toYaml | nindent 2 }}
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-fonts
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    cert-utils-operator.redhat-cop.io/certs-from-secret: sas-ingress-certificate-b976h462g7
+    cert-utils-operator.redhat-cop.io/destinationCA-from-secret: sas-viya-ca-certificate-secret
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-fonts
+    sas.com/component-name: sas-web-assets
+    sas.com/component-version: 3.custom82.custom3-20240905.custom1725560400967
+    sas.com/kustomize-base: base
+    sas.com/tls-mode: full-stack
+    sas.com/version: 3.custom82.custom3
+spec:
+  host: sasvi.hbctxdom.com
+  path: /fonts
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: reencrypt
+  to:
+    kind: Service
+    name: sas-fonts
+  wildcardPolicy: None

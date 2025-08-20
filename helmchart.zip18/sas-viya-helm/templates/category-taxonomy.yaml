@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-category-taxonomy
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    sas.com/registry-sync: default
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-text-analytics-taxonomies
+    sas.com/component-version: 7.custom4.custom0-20240909.custom1725900757680
+    sas.com/kustomize-base: base
+    sas.com/registry-providers: textAnalyticsTaxonomies-provider, textAnalyticsTaxonomies-provider-category,
+      jobExecution-provider, jobExecution-provider-category-compile, jobExecution-provider-category-validate,
+      jobExecution-provider-import-categories
+    sas.com/registry-sync: default
+    sas.com/registry-tags: proxy
+    sas.com/tls-mode: full-stack
+    sas.com/version: 7.custom4.custom0
+spec:
+  type: {{ .Values.categoryTaxonomy.type }}
+  selector:
+    app.kubernetes.io/name: sas-text-analytics-taxonomies
+    sas.com/deployment: sas-viya
+    {{- include "sas-viya-helm.selectorLabels" . | nindent 4 }}
+  ports:
+  {{- .Values.categoryTaxonomy.ports | toYaml | nindent 2 }}
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-category-taxonomy
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    cert-utils-operator.redhat-cop.io/certs-from-secret: sas-ingress-certificate-b976h462g7
+    cert-utils-operator.redhat-cop.io/destinationCA-from-secret: sas-viya-ca-certificate-secret
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-categoryTaxonomy
+    sas.com/component-name: sas-text-analytics-taxonomies
+    sas.com/component-version: 7.custom4.custom0-20240909.custom1725900757680
+    sas.com/kustomize-base: base
+    sas.com/tls-mode: full-stack
+    sas.com/version: 7.custom4.custom0
+spec:
+  host: sasvi.hbctxdom.com
+  path: /categoryTaxonomy
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: reencrypt
+  to:
+    kind: Service
+    name: sas-category-taxonomy
+  wildcardPolicy: None

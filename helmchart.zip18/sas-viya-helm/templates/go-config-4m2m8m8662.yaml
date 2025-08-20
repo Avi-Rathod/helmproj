@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-go-config-4m2m8m8662
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  ARKE_TLS_ENABLED: {{ .Values.goConfig4M2M8M8662.arkeTlsEnabled | quote }}
+  CONSUL_HTTP_ADDR: {{ .Values.goConfig4M2M8M8662.consulHttpAddr | quote }}
+  SAS_BOOTSTRAP_HTTP_CLIENT_TIMEOUT_REQUEST: {{ .Values.goConfig4M2M8M8662.sasBootstrapHttpClientTimeoutRequest
+    | quote }}
+  SAS_RECONCILER_SERVICES_ENABLED: {{ .Values.goConfig4M2M8M8662.sasReconcilerServicesEnabled
+    | quote }}
+  SAS_REGISTRY_REGISTER_ENABLED: {{ .Values.goConfig4M2M8M8662.sasRegistryRegisterEnabled
+    | quote }}

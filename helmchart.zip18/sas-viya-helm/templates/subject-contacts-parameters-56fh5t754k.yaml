@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-subject-contacts-parameters-56fh5t754k
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.subjectContactsParameters56Fh5T754K.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.subjectContactsParameters56Fh5T754K.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.subjectContactsParameters56Fh5T754K.sasServiceName
+    | quote }}

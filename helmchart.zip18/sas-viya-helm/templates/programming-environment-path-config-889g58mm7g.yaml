@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-programming-environment-path-config-889g58mm7g
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_SPRE_APP_BATCH: {{ .Values.programmingEnvironmentPathConfig889G58Mm7G.sasSpreAppBatch
+    | quote }}
+  SAS_SPRE_APP_COMPUTE: {{ .Values.programmingEnvironmentPathConfig889G58Mm7G.sasSpreAppCompute
+    | quote }}
+  SAS_SPRE_APP_CONNECT: {{ .Values.programmingEnvironmentPathConfig889G58Mm7G.sasSpreAppConnect
+    | quote }}
+  SAS_SPRE_VAR_PATH: {{ .Values.programmingEnvironmentPathConfig889G58Mm7G.sasSpreVarPath
+    | quote }}
+  SAS_SPRE_VAR_PATH_LOG: {{ .Values.programmingEnvironmentPathConfig889G58Mm7G.sasSpreVarPathLog
+    | quote }}
+  SAS_SPRE_VAR_PATH_RUN: {{ .Values.programmingEnvironmentPathConfig889G58Mm7G.sasSpreVarPathRun
+    | quote }}
+  SAS_SPRE_VAR_PATH_SPOOL: {{ .Values.programmingEnvironmentPathConfig889G58Mm7G.sasSpreVarPathSpool
+    | quote }}
+  SAS_SPRE_VAR_PATH_TMP: {{ .Values.programmingEnvironmentPathConfig889G58Mm7G.sasSpreVarPathTmp
+    | quote }}

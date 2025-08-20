@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-code-debugger-app-parameters-6h9878bc4b
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.codeDebuggerAppParameters6H9878Bc4B.cntrRepoPrefix
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.codeDebuggerAppParameters6H9878Bc4B.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.codeDebuggerAppParameters6H9878Bc4B.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.codeDebuggerAppParameters6H9878Bc4B.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.codeDebuggerAppParameters6H9878Bc4B.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.codeDebuggerAppParameters6H9878Bc4B.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.codeDebuggerAppParameters6H9878Bc4B.sgProject | quote }}

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-certframe-config-6t84hm65mc
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CERTIFICATE_CA_CERTIFICATE_FILE: {{ .Values.certframeConfig6T84Hm65Mc.sasCertificateCaCertificateFile
+    | quote }}
+  SAS_CERTIFICATE_FILE: {{ .Values.certframeConfig6T84Hm65Mc.sasCertificateFile |
+    quote }}
+  SAS_CERTIFICATE_PRIVATE_KEY_FILE: {{ .Values.certframeConfig6T84Hm65Mc.sasCertificatePrivateKeyFile
+    | quote }}
+  SAS_TRUSTED_CA_CERTIFICATES_JKS_FILE: {{ .Values.certframeConfig6T84Hm65Mc.sasTrustedCaCertificatesJksFile
+    | quote }}
+  SAS_TRUSTED_CA_CERTIFICATES_PEM_FILE: {{ .Values.certframeConfig6T84Hm65Mc.sasTrustedCaCertificatesPemFile
+    | quote }}

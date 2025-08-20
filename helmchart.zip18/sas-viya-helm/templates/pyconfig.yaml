@@ -1,0 +1,140 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-pyconfig
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-pyconfig
+    sas.com/component-version: 1.custom21.custom7-20241008.custom1728403724456
+    sas.com/version: 1.custom21.custom7
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.pvc.pyconfig.storageRequest | quote }}
+  storageClassName: {{ .Values.pvc.pyconfig.storageClass | quote }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-pyconfig
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    workload.sas.com/class: stateless
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/certificate-file-format: none
+    sas.com/component-name: sas-pyconfig
+    sas.com/component-version: 1.custom21.custom7-20241008.custom1728403724456
+    sas.com/kustomize-base: base
+    sas.com/version: 1.custom21.custom7
+spec:
+  jobTemplate:
+    metadata:
+      annotations:
+        sas.com/component-name: sas-pyconfig
+        sas.com/component-version: 1.custom21.custom7-20241008.custom1728403724456
+        sas.com/version: 1.custom21.custom7
+      labels:
+        sas.com/component-name: sas-pyconfig
+        sas.com/deployment: sas-viya
+    spec:
+      template:
+        metadata:
+          annotations:
+            sas.com/certificate-file-format: none
+            sas.com/component-name: sas-pyconfig
+            sas.com/component-version: 1.custom21.custom7-20241008.custom1728403724456
+            sas.com/kustomize-base: base
+            sas.com/version: 1.custom21.custom7
+          generateName: sas-pyconfig-
+          labels:
+            app.kubernetes.io/name: sas-pyconfig
+            sas.com/deployment: sas-viya
+            workload.sas.com/class: stateless
+        spec:
+          affinity:
+            nodeAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - preference:
+                  matchExpressions:
+                  - key: workload.sas.com/class
+                    operator: In
+                    values:
+                    - stateless
+                weight: 100
+              - preference:
+                  matchExpressions:
+                  - key: workload.sas.com/class
+                    operator: NotIn
+                    values:
+                    - cas
+                    - compute
+                    - stateful
+                weight: 50
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.azure.com/mode
+                    operator: NotIn
+                    values:
+                    - system
+            podAffinity: {}
+            podAntiAffinity: {}
+          automountServiceAccountToken: true
+          containers:
+          - env:
+            - name: SAS_K8S_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: SAS_SPEC_NODENAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: SAS_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: KUBERNETES_CLUSTER_DOMAIN
+              value: {{ quote .Values.kubernetesClusterDomain }}
+            image: {{ .Values.pyconfig.sasPyconfig.image.repository }}:{{ .Values.pyconfig.sasPyconfig.image.tag
+              | default .Chart.AppVersion }}
+            name: sas-pyconfig
+            resources: {{- toYaml .Values.pyconfig.sasPyconfig.resources | nindent
+              10 }}
+            securityContext: {{- toYaml .Values.pyconfig.sasPyconfig.containerSecurityContext
+              | nindent 10 }}
+            volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+            - mountPath: /opt/sas/viya/home/sas-pyconfig
+              name: saspyconfigvol
+          imagePullSecrets:
+          - name: {{ include "sas-viya-helm.fullname" . }}-image-pull-secrets-9dd8hm29fm
+          restartPolicy: Never
+          securityContext: {{- toYaml .Values.pyconfig.podSecurityContext | nindent
+            8 }}
+          serviceAccountName: {{ include "sas-viya-helm.fullname" . }}-pyconfig
+          tolerations:
+          - effect: NoSchedule
+            key: workload.sas.com/class
+            operator: Equal
+            value: stateless
+          - effect: NoSchedule
+            key: workload.sas.com/class
+            operator: Equal
+            value: stateful
+          volumes:
+          - emptyDir: {}
+            name: tmp
+          - name: saspyconfigvol
+            persistentVolumeClaim:
+              claimName: {{ include "sas-viya-helm.fullname" . }}-pyconfig
+  schedule: {{ .Values.pyconfig.schedule | quote }}
+  suspend: {{ .Values.pyconfig.suspend }}

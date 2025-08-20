@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-redis-operator-parameters-7t5bcgmf8g-7t5bcgmf8g
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_DU_NAME: {{ .Values.redisOperatorParameters7T5Bcgmf8G7T5Bcgmf8G.sasDuName |
+    quote }}
+  SAS_SERVICE_NAME: {{ .Values.redisOperatorParameters7T5Bcgmf8G7T5Bcgmf8G.sasServiceName
+    | quote }}

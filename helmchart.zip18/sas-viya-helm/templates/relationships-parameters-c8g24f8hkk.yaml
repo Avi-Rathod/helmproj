@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-relationships-parameters-c8g24f8hkk
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.relationshipsParametersC8G24F8Hkk.sasContextPath |
+    quote }}
+  SAS_PORT_NAME: {{ .Values.relationshipsParametersC8G24F8Hkk.sasPortName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.relationshipsParametersC8G24F8Hkk.sasServiceName |
+    quote }}

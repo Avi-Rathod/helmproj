@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-graph-builder-app-parameters-67bbhcm69h
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.graphBuilderAppParameters67Bbhcm69H.cntrRepoPrefix
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.graphBuilderAppParameters67Bbhcm69H.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.graphBuilderAppParameters67Bbhcm69H.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.graphBuilderAppParameters67Bbhcm69H.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.graphBuilderAppParameters67Bbhcm69H.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.graphBuilderAppParameters67Bbhcm69H.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.graphBuilderAppParameters67Bbhcm69H.sgProject | quote }}

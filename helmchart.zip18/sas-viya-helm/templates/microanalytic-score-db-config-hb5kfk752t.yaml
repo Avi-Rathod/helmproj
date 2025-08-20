@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-microanalytic-score-db-config-hb5kfk752t
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  MAS_INT_LLP_ACCESS: {{ .Values.microanalyticScoreDbConfigHb5Kfk752T.masIntLlpAccess
+    | quote }}
+  MAS_INT_LLP_POSTGRES: {{ .Values.microanalyticScoreDbConfigHb5Kfk752T.masIntLlpPostgres
+    | quote }}
+  ODBCHOME: {{ .Values.microanalyticScoreDbConfigHb5Kfk752T.odbchome | quote }}
+  ODBCINI: {{ .Values.microanalyticScoreDbConfigHb5Kfk752T.odbcini | quote }}
+  ODBCINSTINI: {{ .Values.microanalyticScoreDbConfigHb5Kfk752T.odbcinstini | quote
+    }}
+  ORACLE_HOME: {{ .Values.microanalyticScoreDbConfigHb5Kfk752T.oracleHome | quote
+    }}
+  ORAENV_ASK: {{ .Values.microanalyticScoreDbConfigHb5Kfk752T.oraenvAsk | quote }}
+  PGCLIENTENCODING: {{ .Values.microanalyticScoreDbConfigHb5Kfk752T.pgclientencoding
+    | quote }}
+  SASORA: {{ .Values.microanalyticScoreDbConfigHb5Kfk752T.sasora | quote }}
+  TWO_TASK: {{ .Values.microanalyticScoreDbConfigHb5Kfk752T.twoTask | quote }}

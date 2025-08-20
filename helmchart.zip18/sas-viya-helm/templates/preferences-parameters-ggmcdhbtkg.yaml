@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-preferences-parameters-ggmcdhbtkg
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.preferencesParametersGgmcdhbtkg.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.preferencesParametersGgmcdhbtkg.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.preferencesParametersGgmcdhbtkg.sasServiceName | quote
+    }}
+  SG_GO_MODULES_ENABLED: {{ .Values.preferencesParametersGgmcdhbtkg.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.preferencesParametersGgmcdhbtkg.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.preferencesParametersGgmcdhbtkg.sgProject | quote }}

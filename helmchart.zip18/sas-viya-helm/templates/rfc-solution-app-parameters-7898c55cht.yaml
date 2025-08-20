@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-rfc-solution-app-parameters-7898c55cht
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.rfcSolutionAppParameters7898C55Cht.cntrRepoPrefix
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.rfcSolutionAppParameters7898C55Cht.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.rfcSolutionAppParameters7898C55Cht.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.rfcSolutionAppParameters7898C55Cht.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.rfcSolutionAppParameters7898C55Cht.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.rfcSolutionAppParameters7898C55Cht.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.rfcSolutionAppParameters7898C55Cht.sgProject | quote }}

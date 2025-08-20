@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-geo-enrichment-parameters-64fm79gk5f
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.geoEnrichmentParameters64Fm79Gk5F.sasContextPath |
+    quote }}
+  SAS_DU_NAME: {{ .Values.geoEnrichmentParameters64Fm79Gk5F.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.geoEnrichmentParameters64Fm79Gk5F.sasServiceName |
+    quote }}

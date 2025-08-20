@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-access-config-mm6fhg8gc7
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  COPLIB: {{ .Values.accessConfigMm6Fhg8Gc7.coplib | quote }}
+  CUR_INSTHOME: {{ .Values.accessConfigMm6Fhg8Gc7.curInsthome | quote }}
+  CUR_INSTNAME: {{ .Values.accessConfigMm6Fhg8Gc7.curInstname | quote }}
+  DASWORKDIR: {{ .Values.accessConfigMm6Fhg8Gc7.dasworkdir | quote }}
+  DB2: {{ .Values.accessConfigMm6Fhg8Gc7.db2 | quote }}
+  DB2_BIN: {{ .Values.accessConfigMm6Fhg8Gc7.db2Bin | quote }}
+  DB2_HOME: {{ .Values.accessConfigMm6Fhg8Gc7.db2Home | quote }}
+  DB2_NET_CLIENT_PATH: {{ .Values.accessConfigMm6Fhg8Gc7.db2NetClientPath | quote
+    }}
+  DB2DIR: {{ .Values.accessConfigMm6Fhg8Gc7.db2Dir | quote }}
+  DB2INSTANCE: {{ .Values.accessConfigMm6Fhg8Gc7.db2Instance | quote }}
+  DB2LIB: {{ .Values.accessConfigMm6Fhg8Gc7.db2Lib | quote }}
+  DELIMIDENT: {{ .Values.accessConfigMm6Fhg8Gc7.delimident | quote }}
+  DIRLAX: {{ .Values.accessConfigMm6Fhg8Gc7.dirlax | quote }}
+  DSQUERY: {{ .Values.accessConfigMm6Fhg8Gc7.dsquery | quote }}
+  GOMEMLIMIT: {{ .Values.accessConfigMm6Fhg8Gc7.gomemlimit | quote }}
+  HANA: {{ .Values.accessConfigMm6Fhg8Gc7.hana | quote }}
+  IBM_DB_DIR: {{ .Values.accessConfigMm6Fhg8Gc7.ibmDbDir | quote }}
+  IBM_DB_HOME: {{ .Values.accessConfigMm6Fhg8Gc7.ibmDbHome | quote }}
+  IBM_DB_INCLUDE: {{ .Values.accessConfigMm6Fhg8Gc7.ibmDbInclude | quote }}
+  IBM_DB_LIB: {{ .Values.accessConfigMm6Fhg8Gc7.ibmDbLib | quote }}
+  IMPALA: {{ .Values.accessConfigMm6Fhg8Gc7.impala | quote }}
+  INST_DIR: {{ .Values.accessConfigMm6Fhg8Gc7.instDir | quote }}
+  INSTHOME: {{ .Values.accessConfigMm6Fhg8Gc7.insthome | quote }}
+  IQDIR16: {{ .Values.accessConfigMm6Fhg8Gc7.iqdir16 | quote }}
+  JDBCDRIVERS: {{ .Values.accessConfigMm6Fhg8Gc7.jdbcdrivers | quote }}
+  LD_LIBRARY_PATH: {{ .Values.accessConfigMm6Fhg8Gc7.ldLibraryPath | quote }}
+  MARIADB_PLUGIN_DIR: {{ .Values.accessConfigMm6Fhg8Gc7.mariadbPluginDir | quote
+    }}
+  MONGODB: {{ .Values.accessConfigMm6Fhg8Gc7.mongodb | quote }}
+  MYSQL: {{ .Values.accessConfigMm6Fhg8Gc7.mysql | quote }}
+  NETEZZA: {{ .Values.accessConfigMm6Fhg8Gc7.netezza | quote }}
+  NLS_LANG: {{ .Values.accessConfigMm6Fhg8Gc7.nlsLang | quote }}
+  NZ_ODBC_INI_PATH: {{ .Values.accessConfigMm6Fhg8Gc7.nzOdbcIniPath | quote }}
+  ODBCHOME: {{ .Values.accessConfigMm6Fhg8Gc7.odbchome | quote }}
+  ODBCINI: {{ .Values.accessConfigMm6Fhg8Gc7.odbcini | quote }}
+  ODBCINST: {{ .Values.accessConfigMm6Fhg8Gc7.odbcinst | quote }}
+  ODBCSYSINI: {{ .Values.accessConfigMm6Fhg8Gc7.odbcsysini | quote }}
+  ORACLE: {{ .Values.accessConfigMm6Fhg8Gc7.oracle | quote }}
+  ORACLE_BIN: {{ .Values.accessConfigMm6Fhg8Gc7.oracleBin | quote }}
+  ORACLE_HOME: {{ .Values.accessConfigMm6Fhg8Gc7.oracleHome | quote }}
+  POSTGRES: {{ .Values.accessConfigMm6Fhg8Gc7.postgres | quote }}
+  PREV_DB2_PATH: {{ .Values.accessConfigMm6Fhg8Gc7.prevDb2Path | quote }}
+  R3: {{ .Values.accessConfigMm6Fhg8Gc7.r3 | quote }}
+  SAPCRYPTO_LIB: {{ .Values.accessConfigMm6Fhg8Gc7.sapcryptoLib | quote }}
+  SAPIQ: {{ .Values.accessConfigMm6Fhg8Gc7.sapiq | quote }}
+  SAPIQ_BIN: {{ .Values.accessConfigMm6Fhg8Gc7.sapiqBin | quote }}
+  SAS_EXT_CLSPTH_ACCESS: {{ .Values.accessConfigMm6Fhg8Gc7.sasExtClspthAccess | quote
+    }}
+  SAS_EXT_LLP_ACCESS: {{ .Values.accessConfigMm6Fhg8Gc7.sasExtLlpAccess | quote }}
+  SAS_EXT_PATH_ACCESS: {{ .Values.accessConfigMm6Fhg8Gc7.sasExtPathAccess | quote
+    }}
+  SASODBC: {{ .Values.accessConfigMm6Fhg8Gc7.sasodbc | quote }}
+  SECUDIR: {{ .Values.accessConfigMm6Fhg8Gc7.secudir | quote }}
+  SYB_SAS_BULK_NOTE: {{ .Values.accessConfigMm6Fhg8Gc7.sybSasBulkNote | quote }}
+  SYBASE: {{ .Values.accessConfigMm6Fhg8Gc7.sybase | quote }}
+  SYBASE_BIN: {{ .Values.accessConfigMm6Fhg8Gc7.sybaseBin | quote }}
+  SYBASELIBS: {{ .Values.accessConfigMm6Fhg8Gc7.sybaselibs | quote }}
+  TERADATA: {{ .Values.accessConfigMm6Fhg8Gc7.teradata | quote }}
+  THIRD_PARTY_BIN: {{ .Values.accessConfigMm6Fhg8Gc7.thirdPartyBin | quote }}
+  THIRD_PARTY_LIB: {{ .Values.accessConfigMm6Fhg8Gc7.thirdPartyLib | quote }}
+  TNS_ADMIN: {{ .Values.accessConfigMm6Fhg8Gc7.tnsAdmin | quote }}
+  UNIXODBC: {{ .Values.accessConfigMm6Fhg8Gc7.unixodbc | quote }}
+  VERTICA: {{ .Values.accessConfigMm6Fhg8Gc7.vertica | quote }}
+  VERTICAINI: {{ .Values.accessConfigMm6Fhg8Gc7.verticaini | quote }}

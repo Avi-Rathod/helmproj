@@ -1,0 +1,42 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-microanalytic-score
+  labels:
+    sas.com/admin: cluster-wide
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-microanalytic-score
+    sas.com/component-version: 2.custom402.custom56-20241126.custom1732657782630
+    sas.com/version: 2.custom402.custom56
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - watch
+  - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-microanalytic-score
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-microanalytic-score
+    sas.com/component-version: 2.custom402.custom56-20241126.custom1732657782630
+    sas.com/version: 2.custom402.custom56
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: '{{ include "sas-viya-helm.fullname" . }}-microanalytic-score'
+subjects:
+- kind: ServiceAccount
+  name: '{{ include "sas-viya-helm.fullname" . }}-microanalytic-score'
+  namespace: '{{ .Release.Namespace }}'

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-links-parameters-76fct575mm
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.linksParameters76Fct575Mm.sasContextPath | quote }}
+  SAS_DU_NAME: {{ .Values.linksParameters76Fct575Mm.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.linksParameters76Fct575Mm.sasServiceName | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.linksParameters76Fct575Mm.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.linksParameters76Fct575Mm.sgGoMultiModules | quote
+    }}
+  SG_PROJECT: {{ .Values.linksParameters76Fct575Mm.sgProject | quote }}

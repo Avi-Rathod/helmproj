@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-studio-app-parameters-54t6gkmh5c
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.studioAppParameters54T6Gkmh5C.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.studioAppParameters54T6Gkmh5C.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.studioAppParameters54T6Gkmh5C.sasServiceName | quote
+    }}

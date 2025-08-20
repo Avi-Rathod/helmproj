@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-analytics-execution-parameters-m74t7dk762
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.analyticsExecutionParametersM74T7Dk762.cntrRepoPrefix
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.analyticsExecutionParametersM74T7Dk762.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.analyticsExecutionParametersM74T7Dk762.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.analyticsExecutionParametersM74T7Dk762.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.analyticsExecutionParametersM74T7Dk762.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.analyticsExecutionParametersM74T7Dk762.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.analyticsExecutionParametersM74T7Dk762.sgProject | quote
+    }}
+  SG_STATIC: {{ .Values.analyticsExecutionParametersM74T7Dk762.sgStatic | quote }}

@@ -1,0 +1,16 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-cas-operator-sasviya
+  labels:
+    sas.com/admin: cluster-wide
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: '{{ include "sas-viya-helm.fullname" . }}-cas-operator'
+subjects:
+- kind: ServiceAccount
+  name: '{{ include "sas-viya-helm.fullname" . }}-cas-operator'
+  namespace: '{{ .Release.Namespace }}'

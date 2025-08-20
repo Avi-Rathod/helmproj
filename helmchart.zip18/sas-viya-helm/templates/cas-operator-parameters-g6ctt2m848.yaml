@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-cas-operator-parameters-g6ctt2m848
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_DU_NAME: {{ .Values.casOperatorParametersG6Ctt2M848.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.casOperatorParametersG6Ctt2M848.sasServiceName | quote
+    }}

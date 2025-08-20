@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-analytics-resources-root-parameters-767dg8754f
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  ANALYTICS_RESOURCES_DB_MIGRATION_MAJOR_VERSION: {{ .Values.analyticsResourcesRootParameters767Dg8754F.analyticsResourcesDbMigrationMajorVersion
+    | quote }}
+  ANALYTICS_SERVICES_DB_MIGRATION_MAJOR_VERSION: {{ .Values.analyticsResourcesRootParameters767Dg8754F.analyticsServicesDbMigrationMajorVersion
+    | quote }}
+  CNTR_REPO_PREFIX: {{ .Values.analyticsResourcesRootParameters767Dg8754F.cntrRepoPrefix
+    | quote }}
+  SAS_DU_NAME: {{ .Values.analyticsResourcesRootParameters767Dg8754F.sasDuName |
+    quote }}
+  SAS_SERVICE_NAME: {{ .Values.analyticsResourcesRootParameters767Dg8754F.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.analyticsResourcesRootParameters767Dg8754F.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.analyticsResourcesRootParameters767Dg8754F.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.analyticsResourcesRootParameters767Dg8754F.sgProject | quote
+    }}
+  SG_STATIC: {{ .Values.analyticsResourcesRootParameters767Dg8754F.sgStatic | quote
+    }}

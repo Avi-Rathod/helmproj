@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-cas-backup-data
+  labels:
+    app.kubernetes.io/part-of: cas
+    casoperator.sas.com/instance: default
+    casoperator.sas.com/tenant: shared
+    sas.com/admin: cluster-local
+    sas.com/backup-role: storage
+    sas.com/cas-pvc: backup
+    sas.com/deployment: sas-viya
+    sas.com/tenant: shared
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-cas-operator
+    sas.com/component-version: 3.custom48.custom4-20241014.custom1728921008318
+    sas.com/version: 3.custom48.custom4
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.pvc.casBackupData.storageRequest | quote }}
+  storageClassName: {{ .Values.pvc.casBackupData.storageClass | quote }}

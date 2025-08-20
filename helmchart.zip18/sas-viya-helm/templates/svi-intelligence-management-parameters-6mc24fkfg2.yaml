@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-svi-intelligence-management-parameters-6mc24fkfg2
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.sviIntelligenceManagementParameters6Mc24Fkfg2.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.sviIntelligenceManagementParameters6Mc24Fkfg2.sasDuName
+    | quote }}
+  SAS_SERVICE_NAME: {{ .Values.sviIntelligenceManagementParameters6Mc24Fkfg2.sasServiceName
+    | quote }}

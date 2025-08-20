@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-rabbitmq-server-parameters-d85588dcbd-d85588dcbd
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_DU_NAME: {{ .Values.rabbitmqServerParametersD85588DcbdD85588Dcbd.sasDuName
+    | quote }}
+  SAS_SERVICE_NAME: {{ .Values.rabbitmqServerParametersD85588DcbdD85588Dcbd.sasServiceName
+    | quote }}

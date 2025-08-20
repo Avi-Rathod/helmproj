@@ -1,0 +1,124 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-lifecycle-operations-b924bd9b2k
+  labels:
+    orchestration.sas.com/lifecycle: operations
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  assess: {{ .Values.lifecycleOperationsB924Bd9B2K.assess | toYaml | indent 1 }}
+  assess-cas: {{ .Values.lifecycleOperationsB924Bd9B2K.assessCas | toYaml | indent
+    1 }}
+  cluster-api: {{ .Values.lifecycleOperationsB924Bd9B2K.clusterApi | toYaml | indent
+    1 }}
+  cluster-api-assess: {{ .Values.lifecycleOperationsB924Bd9B2K.clusterApiAssess |
+    toYaml | indent 1 }}
+  cluster-api-deploy: {{ .Values.lifecycleOperationsB924Bd9B2K.clusterApiDeploy |
+    toYaml | indent 1 }}
+  cluster-api-lib: {{ .Values.lifecycleOperationsB924Bd9B2K.clusterApiLib | toYaml
+    | indent 1 }}
+  deploy: {{ .Values.lifecycleOperationsB924Bd9B2K.deploy | toYaml | indent 1 }}
+  deploy-assess: {{ .Values.lifecycleOperationsB924Bd9B2K.deployAssess | toYaml |
+    indent 1 }}
+  deploy-assess-commonfiles: {{ .Values.lifecycleOperationsB924Bd9B2K.deployAssessCommonfiles
+    | toYaml | indent 1 }}
+  deploy-assess-commonfiles-execute: {{ .Values.lifecycleOperationsB924Bd9B2K.deployAssessCommonfilesExecute
+    | toYaml | indent 1 }}
+  deploy-assess-crunchy4: {{ .Values.lifecycleOperationsB924Bd9B2K.deployAssessCrunchy4
+    | toYaml | indent 1 }}
+  deploy-assess-elasticsearch: {{ .Values.lifecycleOperationsB924Bd9B2K.deployAssessElasticsearch
+    | toYaml | indent 1 }}
+  deploy-assess-elasticsearch-execute: {{ .Values.lifecycleOperationsB924Bd9B2K.deployAssessElasticsearchExecute
+    | toYaml | indent 1 }}
+  deploy-assess-pyconfig-cronjob: {{ .Values.lifecycleOperationsB924Bd9B2K.deployAssessPyconfigCronjob
+    | toYaml | indent 1 }}
+  deploy-assess-pyconfig-execute: {{ .Values.lifecycleOperationsB924Bd9B2K.deployAssessPyconfigExecute
+    | toYaml | indent 1 }}
+  deploy-assess-pyconfig-job: {{ .Values.lifecycleOperationsB924Bd9B2K.deployAssessPyconfigJob
+    | toYaml | indent 1 }}
+  deploy-execute: {{ .Values.lifecycleOperationsB924Bd9B2K.deployExecute | toYaml
+    | indent 1 }}
+  deploy-post: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPost | toYaml | indent
+    1 }}
+  deploy-post-cas: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPostCas | toYaml
+    | indent 1 }}
+  deploy-post-cas-execute: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPostCasExecute
+    | toYaml | indent 1 }}
+  deploy-post-cas-transfer: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPostCasTransfer
+    | toYaml | indent 1 }}
+  deploy-post-migrate-analytics-resources-services: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPostMigrateAnalyticsResourcesServices
+    | toYaml | indent 1 }}
+  deploy-post-openshift: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPostOpenshift
+    | toYaml | indent 1 }}
+  deploy-post-pyconfig: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPostPyconfig
+    | toYaml | indent 1 }}
+  deploy-pre: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPre | toYaml | indent
+    1 }}
+  deploy-pre-commonfiles: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPreCommonfiles
+    | toYaml | indent 1 }}
+  deploy-pre-commonfiles-execute: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPreCommonfilesExecute
+    | toYaml | indent 1 }}
+  deploy-pre-crunchy4: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPreCrunchy4
+    | toYaml | indent 1 }}
+  deploy-pre-crunchy4-execute: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPreCrunchy4Execute
+    | toYaml | indent 1 }}
+  deploy-pre-crunchy5: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPreCrunchy5
+    | toYaml | indent 1 }}
+  deploy-pre-elasticsearch: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPreElasticsearch
+    | toYaml | indent 1 }}
+  deploy-pre-elasticsearch-execute: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPreElasticsearchExecute
+    | toYaml | indent 1 }}
+  deploy-pre-migrate-analytics-resources-services: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPreMigrateAnalyticsResourcesServices
+    | toYaml | indent 1 }}
+  deploy-pre-openshift: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPreOpenshift
+    | toYaml | indent 1 }}
+  deploy-pre-pyconfig: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPrePyconfig
+    | toYaml | indent 1 }}
+  deploy-pre-pyconfig-execute: {{ .Values.lifecycleOperationsB924Bd9B2K.deployPrePyconfigExecute
+    | toYaml | indent 1 }}
+  deploy-stage: {{ .Values.lifecycleOperationsB924Bd9B2K.deployStage | toYaml | indent
+    1 }}
+  kubernetes-kubectl-server-version-alignment-check: {{ .Values.lifecycleOperationsB924Bd9B2K.kubernetesKubectlServerVersionAlignmentCheck
+    | toYaml | indent 1 }}
+  prepull-during-update: {{ .Values.lifecycleOperationsB924Bd9B2K.prepullDuringUpdate
+    | toYaml | indent 1 }}
+  pyconfig-runonce-execute: {{ .Values.lifecycleOperationsB924Bd9B2K.pyconfigRunonceExecute
+    | toYaml | indent 1 }}
+  reconcile-once.deploy: {{ .Values.lifecycleOperationsB924Bd9B2K.reconcileOnceDeploy
+    | toYaml | indent 1 }}
+  scale-to-zero: {{ .Values.lifecycleOperationsB924Bd9B2K.scaleToZero | toYaml |
+    indent 1 }}
+  scale-up: {{ .Values.lifecycleOperationsB924Bd9B2K.scaleUp | toYaml | indent 1
+    }}
+  start-all: {{ .Values.lifecycleOperationsB924Bd9B2K.startAll | toYaml | indent
+    1 }}
+  start-all-execute: {{ .Values.lifecycleOperationsB924Bd9B2K.startAllExecute | toYaml
+    | indent 1 }}
+  start-all-execute-cas: {{ .Values.lifecycleOperationsB924Bd9B2K.startAllExecuteCas
+    | toYaml | indent 1 }}
+  start-all-execute-crunchy: {{ .Values.lifecycleOperationsB924Bd9B2K.startAllExecuteCrunchy
+    | toYaml | indent 1 }}
+  start-all-execute-opensearch: {{ .Values.lifecycleOperationsB924Bd9B2K.startAllExecuteOpensearch
+    | toYaml | indent 1 }}
+  start-all-execute-redis: {{ .Values.lifecycleOperationsB924Bd9B2K.startAllExecuteRedis
+    | toYaml | indent 1 }}
+  start-all-scale: {{ .Values.lifecycleOperationsB924Bd9B2K.startAllScale | toYaml
+    | indent 1 }}
+  stop-all: {{ .Values.lifecycleOperationsB924Bd9B2K.stopAll | toYaml | indent 1
+    }}
+  stop-all-execute: {{ .Values.lifecycleOperationsB924Bd9B2K.stopAllExecute | toYaml
+    | indent 1 }}
+  stop-all-execute-cas: {{ .Values.lifecycleOperationsB924Bd9B2K.stopAllExecuteCas
+    | toYaml | indent 1 }}
+  stop-all-execute-crunchy: {{ .Values.lifecycleOperationsB924Bd9B2K.stopAllExecuteCrunchy
+    | toYaml | indent 1 }}
+  stop-all-execute-opensearch: {{ .Values.lifecycleOperationsB924Bd9B2K.stopAllExecuteOpensearch
+    | toYaml | indent 1 }}
+  stop-all-execute-redis: {{ .Values.lifecycleOperationsB924Bd9B2K.stopAllExecuteRedis
+    | toYaml | indent 1 }}
+  stop-all-execute-sas-launcher: {{ .Values.lifecycleOperationsB924Bd9B2K.stopAllExecuteSasLauncher
+    | toYaml | indent 1 }}
+  version-check: {{ .Values.lifecycleOperationsB924Bd9B2K.versionCheck | toYaml |
+    indent 1 }}

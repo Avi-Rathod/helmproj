@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-web-renderer-parameters-849f76fm89
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.webRendererParameters849F76Fm89.cntrRepoPrefix | quote
+    }}
+  SAS_CONTEXT_PATH: {{ .Values.webRendererParameters849F76Fm89.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.webRendererParameters849F76Fm89.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.webRendererParameters849F76Fm89.sasServiceName | quote
+    }}
+  SG_GO_MODULES_ENABLED: {{ .Values.webRendererParameters849F76Fm89.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.webRendererParameters849F76Fm89.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.webRendererParameters849F76Fm89.sgProject | quote }}

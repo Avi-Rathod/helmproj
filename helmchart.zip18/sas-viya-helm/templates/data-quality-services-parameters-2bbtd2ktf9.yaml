@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-data-quality-services-parameters-2bbtd2ktf9
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.dataQualityServicesParameters2Bbtd2Ktf9.cntrRepoPrefix
+    | quote }}
+  SAS_DU_NAME: {{ .Values.dataQualityServicesParameters2Bbtd2Ktf9.sasDuName | quote
+    }}
+  SAS_PORT_NAME: {{ .Values.dataQualityServicesParameters2Bbtd2Ktf9.sasPortName |
+    quote }}
+  SAS_SERVICE_NAME: {{ .Values.dataQualityServicesParameters2Bbtd2Ktf9.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.dataQualityServicesParameters2Bbtd2Ktf9.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.dataQualityServicesParameters2Bbtd2Ktf9.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.dataQualityServicesParameters2Bbtd2Ktf9.sgProject | quote
+    }}
+  SG_STATIC: {{ .Values.dataQualityServicesParameters2Bbtd2Ktf9.sgStatic | quote
+    }}

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-batch-parameters-tdmh2tfbkd
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.batchParametersTdmh2Tfbkd.sasContextPath | quote }}
+  SAS_DU_NAME: {{ .Values.batchParametersTdmh2Tfbkd.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.batchParametersTdmh2Tfbkd.sasServiceName | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.batchParametersTdmh2Tfbkd.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.batchParametersTdmh2Tfbkd.sgGoMultiModules | quote
+    }}
+  SG_PROJECT: {{ .Values.batchParametersTdmh2Tfbkd.sgProject | quote }}

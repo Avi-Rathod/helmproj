@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-import-data-loader-parameters-2dtggm4gh8
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_DU_NAME: {{ .Values.importDataLoaderParameters2Dtggm4Gh8.sasDuName | quote
+    }}

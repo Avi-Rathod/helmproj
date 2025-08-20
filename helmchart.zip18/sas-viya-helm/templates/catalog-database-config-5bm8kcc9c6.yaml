@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-catalog-database-config-5bm8kcc9c6
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CATALOG_PERSISTENCE: {{ .Values.catalogDatabaseConfig5Bm8Kcc9C6.sasCatalogPersistence
+    | quote }}
+  SAS_DATABASE_MAXACTIVE: {{ .Values.catalogDatabaseConfig5Bm8Kcc9C6.sasDatabaseMaxactive
+    | quote }}
+  SAS_STORAGE_SQL_ERRORS_AT_DEBUG: {{ .Values.catalogDatabaseConfig5Bm8Kcc9C6.sasStorageSqlErrorsAtDebug
+    | quote }}

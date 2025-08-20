@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-device-management-parameters-2fhc4bcg88
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.deviceManagementParameters2Fhc4Bcg88.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.deviceManagementParameters2Fhc4Bcg88.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.deviceManagementParameters2Fhc4Bcg88.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.deviceManagementParameters2Fhc4Bcg88.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.deviceManagementParameters2Fhc4Bcg88.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.deviceManagementParameters2Fhc4Bcg88.sgProject | quote }}

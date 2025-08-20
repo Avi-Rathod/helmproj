@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-data-explorer-app-parameters-8chb796kk8
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  JAVA_OPTION_FJPCP: {{ .Values.dataExplorerAppParameters8Chb796Kk8.javaOptionFjpcp
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.dataExplorerAppParameters8Chb796Kk8.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.dataExplorerAppParameters8Chb796Kk8.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.dataExplorerAppParameters8Chb796Kk8.sasServiceName
+    | quote }}

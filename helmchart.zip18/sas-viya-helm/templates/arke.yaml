@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-arke
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    sas.com/registry-sync: default
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-arke
+    sas.com/component-version: 1.custom35.custom0-20240911.custom1726079412665
+    sas.com/registry-sync: default
+    sas.com/version: 1.custom35.custom0
+spec:
+  type: {{ .Values.arke.type }}
+  selector:
+    app.kubernetes.io/name: sas-arke
+    sas.com/deployment: sas-viya
+    {{- include "sas-viya-helm.selectorLabels" . | nindent 4 }}
+  ports:
+  {{- .Values.arke.ports | toYaml | nindent 2 }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-arke
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-arke
+    sas.com/component-version: 1.custom35.custom0-20240911.custom1726079412665
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: base
+    sas.com/version: 1.custom35.custom0
+spec:
+  minAvailable: {{ .Values.arke.minAvailable }}
+  maxUnavailable: {{ .Values.arke.maxUnavailable }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-arke
+      sas.com/deployment: sas-viya
+    {{- include "sas-viya-helm.selectorLabels" . | nindent 6 }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-arke
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-arke
+    sas.com/component-version: 1.custom35.custom0-20240911.custom1726079412665
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: golang
+    sas.com/version: 1.custom35.custom0
+spec:
+  maxReplicas: 2
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 800
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sas-arke

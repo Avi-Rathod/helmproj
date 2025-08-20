@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-discovery-services-parameters-62h87mg958
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.discoveryServicesParameters62H87Mg958.cntrRepoPrefix
+    | quote }}
+  SAS_DU_NAME: {{ .Values.discoveryServicesParameters62H87Mg958.sasDuName | quote
+    }}
+  SAS_PORT_NAME: {{ .Values.discoveryServicesParameters62H87Mg958.sasPortName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.discoveryServicesParameters62H87Mg958.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.discoveryServicesParameters62H87Mg958.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.discoveryServicesParameters62H87Mg958.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.discoveryServicesParameters62H87Mg958.sgProject | quote
+    }}
+  SG_STATIC: {{ .Values.discoveryServicesParameters62H87Mg958.sgStatic | quote }}

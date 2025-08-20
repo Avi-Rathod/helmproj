@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-programming-environment-java-policy-config-h95g879t6t
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_INIT_JRE_POLICY_AUTH: {{ .Values.programmingEnvironmentJavaPolicyConfigH95G879T6T.sasInitJrePolicyAuth
+    | quote }}
+  SAS_INIT_JRE_POLICY_FILE: {{ .Values.programmingEnvironmentJavaPolicyConfigH95G879T6T.sasInitJrePolicyFile
+    | quote }}
+  SAS_INIT_JRE_POLICY_HADOOPPCP: {{ .Values.programmingEnvironmentJavaPolicyConfigH95G879T6T.sasInitJrePolicyHadooppcp
+    | quote }}
+  SAS_INIT_JRE_POLICY_HADOOPPCP_2: {{ .Values.programmingEnvironmentJavaPolicyConfigH95G879T6T.sasInitJrePolicyHadooppcp2
+    | quote }}
+  SAS_INIT_JRE_POLICY_KERBEROS: {{ .Values.programmingEnvironmentJavaPolicyConfigH95G879T6T.sasInitJrePolicyKerberos
+    | quote }}
+  SAS_INIT_JRE_POLICY_NETPROXY: {{ .Values.programmingEnvironmentJavaPolicyConfigH95G879T6T.sasInitJrePolicyNetproxy
+    | quote }}
+  SAS_INIT_JRE_POLICY_PROPERTY: {{ .Values.programmingEnvironmentJavaPolicyConfigH95G879T6T.sasInitJrePolicyProperty
+    | quote }}
+  SAS_INIT_JRE_POLICY_REFLECT: {{ .Values.programmingEnvironmentJavaPolicyConfigH95G879T6T.sasInitJrePolicyReflect
+    | quote }}
+  SAS_INIT_JRE_POLICY_RUNTIME: {{ .Values.programmingEnvironmentJavaPolicyConfigH95G879T6T.sasInitJrePolicyRuntime
+    | quote }}
+  SAS_INIT_JRE_POLICY_SECURITY: {{ .Values.programmingEnvironmentJavaPolicyConfigH95G879T6T.sasInitJrePolicySecurity
+    | quote }}
+  SAS_INIT_JRE_POLICY_SERIALIZABLE: {{ .Values.programmingEnvironmentJavaPolicyConfigH95G879T6T.sasInitJrePolicySerializable
+    | quote }}
+  SAS_INIT_JRE_POLICY_SOCKET: {{ .Values.programmingEnvironmentJavaPolicyConfigH95G879T6T.sasInitJrePolicySocket
+    | quote }}
+  SAS_INIT_JRE_POLICY_SQL: {{ .Values.programmingEnvironmentJavaPolicyConfigH95G879T6T.sasInitJrePolicySql
+    | quote }}
+  SAS_JAVA_POLICY_ALLOW_DM_PYPATH: {{ .Values.programmingEnvironmentJavaPolicyConfigH95G879T6T.sasJavaPolicyAllowDmPypath
+    | quote }}

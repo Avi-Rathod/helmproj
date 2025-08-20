@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-cas-row-sets
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    sas.com/registry-sync: default
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-cas-control
+    sas.com/component-version: 2.custom34.custom16-20240918.custom1726669153356
+    sas.com/kustomize-base: base
+    sas.com/registry-providers: rowSets-provider,rowSets-provider-cas
+    sas.com/registry-sync: default
+    sas.com/registry-tags: proxy
+    sas.com/tls-mode: full-stack
+    sas.com/version: 2.custom34.custom16
+spec:
+  type: {{ .Values.casRowSets.type }}
+  selector:
+    app.kubernetes.io/name: sas-cas-control
+    sas.com/deployment: sas-viya
+    {{- include "sas-viya-helm.selectorLabels" . | nindent 4 }}
+  ports:
+  {{- .Values.casRowSets.ports | toYaml | nindent 2 }}
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-cas-row-sets
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    cert-utils-operator.redhat-cop.io/certs-from-secret: sas-ingress-certificate-b976h462g7
+    cert-utils-operator.redhat-cop.io/destinationCA-from-secret: sas-viya-ca-certificate-secret
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-casRowSets
+    sas.com/component-name: sas-cas-control
+    sas.com/component-version: 2.custom34.custom16-20240918.custom1726669153356
+    sas.com/kustomize-base: base
+    sas.com/tls-mode: full-stack
+    sas.com/version: 2.custom34.custom16
+spec:
+  host: sasvi.hbctxdom.com
+  path: /casRowSets
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: reencrypt
+  to:
+    kind: Service
+    name: sas-cas-row-sets
+  wildcardPolicy: None

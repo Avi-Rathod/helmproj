@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-config-reconciler-parameters-ccckf25dt4
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.configReconcilerParametersCcckf25Dt4.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.configReconcilerParametersCcckf25Dt4.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.configReconcilerParametersCcckf25Dt4.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.configReconcilerParametersCcckf25Dt4.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.configReconcilerParametersCcckf25Dt4.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.configReconcilerParametersCcckf25Dt4.sgProject | quote }}

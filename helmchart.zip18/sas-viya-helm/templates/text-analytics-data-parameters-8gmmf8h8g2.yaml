@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-text-analytics-data-parameters-8gmmf8h8g2
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.textAnalyticsDataParameters8Gmmf8H8G2.cntrRepoPrefix
+    | quote }}
+  GOEXPERIMENT: {{ .Values.textAnalyticsDataParameters8Gmmf8H8G2.goexperiment | quote
+    }}
+  SAS_CONTEXT_PATH: {{ .Values.textAnalyticsDataParameters8Gmmf8H8G2.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.textAnalyticsDataParameters8Gmmf8H8G2.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.textAnalyticsDataParameters8Gmmf8H8G2.sasServiceName
+    | quote }}
+  SG_FIPS: {{ .Values.textAnalyticsDataParameters8Gmmf8H8G2.sgFips | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.textAnalyticsDataParameters8Gmmf8H8G2.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.textAnalyticsDataParameters8Gmmf8H8G2.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.textAnalyticsDataParameters8Gmmf8H8G2.sgProject | quote
+    }}
+  SG_STATIC: {{ .Values.textAnalyticsDataParameters8Gmmf8H8G2.sgStatic | quote }}

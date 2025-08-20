@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-report-distribution-parameters-dhhkmt9fdf
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.reportDistributionParametersDhhkmt9Fdf.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.reportDistributionParametersDhhkmt9Fdf.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.reportDistributionParametersDhhkmt9Fdf.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.reportDistributionParametersDhhkmt9Fdf.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.reportDistributionParametersDhhkmt9Fdf.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.reportDistributionParametersDhhkmt9Fdf.sgProject | quote
+    }}
+  SG_STATIC: {{ .Values.reportDistributionParametersDhhkmt9Fdf.sgStatic | quote }}

@@ -1,0 +1,282 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-scheduled-backup-all-sources
+  labels:
+    sas.com/admin: namespace
+    sas.com/backup-job-type: scheduled-backup
+    sas.com/deployment: sas-viya
+    workload.sas.com/class: stateless
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/component-name: sas-backup-job
+    sas.com/component-version: 1.custom95.custom12-20241106.custom1730904857007
+    sas.com/kustomize-base: base
+    sas.com/version: 1.custom95.custom12
+spec:
+  failedJobsHistoryLimit: {{ .Values.scheduledBackupAllSources.failedJobsHistoryLimit
+    }}
+  jobTemplate:
+    metadata:
+      annotations:
+        sas.com/component-name: sas-backup-job
+        sas.com/component-version: 1.custom95.custom12-20241106.custom1730904857007
+        sas.com/version: 1.custom95.custom12
+      labels:
+        app.kubernetes.io/name: sas-scheduled-backup-all-sources
+        sas.com/admin: namespace
+        sas.com/backup-job-type: scheduled-backup
+        sas.com/deployment: sas-viya
+    spec:
+      template:
+        metadata:
+          annotations:
+            sas.com/certificate-file-format: pem
+            sas.com/component-name: sas-backup-job
+            sas.com/component-version: 1.custom95.custom12-20241106.custom1730904857007
+            sas.com/kustomize-base: base
+            sas.com/tls-enabled-ports: all
+            sas.com/version: 1.custom95.custom12
+          labels:
+            app.kubernetes.io/name: sas-scheduled-backup-all-sources
+            sas.com/admin: namespace
+            sas.com/backup-job-type: scheduled-backup
+            sas.com/deployment: sas-viya
+            workload.sas.com/class: stateless
+        spec:
+          affinity:
+            nodeAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - preference:
+                  matchExpressions:
+                  - key: workload.sas.com/class
+                    operator: In
+                    values:
+                    - stateless
+                weight: 100
+              - preference:
+                  matchExpressions:
+                  - key: workload.sas.com/class
+                    operator: NotIn
+                    values:
+                    - cas
+                    - compute
+                    - stateful
+                weight: 50
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.azure.com/mode
+                    operator: NotIn
+                    values:
+                    - system
+            podAffinity: {}
+            podAntiAffinity: {}
+          automountServiceAccountToken: true
+          containers:
+          - env:
+            - name: BACKUP_MOUNT_LOCATION
+              value: {{ quote .Values.scheduledBackupAllSources.sasBackupJob.env.backupMountLocation
+                }}
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: JOB_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels[job-name]
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: FILE_SYSTEM_BACKUP_FORMAT
+              valueFrom:
+                configMapKeyRef:
+                  key: FILE_SYSTEM_BACKUP_FORMAT
+                  name: {{ include "sas-viya-helm.fullname" . }}-backup-job-parameters-tbd6g9ttmh
+            - name: FILE_SYSTEM_BACKUP_TYPE
+              value: {{ quote .Values.scheduledBackupAllSources.sasBackupJob.env.fileSystemBackupType
+                }}
+            - name: INCLUDE_POSTGRES
+              value: {{ quote .Values.scheduledBackupAllSources.sasBackupJob.env.includePostgres
+                }}
+            - name: INCLUDE_POSTGRES_PARALLEL_SCHEDULE
+              value: {{ quote .Values.scheduledBackupAllSources.sasBackupJob.env.includePostgresParallelSchedule
+                }}
+            - name: KUBERNETES_CLUSTER_DOMAIN
+              value: {{ quote .Values.kubernetesClusterDomain }}
+            envFrom:
+            - configMapRef:
+                name: {{ include "sas-viya-helm.fullname" . }}-go-config-4m2m8m8662
+            - configMapRef:
+                name: {{ include "sas-viya-helm.fullname" . }}-shared-config-c49cg8722d
+            - configMapRef:
+                name: {{ include "sas-viya-helm.fullname" . }}-java-config-fg8dm449m4
+            - configMapRef:
+                name: {{ include "sas-viya-helm.fullname" . }}-backup-job-parameters-tbd6g9ttmh
+            - secretRef:
+                name: sas-consul-client
+            - configMapRef:
+                name: {{ include "sas-viya-helm.fullname" . }}-tls-config-dg85g4hfh8
+            image: {{ .Values.scheduledBackupAllSources.sasBackupJob.image.repository
+              }}:{{ .Values.scheduledBackupAllSources.sasBackupJob.image.tag | default
+              .Chart.AppVersion }}
+            name: sas-backup-job
+            resources: {{- toYaml .Values.scheduledBackupAllSources.sasBackupJob.resources
+              | nindent 10 }}
+            securityContext: {{- toYaml .Values.scheduledBackupAllSources.sasBackupJob.containerSecurityContext
+              | nindent 10 }}
+            volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+            - mountPath: /sasviyabackup
+              name: backup
+            - mountPath: /security
+              name: security
+            - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
+              name: security
+              subPath: cacerts
+            - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
+              name: security
+              subPath: private
+          - env:
+            - name: BACKUP_AGENT_TYPE
+              value: {{ quote .Values.scheduledBackupAllSources.sasBackupAgent.env.backupAgentType
+                }}
+            - name: BACKUP_MOUNT_LOCATION
+              value: {{ quote .Values.scheduledBackupAllSources.sasBackupAgent.env.backupMountLocation
+                }}
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels[job-name]
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: SAS_DATA_SERVER_BACKUP_ADDITIONAL_OPTIONS
+              valueFrom:
+                configMapKeyRef:
+                  key: SAS_DATA_SERVER_BACKUP_ADDITIONAL_OPTIONS
+                  name: {{ include "sas-viya-helm.fullname" . }}-backup-job-parameters-tbd6g9ttmh
+                  optional: true
+            - name: JOB_TIME_OUT
+              valueFrom:
+                configMapKeyRef:
+                  key: JOB_TIME_OUT
+                  name: {{ include "sas-viya-helm.fullname" . }}-backup-job-parameters-tbd6g9ttmh
+                  optional: true
+            - name: KUBERNETES_CLUSTER_DOMAIN
+              value: {{ quote .Values.kubernetesClusterDomain }}
+            envFrom:
+            - configMapRef:
+                name: {{ include "sas-viya-helm.fullname" . }}-go-config-4m2m8m8662
+            - configMapRef:
+                name: {{ include "sas-viya-helm.fullname" . }}-shared-config-c49cg8722d
+            - configMapRef:
+                name: {{ include "sas-viya-helm.fullname" . }}-java-config-fg8dm449m4
+            - configMapRef:
+                name: {{ include "sas-viya-helm.fullname" . }}-backup-agent-parameters-2mg4tcth69
+            - secretRef:
+                name: sas-consul-client
+            - configMapRef:
+                name: {{ include "sas-viya-helm.fullname" . }}-tls-config-dg85g4hfh8
+            image: {{ .Values.scheduledBackupAllSources.sasBackupAgent.image.repository
+              }}:{{ .Values.scheduledBackupAllSources.sasBackupAgent.image.tag | default
+              .Chart.AppVersion }}
+            imagePullPolicy: {{ .Values.scheduledBackupAllSources.sasBackupAgent.imagePullPolicy
+              }}
+            name: sas-backup-agent
+            resources: {{- toYaml .Values.scheduledBackupAllSources.sasBackupAgent.resources
+              | nindent 10 }}
+            securityContext: {{- toYaml .Values.scheduledBackupAllSources.sasBackupAgent.containerSecurityContext
+              | nindent 10 }}
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+            volumeMounts:
+            - mountPath: /sasviyabackup
+              name: backup
+            - mountPath: /security
+              name: security
+            - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
+              name: security
+              subPath: cacerts
+            - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
+              name: security
+              subPath: private
+          imagePullSecrets:
+          - name: {{ include "sas-viya-helm.fullname" . }}-image-pull-secrets-9dd8hm29fm
+          initContainers:
+          - env:
+            - name: KUBE_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: SAS_CERTFRAME_TOKEN_DIR
+              value: {{ quote .Values.scheduledBackupAllSources.sasCertframe.env.sasCertframeTokenDir
+                }}
+            - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+              value: {{ quote .Values.scheduledBackupAllSources.sasCertframe.env.sasAdditionalCaCertificatesDir
+                }}
+            - name: KUBERNETES_CLUSTER_DOMAIN
+              value: {{ quote .Values.kubernetesClusterDomain }}
+            envFrom:
+            - configMapRef:
+                name: {{ include "sas-viya-helm.fullname" . }}-certframe-ingress-certificate-config-6mt27h98mb
+            - configMapRef:
+                name: {{ include "sas-viya-helm.fullname" . }}-certframe-user-config-679cgdbhdt
+            - configMapRef:
+                name: {{ include "sas-viya-helm.fullname" . }}-certframe-config-6t84hm65mc
+            image: {{ .Values.scheduledBackupAllSources.sasCertframe.image.repository
+              }}:{{ .Values.scheduledBackupAllSources.sasCertframe.image.tag | default
+              .Chart.AppVersion }}
+            name: sas-certframe
+            resources: {{- toYaml .Values.scheduledBackupAllSources.sasCertframe.resources
+              | nindent 10 }}
+            securityContext: {{- toYaml .Values.scheduledBackupAllSources.sasCertframe.containerSecurityContext
+              | nindent 10 }}
+            volumeMounts:
+            - mountPath: /certframe-token
+              name: certframe-token
+            - mountPath: /security
+              name: security
+            - mountPath: /customer-provided-ca-certificates
+              name: customer-provided-ca-certificates
+          restartPolicy: Never
+          securityContext: {{- toYaml .Values.scheduledBackupAllSources.podSecurityContext
+            | nindent 8 }}
+          serviceAccountName: {{ include "sas-viya-helm.fullname" . }}-viya-backuprunner
+          shareProcessNamespace: true
+          tolerations:
+          - effect: NoSchedule
+            key: workload.sas.com/class
+            operator: Equal
+            value: stateless
+          - effect: NoSchedule
+            key: workload.sas.com/class
+            operator: Equal
+            value: stateful
+          volumes:
+          - emptyDir: {}
+            name: tmp
+          - name: backup
+            persistentVolumeClaim:
+              claimName: {{ include "sas-viya-helm.fullname" . }}-common-backup-data
+          - name: certframe-token
+            secret:
+              secretName: {{ include "sas-viya-helm.fullname" . }}-certframe-token
+          - emptyDir: {}
+            name: security
+          - configMap:
+              name: {{ include "sas-viya-helm.fullname" . }}-customer-provided-ca-certificates-bm5hc686c7
+            name: customer-provided-ca-certificates
+  schedule: {{ .Values.scheduledBackupAllSources.schedule | quote }}
+  successfulJobsHistoryLimit: {{ .Values.scheduledBackupAllSources.successfulJobsHistoryLimit
+    }}
+  suspend: {{ .Values.scheduledBackupAllSources.suspend }}

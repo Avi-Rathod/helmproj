@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-search-index-parameters-b6ttk2d4kt
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.searchIndexParametersB6Ttk2D4Kt.sasContextPath | quote
+    }}
+  SAS_PORT_NAME: {{ .Values.searchIndexParametersB6Ttk2D4Kt.sasPortName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.searchIndexParametersB6Ttk2D4Kt.sasServiceName | quote
+    }}

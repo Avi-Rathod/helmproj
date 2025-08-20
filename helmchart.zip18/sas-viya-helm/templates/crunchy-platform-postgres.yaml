@@ -1,0 +1,266 @@
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-crunchy-platform-postgres
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    sas.com/postgrescluster-cr: sas-crunchy-platform-postgres-postgrescluster-cr
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+spec:
+  backups:
+    pgbackrest:
+      global:
+        repo1-retention-archive: "1"
+        repo1-retention-archive-type: incr
+        repo1-retention-full: "1"
+      image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-crunchy5-pgbackrest:1.custom3.custom5-20241206.custom1733500294605
+      jobs:
+        affinity:
+          nodeAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - preference:
+                matchExpressions:
+                - key: workload.sas.com/class
+                  operator: In
+                  values:
+                  - stateful
+              weight: 1
+            - preference:
+                matchExpressions:
+                - key: workload.sas.com/class
+                  operator: NotIn
+                  values:
+                  - compute
+                  - cas
+                  - stateless
+                  - connect
+              weight: 1
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.azure.com/mode
+                  operator: NotIn
+                  values:
+                  - system
+        resources:
+          limits:
+            cpu: "1"
+            memory: 500Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        tolerations:
+        - effect: NoSchedule
+          key: workload.sas.com/class
+          operator: Equal
+          value: stateful
+        - effect: NoSchedule
+          key: workload.sas.com/class
+          operator: Equal
+          value: stateless
+      repoHost:
+        affinity:
+          nodeAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - preference:
+                matchExpressions:
+                - key: workload.sas.com/class
+                  operator: In
+                  values:
+                  - stateful
+              weight: 1
+            - preference:
+                matchExpressions:
+                - key: workload.sas.com/class
+                  operator: NotIn
+                  values:
+                  - compute
+                  - cas
+                  - stateless
+                  - connect
+              weight: 1
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.azure.com/mode
+                  operator: NotIn
+                  values:
+                  - system
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: postgres-operator.crunchydata.com/cluster
+                    operator: In
+                    values:
+                    - sas-crunchy-platform-postgres
+                  - key: postgres-operator.crunchydata.com/data
+                    operator: In
+                    values:
+                    - postgres
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        resources:
+          limits:
+            cpu: "1"
+            memory: 500Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        tolerations:
+        - effect: NoSchedule
+          key: workload.sas.com/class
+          operator: Equal
+          value: stateful
+        - effect: NoSchedule
+          key: workload.sas.com/class
+          operator: Equal
+          value: stateless
+      repos:
+      - name: repo1
+        schedules:
+          full: 0 6 * * 0
+          incremental: 0 6 * * 1-6
+        volume:
+          volumeClaimSpec:
+            accessModes:
+            - ReadWriteOnce
+            resources:
+              requests:
+                storage: 128Gi
+            storageClassName: nfs-client
+      sidecars:
+        pgbackrest:
+          resources:
+            limits:
+              cpu: "1"
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+  customReplicationTLSSecret:
+    name: sas-crunchy-platform-postgres-replication-tls-secret
+  customTLSSecret:
+    name: sas-crunchy-platform-postgres-tls-secret
+  image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres:1.custom3.custom5-20241206.custom1733500290858
+  imagePullSecrets:
+  - name: sas-image-pull-secrets-9dd8hm29fm
+  instances:
+  - affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - stateful
+          weight: 1
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: NotIn
+              values:
+              - compute
+              - cas
+              - stateless
+              - connect
+          weight: 1
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.azure.com/mode
+              operator: NotIn
+              values:
+              - system
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+              - key: postgres-operator.crunchydata.com/cluster
+                operator: In
+                values:
+                - sas-crunchy-platform-postgres
+              - key: postgres-operator.crunchydata.com/data
+                operator: In
+                values:
+                - postgres
+            topologyKey: kubernetes.io/hostname
+          weight: 1
+    dataVolumeClaimSpec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 128Gi
+      storageClassName: nfs-client
+    replicas: 3
+    resources:
+      limits:
+        cpu: "8"
+        memory: 8Gi
+      requests:
+        cpu: 150m
+        memory: 2Gi
+    sidecars:
+      replicaCertCopy:
+        resources:
+          limits:
+            cpu: "1"
+            memory: 500Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+    tolerations:
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: stateful
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: stateless
+  metadata:
+    annotations: {}
+    labels:
+      sas.com/deployment: sas-viya
+      sas.com/zero-scale-phase: never
+      workload.sas.com/class: stateful
+  monitoring:
+    pgmonitor:
+      exporter:
+        image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-crunchy5-postgres-exporter:1.custom3.custom5-20241206.custom1733500294788
+        resources:
+          limits:
+            cpu: "1"
+            memory: 500Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+  patroni:
+    dynamicConfiguration:
+      postgresql:
+        parameters:
+          log_truncate_on_rotation: true
+          logging_collector: true
+          maintenance_work_mem: 128MB
+          max_connections: 1280
+          max_prepared_transactions: 1280
+          max_wal_senders: 6
+          max_wal_size: 6GB
+          shared_buffers: 1GB
+          wal_buffers: 16MB
+          wal_level: logical
+          wal_log_hints: true
+          work_mem: 16MB
+        use_pg_rewind: true
+  postgresVersion: 16
+  shutdown: false
+  users:
+  - name: dbmsowner
+    options: CREATEDB CREATEROLE SUPERUSER
+    password:
+      type: AlphaNumeric

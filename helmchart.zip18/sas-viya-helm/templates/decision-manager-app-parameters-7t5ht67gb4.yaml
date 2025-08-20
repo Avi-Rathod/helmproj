@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-decision-manager-app-parameters-7t5ht67gb4
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.decisionManagerAppParameters7T5Ht67Gb4.cntrRepoPrefix
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.decisionManagerAppParameters7T5Ht67Gb4.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.decisionManagerAppParameters7T5Ht67Gb4.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.decisionManagerAppParameters7T5Ht67Gb4.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.decisionManagerAppParameters7T5Ht67Gb4.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.decisionManagerAppParameters7T5Ht67Gb4.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.decisionManagerAppParameters7T5Ht67Gb4.sgProject | quote
+    }}

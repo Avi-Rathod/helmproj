@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-alerts-parameters-mbt6khkhc6
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CGO_LDFLAGS: {{ .Values.alertsParametersMbt6Khkhc6.cgoLdflags | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.alertsParametersMbt6Khkhc6.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.alertsParametersMbt6Khkhc6.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.alertsParametersMbt6Khkhc6.sasServiceName | quote
+    }}
+  SG_GO_MODULES_ENABLED: {{ .Values.alertsParametersMbt6Khkhc6.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.alertsParametersMbt6Khkhc6.sgGoMultiModules | quote
+    }}
+  SG_PROJECT: {{ .Values.alertsParametersMbt6Khkhc6.sgProject | quote }}
+  SG_STATIC: {{ .Values.alertsParametersMbt6Khkhc6.sgStatic | quote }}

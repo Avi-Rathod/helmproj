@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-event-monitor-parameters-22b47kcfc5
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.eventMonitorParameters22B47Kcfc5.sasContextPath |
+    quote }}
+  SAS_DU_NAME: {{ .Values.eventMonitorParameters22B47Kcfc5.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.eventMonitorParameters22B47Kcfc5.sasServiceName |
+    quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.eventMonitorParameters22B47Kcfc5.sgGoModulesEnabled
+    | quote }}
+  SG_PROJECT: {{ .Values.eventMonitorParameters22B47Kcfc5.sgProject | quote }}

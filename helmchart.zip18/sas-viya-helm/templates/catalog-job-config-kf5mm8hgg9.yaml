@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-catalog-job-config-kf5mm8hgg9
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CATALOG_EXECUTION_MODE: {{ .Values.catalogJobConfigKf5Mm8Hgg9.catalogExecutionMode
+    | quote }}
+  SAS_CATALOG_JOB_NAME: {{ .Values.catalogJobConfigKf5Mm8Hgg9.sasCatalogJobName |
+    quote }}

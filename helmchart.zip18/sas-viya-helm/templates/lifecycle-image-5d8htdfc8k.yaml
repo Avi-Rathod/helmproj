@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-lifecycle-image-5d8htdfc8k
+  labels:
+    orchestration.sas.com/lifecycle: image
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  image: {{ .Values.lifecycleImage5D8Htdfc8K.image | quote }}
+  registry: {{ .Values.lifecycleImage5D8Htdfc8K.registry | quote }}

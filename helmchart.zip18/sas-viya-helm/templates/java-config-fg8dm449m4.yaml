@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-java-config-fg8dm449m4
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  ARKE_TLS_ENABLED: {{ .Values.javaConfigFg8Dm449M4.arkeTlsEnabled | quote }}
+  CONSUL_HTTP_ADDR: {{ .Values.javaConfigFg8Dm449M4.consulHttpAddr | quote }}
+  JAVA_GLOBAL_OPTION_ADDOPENS1: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionAddopens1
+    | quote }}
+  JAVA_GLOBAL_OPTION_ADDOPENS2: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionAddopens2
+    | quote }}
+  JAVA_GLOBAL_OPTION_CHECK_CRITICAL_TIMEOUT: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionCheckCriticalTimeout
+    | quote }}
+  JAVA_GLOBAL_OPTION_CICOMPILERCOUNT: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionCicompilercount
+    | quote }}
+  JAVA_GLOBAL_OPTION_DISABLEENDPOINTS: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionDisableendpoints
+    | quote }}
+  JAVA_GLOBAL_OPTION_ENABLEHEALTH: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionEnablehealth
+    | quote }}
+  JAVA_GLOBAL_OPTION_ENABLEMETRICS: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionEnablemetrics
+    | quote }}
+  JAVA_GLOBAL_OPTION_FORWARD_STRATEGY: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionForwardStrategy
+    | quote }}
+  JAVA_GLOBAL_OPTION_GC_1: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionGc1 |
+    quote }}
+  JAVA_GLOBAL_OPTION_GC_MAXFREEHEAP_RATIO: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionGcMaxfreeheapRatio
+    | quote }}
+  JAVA_GLOBAL_OPTION_GC_MINFREEHEAP_RATIO: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionGcMinfreeheapRatio
+    | quote }}
+  JAVA_GLOBAL_OPTION_INTERNAL_PROXIES: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionInternalProxies
+    | quote }}
+  JAVA_GLOBAL_OPTION_JAVAAGENT1: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionJavaagent1
+    | quote }}
+  JAVA_GLOBAL_OPTION_JAVAAGENT2: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionJavaagent2
+    | quote }}
+  JAVA_GLOBAL_OPTION_LIMIT_NIO_BUFF: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionLimitNioBuff
+    | quote }}
+  JAVA_GLOBAL_OPTION_MAX_DIRECT_MEM: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionMaxDirectMem
+    | quote }}
+  JAVA_GLOBAL_OPTION_MSINTEROP: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionMsinterop
+    | quote }}
+  JAVA_GLOBAL_OPTION_NEWSIZE: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionNewsize
+    | quote }}
+  JAVA_GLOBAL_OPTION_REMOTEIP_HEADER: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionRemoteipHeader
+    | quote }}
+  JAVA_GLOBAL_OPTION_SASVAULTPKI_REUSEVALIDCERTIFICATE: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionSasvaultpkiReusevalidcertificate
+    | quote }}
+  JAVA_GLOBAL_OPTION_SECURITY_EGD: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionSecurityEgd
+    | quote }}
+  JAVA_GLOBAL_OPTION_SERVERSSLCIPHERS: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionServersslciphers
+    | quote }}
+  JAVA_GLOBAL_OPTION_TRUSTSTORE: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionTruststore
+    | quote }}
+  JAVA_GLOBAL_OPTION_TRUSTSTORETYPE: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionTruststoretype
+    | quote }}
+  JAVA_GLOBAL_OPTION_USESERVERCIPHERSUITESORDER: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionUseserverciphersuitesorder
+    | quote }}
+  JAVA_GLOBAL_OPTION_XMLSECUREPROCESSING: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionXmlsecureprocessing
+    | quote }}
+  JAVA_GLOBAL_OPTION_XMS: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionXms | quote
+    }}
+  JAVA_GLOBAL_OPTION_XMX: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionXmx | quote
+    }}
+  JAVA_GLOBAL_OPTION_XSS: {{ .Values.javaConfigFg8Dm449M4.javaGlobalOptionXss | quote
+    }}
+  JAVA_OPTION_GEODE_LOG: {{ .Values.javaConfigFg8Dm449M4.javaOptionGeodeLog | quote
+    }}
+  JAVA_OPTION_SERVER_PORT: {{ .Values.javaConfigFg8Dm449M4.javaOptionServerPort |
+    quote }}
+  MALLOC_ARENA_MAX: {{ .Values.javaConfigFg8Dm449M4.mallocArenaMax | quote }}
+  SAS_CATALOG_SERVICE_ENABLED: {{ .Values.javaConfigFg8Dm449M4.sasCatalogServiceEnabled
+    | quote }}
+  SAS_EVENT_CONFIGURATION_ARKE_ENABLED: {{ .Values.javaConfigFg8Dm449M4.sasEventConfigurationArkeEnabled
+    | quote }}
+  SAS_FEATURE_FLAGS_ENABLED: {{ .Values.javaConfigFg8Dm449M4.sasFeatureFlagsEnabled
+    | quote }}
+  SAS_GUEST_BOOTSTRAPPING_ENABLED: {{ .Values.javaConfigFg8Dm449M4.sasGuestBootstrappingEnabled
+    | quote }}
+  SAS_LOG_FORMAT: {{ .Values.javaConfigFg8Dm449M4.sasLogFormat | quote }}
+  SAS_REGISTRY_REGISTER_ENABLED: {{ .Values.javaConfigFg8Dm449M4.sasRegistryRegisterEnabled
+    | quote }}
+  SAS_SERVICES_METRICS_SECURED: {{ .Values.javaConfigFg8Dm449M4.sasServicesMetricsSecured
+    | quote }}
+  SASLOGROOT: {{ .Values.javaConfigFg8Dm449M4.saslogroot | quote }}
+  SPRING_CLOUD_CONSUL_DISCOVERY_PREFERIPADDRESS: {{ .Values.javaConfigFg8Dm449M4.springCloudConsulDiscoveryPreferipaddress
+    | quote }}
+  SPRING_CLOUD_CONSUL_DISCOVERY_REGISTER: {{ .Values.javaConfigFg8Dm449M4.springCloudConsulDiscoveryRegister
+    | quote }}
+  SPRING_CLOUD_CONSUL_ENABLED: {{ .Values.javaConfigFg8Dm449M4.springCloudConsulEnabled
+    | quote }}

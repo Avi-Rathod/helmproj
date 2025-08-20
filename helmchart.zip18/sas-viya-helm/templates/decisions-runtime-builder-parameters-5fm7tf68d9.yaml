@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-decisions-runtime-builder-parameters-5fm7tf68d9
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.decisionsRuntimeBuilderParameters5Fm7Tf68D9.cntrRepoPrefix
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.decisionsRuntimeBuilderParameters5Fm7Tf68D9.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.decisionsRuntimeBuilderParameters5Fm7Tf68D9.sasDuName |
+    quote }}
+  SAS_SERVICE_NAME: {{ .Values.decisionsRuntimeBuilderParameters5Fm7Tf68D9.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.decisionsRuntimeBuilderParameters5Fm7Tf68D9.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.decisionsRuntimeBuilderParameters5Fm7Tf68D9.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.decisionsRuntimeBuilderParameters5Fm7Tf68D9.sgProject |
+    quote }}
+  SG_STATIC: {{ .Values.decisionsRuntimeBuilderParameters5Fm7Tf68D9.sgStatic | quote
+    }}

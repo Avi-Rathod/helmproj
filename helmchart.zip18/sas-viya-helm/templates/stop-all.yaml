@@ -1,0 +1,123 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-stop-all
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    workload.sas.com/class: stateless
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/component-name: sas-k8s-common
+    sas.com/component-version: 2.custom89.custom1-20240916.custom1726514392006
+    sas.com/kustomize-base: base
+    sas.com/version: 2.custom89.custom1
+spec:
+  jobTemplate:
+    metadata:
+      annotations:
+        sas.com/component-name: sas-k8s-common
+        sas.com/component-version: 2.custom89.custom1-20240916.custom1726514392006
+        sas.com/version: 2.custom89.custom1
+      labels:
+        app.kubernetes.io/name: sas-stop-all
+        sas.com/deployment: sas-viya
+        workload.sas.com/class: stateless
+      name: sas-stop-all
+    spec:
+      backoffLimit: 0
+      template:
+        metadata:
+          annotations:
+            sas.com/certificate-file-format: pem
+            sas.com/component-name: sas-k8s-common
+            sas.com/component-version: 2.custom89.custom1-20240916.custom1726514392006
+            sas.com/kustomize-base: base
+            sas.com/version: 2.custom89.custom1
+          labels:
+            app.kubernetes.io/name: sas-stop-all
+            sas.com/deployment: sas-viya
+            workload.sas.com/class: stateless
+          name: sas-stop-all
+        spec:
+          affinity:
+            nodeAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - preference:
+                  matchExpressions:
+                  - key: workload.sas.com/class
+                    operator: In
+                    values:
+                    - stateless
+                weight: 100
+              - preference:
+                  matchExpressions:
+                  - key: workload.sas.com/class
+                    operator: NotIn
+                    values:
+                    - cas
+                    - compute
+                    - stateful
+                weight: 50
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.azure.com/mode
+                    operator: NotIn
+                    values:
+                    - system
+            podAffinity: {}
+            podAntiAffinity: {}
+          automountServiceAccountToken: true
+          containers:
+          - command:
+            - orchestration
+            - lifecycle
+            - run
+            - --operation
+            - stop-all
+            - --namespace
+            - $(NAMESPACE)
+            - --
+            - --namespace
+            - $(NAMESPACE)
+            env:
+            - name: SUPPRESS_USAGE
+              value: {{ quote .Values.stopAll.sasStopAll.env.suppressUsage }}
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: KUBERNETES_CLUSTER_DOMAIN
+              value: {{ quote .Values.kubernetesClusterDomain }}
+            image: {{ .Values.stopAll.sasStopAll.image.repository }}:{{ .Values.stopAll.sasStopAll.image.tag
+              | default .Chart.AppVersion }}
+            name: sas-stop-all
+            resources: {{- toYaml .Values.stopAll.sasStopAll.resources | nindent
+              10 }}
+            securityContext: {{- toYaml .Values.stopAll.sasStopAll.containerSecurityContext
+              | nindent 10 }}
+            volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+          imagePullSecrets:
+          - name: {{ include "sas-viya-helm.fullname" . }}-image-pull-secrets-9dd8hm29fm
+          restartPolicy: Never
+          securityContext: {{- toYaml .Values.stopAll.podSecurityContext | nindent
+            8 }}
+          serviceAccountName: {{ include "sas-viya-helm.fullname" . }}-stop-all
+          tolerations:
+          - effect: NoSchedule
+            key: workload.sas.com/class
+            operator: Equal
+            value: stateless
+          - effect: NoSchedule
+            key: workload.sas.com/class
+            operator: Equal
+            value: stateful
+          volumes:
+          - emptyDir: {}
+            name: tmp
+  schedule: {{ .Values.stopAll.schedule | quote }}
+  suspend: {{ .Values.stopAll.suspend }}

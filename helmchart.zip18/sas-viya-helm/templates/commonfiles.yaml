@@ -1,0 +1,132 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-commonfiles
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-commonfiles
+    sas.com/component-version: 2.custom4.custom36-20240917.custom1726594981014
+    sas.com/version: 2.custom4.custom36
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.pvc.commonfiles.storageRequest | quote }}
+  storageClassName: {{ .Values.pvc.commonfiles.storageClass | quote }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-commonfiles
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    workload.sas.com/class: stateless
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/certificate-file-format: none
+    sas.com/component-name: sas-commonfiles
+    sas.com/component-version: 2.custom4.custom36-20240917.custom1726594981014
+    sas.com/kustomize-base: base
+    sas.com/version: 2.custom4.custom36
+spec:
+  backoffLimit: {{ .Values.commonfiles.backoffLimit }}
+  template:
+    metadata:
+      annotations:
+        sas.com/certificate-file-format: none
+        sas.com/component-name: sas-commonfiles
+        sas.com/component-version: 2.custom4.custom36-20240917.custom1726594981014
+        sas.com/kustomize-base: base
+        sas.com/version: 2.custom4.custom36
+      labels:
+        app.kubernetes.io/name: sas-commonfiles
+        sas.com/deployment: sas-viya
+        workload.sas.com/class: stateless
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateless
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - cas
+                - compute
+                - stateful
+            weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+        podAffinity: {}
+        podAntiAffinity: {}
+      automountServiceAccountToken: true
+      containers:
+      - env:
+        - name: SAS_K8S_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: SAS_SPEC_NODENAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: SAS_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: SAS_IMAGE_VERSION
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations[sas.com/component-version]
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.commonfiles.sasCommonfiles.image.repository }}:{{ .Values.commonfiles.sasCommonfiles.image.tag
+          | default .Chart.AppVersion }}
+        name: sas-commonfiles
+        resources: {{- toYaml .Values.commonfiles.sasCommonfiles.resources | nindent
+          10 }}
+        securityContext: {{- toYaml .Values.commonfiles.sasCommonfiles.containerSecurityContext
+          | nindent 10 }}
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+        - mountPath: /opt/sas/viya/home/commonfiles
+          name: commonfilesvol
+      imagePullSecrets:
+      - name: {{ include "sas-viya-helm.fullname" . }}-image-pull-secrets-9dd8hm29fm
+      restartPolicy: Never
+      securityContext: {{- toYaml .Values.commonfiles.podSecurityContext | nindent
+        8 }}
+      serviceAccountName: {{ include "sas-viya-helm.fullname" . }}-commonfiles
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      volumes:
+      - emptyDir: {}
+        name: tmp
+      - name: commonfilesvol
+        persistentVolumeClaim:
+          claimName: {{ include "sas-viya-helm.fullname" . }}-commonfiles

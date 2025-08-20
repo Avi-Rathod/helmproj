@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-backup-pv-copy-cleanup-job-parameters-bbgkfgdht8-bbgkfgdht8
+  labels:
+    sas.com/admin: namespace
+    sas.com/backup-job-type: sas-backup-pv-copy-cleanup
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  OAUTH2_CLIENT_ACCESSTOKENVALIDITY: {{ .Values.backupPvCopyCleanupJobParametersBbgkfgdht8Bbgkfgdht8.oauth2ClientAccesstokenvalidity
+    | quote }}
+  SAS_BACKUP_JOB_DU_NAME: {{ .Values.backupPvCopyCleanupJobParametersBbgkfgdht8Bbgkfgdht8.sasBackupJobDuName
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.backupPvCopyCleanupJobParametersBbgkfgdht8Bbgkfgdht8.sasContextPath
+    | quote }}
+  SAS_CRONJOB_NAME: {{ .Values.backupPvCopyCleanupJobParametersBbgkfgdht8Bbgkfgdht8.sasCronjobName
+    | quote }}
+  SAS_DU_NAME: {{ .Values.backupPvCopyCleanupJobParametersBbgkfgdht8Bbgkfgdht8.sasDuName
+    | quote }}
+  SAS_SERVICE_NAME: {{ .Values.backupPvCopyCleanupJobParametersBbgkfgdht8Bbgkfgdht8.sasServiceName
+    | quote }}

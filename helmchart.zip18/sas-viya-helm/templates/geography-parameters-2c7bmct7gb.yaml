@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-geography-parameters-2c7bmct7gb
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.geographyParameters2C7Bmct7Gb.cntrRepoPrefix | quote
+    }}
+  SAS_CONTEXT_PATH: {{ .Values.geographyParameters2C7Bmct7Gb.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.geographyParameters2C7Bmct7Gb.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.geographyParameters2C7Bmct7Gb.sasServiceName | quote
+    }}
+  SG_GO_MODULES_ENABLED: {{ .Values.geographyParameters2C7Bmct7Gb.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.geographyParameters2C7Bmct7Gb.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.geographyParameters2C7Bmct7Gb.sgProject | quote }}

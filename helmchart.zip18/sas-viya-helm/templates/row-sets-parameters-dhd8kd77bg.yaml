@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-row-sets-parameters-dhd8kd77bg
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.rowSetsParametersDhd8Kd77Bg.sasContextPath | quote
+    }}
+  SAS_PORT_NAME: {{ .Values.rowSetsParametersDhd8Kd77Bg.sasPortName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.rowSetsParametersDhd8Kd77Bg.sasServiceName | quote
+    }}

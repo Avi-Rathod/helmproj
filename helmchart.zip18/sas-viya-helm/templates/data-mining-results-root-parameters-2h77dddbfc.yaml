@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-data-mining-results-root-parameters-2h77dddbfc
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.dataMiningResultsRootParameters2H77Dddbfc.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.dataMiningResultsRootParameters2H77Dddbfc.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.dataMiningResultsRootParameters2H77Dddbfc.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.dataMiningResultsRootParameters2H77Dddbfc.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.dataMiningResultsRootParameters2H77Dddbfc.sgGoMultiModules
+    | quote }}
+  SG_HOOK_IMAGE: {{ .Values.dataMiningResultsRootParameters2H77Dddbfc.sgHookImage
+    | quote }}
+  SG_PROJECT: {{ .Values.dataMiningResultsRootParameters2H77Dddbfc.sgProject | quote
+    }}
+  SG_STATIC: {{ .Values.dataMiningResultsRootParameters2H77Dddbfc.sgStatic | quote
+    }}

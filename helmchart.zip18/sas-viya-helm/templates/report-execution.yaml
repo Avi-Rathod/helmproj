@@ -1,0 +1,51 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-report-execution
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-report-execution
+    sas.com/component-version: 2.custom291.custom10-20241204.custom1733331324770
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: base
+    sas.com/version: 2.custom291.custom10
+spec:
+  minAvailable: {{ .Values.reportExecution.minAvailable }}
+  maxUnavailable: {{ .Values.reportExecution.maxUnavailable }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-report-execution
+      sas.com/deployment: sas-viya
+    {{- include "sas-viya-helm.selectorLabels" . | nindent 6 }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-report-execution
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-report-execution
+    sas.com/component-version: 2.custom291.custom10-20241204.custom1733331324770
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: spring
+    sas.com/version: 2.custom291.custom10
+spec:
+  maxReplicas: 1
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 200
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sas-report-execution

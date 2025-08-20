@@ -1,0 +1,247 @@
+apiVersion: opendistro.sas.com/v1alpha1
+kind: OpenDistroCluster
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-opendistro
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/component-name: sas-opendistro-operator
+    sas.com/component-version: 7.custom37.custom5-20241010.custom1728552675911
+    sas.com/version: 7.custom37.custom5
+spec:
+  config:
+    env:
+    - name: action.auto_create_index
+      value: -sand__*,-viya_catalog__*,+*
+    - name: logger.deprecation.level
+      value: error
+    jvm:
+    - -XX:NewRatio=2
+    rootLoggerLevel: info
+  defaultStorageClassName: sasviya-opensearch
+  disableSeccomp: true
+  nodes:
+  - heapsize: 8G
+    name: single-node
+    replicas: 1
+    roles:
+    - master
+    - data
+  security:
+    cacertsFile: certs/trustedcerts.pem
+    certFile: certs/nodecert.pem
+    https: true
+    keyFile: certs/nodekey.pem
+    openIdConnectUrl: https://sas-logon-app/SASLogon/.well-known/openid-configuration
+  template:
+    metadata:
+      annotations:
+        sas.com/certificate-file-format: pem
+        sas.com/tls-enabled-ports: all
+        sidecar.istio.io/proxyCPU: 15m
+        sidecar.istio.io/proxyMemory: 115Mi
+      labels:
+        workload.sas.com/class: stateful
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: In
+                values:
+                - stateful
+              matchFields: []
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: workload.sas.com/class
+                operator: NotIn
+                values:
+                - compute
+                - cas
+                - stateless
+                - connect
+              matchFields: []
+            weight: 50
+          - preference:
+              matchExpressions:
+              - key: sas.com/node-ssd-enabled
+                operator: In
+                values:
+                - "true"
+              matchFields: []
+            weight: 60
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: NotIn
+                values:
+                - system
+              matchFields: []
+      automountServiceAccountToken: false
+      containers:
+      - env: []
+        envFrom: []
+        image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-opendistro:8.custom34.custom1-20240905.custom1725533891967
+        name: sas-opendistro
+        volumeMounts:
+        - mountPath: /security
+          name: security
+        - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
+          name: security
+          subPath: cacerts
+        - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
+          name: security
+          subPath: private
+        - mountPath: /usr/share/elasticsearch/config/certs
+          name: security
+      imagePullSecrets:
+      - name: sas-image-pull-secrets-9dd8hm29fm
+      initContainers:
+      - env:
+        - name: KUBE_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: SAS_CERTFRAME_TOKEN_DIR
+          value: /certframe-token
+        - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+          value: /customer-provided-ca-certificates
+        - name: SAS_CERTIFICATE_PRIVATE_KEY_PERMISSIONS
+          value: "644"
+        - name: SAS_CERTIFICATE_CA_CERTIFICATE_FILE
+          value: /security/cacert.pem
+        - name: SAS_CERTIFICATE_PRIVATE_KEY_FILE
+          value: /security/nodekey.pem
+        - name: SAS_CERTIFICATE_FILE
+          value: /security/nodecert.pem
+        envFrom:
+        - configMapRef:
+            name: sas-certframe-ingress-certificate-config-6mt27h98mb
+        - configMapRef:
+            name: sas-certframe-user-config-679cgdbhdt
+        - configMapRef:
+            name: sas-certframe-java-config-7mmtgffmg7
+        image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-certframe:3.custom57.custom1-20240905.custom1725561224344
+        name: sas-certframe
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /certframe-token
+          name: certframe-token
+        - mountPath: /security
+          name: security
+        - mountPath: /customer-provided-ca-certificates
+          name: customer-provided-ca-certificates
+      - env:
+        - name: KUBE_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: SAS_CERTFRAME_TOKEN_DIR
+          value: /certframe-token
+        - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+          value: /customer-provided-ca-certificates
+        - name: SAS_CERTIFICATE_PRIVATE_KEY_PERMISSIONS
+          value: "644"
+        - name: SAS_CERTIFICATE_FILE
+          value: /security/admincert.pem
+        - name: SAS_CERTIFICATE_COMMON_NAME
+          value: sasadmin
+        - name: SAS_KEYS_KEY_NAMES
+          value: sas-opendistro-sasadmin-key
+        - name: SAS_KEYS_SECRET_NAME
+          value: sas-opendistro-sasadmin-secret
+        - name: SAS_CERTIFICATE_CA_CERTIFICATE_FILE
+          value: /security/cacert.pem
+        - name: SAS_CERTIFICATE_PRIVATE_KEY_FILE
+          value: /security/adminkey.pem
+        envFrom:
+        - configMapRef:
+            name: sas-certframe-ingress-certificate-config-6mt27h98mb
+        - configMapRef:
+            name: sas-certframe-user-config-679cgdbhdt
+        - configMapRef:
+            name: sas-certframe-java-config-7mmtgffmg7
+        image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-certframe:3.custom57.custom1-20240905.custom1725561224344
+        name: sas-certframe-admin
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /certframe-token
+          name: certframe-token
+        - mountPath: /security
+          name: security
+        - mountPath: /customer-provided-ca-certificates
+          name: customer-provided-ca-certificates
+      - image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-opendistro-sysctl:1.custom12.custom7-20240904.custom1725464896515
+        name: sas-opendistro-sysctl
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        securityContext:
+          allowPrivilegeEscalation: true
+          capabilities:
+            drop:
+            - ALL
+          privileged: true
+          readOnlyRootFilesystem: true
+          runAsNonRoot: false
+      securityContext:
+        fsGroup: 1001270000
+        runAsNonRoot: true
+        supplementalGroups: []
+        sysctls: []
+      serviceAccountName: sas-opendistro
+      tolerations:
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+      - effect: NoSchedule
+        key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+      volumes:
+      - name: certframe-token
+        secret:
+          secretName: sas-certframe-token
+      - emptyDir: {}
+        name: security
+      - configMap:
+          name: sas-customer-provided-ca-certificates-bm5hc686c7
+        name: customer-provided-ca-certificates

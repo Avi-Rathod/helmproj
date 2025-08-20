@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-chromium-server-parameters-m44f7h47kf
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.chromiumServerParametersM44F7H47Kf.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.chromiumServerParametersM44F7H47Kf.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.chromiumServerParametersM44F7H47Kf.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.chromiumServerParametersM44F7H47Kf.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.chromiumServerParametersM44F7H47Kf.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.chromiumServerParametersM44F7H47Kf.sgProject | quote }}

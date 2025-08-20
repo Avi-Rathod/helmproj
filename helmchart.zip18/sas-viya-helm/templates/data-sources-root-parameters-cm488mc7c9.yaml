@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-data-sources-root-parameters-cm488mc7c9
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.dataSourcesRootParametersCm488Mc7C9.cntrRepoPrefix
+    | quote }}
+  SAS_DU_NAME: {{ .Values.dataSourcesRootParametersCm488Mc7C9.sasDuName | quote }}
+  SAS_PORT_NAME: {{ .Values.dataSourcesRootParametersCm488Mc7C9.sasPortName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.dataSourcesRootParametersCm488Mc7C9.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.dataSourcesRootParametersCm488Mc7C9.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.dataSourcesRootParametersCm488Mc7C9.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.dataSourcesRootParametersCm488Mc7C9.sgProject | quote }}
+  SG_STATIC: {{ .Values.dataSourcesRootParametersCm488Mc7C9.sgStatic | quote }}

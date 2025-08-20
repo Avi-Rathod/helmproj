@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-score-execution-parameters-8h48mf89mm
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.scoreExecutionParameters8H48Mf89Mm.cntrRepoPrefix
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.scoreExecutionParameters8H48Mf89Mm.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.scoreExecutionParameters8H48Mf89Mm.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.scoreExecutionParameters8H48Mf89Mm.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.scoreExecutionParameters8H48Mf89Mm.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.scoreExecutionParameters8H48Mf89Mm.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.scoreExecutionParameters8H48Mf89Mm.sgProject | quote }}

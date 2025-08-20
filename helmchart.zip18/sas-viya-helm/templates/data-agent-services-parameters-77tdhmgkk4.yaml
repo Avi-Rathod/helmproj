@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-data-agent-services-parameters-77tdhmgkk4
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.dataAgentServicesParameters77Tdhmgkk4.cntrRepoPrefix
+    | quote }}
+  SAS_DU_NAME: {{ .Values.dataAgentServicesParameters77Tdhmgkk4.sasDuName | quote
+    }}
+  SAS_PORT_NAME: {{ .Values.dataAgentServicesParameters77Tdhmgkk4.sasPortName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.dataAgentServicesParameters77Tdhmgkk4.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.dataAgentServicesParameters77Tdhmgkk4.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.dataAgentServicesParameters77Tdhmgkk4.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.dataAgentServicesParameters77Tdhmgkk4.sgProject | quote
+    }}
+  SG_STATIC: {{ .Values.dataAgentServicesParameters77Tdhmgkk4.sgStatic | quote }}

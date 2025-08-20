@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-list-data-parameters-66hdft5h6d
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.listDataParameters66Hdft5H6D.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.listDataParameters66Hdft5H6D.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.listDataParameters66Hdft5H6D.sasServiceName | quote
+    }}
+  SG_GO_MODULES_ENABLED: {{ .Values.listDataParameters66Hdft5H6D.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.listDataParameters66Hdft5H6D.sgGoMultiModules |
+    quote }}
+  SG_PROJECT: {{ .Values.listDataParameters66Hdft5H6D.sgProject | quote }}

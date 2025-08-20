@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-ml-pipeline-automation-parameters-8mc2fc49mt
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.mlPipelineAutomationParameters8Mc2Fc49Mt.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.mlPipelineAutomationParameters8Mc2Fc49Mt.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.mlPipelineAutomationParameters8Mc2Fc49Mt.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.mlPipelineAutomationParameters8Mc2Fc49Mt.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.mlPipelineAutomationParameters8Mc2Fc49Mt.sgGoMultiModules
+    | quote }}
+  SG_HOOK_IMAGE: {{ .Values.mlPipelineAutomationParameters8Mc2Fc49Mt.sgHookImage
+    | quote }}
+  SG_PROJECT: {{ .Values.mlPipelineAutomationParameters8Mc2Fc49Mt.sgProject | quote
+    }}
+  SG_STATIC: {{ .Values.mlPipelineAutomationParameters8Mc2Fc49Mt.sgStatic | quote
+    }}

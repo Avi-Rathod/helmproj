@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-backup-agent-parameters-2mg4tcth69
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.backupAgentParameters2Mg4Tcth69.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.backupAgentParameters2Mg4Tcth69.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.backupAgentParameters2Mg4Tcth69.sasServiceName | quote
+    }}
+  SAS_TOOL_RETRY_LIMIT: {{ .Values.backupAgentParameters2Mg4Tcth69.sasToolRetryLimit
+    | quote }}
+  SAS_TOOL_RETRY_PERIOD: {{ .Values.backupAgentParameters2Mg4Tcth69.sasToolRetryPeriod
+    | quote }}
+  SG_PROJECT: {{ .Values.backupAgentParameters2Mg4Tcth69.sgProject | quote }}
+  SG_STATIC: {{ .Values.backupAgentParameters2Mg4Tcth69.sgStatic | quote }}

@@ -1,0 +1,355 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-data-agent-server-colocated
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    sas.com/registry-sync: default
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-data-agent-server-colocated
+    sas.com/component-version: 0.custom33.custom48-20241122.custom1732290447142
+    sas.com/kustomize-base: base
+    sas.com/registry-sync: default
+    sas.com/registry-tags: proxy
+    sas.com/tls-mode: full-stack
+    sas.com/version: 0.custom33.custom48
+spec:
+  type: {{ .Values.dataAgentServerColocated.type }}
+  selector:
+    app.kubernetes.io/name: sas-data-agent-server-colocated
+    sas.com/deployment: sas-viya
+    {{- include "sas-viya-helm.selectorLabels" . | nindent 4 }}
+  ports:
+  {{- .Values.dataAgentServerColocated.ports | toYaml | nindent 2 }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-data-agent-server-colocated
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-data-agent-server-colocated
+    sas.com/component-version: 0.custom33.custom48-20241122.custom1732290447142
+    sas.com/ha-class: decentralized
+    sas.com/kustomize-base: decentralized
+    sas.com/version: 0.custom33.custom48
+spec:
+  minAvailable: {{ .Values.dataAgentServerColocated.minAvailable }}
+  maxUnavailable: {{ .Values.dataAgentServerColocated.maxUnavailable }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-data-agent-server-colocated
+      sas.com/deployment: sas-viya
+    {{- include "sas-viya-helm.selectorLabels" . | nindent 6 }}
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-data-agent-server-colocated
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    cert-utils-operator.redhat-cop.io/certs-from-secret: sas-ingress-certificate-b976h462g7
+    cert-utils-operator.redhat-cop.io/destinationCA-from-secret: sas-viya-ca-certificate-secret
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-dataAgentServerColocated
+    sas.com/component-name: sas-data-agent-server-colocated
+    sas.com/component-version: 0.custom33.custom48-20241122.custom1732290447142
+    sas.com/kustomize-base: base
+    sas.com/tls-mode: full-stack
+    sas.com/version: 0.custom33.custom48
+spec:
+  host: sasvi.hbctxdom.com
+  path: /dataAgentServerColocated
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: reencrypt
+  to:
+    kind: Service
+    name: sas-data-agent-server-colocated
+  wildcardPolicy: None
+---
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-data-agent-server-colocated
+  labels:
+    sas.com/admin: namespace
+    sas.com/data-agent: colocated
+    sas.com/deployment: sas-viya
+    sas.com/pod-container-image: sas-data-agent-server-colocated
+    sas.com/restart: "false"
+    sas.com/template-intent: sas-launcher
+    sas.com/uses-start-sequencer: "true"
+    workload.sas.com/class: stateless
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    launcher.sas.com/jobContainerName: sas-data-agent-server-colocated
+    launcher.sas.com/nfs-server: 10.custom227.custom69.custom177
+    sas.com/certificate-file-format: pem
+    sas.com/component-name: sas-data-agent-server-colocated
+    sas.com/component-version: 0.custom33.custom48-20241122.custom1732290447142
+    sas.com/config-init-mode: initcontainer
+    sas.com/kustomize-base: base
+    sas.com/sas-access-config: "true"
+    sas.com/tls-mode: full-stack
+    sas.com/version: 0.custom33.custom48
+    sidecar.istio.io/proxyCPU: 15m
+    sidecar.istio.io/proxyMemory: 115Mi
+template:
+  metadata:
+    annotations:
+      sas.com/certificate-file-format: pem
+      sas.com/kustomize-base: base
+      sas.com/tls-enabled-ports: all
+      sas.com/tls-mode: full-stack
+      sidecar.istio.io/proxyCPU: 15m
+      sidecar.istio.io/proxyMemory: 115Mi
+    labels:
+      app: sas-data-agent-server-colocated
+      sas.com/deployment: sas-viya
+      workload.sas.com/class: stateless
+  spec:
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - stateless
+            matchFields: []
+          weight: 100
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: NotIn
+              values:
+              - cas
+              - compute
+              - stateful
+            matchFields: []
+          weight: 50
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.azure.com/mode
+              operator: NotIn
+              values:
+              - system
+            matchFields: []
+      podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+    automountServiceAccountToken: true
+    containers:
+    - args: []
+      command: []
+      env:
+      - name: CONSUL_TOKEN
+        valueFrom:
+          secretKeyRef:
+            key: CONSUL_TOKEN
+            name: sas-consul-client
+      - name: CONSUL_HTTP_ADDR
+        valueFrom:
+          configMapKeyRef:
+            key: CONSUL_HTTP_ADDR
+            name: sas-go-config-4m2m8m8662
+      - name: SAS_DA_NAMESPACE
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.namespace
+      - name: SAS_K8S_DEPLOYMENT_NAME
+        value: sas-data-agent-server-colocated
+      - name: SAS_LICENSE
+        valueFrom:
+          secretKeyRef:
+            key: SAS_LICENSE
+            name: sas-license-996thbcbkg
+      envFrom:
+      - configMapRef:
+          name: sas-tls-config-dg85g4hfh8
+      - configMapRef:
+          name: sas-data-agent-server-colocated-config-6ct58987ht
+      - configMapRef:
+          name: sas-shared-config-c49cg8722d
+      - secretRef:
+          name: sas-consul-client
+      - configMapRef:
+          name: sas-access-config-mm6fhg8gc7
+      image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-data-agent-server-colocated:0.custom33.custom48-20241122.custom1732290447142
+      imagePullPolicy: IfNotPresent
+      name: sas-data-agent-server-colocated
+      ports:
+      - containerPort: 25141
+        name: http
+        protocol: TCP
+      resizePolicy: []
+      resources:
+        limits:
+          cpu: "2"
+          memory: 1Gi
+        requests:
+          cpu: 50m
+          memory: 650Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          add: []
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      volumeDevices: []
+      volumeMounts:
+      - mountPath: /etc/podinfo
+        name: podinfo
+      - mountPath: /tmp
+        name: tmp-volume
+      - mountPath: /opt/sas/viya/config/etc/dagentsrv/default
+        name: da-def-volume
+      - mountPath: /opt/sas/viya/config/etc/serviceaccount/dagentsrv/default
+        name: sa-da-def-volume
+      - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/tokens
+        name: tokens-volume
+      - mountPath: /security
+        name: security
+      - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
+        name: security
+        subPath: cacerts
+      - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
+        name: security
+        subPath: private
+      - mountPath: /saswork
+        name: viyawork
+      - mountPath: /sasdata
+        name: nfs-sasdata
+      - mountPath: /homes
+        name: nfs-homes
+      - mountPath: /access-clients
+        name: access-clients
+    ephemeralContainers: []
+    hostAliases: []
+    imagePullSecrets:
+    - name: sas-image-pull-secrets-9dd8hm29fm
+    initContainers:
+    - env:
+      - name: KUBE_POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: SAS_CERTFRAME_TOKEN_DIR
+        value: /certframe-token
+      - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+        value: /customer-provided-ca-certificates
+      - name: ENTRYPOINT_ATTEMPTS_MAX
+        value: "5"
+      envFrom:
+      - configMapRef:
+          name: sas-certframe-config-6t84hm65mc
+      - configMapRef:
+          name: sas-certframe-ingress-certificate-config-6mt27h98mb
+      - configMapRef:
+          name: sas-certframe-user-config-679cgdbhdt
+      image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-certframe:3.custom57.custom1-20240905.custom1725561224344
+      name: sas-certframe
+      resources:
+        limits:
+          cpu: 500m
+          memory: 500Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      volumeMounts:
+      - mountPath: /certframe-token
+        name: certframe-token
+      - mountPath: /security
+        name: security
+      - mountPath: /customer-provided-ca-certificates
+        name: customer-provided-ca-certificates
+    readinessGates: []
+    resourceClaims: []
+    restartPolicy: Never
+    schedulingGates: []
+    securityContext:
+      fsGroup: 1001270000
+      runAsNonRoot: true
+      supplementalGroups: []
+      sysctls: []
+    serviceAccount: sas-data-agent-server-colocated
+    serviceAccountName: sas-programming-environment
+    shareProcessNamespace: true
+    tolerations:
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: stateless
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: stateful
+    topologySpreadConstraints: []
+    volumes:
+    - downwardAPI:
+        items:
+        - fieldRef:
+            fieldPath: metadata.annotations
+          path: annotations
+      name: podinfo
+    - emptyDir: {}
+      name: tmp-volume
+    - emptyDir: {}
+      name: da-def-volume
+    - emptyDir: {}
+      name: sa-da-def-volume
+    - emptyDir: {}
+      name: tokens-volume
+    - name: certframe-token
+      secret:
+        secretName: sas-certframe-token
+    - emptyDir: {}
+      name: security
+    - configMap:
+        name: sas-customer-provided-ca-certificates-bm5hc686c7
+      name: customer-provided-ca-certificates
+    - hostPath:
+        path: /var/saswork
+      name: viyawork
+    - name: nfs-sasdata
+      nfs:
+        path: /NAS_SAS_VIYA_DATA_PRD/sasdata
+        server: 10.custom227.custom69.custom177
+    - name: nfs-homes
+      nfs:
+        path: /NAS_SAS_VIYA_DATA_PRD/sasviya/homes
+        server: 10.custom227.custom69.custom177
+    - name: access-clients
+      nfs:
+        path: /NAS_SAS_VIYA_DATA_PRD/access-clients
+        server: 10.custom227.custom69.custom177
+    - name: sas-launcher-userhome
+      nfs:
+        path: /NAS_SAS_VIYA_DATA_PRD/sasviya/homes
+        server: 10.custom227.custom69.custom177

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-score-definitions-parameters-dfmtgf9km5
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.scoreDefinitionsParametersDfmtgf9Km5.cntrRepoPrefix
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.scoreDefinitionsParametersDfmtgf9Km5.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.scoreDefinitionsParametersDfmtgf9Km5.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.scoreDefinitionsParametersDfmtgf9Km5.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.scoreDefinitionsParametersDfmtgf9Km5.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.scoreDefinitionsParametersDfmtgf9Km5.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.scoreDefinitionsParametersDfmtgf9Km5.sgProject | quote }}

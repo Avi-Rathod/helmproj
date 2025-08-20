@@ -1,0 +1,27 @@
+apiVersion: webinfdsvr.sas.com/v1beta1
+kind: DataServer
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-platform-postgres
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/default-database: "true"
+spec:
+  databases:
+  - name: SharedServices
+  registrations:
+  - dataServiceName: postgres
+    host: sas-crunchy-platform-postgres-primary
+    port: 5432
+    serviceName: sas-postgres
+  ssl: true
+  users:
+  - credentials:
+      input:
+        passwordKey: password
+        secretRef:
+          name: sas-crunchy-platform-postgres-pguser-dbmsowner
+        usernameKey: user
+    name: dbmsowner

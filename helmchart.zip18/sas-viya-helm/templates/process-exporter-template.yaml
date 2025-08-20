@@ -1,0 +1,187 @@
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-process-exporter-template
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/component-name: sas-process-exporter
+    sas.com/component-version: 1.custom11.custom5-20241107.custom1730997622632
+    sas.com/kustomize-base: base
+    sas.com/tls-mode: full-stack
+    sas.com/version: 1.custom11.custom5
+template:
+  metadata:
+    annotations:
+      sas.com/certificate-file-format: pem
+      sas.com/kustomize-base: base
+      sas.com/tls-enabled-ports: all
+      sas.com/tls-mode: full-stack
+    labels:
+      sas.com/deployment: sas-viya
+  spec:
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - compute
+            matchFields: []
+          weight: 100
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: NotIn
+              values:
+              - cas
+              - stateless
+              - stateful
+            matchFields: []
+          weight: 50
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.azure.com/mode
+              operator: NotIn
+              values:
+              - system
+            matchFields: []
+      podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+    automountServiceAccountToken: false
+    containers:
+    - args: []
+      command: []
+      env: []
+      envFrom:
+      - configMapRef:
+          name: sas-tls-config-dg85g4hfh8
+      - secretRef:
+          name: sas-workload-orchestrator-passphrase
+      image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-process-exporter:1.custom11.custom5-20241107.custom1730997622632
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          httpHeaders: []
+          path: /internal/ready
+          port: http-procexp
+          scheme: HTTP
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: sas-process-exporter
+      ports:
+      - containerPort: 9256
+        name: http-procexp
+        protocol: TCP
+      - containerPort: 9258
+        name: http-procctrl
+        protocol: TCP
+      resizePolicy: []
+      resources:
+        limits:
+          cpu: 2
+          memory: 4Gi
+        requests:
+          cpu: 100m
+          memory: 250Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          add: []
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      volumeDevices: []
+      volumeMounts:
+      - mountPath: /security
+        name: security
+      - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
+        name: security
+        subPath: cacerts
+      - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
+        name: security
+        subPath: private
+    ephemeralContainers: []
+    hostAliases: []
+    imagePullSecrets:
+    - name: sas-image-pull-secrets-9dd8hm29fm
+    initContainers:
+    - env:
+      - name: KUBE_POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: SAS_CERTFRAME_TOKEN_DIR
+        value: /certframe-token
+      - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+        value: /customer-provided-ca-certificates
+      - name: ENTRYPOINT_ATTEMPTS_MAX
+        value: "5"
+      envFrom:
+      - configMapRef:
+          name: sas-certframe-config-6t84hm65mc
+      - configMapRef:
+          name: sas-certframe-ingress-certificate-config-6mt27h98mb
+      - configMapRef:
+          name: sas-certframe-user-config-679cgdbhdt
+      image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-certframe:3.custom57.custom1-20240905.custom1725561224344
+      name: sas-certframe
+      resources:
+        limits:
+          cpu: 500m
+          memory: 500Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      volumeMounts:
+      - mountPath: /certframe-token
+        name: certframe-token
+      - mountPath: /security
+        name: security
+      - mountPath: /customer-provided-ca-certificates
+        name: customer-provided-ca-certificates
+    readinessGates: []
+    resourceClaims: []
+    restartPolicy: Never
+    schedulingGates: []
+    securityContext:
+      fsGroup: 1001270000
+      runAsNonRoot: true
+      supplementalGroups: []
+      sysctls: []
+    tolerations:
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: compute
+    topologySpreadConstraints: []
+    volumes:
+    - name: certframe-token
+      secret:
+        secretName: sas-certframe-token
+    - emptyDir: {}
+      name: security
+    - configMap:
+        name: sas-customer-provided-ca-certificates-bm5hc686c7
+      name: customer-provided-ca-certificates

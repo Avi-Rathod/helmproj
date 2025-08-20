@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-cas-input-c6gc7dc2td
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-cas-operator
+    sas.com/component-version: 3.custom48.custom4-20241014.custom1728921008318
+    sas.com/version: 3.custom48.custom4
+data:
+  CAS_INSTANCE: {{ .Values.casInputC6Gc7Dc2Td.casInstance | quote }}

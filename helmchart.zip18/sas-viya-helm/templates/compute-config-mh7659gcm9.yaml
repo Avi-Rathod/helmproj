@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-compute-config-mh7659gcm9
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_HTTP_CLIENT_TIMEOUT_REQUEST: {{ .Values.computeConfigMh7659Gcm9.sasHttpClientTimeoutRequest
+    | quote }}

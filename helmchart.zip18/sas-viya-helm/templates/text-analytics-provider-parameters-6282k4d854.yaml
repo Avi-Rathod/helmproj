@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-text-analytics-provider-parameters-6282k4d854
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.textAnalyticsProviderParameters6282K4D854.cntrRepoPrefix
+    | quote }}
+  GOEXPERIMENT: {{ .Values.textAnalyticsProviderParameters6282K4D854.goexperiment
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.textAnalyticsProviderParameters6282K4D854.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.textAnalyticsProviderParameters6282K4D854.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.textAnalyticsProviderParameters6282K4D854.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.textAnalyticsProviderParameters6282K4D854.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.textAnalyticsProviderParameters6282K4D854.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.textAnalyticsProviderParameters6282K4D854.sgProject | quote
+    }}
+  SG_STATIC: {{ .Values.textAnalyticsProviderParameters6282K4D854.sgStatic | quote
+    }}

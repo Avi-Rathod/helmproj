@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-lineage-app-parameters-t5892b5thh
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.lineageAppParametersT5892B5Thh.cntrRepoPrefix | quote
+    }}
+  SAS_CONTEXT_PATH: {{ .Values.lineageAppParametersT5892B5Thh.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.lineageAppParametersT5892B5Thh.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.lineageAppParametersT5892B5Thh.sasServiceName | quote
+    }}
+  SG_GO_MODULES_ENABLED: {{ .Values.lineageAppParametersT5892B5Thh.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.lineageAppParametersT5892B5Thh.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.lineageAppParametersT5892B5Thh.sgProject | quote }}
+  SG_STATIC: {{ .Values.lineageAppParametersT5892B5Thh.sgStatic | quote }}

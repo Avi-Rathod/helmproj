@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-authorization-parameters-7m64c42hdb
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.authorizationParameters7M64C42Hdb.sasContextPath |
+    quote }}
+  SAS_DU_NAME: {{ .Values.authorizationParameters7M64C42Hdb.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.authorizationParameters7M64C42Hdb.sasServiceName |
+    quote }}

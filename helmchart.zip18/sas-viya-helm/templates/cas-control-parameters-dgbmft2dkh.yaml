@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-cas-control-parameters-dgbmft2dkh
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.casControlParametersDgbmft2Dkh.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.casControlParametersDgbmft2Dkh.sasDuName | quote }}
+  SAS_PORT_NAME: {{ .Values.casControlParametersDgbmft2Dkh.sasPortName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.casControlParametersDgbmft2Dkh.sasServiceName | quote
+    }}
+  SG_GO_MODULES_ENABLED: {{ .Values.casControlParametersDgbmft2Dkh.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.casControlParametersDgbmft2Dkh.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.casControlParametersDgbmft2Dkh.sgProject | quote }}
+  SG_STATIC: {{ .Values.casControlParametersDgbmft2Dkh.sgStatic | quote }}

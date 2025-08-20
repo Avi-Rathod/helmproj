@@ -1,0 +1,111 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-svi-feature
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    sas.com/registry-sync: default
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-svi-feature
+    sas.com/component-version: 10.custom25.custom15-20241128.custom1732809158396
+    sas.com/kustomize-base: base
+    sas.com/registry-name: svi-feature
+    sas.com/registry-providers: svi-config-provider
+    sas.com/registry-sync: default
+    sas.com/registry-tags: proxy
+    sas.com/tls-mode: full-stack
+    sas.com/version: 10.custom25.custom15
+spec:
+  type: {{ .Values.sviFeature.type }}
+  selector:
+    app.kubernetes.io/name: sas-svi-feature
+    sas.com/deployment: sas-viya
+    {{- include "sas-viya-helm.selectorLabels" . | nindent 4 }}
+  ports:
+  {{- .Values.sviFeature.ports | toYaml | nindent 2 }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-svi-feature
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-svi-feature
+    sas.com/component-version: 10.custom25.custom15-20241128.custom1732809158396
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: base
+    sas.com/version: 10.custom25.custom15
+spec:
+  minAvailable: {{ .Values.sviFeature.minAvailable }}
+  maxUnavailable: {{ .Values.sviFeature.maxUnavailable }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-svi-feature
+      sas.com/deployment: sas-viya
+    {{- include "sas-viya-helm.selectorLabels" . | nindent 6 }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-svi-feature
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-svi-feature
+    sas.com/component-version: 10.custom25.custom15-20241128.custom1732809158396
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: spring
+    sas.com/version: 10.custom25.custom15
+spec:
+  maxReplicas: 1
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sas-svi-feature
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-svi-feature
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    cert-utils-operator.redhat-cop.io/certs-from-secret: sas-ingress-certificate-b976h462g7
+    cert-utils-operator.redhat-cop.io/destinationCA-from-secret: sas-viya-ca-certificate-secret
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-svi-feature
+    sas.com/component-name: sas-svi-feature
+    sas.com/component-version: 10.custom25.custom15-20241128.custom1732809158396
+    sas.com/kustomize-base: base
+    sas.com/tls-mode: full-stack
+    sas.com/version: 10.custom25.custom15
+spec:
+  host: sasvi.hbctxdom.com
+  path: /svi-feature
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: reencrypt
+  to:
+    kind: Service
+    name: sas-svi-feature
+  wildcardPolicy: None

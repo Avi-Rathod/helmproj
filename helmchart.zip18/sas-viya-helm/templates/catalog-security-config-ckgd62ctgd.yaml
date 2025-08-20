@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-catalog-security-config-ckgd62ctgd
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CATALOG_ENHANCED_SECURITY: {{ .Values.catalogSecurityConfigCkgd62Ctgd.sasCatalogEnhancedSecurity
+    | quote }}

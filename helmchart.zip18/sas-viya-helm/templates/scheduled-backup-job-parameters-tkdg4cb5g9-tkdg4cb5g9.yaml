@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-scheduled-backup-job-parameters-tkdg4cb5g9-tkdg4cb5g9
+  labels:
+    sas.com/admin: namespace
+    sas.com/backup-job-type: scheduled-backup
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_BACKUP_JOB_DU_NAME: {{ .Values.scheduledBackupJobParametersTkdg4Cb5G9Tkdg4Cb5G9.sasBackupJobDuName
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.scheduledBackupJobParametersTkdg4Cb5G9Tkdg4Cb5G9.sasContextPath
+    | quote }}
+  SAS_CRONJOB_NAME: {{ .Values.scheduledBackupJobParametersTkdg4Cb5G9Tkdg4Cb5G9.sasCronjobName
+    | quote }}
+  SAS_DU_NAME: {{ .Values.scheduledBackupJobParametersTkdg4Cb5G9Tkdg4Cb5G9.sasDuName
+    | quote }}
+  SAS_SERVICE_NAME: {{ .Values.scheduledBackupJobParametersTkdg4Cb5G9Tkdg4Cb5G9.sasServiceName
+    | quote }}

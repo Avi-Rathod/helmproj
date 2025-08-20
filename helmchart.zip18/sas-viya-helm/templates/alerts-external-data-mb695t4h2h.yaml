@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-alerts-external-data-mb695t4h2h
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  externaldata.yaml: {{ .Values.alertsExternalDataMb695T4H2H.externaldataYaml | toYaml
+    | indent 1 }}

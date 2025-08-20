@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-data-discovery-parameters-b987fh7h64
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.dataDiscoveryParametersB987Fh7H64.sasContextPath |
+    quote }}
+  SAS_PORT_NAME: {{ .Values.dataDiscoveryParametersB987Fh7H64.sasPortName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.dataDiscoveryParametersB987Fh7H64.sasServiceName |
+    quote }}

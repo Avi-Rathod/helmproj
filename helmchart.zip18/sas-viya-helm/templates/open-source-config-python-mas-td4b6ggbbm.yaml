@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-open-source-config-python-mas-td4b6ggbbm
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  MAS_PYPORT: {{ .Values.openSourceConfigPythonMasTd4B6Ggbbm.masPyport | quote }}

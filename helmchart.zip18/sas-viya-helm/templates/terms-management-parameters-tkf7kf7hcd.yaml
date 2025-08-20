@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-terms-management-parameters-tkf7kf7hcd
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.termsManagementParametersTkf7Kf7Hcd.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.termsManagementParametersTkf7Kf7Hcd.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.termsManagementParametersTkf7Kf7Hcd.sasServiceName
+    | quote }}

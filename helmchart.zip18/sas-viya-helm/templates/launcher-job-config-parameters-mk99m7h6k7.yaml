@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-launcher-job-config-parameters-mk99m7h6k7
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_SERVICE_NAME: {{ .Values.launcherJobConfigParametersMk99M7H6K7.sasServiceName
+    | quote }}

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-treatment-definitions-parameters-6765h2d22h
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.treatmentDefinitionsParameters6765H2D22H.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.treatmentDefinitionsParameters6765H2D22H.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.treatmentDefinitionsParameters6765H2D22H.sasServiceName
+    | quote }}

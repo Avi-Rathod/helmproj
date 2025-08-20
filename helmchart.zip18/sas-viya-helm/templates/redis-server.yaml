@@ -1,0 +1,274 @@
+apiVersion: redis.kun/v1alpha1
+kind: DistributedRedisCluster
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-redis-server
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-redis-operator
+    sas.com/component-version: 1.custom14.custom12-20240911.custom1726069464254
+    sas.com/version: 1.custom14.custom12
+spec:
+  shutdown: false
+  storage:
+    class: nfs-client
+    size: 1Gi
+---
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-redis-server
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    workload.sas.com/class: stateful
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/certificate-file-format: pem
+    sas.com/component-name: sas-redis-server
+    sas.com/component-version: 6.custom2140003.custom3-20240906.custom1725639824407
+    sas.com/kustomize-base: base
+    sas.com/pod-uses-liveness-probe: exec
+    sas.com/pod-uses-readiness-probe: exec
+    sas.com/pod-uses-startup-probe: exec
+    sas.com/tls-mode: full-stack
+    sas.com/version: 6.custom2140003.custom3
+template:
+  metadata:
+    annotations:
+      sas.com/certificate-file-format: pem
+      sas.com/kustomize-base: base
+      sas.com/pod-uses-liveness-probe: exec
+      sas.com/pod-uses-readiness-probe: exec
+      sas.com/pod-uses-startup-probe: exec
+      sas.com/tls-enabled-ports: all
+      sas.com/tls-mode: full-stack
+    labels:
+      sas.com/deployment: sas-viya
+      workload.sas.com/class: stateful
+  spec:
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - stateful
+            matchFields: []
+          weight: 100
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: NotIn
+              values:
+              - stateless
+              - cas
+              - compute
+            matchFields: []
+          weight: 50
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.azure.com/mode
+              operator: NotIn
+              values:
+              - system
+            matchFields: []
+      podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+              - key: statefulSet
+                operator: In
+                values:
+                - replacedByOperator
+            namespaces: []
+            topologyKey: kubernetes.io/hostname
+          weight: 100
+        - podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+              - key: managed-by
+                operator: In
+                values:
+                - redis-cluster-operator
+            namespaces: []
+            topologyKey: kubernetes.io/hostname
+          weight: 10
+        requiredDuringSchedulingIgnoredDuringExecution: []
+    automountServiceAccountToken: false
+    containers:
+    - args: []
+      command:
+      - /usr/local/bin/tini
+      - --
+      - docker-entrypoint.sh
+      - redis-server
+      - /opt/sas/viya/config/redis/redis.conf
+      - --cluster-enabled yes
+      - --cluster-config-file /data/nodes.conf
+      env:
+      - name: POD_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.podIP
+      - name: HOSTNAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      envFrom:
+      - configMapRef:
+          name: sas-tls-config-dg85g4hfh8
+      - secretRef:
+          name: sas-redis-server-secret
+      - configMapRef:
+          name: sas-go-config-4m2m8m8662
+      - secretRef:
+          name: sas-consul-client
+      image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-redis-server:6.custom2140003.custom3-20240906.custom1725639824407
+      lifecycle:
+        preStop:
+          exec:
+            command:
+            - /opt/sas/viya/home/sbin/shutdown.sh
+      livenessProbe:
+        exec:
+          command:
+          - /opt/sas/viya/home/sbin/liveness.sh
+        initialDelaySeconds: 5
+        periodSeconds: 30
+        timeoutSeconds: 10
+      name: sas-redis-server
+      ports:
+      - containerPort: 6379
+        name: tcp
+        protocol: TCP
+      - containerPort: 16379
+        name: gossip
+        protocol: TCP
+      readinessProbe:
+        exec:
+          command:
+          - /opt/sas/viya/home/sbin/readiness.sh
+        initialDelaySeconds: 5
+        timeoutSeconds: 10
+      resizePolicy: []
+      resources:
+        limits:
+          cpu: "1"
+          memory: 500Mi
+        requests:
+          cpu: 50m
+          memory: 300Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          add: []
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      startupProbe:
+        exec:
+          command:
+          - /opt/sas/viya/home/sbin/liveness.sh
+        failureThreshold: 30
+        periodSeconds: 10
+        timeoutSeconds: 10
+      volumeDevices: []
+      volumeMounts:
+      - mountPath: /opt/sas/viya/config/redis/includes
+        name: redis-config
+        subPath: includes
+      - mountPath: /security
+        name: security
+      - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
+        name: security
+        subPath: cacerts
+      - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
+        name: security
+        subPath: private
+    ephemeralContainers: []
+    hostAliases: []
+    imagePullSecrets:
+    - name: sas-image-pull-secrets-9dd8hm29fm
+    initContainers:
+    - env:
+      - name: KUBE_POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: SAS_CERTFRAME_TOKEN_DIR
+        value: /certframe-token
+      - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+        value: /customer-provided-ca-certificates
+      - name: ENTRYPOINT_ATTEMPTS_MAX
+        value: "5"
+      envFrom:
+      - configMapRef:
+          name: sas-certframe-config-6t84hm65mc
+      - configMapRef:
+          name: sas-certframe-ingress-certificate-config-6mt27h98mb
+      - configMapRef:
+          name: sas-certframe-user-config-679cgdbhdt
+      image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-certframe:3.custom57.custom1-20240905.custom1725561224344
+      name: sas-certframe
+      resources:
+        limits:
+          cpu: 500m
+          memory: 500Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      volumeMounts:
+      - mountPath: /certframe-token
+        name: certframe-token
+      - mountPath: /security
+        name: security
+      - mountPath: /customer-provided-ca-certificates
+        name: customer-provided-ca-certificates
+    readinessGates: []
+    resourceClaims: []
+    restartPolicy: Always
+    schedulingGates: []
+    securityContext:
+      fsGroup: 1001270000
+      runAsNonRoot: true
+      supplementalGroups: []
+      sysctls: []
+    tolerations:
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: stateful
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: stateless
+    topologySpreadConstraints: []
+    volumes:
+    - emptyDir: {}
+      name: redis-config
+    - name: certframe-token
+      secret:
+        secretName: sas-certframe-token
+    - emptyDir: {}
+      name: security
+    - configMap:
+        name: sas-customer-provided-ca-certificates-bm5hc686c7
+      name: customer-provided-ca-certificates

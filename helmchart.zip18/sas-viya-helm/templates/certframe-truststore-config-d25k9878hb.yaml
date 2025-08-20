@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-certframe-truststore-config-d25k9878hb
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CAS_CLIENT_SSL_CA_LIST: {{ .Values.certframeTruststoreConfigD25K9878Hb.casClientSslCaList
+    | quote }}
+  JAVA_GLOBAL_OPTION_TRUSTSTORE: {{ .Values.certframeTruststoreConfigD25K9878Hb.javaGlobalOptionTruststore
+    | quote }}
+  JAVA_GLOBAL_OPTION_TRUSTSTORE_PASSWORD: {{ .Values.certframeTruststoreConfigD25K9878Hb.javaGlobalOptionTruststorePassword
+    | quote }}
+  JAVA_GLOBAL_OPTION_TRUSTSTORE_TYPE: {{ .Values.certframeTruststoreConfigD25K9878Hb.javaGlobalOptionTruststoreType
+    | quote }}
+  REQUESTS_CA_BUNDLE: {{ .Values.certframeTruststoreConfigD25K9878Hb.requestsCaBundle
+    | quote }}
+  SAS_TRUSTED_CA_CERTIFICATES_JKS_FILE: {{ .Values.certframeTruststoreConfigD25K9878Hb.sasTrustedCaCertificatesJksFile
+    | quote }}
+  SAS_TRUSTED_CA_CERTIFICATES_PEM_FILE: {{ .Values.certframeTruststoreConfigD25K9878Hb.sasTrustedCaCertificatesPemFile
+    | quote }}
+  SSL_CERT_FILE: {{ .Values.certframeTruststoreConfigD25K9878Hb.sslCertFile | quote
+    }}

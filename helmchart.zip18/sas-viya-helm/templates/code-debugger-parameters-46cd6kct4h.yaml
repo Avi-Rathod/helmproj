@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-code-debugger-parameters-46cd6kct4h
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.codeDebuggerParameters46Cd6Kct4H.sasContextPath |
+    quote }}
+  SAS_DU_NAME: {{ .Values.codeDebuggerParameters46Cd6Kct4H.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.codeDebuggerParameters46Cd6Kct4H.sasServiceName |
+    quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.codeDebuggerParameters46Cd6Kct4H.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.codeDebuggerParameters46Cd6Kct4H.sgProject | quote }}

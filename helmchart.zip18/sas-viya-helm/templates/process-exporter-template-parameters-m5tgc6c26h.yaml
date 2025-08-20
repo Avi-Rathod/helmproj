@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-process-exporter-template-parameters-m5tgc6c26h
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_DU_NAME: {{ .Values.processExporterTemplateParametersM5Tgc6C26H.sasDuName |
+    quote }}
+  SAS_SERVICE_NAME: {{ .Values.processExporterTemplateParametersM5Tgc6C26H.sasServiceName
+    | quote }}

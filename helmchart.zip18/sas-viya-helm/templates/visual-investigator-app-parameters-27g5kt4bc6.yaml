@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-visual-investigator-app-parameters-27g5kt4bc6
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.visualInvestigatorAppParameters27G5Kt4Bc6.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.visualInvestigatorAppParameters27G5Kt4Bc6.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.visualInvestigatorAppParameters27G5Kt4Bc6.sasServiceName
+    | quote }}

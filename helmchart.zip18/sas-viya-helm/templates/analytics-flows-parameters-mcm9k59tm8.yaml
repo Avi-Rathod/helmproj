@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-analytics-flows-parameters-mcm9k59tm8
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.analyticsFlowsParametersMcm9K59Tm8.sasContextPath
+    | quote }}
+  SAS_PORT_NAME: {{ .Values.analyticsFlowsParametersMcm9K59Tm8.sasPortName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.analyticsFlowsParametersMcm9K59Tm8.sasServiceName
+    | quote }}

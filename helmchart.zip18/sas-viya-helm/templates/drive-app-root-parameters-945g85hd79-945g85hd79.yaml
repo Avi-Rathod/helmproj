@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-drive-app-root-parameters-945g85hd79-945g85hd79
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.driveAppRootParameters945G85Hd79945G85Hd79.sasContextPath
+    | quote }}
+  SAS_SERVICE_NAME: {{ .Values.driveAppRootParameters945G85Hd79945G85Hd79.sasServiceName
+    | quote }}

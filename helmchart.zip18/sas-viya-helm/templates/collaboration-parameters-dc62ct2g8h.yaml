@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-collaboration-parameters-dc62ct2g8h
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.collaborationParametersDc62Ct2G8H.sasContextPath |
+    quote }}
+  SAS_DU_NAME: {{ .Values.collaborationParametersDc62Ct2G8H.sasDuName | quote }}
+  SAS_ENTITY_REAPER_ENABLED: {{ .Values.collaborationParametersDc62Ct2G8H.sasEntityReaperEnabled
+    | quote }}
+  SAS_ENTITY_REAPER_INTERVAL: {{ .Values.collaborationParametersDc62Ct2G8H.sasEntityReaperInterval
+    | quote }}
+  SAS_ENTITY_REAPER_RETENTION: {{ .Values.collaborationParametersDc62Ct2G8H.sasEntityReaperRetention
+    | quote }}
+  SAS_SERVICE_NAME: {{ .Values.collaborationParametersDc62Ct2G8H.sasServiceName |
+    quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.collaborationParametersDc62Ct2G8H.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.collaborationParametersDc62Ct2G8H.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.collaborationParametersDc62Ct2G8H.sgProject | quote }}
+  SG_STATIC: {{ .Values.collaborationParametersDc62Ct2G8H.sgStatic | quote }}

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-report-transforms-parameters-9fdgcccht5
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.reportTransformsParameters9Fdgcccht5.sasContextPath
+    | quote }}
+  SAS_PORT_NAME: {{ .Values.reportTransformsParameters9Fdgcccht5.sasPortName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.reportTransformsParameters9Fdgcccht5.sasServiceName
+    | quote }}

@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-pyconfig-parameters-bm27d2k7d5
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.pyconfigParametersBm27D2K7D5.sasContextPath | quote
+    }}
+  SAS_CRONJOB_NAME: {{ .Values.pyconfigParametersBm27D2K7D5.sasCronjobName | quote
+    }}
+  SAS_DU_NAME: {{ .Values.pyconfigParametersBm27D2K7D5.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.pyconfigParametersBm27D2K7D5.sasServiceName | quote
+    }}
+  default_py.cflags: {{ .Values.pyconfigParametersBm27D2K7D5.defaultPyCflags | quote
+    }}
+  default_py.configure_opts: {{ .Values.pyconfigParametersBm27D2K7D5.defaultPyConfigureOpts
+    | quote }}
+  default_py.pip_install_opts: {{ .Values.pyconfigParametersBm27D2K7D5.defaultPyPipInstallOpts
+    | quote }}
+  default_py.pip_install_packages: {{ .Values.pyconfigParametersBm27D2K7D5.defaultPyPipInstallPackages
+    | quote }}
+  default_py.pip_r_packages: {{ .Values.pyconfigParametersBm27D2K7D5.defaultPyPipRPackages
+    | quote }}
+  default_py.pip_r_profile: {{ .Values.pyconfigParametersBm27D2K7D5.defaultPyPipRProfile
+    | quote }}
+  default_py.python_signature: {{ .Values.pyconfigParametersBm27D2K7D5.defaultPyPythonSignature
+    | quote }}
+  default_py.python_signer: {{ .Values.pyconfigParametersBm27D2K7D5.defaultPyPythonSigner
+    | quote }}
+  default_py.python_tarball: {{ .Values.pyconfigParametersBm27D2K7D5.defaultPyPythonTarball
+    | quote }}
+  default_r.cflags: {{ .Values.pyconfigParametersBm27D2K7D5.defaultRCflags | quote
+    }}
+  default_r.configure_opts: {{ .Values.pyconfigParametersBm27D2K7D5.defaultRConfigureOpts
+    | quote }}
+  default_r.packages: {{ .Values.pyconfigParametersBm27D2K7D5.defaultRPackages |
+    quote }}
+  default_r.pkg_repos: {{ .Values.pyconfigParametersBm27D2K7D5.defaultRPkgRepos |
+    quote }}
+  default_r.r_tarball: {{ .Values.pyconfigParametersBm27D2K7D5.defaultRRTarball |
+    quote }}
+  global.dry_run: {{ .Values.pyconfigParametersBm27D2K7D5.globalDryRun | quote }}
+  global.enabled: {{ .Values.pyconfigParametersBm27D2K7D5.globalEnabled | quote }}
+  global.http_proxy: {{ .Values.pyconfigParametersBm27D2K7D5.globalHttpProxy | quote
+    }}
+  global.https_proxy: {{ .Values.pyconfigParametersBm27D2K7D5.globalHttpsProxy |
+    quote }}
+  global.pvc: {{ .Values.pyconfigParametersBm27D2K7D5.globalPvc | quote }}
+  global.python_enabled: {{ .Values.pyconfigParametersBm27D2K7D5.globalPythonEnabled
+    | quote }}
+  global.python_profiles: {{ .Values.pyconfigParametersBm27D2K7D5.globalPythonProfiles
+    | quote }}
+  global.r_enabled: {{ .Values.pyconfigParametersBm27D2K7D5.globalREnabled | quote
+    }}
+  global.r_profiles: {{ .Values.pyconfigParametersBm27D2K7D5.globalRProfiles | quote
+    }}
+  global.status: {{ .Values.pyconfigParametersBm27D2K7D5.globalStatus | quote }}

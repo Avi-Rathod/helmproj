@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-workload-orchestrator
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    sas.com/registry-sync: default
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-workload-orchestrator
+    sas.com/component-version: 1.custom35.custom40-20241115.custom1731693263822
+    sas.com/kustomize-base: base
+    sas.com/registry-sync: default
+    sas.com/registry-tags: proxy
+    sas.com/tls-mode: full-stack
+    sas.com/version: 1.custom35.custom40
+spec:
+  type: {{ .Values.workloadOrchestrator.type }}
+  selector:
+    app.kubernetes.io/component: sas-workload-orchestrator-manager
+    sas.com/deployment: sas-viya
+    {{- include "sas-viya-helm.selectorLabels" . | nindent 4 }}
+  ports:
+  {{- .Values.workloadOrchestrator.ports | toYaml | nindent 2 }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-workload-orchestrator
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sas.com/component-name: sas-workload-orchestrator
+    sas.com/component-version: 1.custom35.custom40-20241115.custom1731693263822
+    sas.com/ha-class: centralized
+    sas.com/kustomize-base: base
+    sas.com/version: 1.custom35.custom40
+spec:
+  minAvailable: {{ .Values.workloadOrchestrator.minAvailable }}
+  maxUnavailable: {{ .Values.workloadOrchestrator.maxUnavailable }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sas-workload-orchestrator
+      sas.com/deployment: sas-viya
+    {{- include "sas-viya-helm.selectorLabels" . | nindent 6 }}
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-workload-orchestrator
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    cert-utils-operator.redhat-cop.io/certs-from-secret: sas-ingress-certificate-b976h462g7
+    cert-utils-operator.redhat-cop.io/destinationCA-from-secret: sas-viya-ca-certificate-secret
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-workloadOrchestrator
+    sas.com/component-name: sas-workload-orchestrator
+    sas.com/component-version: 1.custom35.custom40-20241115.custom1731693263822
+    sas.com/kustomize-base: base
+    sas.com/tls-mode: full-stack
+    sas.com/version: 1.custom35.custom40
+spec:
+  host: sasvi.hbctxdom.com
+  path: /workloadOrchestrator
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: reencrypt
+  to:
+    kind: Service
+    name: sas-workload-orchestrator
+  wildcardPolicy: None

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-workflow-history-parameters-mgcm4k2cdd
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.workflowHistoryParametersMgcm4K2Cdd.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.workflowHistoryParametersMgcm4K2Cdd.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.workflowHistoryParametersMgcm4K2Cdd.sasServiceName
+    | quote }}

@@ -1,0 +1,353 @@
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-launcher-job-config
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    sas.com/pod-container-image: sas-programming-environment
+    sas.com/template-intent: sas-launcher
+    workload.sas.com/class: compute
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    launcher.sas.com/jobContainerName: sas-programming-environment
+    launcher.sas.com/nfs-server: 10.custom227.custom69.custom177
+    sas.com/certificate-file-format: pem
+    sas.com/component-name: sas-launcher
+    sas.com/component-version: 1.custom90.custom2-20240920.custom1726846518073
+    sas.com/config-init-mode: initcontainer
+    sas.com/kustomize-base: sas-programming-environment
+    sas.com/sas-access-config: "true"
+    sas.com/sas-kerberos-config: "true"
+    sas.com/sas-sssd-config: "true"
+    sas.com/tenant-resource: "true"
+    sas.com/tls-mode: full-stack
+    sas.com/version: 1.custom90.custom2
+template:
+  metadata:
+    annotations:
+      sas.com/certificate-file-format: pem
+      sas.com/kustomize-base: sas-programming-environment
+      sas.com/tls-enabled-ports: all
+      sas.com/tls-mode: full-stack
+      sidecar.istio.io/inject: "false"
+    labels:
+      launcher.sas.com/job-type: sas-launcher-job
+      sas.com/deployment: sas-viya
+  spec:
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - compute
+            matchFields: []
+          weight: 100
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: NotIn
+              values:
+              - cas
+              - stateless
+              - stateful
+            matchFields: []
+          weight: 50
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.azure.com/mode
+              operator: NotIn
+              values:
+              - system
+            matchFields: []
+      podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+    automountServiceAccountToken: true
+    containers:
+    - args: []
+      command: []
+      env:
+      - name: SAS_K8S_POD_NAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      - name: SAS_K8S_NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      - name: SAS_LICENSE
+        valueFrom:
+          secretKeyRef:
+            key: SAS_LICENSE
+            name: sas-license-996thbcbkg
+      - name: SASCLOUDNATIVE
+        value: "1"
+      - name: LAUNCH_AS_JOB
+        value: "true"
+      envFrom:
+      - configMapRef:
+          name: sas-tls-config-dg85g4hfh8
+      - configMapRef:
+          name: sas-access-config-mm6fhg8gc7
+      - configMapRef:
+          name: sas-deployment-metadata-27kb47bb47
+      - configMapRef:
+          name: sas-launcher-lockdown-config-89fc9dc5c6
+      - configMapRef:
+          name: sas-programming-environment-path-config-889g58mm7g
+      - configMapRef:
+          name: sas-shared-config-c49cg8722d
+      - configMapRef:
+          name: sas-open-source-config-python-k944mgb256
+      image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-programming-environment:1.custom61.custom43-20241126.custom1732629821133
+      name: sas-programming-environment
+      ports: []
+      resizePolicy: []
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          add: []
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      volumeDevices: []
+      volumeMounts:
+      - mountPath: /tmp
+        name: tmp
+      - mountPath: /sasuser
+        name: sasuser
+      - mountPath: /sashelp
+        name: sashelp
+      - mountPath: /config
+        name: config
+      - mountPath: /opt/sas/viya/config/var
+        name: viya
+      - mountPath: /opt/sas/viya/home/commonfiles
+        name: commonfilesvols
+        readOnly: true
+      - mountPath: /security
+        name: security
+      - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
+        name: security
+        subPath: cacerts
+      - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
+        name: security
+        subPath: private
+      - mountPath: /rdutil
+        name: sas-rdutil-dir
+      - mountPath: /opt/sas/viya/home/share/refdata/qkb
+        name: sas-quality-knowledge-base-volume
+      - mountPath: /python
+        name: python-volume
+        readOnly: true
+      - mountPath: /opt/sas/viya/config/data/modelsvr/astore
+        name: astores-volume
+        subPath: models
+      - mountPath: /opt/sas/viya/config/data/modelsvr/resources
+        name: astores-volume
+        subPath: resources
+      - mountPath: /saswork
+        name: viyawork
+      - mountPath: /sasdata
+        name: nfs-sasdata
+      - mountPath: /homes
+        name: nfs-homes
+      - mountPath: /access-clients
+        name: access-clients
+    ephemeralContainers: []
+    hostAliases: []
+    imagePullSecrets:
+    - name: sas-image-pull-secrets-9dd8hm29fm
+    initContainers:
+    - env:
+      - name: KUBE_POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: SAS_CERTFRAME_TOKEN_DIR
+        value: /certframe-token
+      - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+        value: /customer-provided-ca-certificates
+      - name: ENTRYPOINT_ATTEMPTS_MAX
+        value: "5"
+      envFrom:
+      - configMapRef:
+          name: sas-certframe-config-6t84hm65mc
+      - configMapRef:
+          name: sas-certframe-ingress-certificate-config-6mt27h98mb
+      - configMapRef:
+          name: sas-certframe-user-config-679cgdbhdt
+      image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-certframe:3.custom57.custom1-20240905.custom1725561224344
+      name: sas-certframe
+      resources:
+        limits:
+          cpu: 500m
+          memory: 500Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      volumeMounts:
+      - mountPath: /certframe-token
+        name: certframe-token
+      - mountPath: /security
+        name: security
+      - mountPath: /customer-provided-ca-certificates
+        name: customer-provided-ca-certificates
+    - args: []
+      command: []
+      env:
+      - name: SAS_K8S_POD_NAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      - name: SAS_K8S_NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      - name: SSL_CERT_FILE
+        value: /security/trustedcerts.pem
+      envFrom:
+      - configMapRef:
+          name: sas-go-config-4m2m8m8662
+      - configMapRef:
+          name: sas-shared-config-c49cg8722d
+      - secretRef:
+          name: sas-consul-client
+      - configMapRef:
+          name: sas-programming-environment-path-config-889g58mm7g
+      - configMapRef:
+          name: sas-deployment-metadata-27kb47bb47
+      - configMapRef:
+          name: sas-programming-environment-java-policy-config-h95g879t6t
+      - configMapRef:
+          name: sas-access-config-mm6fhg8gc7
+      image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-config-init:1.custom24.custom12-20241108.custom1731093895458
+      name: sas-config-init
+      ports: []
+      resizePolicy: []
+      resources:
+        limits:
+          cpu: 2
+          memory: 500Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          add: []
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+        runAsGroup: 1001
+        runAsUser: 1001
+      volumeDevices: []
+      volumeMounts:
+      - mountPath: /tmp
+        name: config-init-tmp
+      - mountPath: /config
+        name: config
+      - mountPath: /opt/sas/viya/config/var
+        name: viya
+      - mountPath: /opt/sas/viya/home/commonfiles
+        name: commonfilesvols
+        readOnly: true
+      - mountPath: /security
+        name: security
+    readinessGates: []
+    resourceClaims: []
+    restartPolicy: Never
+    schedulingGates: []
+    securityContext:
+      fsGroup: 1001270000
+      fsGroupChangePolicy: OnRootMismatch
+      runAsNonRoot: true
+      supplementalGroups: []
+      sysctls: []
+    serviceAccountName: sas-programming-environment
+    shareProcessNamespace: true
+    tolerations:
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: compute
+    topologySpreadConstraints: []
+    volumes:
+    - emptyDir: {}
+      name: tmp
+    - emptyDir: {}
+      name: config-init-tmp
+    - emptyDir: {}
+      name: sasuser
+    - emptyDir: {}
+      name: sashelp
+    - emptyDir: {}
+      name: config
+    - emptyDir: {}
+      name: viya
+    - name: commonfilesvols
+      persistentVolumeClaim:
+        claimName: sas-commonfiles
+        readOnly: true
+    - name: certframe-token
+      secret:
+        secretName: sas-certframe-token
+    - emptyDir: {}
+      name: security
+    - configMap:
+        name: sas-customer-provided-ca-certificates-bm5hc686c7
+      name: customer-provided-ca-certificates
+    - name: sas-quality-knowledge-base-volume
+      persistentVolumeClaim:
+        claimName: sas-quality-knowledge-base
+    - configMap:
+        defaultMode: 493
+        name: sas-qkb-management-scripts
+      name: sas-rdutil-dir
+    - name: python-volume
+      nfs:
+        path: /NAS_SAS_VIYA_DATA_PRD/viyapython/Python-3.custom10
+        server: 10.custom227.custom69.custom177
+    - name: astores-volume
+      persistentVolumeClaim:
+        claimName: sas-microanalytic-score-astores
+    - hostPath:
+        path: /var/saswork
+      name: viyawork
+    - name: nfs-sasdata
+      nfs:
+        path: /NAS_SAS_VIYA_DATA_PRD/sasdata
+        server: 10.custom227.custom69.custom177
+    - name: nfs-homes
+      nfs:
+        path: /NAS_SAS_VIYA_DATA_PRD/sasviya/homes
+        server: 10.custom227.custom69.custom177
+    - name: access-clients
+      nfs:
+        path: /NAS_SAS_VIYA_DATA_PRD/access-clients
+        server: 10.custom227.custom69.custom177
+    - name: sas-launcher-userhome
+      nfs:
+        path: /NAS_SAS_VIYA_DATA_PRD/sasviya/homes
+        server: 10.custom227.custom69.custom177

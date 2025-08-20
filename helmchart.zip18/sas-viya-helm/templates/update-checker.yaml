@@ -1,0 +1,131 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-update-checker
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    workload.sas.com/class: stateless
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    sidecar.istio.io/inject: "false"
+spec:
+  jobTemplate:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
+      labels:
+        app.kubernetes.io/name: sas-orchestration
+        sas.com/deployment: sas-viya
+        workload.sas.com/class: stateless
+    spec:
+      template:
+        metadata:
+          annotations:
+            sidecar.istio.io/inject: "false"
+          labels:
+            app.kubernetes.io/name: sas-orchestration
+            sas.com/deployment: sas-viya
+            workload.sas.com/class: stateless
+        spec:
+          affinity:
+            nodeAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - preference:
+                  matchExpressions:
+                  - key: workload.sas.com/class
+                    operator: In
+                    values:
+                    - stateless
+                weight: 100
+              - preference:
+                  matchExpressions:
+                  - key: workload.sas.com/class
+                    operator: NotIn
+                    values:
+                    - compute
+                    - cas
+                    - stateful
+                weight: 50
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.azure.com/mode
+                    operator: NotIn
+                    values:
+                    - system
+          containers:
+          - args: {{- toYaml .Values.updateChecker.sasUpdateChecker.args | nindent
+              8 }}
+            env:
+            - name: SUPPRESS_USAGE
+              value: {{ quote .Values.updateChecker.sasUpdateChecker.env.suppressUsage
+                }}
+            - name: SAS_BUILD_TYPE
+              valueFrom:
+                configMapKeyRef:
+                  key: SAS_BUILD_TYPE
+                  name: {{ include "sas-viya-helm.fullname" . }}-deployment-metadata-27kb47bb47
+            - name: SAS_CADENCE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  key: SAS_CADENCE_NAME
+                  name: {{ include "sas-viya-helm.fullname" . }}-deployment-metadata-27kb47bb47
+            - name: SAS_CADENCE_RELEASE
+              valueFrom:
+                configMapKeyRef:
+                  key: SAS_CADENCE_RELEASE
+                  name: {{ include "sas-viya-helm.fullname" . }}-deployment-metadata-27kb47bb47
+            - name: SAS_CADENCE_VERSION
+              valueFrom:
+                configMapKeyRef:
+                  key: SAS_CADENCE_VERSION
+                  name: {{ include "sas-viya-helm.fullname" . }}-deployment-metadata-27kb47bb47
+            - name: SAS_CA_CERTIFICATE
+              valueFrom:
+                secretKeyRef:
+                  key: CACertificate
+                  name: {{ include "sas-viya-helm.fullname" . }}-repositorywarehouse-certificates-mmg75bttt4
+            - name: SAS_DEPLOYMENT_TYPE
+              valueFrom:
+                configMapKeyRef:
+                  key: SAS_DEPLOYMENT_TYPE
+                  name: {{ include "sas-viya-helm.fullname" . }}-deployment-metadata-27kb47bb47
+            - name: SAS_CLIENT_CERTIFICATE
+              valueFrom:
+                secretKeyRef:
+                  key: ClientCertificate
+                  name: {{ include "sas-viya-helm.fullname" . }}-repositorywarehouse-certificates-mmg75bttt4
+            - name: SAS_REPOSITORY_WAREHOUSE_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: SAS_REPOSITORY_WAREHOUSE_URL
+                  name: {{ include "sas-viya-helm.fullname" . }}-deployment-metadata-27kb47bb47
+            - name: KUBERNETES_CLUSTER_DOMAIN
+              value: {{ quote .Values.kubernetesClusterDomain }}
+            envFrom:
+            - configMapRef:
+                name: {{ include "sas-viya-helm.fullname" . }}-components-fbmb7fkh55
+            image: {{ .Values.updateChecker.sasUpdateChecker.image.repository }}:{{
+              .Values.updateChecker.sasUpdateChecker.image.tag | default .Chart.AppVersion
+              }}
+            name: sas-update-checker
+            resources: {{- toYaml .Values.updateChecker.sasUpdateChecker.resources
+              | nindent 10 }}
+            securityContext: {{- toYaml .Values.updateChecker.sasUpdateChecker.containerSecurityContext
+              | nindent 10 }}
+          imagePullSecrets:
+          - name: {{ include "sas-viya-helm.fullname" . }}-image-pull-secrets-9dd8hm29fm
+          restartPolicy: Never
+          securityContext: {{- toYaml .Values.updateChecker.podSecurityContext |
+            nindent 8 }}
+          tolerations:
+          - effect: NoSchedule
+            key: workload.sas.com/class
+            operator: Equal
+            value: stateful
+          - effect: NoSchedule
+            key: workload.sas.com/class
+            operator: Equal
+            value: stateless
+  schedule: {{ .Values.updateChecker.schedule | quote }}

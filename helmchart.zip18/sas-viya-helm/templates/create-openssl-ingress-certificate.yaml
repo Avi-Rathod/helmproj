@@ -1,0 +1,82 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-create-openssl-ingress-certificate
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+spec:
+  template:
+    metadata:
+      annotations: {}
+      labels:
+        sas.com/deployment: sas-viya
+    spec:
+      containers:
+      - env:
+        - name: KUBE_POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: SAS_CERTIFICATE_COMMON_NAME
+          value: {{ quote .Values.createOpensslIngressCertificate.sasCertframe.env.sasCertificateCommonName
+            }}
+        - name: SAS_CERTFRAME_TOKEN_DIR
+          value: {{ quote .Values.createOpensslIngressCertificate.sasCertframe.env.sasCertframeTokenDir
+            }}
+        - name: SAS_CERTIFICATE_SECRET_NAME
+          value: {{ quote .Values.createOpensslIngressCertificate.sasCertframe.env.sasCertificateSecretName
+            }}
+        - name: SAS_CERTIFICATE_GENERATOR
+          value: {{ quote .Values.createOpensslIngressCertificate.sasCertframe.env.sasCertificateGenerator
+            }}
+        - name: SAS_CERTIFICATE_FILE_FORMAT
+          value: {{ quote .Values.createOpensslIngressCertificate.sasCertframe.env.sasCertificateFileFormat
+            }}
+        - name: SAS_CERTIFICATE_CA_CERTIFICATE_FILE
+          value: {{ quote .Values.createOpensslIngressCertificate.sasCertframe.env.sasCertificateCaCertificateFile
+            }}
+        - name: SAS_CERTIFICATE_FILE
+          value: {{ quote .Values.createOpensslIngressCertificate.sasCertframe.env.sasCertificateFile
+            }}
+        - name: SAS_CERTIFICATE_PRIVATE_KEY_FILE
+          value: {{ quote .Values.createOpensslIngressCertificate.sasCertframe.env.sasCertificatePrivateKeyFile
+            }}
+        - name: SAS_CERTIFICATE_EXCLUDE_POD_OWNERREF
+          value: {{ quote .Values.createOpensslIngressCertificate.sasCertframe.env.sasCertificateExcludePodOwnerref
+            }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        envFrom:
+        - configMapRef:
+            name: {{ include "sas-viya-helm.fullname" . }}-certframe-user-config-679cgdbhdt
+        image: {{ .Values.createOpensslIngressCertificate.sasCertframe.image.repository
+          }}:{{ .Values.createOpensslIngressCertificate.sasCertframe.image.tag | default
+          .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.createOpensslIngressCertificate.sasCertframe.imagePullPolicy
+          }}
+        name: sas-certframe
+        resources: {{- toYaml .Values.createOpensslIngressCertificate.sasCertframe.resources
+          | nindent 10 }}
+        securityContext: {{- toYaml .Values.createOpensslIngressCertificate.sasCertframe.containerSecurityContext
+          | nindent 10 }}
+        volumeMounts:
+        - mountPath: /certframe-token
+          name: certframe-token
+        - mountPath: /security
+          name: security
+      imagePullSecrets:
+      - name: {{ include "sas-viya-helm.fullname" . }}-image-pull-secrets-9dd8hm29fm
+      restartPolicy: OnFailure
+      securityContext: {{- toYaml .Values.createOpensslIngressCertificate.podSecurityContext
+        | nindent 8 }}
+      volumes:
+      - name: certframe-token
+        secret:
+          defaultMode: 420
+          secretName: {{ include "sas-viya-helm.fullname" . }}-certframe-token
+      - emptyDir: {}
+        name: security
+  ttlSecondsAfterFinished: 86400

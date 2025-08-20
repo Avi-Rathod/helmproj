@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-file-store-parameters-49ckc4mt4f
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.fileStoreParameters49Ckc4Mt4F.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.fileStoreParameters49Ckc4Mt4F.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.fileStoreParameters49Ckc4Mt4F.sasServiceName | quote
+    }}
+  SG_GO_MODULES_ENABLED: {{ .Values.fileStoreParameters49Ckc4Mt4F.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.fileStoreParameters49Ckc4Mt4F.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.fileStoreParameters49Ckc4Mt4F.sgProject | quote }}

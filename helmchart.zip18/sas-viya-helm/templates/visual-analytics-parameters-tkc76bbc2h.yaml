@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-visual-analytics-parameters-tkc76bbc2h
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.visualAnalyticsParametersTkc76Bbc2H.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.visualAnalyticsParametersTkc76Bbc2H.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.visualAnalyticsParametersTkc76Bbc2H.sasServiceName
+    | quote }}

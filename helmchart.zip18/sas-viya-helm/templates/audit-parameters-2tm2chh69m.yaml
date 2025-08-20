@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-audit-parameters-2tm2chh69m
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.auditParameters2Tm2Chh69M.sasContextPath | quote }}
+  SAS_DU_NAME: {{ .Values.auditParameters2Tm2Chh69M.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.auditParameters2Tm2Chh69M.sasServiceName | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.auditParameters2Tm2Chh69M.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.auditParameters2Tm2Chh69M.sgGoMultiModules | quote
+    }}
+  SG_PROJECT: {{ .Values.auditParameters2Tm2Chh69M.sgProject | quote }}

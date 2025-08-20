@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-report-images-parameters-6f8529cbbk
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.reportImagesParameters6F8529Cbbk.sasContextPath |
+    quote }}
+  SAS_DU_NAME: {{ .Values.reportImagesParameters6F8529Cbbk.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.reportImagesParameters6F8529Cbbk.sasServiceName |
+    quote }}

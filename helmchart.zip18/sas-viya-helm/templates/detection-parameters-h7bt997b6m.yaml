@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-detection-parameters-h7bt997b6m
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CGO_LDFLAGS: {{ .Values.detectionParametersH7Bt997B6M.cgoLdflags | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.detectionParametersH7Bt997B6M.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.detectionParametersH7Bt997B6M.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.detectionParametersH7Bt997B6M.sasServiceName | quote
+    }}
+  SG_GO_MODULES_ENABLED: {{ .Values.detectionParametersH7Bt997B6M.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.detectionParametersH7Bt997B6M.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.detectionParametersH7Bt997B6M.sgProject | quote }}
+  SG_STATIC: {{ .Values.detectionParametersH7Bt997B6M.sgStatic | quote }}

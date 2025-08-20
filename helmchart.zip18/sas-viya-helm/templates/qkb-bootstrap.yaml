@@ -1,0 +1,198 @@
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-qkb-bootstrap
+  labels:
+    sas.com/admin: namespace
+    sas.com/deployment: sas-viya
+    sas.com/template-intent: sas-launcher
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  annotations:
+    launcher.sas.com/nfs-server: 10.custom227.custom69.custom177
+    sas.com/certificate-file-format: pem
+    sas.com/component-name: sas-quality-knowledge-base
+    sas.com/component-version: 33.custom24.custom9-20241126.custom1732596991236
+    sas.com/kustomize-base: base
+    sas.com/tls-mode: full-stack
+    sas.com/version: 33.custom24.custom9
+template:
+  metadata:
+    annotations:
+      sas.com/certificate-file-format: pem
+      sas.com/kustomize-base: base
+      sas.com/tls-enabled-ports: all
+      sas.com/tls-mode: full-stack
+    labels:
+      sas.com/deployment: sas-viya
+  spec:
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - stateless
+            matchFields: []
+          weight: 100
+        - preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: NotIn
+              values:
+              - cas
+              - compute
+              - stateful
+            matchFields: []
+          weight: 50
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.azure.com/mode
+              operator: NotIn
+              values:
+              - system
+            matchFields: []
+      podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution: []
+        requiredDuringSchedulingIgnoredDuringExecution: []
+    automountServiceAccountToken: true
+    containers:
+    - args: []
+      command: []
+      env: []
+      envFrom:
+      - configMapRef:
+          name: sas-tls-config-dg85g4hfh8
+      image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-quality-knowledge-base:33.custom24.custom9-20241126.custom1732596991236
+      imagePullPolicy: IfNotPresent
+      name: sas-qkb-bootstrap
+      ports: []
+      resizePolicy: []
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          add: []
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      volumeDevices: []
+      volumeMounts:
+      - mountPath: /rdutil
+        name: sas-rdutil-dir
+      - mountPath: /tgtdata
+        name: sas-quality-knowledge-base-volume
+      - mountPath: /security
+        name: security
+      - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
+        name: security
+        subPath: cacerts
+      - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
+        name: security
+        subPath: private
+      - mountPath: /saswork
+        name: viyawork
+      - mountPath: /sasdata
+        name: nfs-sasdata
+      - mountPath: /homes
+        name: nfs-homes
+    ephemeralContainers: []
+    hostAliases: []
+    imagePullSecrets:
+    - name: sas-image-pull-secrets-9dd8hm29fm
+    initContainers:
+    - env:
+      - name: KUBE_POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: SAS_CERTFRAME_TOKEN_DIR
+        value: /certframe-token
+      - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
+        value: /customer-provided-ca-certificates
+      - name: ENTRYPOINT_ATTEMPTS_MAX
+        value: "5"
+      envFrom:
+      - configMapRef:
+          name: sas-certframe-config-6t84hm65mc
+      - configMapRef:
+          name: sas-certframe-ingress-certificate-config-6mt27h98mb
+      - configMapRef:
+          name: sas-certframe-user-config-679cgdbhdt
+      image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-certframe:3.custom57.custom1-20240905.custom1725561224344
+      name: sas-certframe
+      resources:
+        limits:
+          cpu: 500m
+          memory: 500Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+      volumeMounts:
+      - mountPath: /certframe-token
+        name: certframe-token
+      - mountPath: /security
+        name: security
+      - mountPath: /customer-provided-ca-certificates
+        name: customer-provided-ca-certificates
+    readinessGates: []
+    resourceClaims: []
+    restartPolicy: Never
+    schedulingGates: []
+    securityContext:
+      fsGroup: 1001270000
+      runAsNonRoot: true
+      supplementalGroups: []
+      sysctls: []
+    serviceAccountName: sas-programming-environment
+    shareProcessNamespace: true
+    tolerations:
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: compute
+    topologySpreadConstraints: []
+    volumes:
+    - name: sas-quality-knowledge-base-volume
+      persistentVolumeClaim:
+        claimName: sas-quality-knowledge-base
+    - configMap:
+        defaultMode: 493
+        items: []
+        name: sas-qkb-management-scripts
+      name: sas-rdutil-dir
+    - name: certframe-token
+      secret:
+        secretName: sas-certframe-token
+    - emptyDir: {}
+      name: security
+    - configMap:
+        name: sas-customer-provided-ca-certificates-bm5hc686c7
+      name: customer-provided-ca-certificates
+    - hostPath:
+        path: /var/saswork
+      name: viyawork
+    - name: nfs-sasdata
+      nfs:
+        path: /NAS_SAS_VIYA_DATA_PRD/sasdata
+        server: 10.custom227.custom69.custom177
+    - name: nfs-homes
+      nfs:
+        path: /NAS_SAS_VIYA_DATA_PRD/sasviya/homes
+        server: 10.custom227.custom69.custom177
+    - name: sas-launcher-userhome
+      nfs:
+        path: /NAS_SAS_VIYA_DATA_PRD/sasviya/homes
+        server: 10.custom227.custom69.custom177

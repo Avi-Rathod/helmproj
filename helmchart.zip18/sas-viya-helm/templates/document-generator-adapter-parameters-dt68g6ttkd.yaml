@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-document-generator-adapter-parameters-dt68g6ttkd
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.documentGeneratorAdapterParametersDt68G6Ttkd.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.documentGeneratorAdapterParametersDt68G6Ttkd.sasDuName
+    | quote }}
+  SAS_SERVICE_NAME: {{ .Values.documentGeneratorAdapterParametersDt68G6Ttkd.sasServiceName
+    | quote }}

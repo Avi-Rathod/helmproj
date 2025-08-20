@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-data-discovery-database-config-5kh26cm78g
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_DATABASE_MAXACTIVE: {{ .Values.dataDiscoveryDatabaseConfig5Kh26Cm78G.sasDatabaseMaxactive
+    | quote }}

@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-model-publish-parameters-tkhk9d6mg5
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.modelPublishParametersTkhk9D6Mg5.cntrRepoPrefix |
+    quote }}
+  SAS_CONTEXT_PATH: {{ .Values.modelPublishParametersTkhk9D6Mg5.sasContextPath |
+    quote }}
+  SAS_DU_NAME: {{ .Values.modelPublishParametersTkhk9D6Mg5.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.modelPublishParametersTkhk9D6Mg5.sasServiceName |
+    quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.modelPublishParametersTkhk9D6Mg5.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.modelPublishParametersTkhk9D6Mg5.sgGoMultiModules
+    | quote }}
+  SG_HOOK_IMAGE: {{ .Values.modelPublishParametersTkhk9D6Mg5.sgHookImage | quote
+    }}
+  SG_PROJECT: {{ .Values.modelPublishParametersTkhk9D6Mg5.sgProject | quote }}
+  SG_STATIC: {{ .Values.modelPublishParametersTkhk9D6Mg5.sgStatic | quote }}

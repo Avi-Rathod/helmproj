@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-deployment-metadata-27kb47bb47
+  labels:
+    orchestration.sas.com/lifecycle: metadata
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_BASE_CADENCE_NAME: {{ .Values.deploymentMetadata27Kb47Bb47.sasBaseCadenceName
+    | quote }}
+  SAS_BASE_CADENCE_VERSION: {{ .Values.deploymentMetadata27Kb47Bb47.sasBaseCadenceVersion
+    | quote }}
+  SAS_BUILD_TYPE: {{ .Values.deploymentMetadata27Kb47Bb47.sasBuildType | quote }}
+  SAS_CADENCE_DISPLAY_NAME: {{ .Values.deploymentMetadata27Kb47Bb47.sasCadenceDisplayName
+    | quote }}
+  SAS_CADENCE_DISPLAY_SHORT_NAME: {{ .Values.deploymentMetadata27Kb47Bb47.sasCadenceDisplayShortName
+    | quote }}
+  SAS_CADENCE_DISPLAY_VERSION: {{ .Values.deploymentMetadata27Kb47Bb47.sasCadenceDisplayVersion
+    | quote }}
+  SAS_CADENCE_NAME: {{ .Values.deploymentMetadata27Kb47Bb47.sasCadenceName | quote
+    }}
+  SAS_CADENCE_RELEASE: {{ .Values.deploymentMetadata27Kb47Bb47.sasCadenceRelease
+    | quote }}
+  SAS_CADENCE_VERSION: {{ .Values.deploymentMetadata27Kb47Bb47.sasCadenceVersion
+    | quote }}
+  SAS_DEPLOYMENT_TYPE: {{ .Values.deploymentMetadata27Kb47Bb47.sasDeploymentType
+    | quote }}
+  SAS_REPOSITORY_WAREHOUSE_URL: {{ .Values.deploymentMetadata27Kb47Bb47.sasRepositoryWarehouseUrl
+    | quote }}

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-license-996thbcbkg
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_LICENSE: {{ required "license996Thbcbkg.sasLicense is required" .Values.license996Thbcbkg.sasLicense
+    | b64enc | quote }}
+type: sas.com/license

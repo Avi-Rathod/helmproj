@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-model-manager-app-parameters-67bghdtdtf
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.modelManagerAppParameters67Bghdtdtf.cntrRepoPrefix
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.modelManagerAppParameters67Bghdtdtf.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.modelManagerAppParameters67Bghdtdtf.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.modelManagerAppParameters67Bghdtdtf.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.modelManagerAppParameters67Bghdtdtf.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.modelManagerAppParameters67Bghdtdtf.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.modelManagerAppParameters67Bghdtdtf.sgProject | quote }}

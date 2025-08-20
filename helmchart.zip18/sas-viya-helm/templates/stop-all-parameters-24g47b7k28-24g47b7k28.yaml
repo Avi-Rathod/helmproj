@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-stop-all-parameters-24g47b7k28-24g47b7k28
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CRONJOB_NAME: {{ .Values.stopAllParameters24G47B7K2824G47B7K28.sasCronjobName
+    | quote }}
+  SAS_DU_NAME: {{ .Values.stopAllParameters24G47B7K2824G47B7K28.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.stopAllParameters24G47B7K2824G47B7K28.sasServiceName
+    | quote }}

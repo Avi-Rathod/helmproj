@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-rfc-solution-config-kafka-creds-98ht2kf8db
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  password: {{ required "rfcSolutionConfigKafkaCreds98Ht2Kf8Db.password is required"
+    .Values.rfcSolutionConfigKafkaCreds98Ht2Kf8Db.password | b64enc | quote }}
+  username: {{ required "rfcSolutionConfigKafkaCreds98Ht2Kf8Db.username is required"
+    .Values.rfcSolutionConfigKafkaCreds98Ht2Kf8Db.username | b64enc | quote }}
+type: Opaque

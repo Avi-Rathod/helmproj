@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-report-services-group-parameters-tg4d99tt74
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_DU_NAME: {{ .Values.reportServicesGroupParametersTg4D99Tt74.sasDuName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.reportServicesGroupParametersTg4D99Tt74.sasServiceName
+    | quote }}

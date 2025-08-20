@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-job-execution-app-parameters-dc9ckmgt9g
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.jobExecutionAppParametersDc9Ckmgt9G.cntrRepoPrefix
+    | quote }}
+  SAS_CONTEXT_PATH: {{ .Values.jobExecutionAppParametersDc9Ckmgt9G.sasContextPath
+    | quote }}
+  SAS_DU_NAME: {{ .Values.jobExecutionAppParametersDc9Ckmgt9G.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.jobExecutionAppParametersDc9Ckmgt9G.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.jobExecutionAppParametersDc9Ckmgt9G.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.jobExecutionAppParametersDc9Ckmgt9G.sgGoMultiModules
+    | quote }}
+  SG_K8S_KUSTOMIZE_VERSION: {{ .Values.jobExecutionAppParametersDc9Ckmgt9G.sgK8SKustomizeVersion
+    | quote }}
+  SG_PROJECT: {{ .Values.jobExecutionAppParametersDc9Ckmgt9G.sgProject | quote }}

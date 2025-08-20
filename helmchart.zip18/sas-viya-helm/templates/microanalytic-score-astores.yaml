@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-microanalytic-score-astores
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.pvc.microanalyticScoreAstores.storageRequest | quote }}
+  storageClassName: {{ .Values.pvc.microanalyticScoreAstores.storageClass | quote
+    }}
+  volumeMode: Filesystem

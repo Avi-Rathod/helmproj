@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-rfc-solution-config-kafka-ca-cert-hmkbtm6mt8
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  ca.crt: {{ required "rfcSolutionConfigKafkaCaCertHmkbtm6Mt8.caCrt is required"
+    .Values.rfcSolutionConfigKafkaCaCertHmkbtm6Mt8.caCrt | b64enc | quote }}
+  ca.p12: {{ required "rfcSolutionConfigKafkaCaCertHmkbtm6Mt8.caP12 is required"
+    .Values.rfcSolutionConfigKafkaCaCertHmkbtm6Mt8.caP12 | b64enc | quote }}
+  ca.password: {{ required "rfcSolutionConfigKafkaCaCertHmkbtm6Mt8.caPassword is required" .Values.rfcSolutionConfigKafkaCaCertHmkbtm6Mt8.caPassword | b64enc |
+    quote }}
+type: Opaque

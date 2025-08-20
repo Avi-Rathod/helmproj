@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-readiness-parameters-8fk5km98t8
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.readinessParameters8Fk5Km98T8.sasContextPath | quote
+    }}
+  SAS_DU_NAME: {{ .Values.readinessParameters8Fk5Km98T8.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.readinessParameters8Fk5Km98T8.sasServiceName | quote
+    }}
+  SG_GO_MODULES_ENABLED: {{ .Values.readinessParameters8Fk5Km98T8.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.readinessParameters8Fk5Km98T8.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.readinessParameters8Fk5Km98T8.sgProject | quote }}

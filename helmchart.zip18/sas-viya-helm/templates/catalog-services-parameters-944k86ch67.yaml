@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-catalog-services-parameters-944k86ch67
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CNTR_REPO_PREFIX: {{ .Values.catalogServicesParameters944K86Ch67.cntrRepoPrefix
+    | quote }}
+  GO_LINT_CONTINUE_ON_ERROR: {{ .Values.catalogServicesParameters944K86Ch67.goLintContinueOnError
+    | quote }}
+  SAS_DU_NAME: {{ .Values.catalogServicesParameters944K86Ch67.sasDuName | quote }}
+  SAS_PORT_NAME: {{ .Values.catalogServicesParameters944K86Ch67.sasPortName | quote
+    }}
+  SAS_SERVICE_NAME: {{ .Values.catalogServicesParameters944K86Ch67.sasServiceName
+    | quote }}
+  SG_GO_MODULES_ENABLED: {{ .Values.catalogServicesParameters944K86Ch67.sgGoModulesEnabled
+    | quote }}
+  SG_GO_MULTI_MODULES: {{ .Values.catalogServicesParameters944K86Ch67.sgGoMultiModules
+    | quote }}
+  SG_PROJECT: {{ .Values.catalogServicesParameters944K86Ch67.sgProject | quote }}
+  SG_STATIC: {{ .Values.catalogServicesParameters944K86Ch67.sgStatic | quote }}

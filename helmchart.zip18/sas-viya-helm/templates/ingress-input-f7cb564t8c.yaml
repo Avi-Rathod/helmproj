@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-ingress-input-f7cb564t8c
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  INGRESS_APIVERSION: {{ .Values.ingressInputF7Cb564T8C.ingressApiversion | quote
+    }}
+  INGRESS_HOST: {{ .Values.ingressInputF7Cb564T8C.ingressHost | quote }}
+  INGRESS_KIND: {{ .Values.ingressInputF7Cb564T8C.ingressKind | quote }}

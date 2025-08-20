@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-launcher-lockdown-config-89fc9dc5c6
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  VIYA_LOCKDOWN_DEFAULT_METHODS: {{ .Values.launcherLockdownConfig89Fc9Dc5C6.viyaLockdownDefaultMethods
+    | quote }}
+  VIYA_LOCKDOWN_ENABLE: {{ .Values.launcherLockdownConfig89Fc9Dc5C6.viyaLockdownEnable
+    | quote }}
+  VIYA_LOCKDOWN_USER_METHODS: {{ .Values.launcherLockdownConfig89Fc9Dc5C6.viyaLockdownUserMethods
+    | quote }}

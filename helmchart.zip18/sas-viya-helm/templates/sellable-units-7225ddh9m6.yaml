@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-sellable-units-7225ddh9m6
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_SELLABLE_UNIT_REVISION_clddataex: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONClddataex
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_clddatagn: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONClddatagn
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_connect: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONConnect
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_datagvn: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONDatagvn
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_depentviya: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONDepentviya
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_detectarc: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONDetectarc
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_dmdatap: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONDmdatap
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_dmdq: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONDmdq
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_frauddec: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONFrauddec
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_inteldecn: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONInteldecn
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_jobflwsch: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONJobflwsch
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_mblnvstgr: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONMblnvstgr
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_mlrning: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONMlrning
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_modelmgr: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONModelmgr
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_statviya: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONStatviya
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_svicntpak: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONSvicntpak
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_va: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONVa
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_vcmnfnd: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONVcmnfnd
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_vsnvstgtr: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONVsnvstgtr
+    | quote }}
+  SAS_SELLABLE_UNIT_REVISION_vtxtan: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITREVISIONVtxtan
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_clddataex: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONClddataex
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_clddatagn: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONClddatagn
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_connect: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONConnect
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_datagvn: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONDatagvn
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_depentviya: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONDepentviya
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_detectarc: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONDetectarc
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_dmdatap: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONDmdatap
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_dmdq: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONDmdq
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_frauddec: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONFrauddec
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_inteldecn: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONInteldecn
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_jobflwsch: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONJobflwsch
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_mblnvstgr: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONMblnvstgr
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_mlrning: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONMlrning
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_modelmgr: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONModelmgr
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_statviya: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONStatviya
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_svicntpak: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONSvicntpak
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_va: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONVa
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_vcmnfnd: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONVcmnfnd
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_vsnvstgtr: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONVsnvstgtr
+    | quote }}
+  SAS_SELLABLE_UNIT_VERSION_vtxtan: {{ .Values.sellableUnits7225Ddh9M6.sASSELLABLEUNITVERSIONVtxtan
+    | quote }}

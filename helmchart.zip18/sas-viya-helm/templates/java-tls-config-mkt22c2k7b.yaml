@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-java-tls-config-mkt22c2k7b
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  CONSUL_CACERT: {{ .Values.javaTlsConfigMkt22C2K7B.consulCacert | quote }}
+  JAVA_GLOBAL_OPTION_KEYSTORE: {{ .Values.javaTlsConfigMkt22C2K7B.javaGlobalOptionKeystore
+    | quote }}
+  JAVA_GLOBAL_OPTION_KEYSTORE_PASSWORD: {{ .Values.javaTlsConfigMkt22C2K7B.javaGlobalOptionKeystorePassword
+    | quote }}
+  JAVA_GLOBAL_OPTION_KEYSTORE_TYPE: {{ .Values.javaTlsConfigMkt22C2K7B.javaGlobalOptionKeystoreType
+    | quote }}
+  JAVA_GLOBAL_OPTION_SSLENABLED: {{ .Values.javaTlsConfigMkt22C2K7B.javaGlobalOptionSslenabled
+    | quote }}
+  JAVA_GLOBAL_OPTION_TRUSTSTORE: {{ .Values.javaTlsConfigMkt22C2K7B.javaGlobalOptionTruststore
+    | quote }}
+  JAVA_GLOBAL_OPTION_TRUSTSTORE_PASSWORD: {{ .Values.javaTlsConfigMkt22C2K7B.javaGlobalOptionTruststorePassword
+    | quote }}
+  JAVA_GLOBAL_OPTION_TRUSTSTORE_TYPE: {{ .Values.javaTlsConfigMkt22C2K7B.javaGlobalOptionTruststoreType
+    | quote }}
+  JAVA_GLOBAL_OPTION_VAULTENABLED: {{ .Values.javaTlsConfigMkt22C2K7B.javaGlobalOptionVaultenabled
+    | quote }}
+  SAS_CERTIFICATE_FILE: {{ .Values.javaTlsConfigMkt22C2K7B.sasCertificateFile | quote
+    }}
+  SAS_TRUSTED_CA_CERTIFICATES_JKS_FILE: {{ .Values.javaTlsConfigMkt22C2K7B.sasTrustedCaCertificatesJksFile
+    | quote }}
+  SAS_TRUSTED_CA_CERTIFICATES_PEM_FILE: {{ .Values.javaTlsConfigMkt22C2K7B.sasTrustedCaCertificatesPemFile
+    | quote }}

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-data-mining-warehouse-parameters-9875b5fbfc
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.dataMiningWarehouseParameters9875B5Fbfc.sasContextPath
+    | quote }}
+  SAS_SERVICE_NAME: {{ .Values.dataMiningWarehouseParameters9875B5Fbfc.sasServiceName
+    | quote }}

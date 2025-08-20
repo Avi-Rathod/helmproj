@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sas-viya-helm.fullname" . }}-files-parameters-2f749bm86h
+  labels:
+    sas.com/admin: cluster-local
+    sas.com/deployment: sas-viya
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
+data:
+  SAS_CONTEXT_PATH: {{ .Values.filesParameters2F749Bm86H.sasContextPath | quote }}
+  SAS_DU_NAME: {{ .Values.filesParameters2F749Bm86H.sasDuName | quote }}
+  SAS_SERVICE_NAME: {{ .Values.filesParameters2F749Bm86H.sasServiceName | quote }}
