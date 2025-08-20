@@ -73,6 +73,7 @@ activitiesParameters84T4Kmk2Th:
   sasContextPath: activities
   sasDuName: sas-content
   sasServiceName: sas-activities
+
 adminContentLoaderParametersMmdh98K6B9:
   sasDuName: sas-admin-content-loader
 alerts:
@@ -15924,9 +15925,6 @@ rfcSolutionConfigKafkaConfigC4Thc4Bhbg:
   sasTransactionMarkTopic: ""
   sasTransactionTdrTopics: ""
   sasTriageKafkaTdrTopics: ""
-rfcSolutionConfigKafkaCreds98Ht2Kf8Db:
-  password: ""
-  username: ""
 rfcSolutionConfigParameters9C7Bd67Hcf:
   sasContextPath: rfcSolutionConfig
   sasDuName: sas-rfc-solution-config
