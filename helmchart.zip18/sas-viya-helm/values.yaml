@@ -9166,7 +9166,7 @@ launcherParametersCkhtm5F4G4:
   sasDuName: sas-launcher
   sasServiceName: sas-launcher
 license996Thbcbkg:
-  sasLicense: ""
+  sasLicense: "your-license-string"
 licenses:
   ports:
   - name: http
@@ -9182,8 +9182,8 @@ lifecycleImage5D8Htdfc8K:
   image: enterprisequay.hbctxdom.com/sasviyaprod/viya-4-x64_oci_linux_2-docker/sas-orchestration:1.128.2-20241002.1727879835425
   registry: enterprisequay.hbctxdom.com/sasviyaprod
 lifecycleImageD6T8Dfc7M6:
-  password: ""
-  username: ""
+  password: "admin"
+  username: "pass"
 lifecycleOperationsB924Bd9B2K:
   assess: |-
     apiVersion: orchestration.sas.com/v2beta10
@@ -14823,7 +14823,7 @@ rabbitmqServerParametersD85588DcbdD85588Dcbd:
   sasDuName: sas-rabbitmq-server
   sasServiceName: sas-rabbitmq-server
 rabbitmqServerSecret:
-  rabbitmqDefaultUser: ""
+  rabbitmqDefaultUser: "admin"
 readiness:
   podSecurityContext:
     runAsNonRoot: true
