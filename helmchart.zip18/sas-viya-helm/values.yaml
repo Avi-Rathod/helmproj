@@ -8346,7 +8346,7 @@ identitiesParametersKg6Df2Kf76:
   sasDuName: sas-identities
   sasServiceName: sas-identities
 imagePullSecrets9Dd8Hm29Fm:
-  dockerconfigjson: ""
+  dockerconfigjson: "abc"
 import9:
   podSecurityContext:
     runAsNonRoot: true
