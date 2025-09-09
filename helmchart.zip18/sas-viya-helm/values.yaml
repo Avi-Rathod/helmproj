@@ -20050,3 +20050,8 @@ autoscaling:
   maxReplicas: 5                  # Maximum number of pods
   targetCPUUtilizationPercentage: 80  # CPU usage threshold for scaling
 
+# Service configuration
+service:
+  type: ClusterIP     # Options: ClusterIP, NodePort, LoadBalancer
+  port: 80           # Service port
+
