@@ -146,8 +146,7 @@ spec:
               value: {{ quote .Values.kubernetesClusterDomain }}
             envFrom:
   - configMapRef:
-      name: {{ include "sas-viya-helm.fullname" . }}-go-config-4m2m8m8662
-
+      name: "{{ include "sas-viya-helm.fullname" . }}-go-config-4m2m8m8662"
                 name: {{ include "sas-viya-helm.fullname" . }}-go-config-4m2m8m8662
             - configMapRef:
                 name: {{ include "sas-viya-helm.fullname" . }}-shared-config-c49cg8722d
