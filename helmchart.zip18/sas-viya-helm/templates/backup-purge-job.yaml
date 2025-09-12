@@ -119,13 +119,6 @@ spec:
             volumeMounts:
             - mountPath: /tmp
               name: tmp
-            - mountPath: /sasviyabackup
-              name: backup
-            - mountPath: /security
-              name: security
-            - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
-              name: security
-              subPath: cacerts
           - env:
             - name: BACKUP_AGENT_TYPE
               value: {{ quote .Values.backupPurgeJob.sasBackupAgent.env.backupAgentType
