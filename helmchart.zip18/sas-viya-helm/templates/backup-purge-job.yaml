@@ -128,6 +128,7 @@ spec:
             - name: BACKUP_AGENT_TYPE
               value: {{ quote .Values.backupPurgeJob.sasBackupAgent.env.backupAgentType }}
             - name: BACKUP_MOUNT_LOCATION
+  value: /opt/sas/backup
               value: {{ quote .Values.backupPurgeJob.sasBackupAgent.env.backupMountLocation }}
             - name: NAMESPACE
               valueFrom:
