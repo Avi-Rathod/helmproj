@@ -126,9 +126,6 @@ spec:
             - name: security
               mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
               subPath: cacerts
-            - name: security
-              mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
-              subPath: private
           - env:
             - name: BACKUP_AGENT_TYPE
               value: {{ quote .Values.backupPurgeJob.sasBackupAgent.env.backupAgentType
