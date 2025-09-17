@@ -7,7 +7,7 @@ metadata:
     sas.com/backup-job-type: purge-backup
     sas.com/deployment: sas-viya
     workload.sas.com/class: stateless
-    {{- include "sas-viya-helm.labels" . | nindent 4 }}
+  {{- include "sas-viya-helm.labels" . | nindent 4 }}
   annotations:
     sas.com/certificate-file-format: pem
     sas.com/component-name: sas-backup-job
@@ -70,13 +70,14 @@ spec:
                     operator: NotIn
                     values:
                     - system
+            podAffinity: {}
+            podAntiAffinity: {}
           automountServiceAccountToken: true
           containers:
-          - name: sas-backup-purge-job
-            image: {{ .Values.backupPurgeJob.sasBackupPurgeJob.image.repository }}:{{ .Values.backupPurgeJob.sasBackupPurgeJob.image.tag | default .Chart.AppVersion }}
-            env:
+          - env:
             - name: BACKUP_MOUNT_LOCATION
-              value: {{ quote .Values.backupPurgeJob.sasBackupPurgeJob.env.backupMountLocation }}
+              value: {{ quote .Values.backupPurgeJob.sasBackupPurgeJob.env.backupMountLocation
+                }}
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
@@ -90,7 +91,8 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: JOB_TYPE
-              value: {{ quote .Values.backupPurgeJob.sasBackupPurgeJob.env.jobType }}
+              value: {{ quote .Values.backupPurgeJob.sasBackupPurgeJob.env.jobType
+                }}
             - name: KUBERNETES_CLUSTER_DOMAIN
               value: {{ quote .Values.kubernetesClusterDomain }}
             envFrom:
@@ -106,8 +108,14 @@ spec:
                 name: sas-consul-client
             - configMapRef:
                 name: {{ include "sas-viya-helm.fullname" . }}-tls-config-dg85g4hfh8
-            resources: {{- toYaml .Values.backupPurgeJob.sasBackupPurgeJob.resources | nindent 12 }}
-            securityContext: {{- toYaml .Values.backupPurgeJob.sasBackupPurgeJob.containerSecurityContext | nindent 12 }}
+            image: {{ .Values.backupPurgeJob.sasBackupPurgeJob.image.repository }}:{{
+              .Values.backupPurgeJob.sasBackupPurgeJob.image.tag | default .Chart.AppVersion
+              }}
+            name: sas-backup-purge-job
+            resources: {{- toYaml .Values.backupPurgeJob.sasBackupPurgeJob.resources
+              | nindent 10 }}
+            securityContext: {{- toYaml .Values.backupPurgeJob.sasBackupPurgeJob.containerSecurityContext
+              | nindent 10 }}
             volumeMounts:
             - name: tmp
               mountPath: /tmp
@@ -121,15 +129,13 @@ spec:
             - name: security
               mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
               subPath: private
-          - name: sas-backup-agent
-            image: {{ .Values.backupPurgeJob.sasBackupAgent.image.repository }}:{{ .Values.backupPurgeJob.sasBackupAgent.image.tag | default .Chart.AppVersion }}
-            imagePullPolicy: {{ .Values.backupPurgeJob.sasBackupAgent.imagePullPolicy }}
-            env:
+          - env:
             - name: BACKUP_AGENT_TYPE
-              value: {{ quote .Values.backupPurgeJob.sasBackupAgent.env.backupAgentType }}
+              value: {{ quote .Values.backupPurgeJob.sasBackupAgent.env.backupAgentType
+                }}
             - name: BACKUP_MOUNT_LOCATION
-  value: /opt/sas/backup
-              value: {{ quote .Values.backupPurgeJob.sasBackupAgent.env.backupMountLocation }}
+              value: {{ quote .Values.backupPurgeJob.sasBackupAgent.env.backupMountLocation
+                }}
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
@@ -145,8 +151,7 @@ spec:
             - name: KUBERNETES_CLUSTER_DOMAIN
               value: {{ quote .Values.kubernetesClusterDomain }}
             envFrom:
-  - configMapRef:
-      name: "{{ include "sas-viya-helm.fullname" . }}-go-config-4m2m8m8662"
+            - configMapRef:
                 name: {{ include "sas-viya-helm.fullname" . }}-go-config-4m2m8m8662
             - configMapRef:
                 name: {{ include "sas-viya-helm.fullname" . }}-shared-config-c49cg8722d
@@ -158,8 +163,16 @@ spec:
                 name: sas-consul-client
             - configMapRef:
                 name: {{ include "sas-viya-helm.fullname" . }}-tls-config-dg85g4hfh8
-            resources: {{- toYaml .Values.backupPurgeJob.sasBackupAgent.resources | nindent 12 }}
-            securityContext: {{- toYaml .Values.backupPurgeJob.sasBackupAgent.containerSecurityContext | nindent 12 }}
+            image: {{ .Values.backupPurgeJob.sasBackupAgent.image.repository }}:{{
+              .Values.backupPurgeJob.sasBackupAgent.image.tag | default .Chart.AppVersion
+              }}
+            imagePullPolicy: {{ .Values.backupPurgeJob.sasBackupAgent.imagePullPolicy
+              }}
+            name: sas-backup-agent
+            resources: {{- toYaml .Values.backupPurgeJob.sasBackupAgent.resources
+              | nindent 10 }}
+            securityContext: {{- toYaml .Values.backupPurgeJob.sasBackupAgent.containerSecurityContext
+              | nindent 10 }}
             terminationMessagePath: /dev/termination-log
             terminationMessagePolicy: File
             volumeMounts:
@@ -173,18 +186,20 @@ spec:
             - mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/private
               name: security
               subPath: private
+          imagePullSecrets:
+          - name: {{ include "sas-viya-helm.fullname" . }}-image-pull-secrets-9dd8hm29fm
           initContainers:
-          - name: sas-certframe
-            image: {{ .Values.backupPurgeJob.sasCertframe.image.repository }}:{{ .Values.backupPurgeJob.sasCertframe.image.tag | default .Chart.AppVersion }}
-            env:
+          - env:
             - name: KUBE_POD_NAME
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
             - name: SAS_CERTFRAME_TOKEN_DIR
-              value: {{ quote .Values.backupPurgeJob.sasCertframe.env.sasCertframeTokenDir }}
+              value: {{ quote .Values.backupPurgeJob.sasCertframe.env.sasCertframeTokenDir
+                }}
             - name: SAS_ADDITIONAL_CA_CERTIFICATES_DIR
-              value: {{ quote .Values.backupPurgeJob.sasCertframe.env.sasAdditionalCaCertificatesDir }}
+              value: {{ quote .Values.backupPurgeJob.sasCertframe.env.sasAdditionalCaCertificatesDir
+                }}
             - name: KUBERNETES_CLUSTER_DOMAIN
               value: {{ quote .Values.kubernetesClusterDomain }}
             envFrom:
@@ -194,8 +209,14 @@ spec:
                 name: {{ include "sas-viya-helm.fullname" . }}-certframe-user-config-679cgdbhdt
             - configMapRef:
                 name: {{ include "sas-viya-helm.fullname" . }}-certframe-config-6t84hm65mc
-            resources: {{- toYaml .Values.backupPurgeJob.sasCertframe.resources | nindent 12 }}
-            securityContext: {{- toYaml .Values.backupPurgeJob.sasCertframe.containerSecurityContext | nindent 12 }}
+            image: {{ .Values.backupPurgeJob.sasCertframe.image.repository }}:{{
+              .Values.backupPurgeJob.sasCertframe.image.tag | default .Chart.AppVersion
+              }}
+            name: sas-certframe
+            resources: {{- toYaml .Values.backupPurgeJob.sasCertframe.resources |
+              nindent 10 }}
+            securityContext: {{- toYaml .Values.backupPurgeJob.sasCertframe.containerSecurityContext
+              | nindent 10 }}
             volumeMounts:
             - mountPath: /certframe-token
               name: certframe-token
@@ -204,11 +225,10 @@ spec:
             - mountPath: /customer-provided-ca-certificates
               name: customer-provided-ca-certificates
           restartPolicy: Never
-          securityContext: {{- toYaml .Values.backupPurgeJob.podSecurityContext | nindent 10 }}
+          securityContext: {{- toYaml .Values.backupPurgeJob.podSecurityContext |
+            nindent 8 }}
           serviceAccountName: {{ include "sas-viya-helm.fullname" . }}-viya-backuprunner
           shareProcessNamespace: true
-          imagePullSecrets:
-          - name: {{ include "sas-viya-helm.fullname" . }}-image-pull-secrets-9dd8hm29fm
           tolerations:
           - effect: NoSchedule
             key: workload.sas.com/class
@@ -232,6 +252,7 @@ spec:
           - configMap:
               name: {{ include "sas-viya-helm.fullname" . }}-customer-provided-ca-certificates-bm5hc686c7
             name: customer-provided-ca-certificates
-  schedule: "{{ .Values.backupPurgeJob.schedule }}"
-  successfulJobsHistoryLimit: {{ .Values.backupPurgeJob.successfulJobsHistoryLimit }}
+  schedule: {{ .Values.backupPurgeJob.schedule | quote }}
+  successfulJobsHistoryLimit: {{ .Values.backupPurgeJob.successfulJobsHistoryLimit
+    }}
   suspend: {{ .Values.backupPurgeJob.suspend }}
