@@ -122,7 +122,7 @@ spec:
             - name: backup
               mountPath: /sasviyabackup
             - name: security
-              mountPath: /security
+              mountPath: /security 
             - name: security
               mountPath: /opt/sas/viya/config/etc/SASSecurityCertificateFramework/cacerts
               subPath: cacerts
