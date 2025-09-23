@@ -7,13 +7,13 @@ metadata:
             sas.com/backup-job-type: purge-backup
             sas.com/deployment: sas-viya
             workload.sas.com/class: stateless
-        {{- include "sas-viya-helm.labels" . | nindent 4 }}
-  annotations:
-    sas.com/certificate-file-format: pem
-    sas.com/component-name: sas-backup-job
-    sas.com/component-version: 1.custom95.custom12-20241106.custom1730904857007
-    sas.com/kustomize-base: base
-    sas.com/version: 1.custom95.custom12
+          {{- include "sas-viya-helm.labels" . | nindent 4 }}
+          annotations:
+            sas.com/certificate-file-format: pem
+            sas.com/component-name: sas-backup-job
+            sas.com/component-version: 1.custom95.custom12-20241106.custom1730904857007
+            sas.com/kustomize-base: base
+            sas.com/version: 1.custom95.custom12
 spec:
   failedJobsHistoryLimit: {{ .Values.backupPurgeJob.failedJobsHistoryLimit }}
   jobTemplate:
