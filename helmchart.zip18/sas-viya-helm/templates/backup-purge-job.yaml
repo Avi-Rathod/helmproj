@@ -1,13 +1,13 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "sas-viya-helm.fullname" . }}-backup-purge-job
-  labels:
-    sas.com/admin: namespace
-    sas.com/backup-job-type: purge-backup
-    sas.com/deployment: sas-viya
-    workload.sas.com/class: stateless
-    {{- include "sas-viya-helm.labels" . | nindent 4 }}
+          name: {{include "sas-viya-helm.fullname" .}}-backup-purge-job
+          labels:
+            sas.com/admin: namespace
+            sas.com/backup-job-type: purge-backup
+            sas.com/deployment: sas-viya
+            workload.sas.com/class: stateless
+        {{- include "sas-viya-helm.labels" . | nindent 4 }}
   annotations:
     sas.com/certificate-file-format: pem
     sas.com/component-name: sas-backup-job
